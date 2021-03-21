@@ -8,13 +8,13 @@ use Laravel\Octane\Commands\StartCommand;
 use Laravel\Octane\Commands\StartRoadRunnerCommand;
 use Laravel\Octane\Commands\StartSwooleCommand;
 use Laravel\Octane\Commands\StopCommand;
-use Laravel\Octane\Contracts\ConcurrentOperationDispatcher;
+use Laravel\Octane\Contracts\DispatchesCoroutines;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile as SwooleServerStateFile;
 use Laravel\Octane\Swoole\SignalDispatcher;
-use Laravel\Octane\Swoole\SwooleConcurrentOperationDispatcher;
+use Laravel\Octane\Swoole\SwooleCoroutineDispatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -81,10 +81,10 @@ class OctaneServiceProvider extends PackageServiceProvider
         });
 
         $this->app->bind(
-            ConcurrentOperationDispatcher::class,
+            DispatchesCoroutines::class,
             class_exists('Swoole\Http\Server')
-                        ? SwooleConcurrentOperationDispatcher::class
-                        : SequentialConcurrentOperationDispatcher::class
+                        ? SwooleCoroutineDispatcher::class
+                        : SequentialCoroutineDispatcher::class
         );
     }
 
