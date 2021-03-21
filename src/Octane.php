@@ -2,7 +2,8 @@
 
 namespace Laravel\Octane;
 
-use Laravel\Octane\Contracts\ConcurrentOperationDispatcher;
+use Laravel\Octane\Contracts\DispatchesCoroutines;
+use Laravel\Octane\Contracts\DispatchesTasks;
 use Throwable;
 
 class Octane
@@ -11,13 +12,23 @@ class Octane
     use ProvidesRouting;
 
     /**
-     * Get the concurrent operation manager.
+     * Get the coroutine dispatcher.
      *
-     * @return \Laravel\Contracts\Octane\ConcurrentOperationDispatcher
+     * @return \Laravel\Contracts\Octane\DispatchesCoroutines
      */
-    public function concurrently()
+    public function coroutines()
     {
-        return app(ConcurrentOperationDispatcher::class);
+        return app(DispatchesCoroutines::class);
+    }
+
+    /**
+     * Get the task dispatcher.
+     *
+     * @return \Laravel\Contracts\Octane\DispatchesTasks
+     */
+    public function tasks()
+    {
+        return app(DispatchesTasks::class);
     }
 
     /**

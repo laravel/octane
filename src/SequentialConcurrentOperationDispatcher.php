@@ -2,28 +2,10 @@
 
 namespace Laravel\Octane;
 
-use Laravel\Octane\Contracts\ConcurrentOperationDispatcher;
+use Laravel\Octane\Contracts\DispatchesTasks;
 
-class SequentialConcurrentOperationDispatcher implements ConcurrentOperationDispatcher
+class SequentialTaskDispatcher implements DispatchesTasks
 {
-    /**
-     * Concurrently resolve the given callbacks, returning the results.
-     *
-     * @param  array  $callbacks
-     * @param  int  $waitSeconds
-     * @return array
-     */
-    public function resolve(array $callbacks, int $waitSeconds = -1): array
-    {
-        $results = [];
-
-        foreach ($callbacks as $key => $callback) {
-            $results[$key] = $callback();
-        }
-
-        return $results;
-    }
-
     /**
      * Concurrently resolve the given callbacks via background tasks, returning the results.
      *
@@ -33,9 +15,11 @@ class SequentialConcurrentOperationDispatcher implements ConcurrentOperationDisp
      * @param  int  $waitMilliseconds
      * @return array
      */
-    public function resolveTasks(array $tasks, int $waitMilliseconds = 1): array
+    public function resolve(array $tasks, int $waitMilliseconds = 1): array
     {
-        return $this->resolve($tasks);
+        return collect($tasks)->mapWithKeys(
+            fn ($task, $key) => [$key => $task()]
+        )->all();
     }
 
     /**
@@ -44,7 +28,7 @@ class SequentialConcurrentOperationDispatcher implements ConcurrentOperationDisp
      * @param  array  $tasks
      * @return void
      */
-    public function dispatchTasks(array $tasks)
+    public function dispatch(array $tasks)
     {
         return $this->resolve($tasks);
     }
