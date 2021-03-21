@@ -4,6 +4,7 @@ namespace Laravel\Octane\Concerns;
 
 use Laravel\Octane\Contracts\DispatchesCoroutines;
 use Laravel\Octane\Contracts\DispatchesTasks;
+use Laravel\Octane\SequentialTaskDispatcher;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
