@@ -4,7 +4,6 @@ namespace Laravel\Octane;
 
 use Laravel\Octane\Contracts\DispatchesCoroutines;
 use Laravel\Octane\Contracts\DispatchesTasks;
-use Laravel\Octane\SequentialTaskDispatcher;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
 use Swoole\Http\Server;
 use Throwable;
