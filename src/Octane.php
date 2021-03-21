@@ -32,22 +32,15 @@ class Octane
      */
     public function tasks()
     {
-        if (app()->bound(DispatchesTasks::class)) {
-            return app(DispatchesTasks::class);
-        }
-
-        if (app()->bound(Server::class)) {
-            return new SwooleTaskDispatcher;
-        }
-
-        if (class_exists('Swoole\Http\Server')) {
-            return new SwooleHttpTaskDispatcher(
+        return match(true) {
+            app()->bound(DispatchesTasks::class) => app(DispatchesTasks::class),
+            app()->bound(Server::class) => new SwooleTaskDispatcher,
+            class_exists(Server::class) => new SwooleHttpTaskDispatcher(
                 app(ServerStateFile::class),
                 new SequentialTaskDispatcher
-            );
-        }
-
-        return new SequentialTaskDispatcher;
+            ),
+            default => new SequentialTaskDispatcher,
+        };
     }
 
     /**
