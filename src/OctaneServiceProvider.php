@@ -2,19 +2,25 @@
 
 namespace Laravel\Octane;
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Crypt;
 use Laravel\Octane\Commands\ReloadCommand;
 use Laravel\Octane\Commands\StartCommand;
 use Laravel\Octane\Commands\StartRoadRunnerCommand;
 use Laravel\Octane\Commands\StartSwooleCommand;
 use Laravel\Octane\Commands\StopCommand;
 use Laravel\Octane\Contracts\DispatchesCoroutines;
+use Laravel\Octane\Facades\Octane as OctaneFacade;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile as SwooleServerStateFile;
 use Laravel\Octane\Swoole\SignalDispatcher;
 use Laravel\Octane\Swoole\SwooleCoroutineDispatcher;
+use Laravel\Octane\Swoole\SwooleTaskDispatcher;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -135,5 +141,38 @@ class OctaneServiceProvider extends PackageServiceProvider
                 $dispatcher->listen($event, $listener);
             }
         }
+
+        $this->registerHttpTaskHandlingRoutes();
+    }
+
+    /**
+     * Register the Octane routes that handle tasks from invokers not in a Server context.
+     *
+     * @return void
+     */
+    protected function registerHttpTaskHandlingRoutes()
+    {
+        OctaneFacade::route('POST', '/octane/resolve-tasks', function (Request $request) {
+            try {
+                return new Response(serialize((new SwooleTaskDispatcher)->resolve(
+                    unserialize(Crypt::decryptString($request->input('tasks'))),
+                    $request->input('wait')
+                )), 200);
+            } catch (DecryptException $e) {
+                return new Response('', 403);
+            }
+        });
+
+        OctaneFacade::route('POST', '/octane/dispatch-tasks', function (Request $request) {
+            try {
+                (new SwooleTaskDispatcher)->dispatch(
+                    unserialize(Crypt::decryptString($request->input('tasks'))),
+                );
+            } catch (DecryptException $e) {
+                return new Response('', 403);
+            }
+
+            return new Response('', 200);
+        });
     }
 }
