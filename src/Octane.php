@@ -4,6 +4,7 @@ namespace Laravel\Octane;
 
 use Laravel\Octane\Contracts\DispatchesCoroutines;
 use Laravel\Octane\Contracts\DispatchesTasks;
+use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
 use Swoole\Http\Server;
@@ -40,7 +41,10 @@ class Octane
         }
 
         if (class_exists('Swoole\Http\Server')) {
-            return new SwooleHttpTaskDispatcher(new SequentialTaskDispatcher);
+            return new SwooleHttpTaskDispatcher(
+                app(ServerStateFile::class),
+                new SequentialTaskDispatcher
+            );
         }
 
         return new SequentialTaskDispatcher;

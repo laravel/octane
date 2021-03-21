@@ -12,8 +12,16 @@ use Laravel\Octane\Contracts\DispatchesTasks;
 
 class SwooleHttpTaskDispatcher implements DispatchesTasks
 {
-    public function __construct(protected DispatchesTasks $fallbackDispatcher)
+    protected $host;
+    protected $port;
+
+    public function __construct(protected ServerStateFile $serverStateFile,
+                                protected DispatchesTasks $fallbackDispatcher)
     {
+        $serverState = $serverStateFile->read();
+
+        $this->host = $serverState['state']['host'] ?? '127.0.0.1';
+        $this->port = $serverState['state']['port'] ?? 8000;
     }
 
     /**
@@ -34,7 +42,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
         })->all();
 
         try {
-            $response = Http::post('http://127.0.0.1:8000/octane/resolve-tasks', [
+            $response = Http::post("http://{$this->host}:{$this->port}/octane/resolve-tasks", [
                 'tasks' => Crypt::encryptString(serialize($tasks)),
                 'wait' => $waitMilliseconds,
             ]);
@@ -62,7 +70,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
         })->all();
 
         try {
-            Http::post('http://127.0.0.1:8000/octane/dispatch-tasks', [
+            Http::post("http://{$this->host}:{$this->port}/octane/dispatch-tasks", [
                 'tasks' => Crypt::encryptString(serialize($tasks)),
             ]);
         } catch (ConnectionException $e) {
