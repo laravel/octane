@@ -29,6 +29,7 @@
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
+        "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "dev-nitro-prep as 8.x-dev",
         "mockery/mockery": "^1.4",
         "orchestra/testbench": "^6.15",

@@ -29,8 +29,12 @@ class SequentialTaskDispatcherTest extends TestCase
         $second = null;
 
         $dispatcher->dispatch([
-            'first' => function () use (&$first) { $first = 'first'; },
-            'second' => function () use (&$second) { $second = 'second'; },
+            'first' => function () use (&$first) {
+                $first = 'first';
+            },
+            'second' => function () use (&$second) {
+                $second = 'second';
+            },
         ]);
 
         $this->assertEquals('first', $first);
