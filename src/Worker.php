@@ -10,6 +10,8 @@ use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\Contracts\Worker as WorkerContract;
 use Laravel\Octane\Events\TaskReceived;
 use Laravel\Octane\Events\TaskTerminated;
+use Laravel\Octane\Events\TickReceived;
+use Laravel\Octane\Events\TickTerminated;
 use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
@@ -140,6 +142,27 @@ class Worker implements WorkerContract
         }
 
         return $result;
+    }
+
+    /**
+     * Handle an incoming tick.
+     *
+     * @return void
+     */
+    public function handleTick()
+    {
+        CurrentApplication::set($sandbox = clone $this->app);
+
+        try {
+            $this->dispatchEvent($sandbox, new TickReceived($this->app, $sandbox));
+            $this->dispatchEvent($sandbox, new TickTerminated($this->app, $sandbox));
+        } catch (Throwable $e) {
+            $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
+        } finally {
+            unset($sandbox);
+
+            CurrentApplication::set($this->app);
+        }
     }
 
     /**
