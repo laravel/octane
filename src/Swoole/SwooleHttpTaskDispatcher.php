@@ -34,7 +34,11 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
     protected $port;
 
     /**
+     * Create a new Swoole HTTP task dispatcher instance.
      *
+     * @param  \Laravel\Octane\Swoole\ServerStateFile  $serverStateFile
+     * @param  \Laravel\Octane\Contracts\DispatchesTasks  $fallbackDispatcher
+     * @return void
      */
     public function __construct(ServerStateFile $serverStateFile,
                                 DispatchesTasks $fallbackDispatcher)
