@@ -112,11 +112,11 @@ $server->on('request', function ($request, $response) use ($workerState, $server
 */
 
 $server->on('task', function (Server $server, int $taskId, int $fromWorkerId, $data) use ($workerState) {
-    if ($data !== 'octane-tick') {
-        return $workerState->worker->handleTask($data);
+    if ($data === 'octane-tick') {
+        return;
     }
 
-    // Tick...
+    return $workerState->worker->handleTask($data);
 });
 
 $server->on('finish', function (Server $server, int $taskId, $result) {
