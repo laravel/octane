@@ -1,0 +1,26 @@
+<?php
+
+namespace Laravel\Octane\Listeners;
+
+use Illuminate\Broadcasting\BroadcastManager;
+
+class GiveNewApplicationInstanceToBroadcastManager
+{
+    /**
+     * Handle the event.
+     *
+     * @param  mixed  $event
+     * @return void
+     */
+    public function handle($event)
+    {
+        if (! $event->sandbox->resolved(BroadcastManager::class)) {
+            return;
+        }
+
+        with($event->sandbox->make(BroadcastManager::class), function ($manager) use ($event) {
+            $manager->setApplication($event->sandbox);
+            $manager->forgetDrivers();
+        });
+    }
+}

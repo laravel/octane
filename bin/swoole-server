@@ -1,0 +1,143 @@
+#!/usr/bin/env php
+<?php
+
+use Laravel\Octane\RequestContext;
+use Laravel\Octane\Swoole\Handlers\OnManagerStart;
+use Laravel\Octane\Swoole\Handlers\OnServerShutdown;
+use Laravel\Octane\Swoole\Handlers\OnServerStart;
+use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
+use Laravel\Octane\Swoole\ServerStateFile;
+use Laravel\Octane\Swoole\SwooleExtension;
+use Laravel\Octane\Worker;
+use Swoole\Http\Server;
+
+ini_set('display_errors', 'stderr');
+
+$bootstrap = fn () => require __DIR__.'/bootstrap.php';
+
+/*
+|--------------------------------------------------------------------------
+| Create The Swoole Server
+|--------------------------------------------------------------------------
+|
+| First, we will load the server state file from disk. This file contains
+| various information we need to boot Swoole such as the configuration
+| and application name. We can use this data to start up our server.
+|
+*/
+
+$serverState = json_decode(file_get_contents(
+    $serverStateFile = $_SERVER['argv'][1]
+), true)['state'];
+
+$server = require __DIR__.'/createSwooleServer.php';
+
+/*
+|--------------------------------------------------------------------------
+| Handle Server & Manager Start
+|--------------------------------------------------------------------------
+|
+| The following callbacks manage the master process and manager process
+| start events. These handlers primarily are responsible for writing
+| the process ID to the server state file so we can remember them.
+|
+*/
+
+$server->on('start', fn (Server $server) => $bootstrap() && (new OnServerStart(
+    new ServerStateFile($serverStateFile),
+    new SwooleExtension,
+    $serverState['appName']
+))($server));
+
+$server->on('managerstart', fn () => $bootstrap() && (new OnManagerStart(
+    new SwooleExtension, $serverState['appName']
+))());
+
+/*
+|--------------------------------------------------------------------------
+| Handle Worker Start
+|--------------------------------------------------------------------------
+|
+| Swoole will start multiple worker processes and the following callback
+| will handle their state events. When a worker starts we will create
+| a new Octane worker and inform it to start handling our requests.
+|
+| We will also create a "workerState" variable which will maintain state
+| and allow us to access the worker and client from the callback that
+| will handle incoming requests. Basically this works like a cache.
+|
+*/
+
+$workerState = new class {
+    public $worker;
+    public $client;
+    public $lastRequestTime;
+};
+
+$server->on('workerstart', fn (Server $server) =>
+    (fn ($basePath) => (new OnWorkerStart)($server, $basePath, $workerState))($bootstrap())
+);
+
+/*
+|--------------------------------------------------------------------------
+| Handle Incoming Requests
+|--------------------------------------------------------------------------
+|
+| The following callback will handle all incoming requests plus send them
+| the worker. The worker will send the request through the application
+| and ask the client to send the response back to the Swoole server.
+|
+*/
+
+$server->on('request', function ($request, $response) use ($workerState, $serverState) {
+    $workerState->lastRequestTime = microtime(true);
+
+    $workerState->worker->handle(...$workerState->client->marshalRequest(new RequestContext([
+        'swooleRequest' => $request,
+        'swooleResponse' => $response,
+        'publicPath' => $serverState['publicPath'],
+        'octaneConfig' => $serverState['octaneConfig'],
+    ])));
+});
+
+/*
+|--------------------------------------------------------------------------
+| Handle Tasks
+|--------------------------------------------------------------------------
+|
+| Swoole tasks can be used to offload concurrent work onto a group of
+| background processes which handle the work in isolation and with
+| separate application state. We should handle these tasks below.
+|
+*/
+
+$server->on('task', function (Server $server, int $taskId, int $fromWorkerId, $data) use ($workerState) {
+    if ($data !== 'octane-tick') {
+        return $workerState->worker->handleTask($data);
+    }
+
+    // Tick...
+});
+
+$server->on('finish', function (Server $server, int $taskId, $result) {
+    return $result;
+});
+
+/*
+|--------------------------------------------------------------------------
+| Handle Worker & Server Shutdown
+|--------------------------------------------------------------------------
+|
+| The following callbacks handle the master and worker shutdown events so
+| we can clean up any state, including the server state file. An event
+| will be dispatched by the worker so the developer can take action.
+|
+*/
+
+$server->on('workerstop', fn () => $workerState->worker->terminate());
+
+$server->on('shutdown', fn () => (new OnServerShutdown(
+    new ServerStateFile($serverStateFile)
+))());
+
+$server->start();

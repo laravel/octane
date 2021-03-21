@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+
+use Illuminate\Foundation\Application;
+use Laravel\Octane\ApplicationFactory;
+use Laravel\Octane\RequestContext;
+use Laravel\Octane\RoadRunner\RoadRunnerClient;
+use Laravel\Octane\Worker;
+use Spiral\Goridge\StreamRelay;
+use Spiral\RoadRunner\PSR7Client;
+use Spiral\RoadRunner\Worker as RoadRunnerWorker;
+
+$basePath = require __DIR__.'/bootstrap.php';
+
+/*
+|--------------------------------------------------------------------------
+| Start The Octane Worker
+|--------------------------------------------------------------------------
+|
+| Next we will start the Octane worker, which is a long running process to
+| handle incoming requests to the application. Octane can intercept the
+| incoming requests and proxy them to the Laravel application for us.
+|
+*/
+
+$roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Client(
+    new RoadRunnerWorker(new StreamRelay(STDIN, STDOUT))
+));
+
+$worker = tap((new Worker(
+    new ApplicationFactory($basePath), $roadRunnerClient
+)))->boot();
+
+while ($psr7Request = $psr7Client->acceptRequest()) {
+    [$request, $context] = $roadRunnerClient->marshalRequest(new RequestContext([
+        'psr7Request' => $psr7Request
+    ]));
+
+    $worker->handle($request, $context);
+}
+
+$worker->terminate();
