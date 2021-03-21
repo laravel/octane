@@ -36,7 +36,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
         })->all();
 
         try {
-            $response = Http::post("http://{$this->host}:{$this->port}/octane/resolve-tasks", [
+            $response = Http::timeout(($waitMilliseconds / 1000) + 5)->post("http://{$this->host}:{$this->port}/octane/resolve-tasks", [
                 'tasks' => Crypt::encryptString(serialize($tasks)),
                 'wait' => $waitMilliseconds,
             ]);
