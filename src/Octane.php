@@ -4,6 +4,9 @@ namespace Laravel\Octane;
 
 use Laravel\Octane\Contracts\DispatchesCoroutines;
 use Laravel\Octane\Contracts\DispatchesTasks;
+use Laravel\Octane\SequentialTaskDispatcher;
+use Laravel\Octane\Swoole\SwooleTaskDispatcher;
+use Swoole\Http\Server;
 use Throwable;
 
 class Octane
@@ -28,7 +31,15 @@ class Octane
      */
     public function tasks()
     {
-        return app(DispatchesTasks::class);
+        if (app()->bound(DispatchesTasks::class)) {
+            return app(DispatchesTasks::class);
+        }
+
+        if (app()->bound(Server::class)) {
+            return new SwooleTaskDispatcher;
+        }
+
+        return new SequentialTaskDispatcher;
     }
 
     /**
