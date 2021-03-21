@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Octane;
+namespace Laravel\Octane\Concerns;
 
 trait ProvidesDefaultConfigurationOptions
 {
