@@ -12,43 +12,10 @@ use Laravel\Octane\Contracts\DispatchesTasks;
 
 class SwooleHttpTaskDispatcher implements DispatchesTasks
 {
-    /**
-     * The dispatcher to use if communication with the server can't be established.
-     *
-     * @var \Laravel\Octane\Contracts\DispatchesTasks
-     */
-    protected $fallbackDispatcher;
-
-    /**
-     * The host of the currently running Swoole server.
-     *
-     * @var string
-     */
-    protected $host;
-
-    /**
-     * The port of the currently running Swoole server.
-     *
-     * @var string
-     */
-    protected $port;
-
-    /**
-     * Create a new Swoole HTTP task dispatcher instance.
-     *
-     * @param  \Laravel\Octane\Swoole\ServerStateFile  $serverStateFile
-     * @param  \Laravel\Octane\Contracts\DispatchesTasks  $fallbackDispatcher
-     * @return void
-     */
-    public function __construct(ServerStateFile $serverStateFile,
-                                DispatchesTasks $fallbackDispatcher)
+    public function __construct(protected string $host,
+                                protected string $port,
+                                protected DispatchesTasks $fallbackDispatcher)
     {
-        $this->fallbackDispatcher = $fallbackDispatcher;
-
-        $serverState = $serverStateFile->read();
-
-        $this->host = $serverState['state']['host'] ?? '127.0.0.1';
-        $this->port = $serverState['state']['port'] ?? 8000;
     }
 
     /**

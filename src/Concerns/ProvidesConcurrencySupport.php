@@ -32,10 +32,11 @@ trait ProvidesConcurrencySupport
         return match(true) {
             app()->bound(DispatchesTasks::class) => app(DispatchesTasks::class),
             app()->bound(Server::class) => new SwooleTaskDispatcher,
-            class_exists(Server::class) => new SwooleHttpTaskDispatcher(
-                app(ServerStateFile::class),
+            class_exists(Server::class) => (fn (array $serverState) => new SwooleHttpTaskDispatcher(
+                $serverState['state']['host'] ?? '127.0.0.1',
+                $serverState['state']['port'] ?? '8000',
                 new SequentialTaskDispatcher
-            ),
+            ))(app(ServerStateFile::class)->read()),
             default => new SequentialTaskDispatcher,
         };
     }

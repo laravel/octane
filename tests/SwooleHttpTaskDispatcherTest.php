@@ -14,17 +14,9 @@ class SwooleHttpTaskDispatcherTest extends TestCase
     /** @test */
     public function test_tasks_can_be_resolved_via_http()
     {
-        $serverStateFile = Mockery::mock(ServerStateFile::class);
-
-        $serverStateFile->shouldReceive('read')->once()->andReturn([
-            'state' => [
-                'host' => '127.0.0.1',
-                'port' => 8000,
-            ],
-        ]);
-
         $dispatcher = new SwooleHttpTaskDispatcher(
-            $serverStateFile,
+            '127.0.0.1',
+            '8000',
             new SequentialTaskDispatcher,
         );
 
@@ -41,20 +33,12 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]));
     }
 
-    /** @test */
+    /** @doesNotPerformAssertions @test */
     public function test_tasks_can_be_dispatched_via_http()
     {
-        $serverStateFile = Mockery::mock(ServerStateFile::class);
-
-        $serverStateFile->shouldReceive('read')->once()->andReturn([
-            'state' => [
-                'host' => '127.0.0.1',
-                'port' => 8000,
-            ],
-        ]);
-
         $dispatcher = new SwooleHttpTaskDispatcher(
-            $serverStateFile,
+            '127.0.0.1',
+            '8000',
             new SequentialTaskDispatcher,
         );
 
@@ -71,17 +55,9 @@ class SwooleHttpTaskDispatcherTest extends TestCase
     /** @test */
     public function test_tasks_can_be_resolved_via_fallback_dispatcher()
     {
-        $serverStateFile = Mockery::mock(ServerStateFile::class);
-
-        $serverStateFile->shouldReceive('read')->once()->andReturn([
-            'state' => [
-                'host' => '127.0.0.1',
-                'port' => 8000,
-            ],
-        ]);
-
         $dispatcher = new SwooleHttpTaskDispatcher(
-            $serverStateFile,
+            '127.0.0.1',
+            '8000',
             new SequentialTaskDispatcher,
         );
 
@@ -94,20 +70,12 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]));
     }
 
-    /** @test */
+    /** @doesNotPerformAssertions @test */
     public function test_tasks_can_be_dispatched_via_fallback_dispatcher()
     {
-        $serverStateFile = Mockery::mock(ServerStateFile::class);
-
-        $serverStateFile->shouldReceive('read')->once()->andReturn([
-            'state' => [
-                'host' => '127.0.0.1',
-                'port' => 8000,
-            ],
-        ]);
-
         $dispatcher = new SwooleHttpTaskDispatcher(
-            $serverStateFile,
+            '127.0.0.1',
+            '8000',
             new SequentialTaskDispatcher,
         );
 
