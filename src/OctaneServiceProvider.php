@@ -6,7 +6,9 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Laravel\Octane\Cache\OctaneStore;
 use Laravel\Octane\Commands\ReloadCommand;
 use Laravel\Octane\Commands\StartCommand;
 use Laravel\Octane\Commands\StartRoadRunnerCommand;
@@ -143,6 +145,10 @@ class OctaneServiceProvider extends PackageServiceProvider
         }
 
         $this->registerHttpTaskHandlingRoutes();
+
+        Cache::extend('octane', fn () => Cache::repository(
+            new OctaneStore(app('octane.cacheTable'))
+        ));
     }
 
     /**
