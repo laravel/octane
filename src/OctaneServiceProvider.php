@@ -155,6 +155,10 @@ class OctaneServiceProvider extends PackageServiceProvider
      */
     protected function registerCacheDriver()
     {
+        if (empty($this->app['config']['octane.cache'])) {
+            return;
+        }
+
         Cache::extend('octane', fn () => Cache::repository(
             new OctaneStore(app('octane.cacheTable'))
         ));
