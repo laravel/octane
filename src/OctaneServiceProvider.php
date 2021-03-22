@@ -144,8 +144,17 @@ class OctaneServiceProvider extends PackageServiceProvider
             }
         }
 
+        $this->registerCacheDriver();
         $this->registerHttpTaskHandlingRoutes();
+    }
 
+    /**
+     * Register the Octane cache driver.
+     *
+     * @return void
+     */
+    protected function registerCacheDriver()
+    {
         Cache::extend('octane', fn () => Cache::repository(
             new OctaneStore(app('octane.cacheTable'))
         ));
