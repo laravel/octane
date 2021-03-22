@@ -2,12 +2,14 @@
 
 namespace Laravel\Octane;
 
+use Illuminate\Cache\ArrayStore;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Event;
 use Laravel\Octane\Cache\OctaneStore;
 use Laravel\Octane\Commands\ReloadCommand;
 use Laravel\Octane\Commands\StartCommand;
@@ -15,6 +17,7 @@ use Laravel\Octane\Commands\StartRoadRunnerCommand;
 use Laravel\Octane\Commands\StartSwooleCommand;
 use Laravel\Octane\Commands\StopCommand;
 use Laravel\Octane\Contracts\DispatchesCoroutines;
+use Laravel\Octane\Events\TickReceived;
 use Laravel\Octane\Facades\Octane as OctaneFacade;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
@@ -159,9 +162,13 @@ class OctaneServiceProvider extends PackageServiceProvider
             return;
         }
 
-        Cache::extend('octane', fn () => Cache::repository(
-            new OctaneStore(app('octane.cacheTable'))
-        ));
+        $store = $this->app->bound('octane.cacheTable')
+                        ? new OctaneStore($this->app['octane.cacheTable'])
+                        : new ArrayStore;
+
+        Event::listen(TickReceived::class, fn () => $store->refreshIntervalCaches());
+
+        Cache::extend('octane', fn () => Cache::repository($store));
     }
 
     /**

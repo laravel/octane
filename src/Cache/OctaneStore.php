@@ -2,14 +2,23 @@
 
 namespace Laravel\Octane\Cache;
 
+use Closure;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Carbon;
 use Swoole\Table;
 
 class OctaneStore implements Store
 {
+    /**
+     * All of the registered interval caches.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $intervals;
+
     public function __construct(protected Table $table)
     {
+        $this->intervals = collect();
     }
 
     /**
@@ -118,6 +127,41 @@ class OctaneStore implements Store
     public function forever($key, $value)
     {
         return $this->put($key, $value, 31536000);
+    }
+
+    /**
+     * Register a cache key that should be refreshed at a given interval (in minutes).
+     *
+     * @param  string  $key
+     * @param  \Closure  $resolver
+     * @param  int  $refreshIntervalSeconds
+     * @return mixed
+     */
+    public function interval($key, Closure $resolver, $refreshIntervalSeconds)
+    {
+        $value = $resolver();
+
+        $this->forever($key, $value);
+
+        $this->intervals[$key] = [
+            'resolver' => $resolver,
+            'lastRefreshedAt' => Carbon::now()->getTimestamp(),
+            'refreshInterval' => $refreshIntervalSeconds,
+        ];
+
+        return $value;
+    }
+
+    /**
+     * Refresh all of the applicable interval caches.
+     *
+     * @return void
+     */
+    public function refreshIntervalCaches()
+    {
+        foreach ($this->intervals as $key => &$interval) {
+            $this->forever($key, call_user_func($interval['resolver']));
+        }
     }
 
     /**
