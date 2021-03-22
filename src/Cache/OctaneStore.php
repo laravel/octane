@@ -134,10 +134,10 @@ class OctaneStore implements Store
      *
      * @param  string  $key
      * @param  \Closure  $resolver
-     * @param  int  $refreshIntervalSeconds
+     * @param  int  $refreshSeconds
      * @return mixed
      */
-    public function interval($key, Closure $resolver, $refreshIntervalSeconds)
+    public function interval($key, Closure $resolver, $refreshSeconds)
     {
         $value = $resolver();
 
@@ -146,7 +146,7 @@ class OctaneStore implements Store
         $this->intervals[$key] = [
             'resolver' => $resolver,
             'lastRefreshedAt' => Carbon::now()->getTimestamp(),
-            'refreshInterval' => $refreshIntervalSeconds,
+            'refreshInterval' => $refreshSeconds,
         ];
 
         return $value;
