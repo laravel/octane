@@ -25,6 +25,7 @@ class OnWorkerStart
             $workerState->client = new SwooleClient
         ))->boot([
             Server::class => $server,
+            'octane.cacheTable' => $workerState->cacheTable,
         ]);
 
         $workerState->worker->onRequestHandled(function ($request, $response, $sandbox) use ($workerState) {

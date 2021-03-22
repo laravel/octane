@@ -133,4 +133,9 @@ return [
 
     'garbage' => 50,
 
+    'cache' => [
+        'rows' => 1000,
+        'bytes' => 10000,
+    ],
+
 ];

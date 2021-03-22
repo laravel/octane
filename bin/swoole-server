@@ -72,8 +72,11 @@ $server->on('managerstart', fn () => $bootstrap() && (new OnManagerStart(
 $workerState = new class {
     public $worker;
     public $client;
+    public $cacheTable;
     public $lastRequestTime;
 };
+
+$workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 
 $server->on('workerstart', fn (Server $server) =>
     (fn ($basePath) => (new OnWorkerStart)($server, $basePath, $workerState))($bootstrap())
