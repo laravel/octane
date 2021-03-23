@@ -76,8 +76,8 @@ trait InteractsWithIO
      * @param  string  $string
      * @param  int|string|null  $verbosity
      * @param  string  $level
-     * @param  string $background
-     * @param  string $foreground
+     * @param  string  $background
+     * @param  string  $foreground
      * @return void
      */
     protected function label($string, $verbosity, $level, $background, $foreground)
