@@ -62,9 +62,9 @@ EOF, $output->fetch());
         ]);
 
         $this->assertEquals(<<<EOF
-  200    GET /welcome ................................................... 10.00 ms
-  404    POST / ....................................................... 1234.00 ms
-  500    POST /foofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofo... 4567854.00 ms
+  200    GET /welcome .................. 10.00 ms
+  404    POST / ...................... 1234.00 ms
+  500    POST /foofoofoofoofoofo... 4567854.00 ms
 
 EOF, $output->fetch());
     }
@@ -79,6 +79,11 @@ EOF, $output->fetch());
                 parent::__construct('foo');
 
                 $this->output = $output;
+            }
+
+            protected function getTerminalWidth()
+            {
+                return 50;
             }
         }];
     }
