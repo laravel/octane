@@ -25,9 +25,9 @@ foreach (array_filter([
     '..',
     'vendor',
     '../vendor',
-    '../../vendor'
+    '../../vendor',
 ]) as $path) {
-    if (is_file($autoload_file = __DIR__ . '/' . $path . '/autoload.php')) {
+    if (is_file($autoload_file = __DIR__.'/'.$path.'/autoload.php')) {
         require $autoload_file;
 
         $loaded = true;
@@ -63,7 +63,7 @@ foreach (array_filter([
     '../..',
     '..',
     '../../octane-app',
-    '../vendor/laravel/laravel'
+    '../vendor/laravel/laravel',
 ]) as $path) {
     if (is_file(__DIR__.'/'.$path.'/bootstrap/app.php')) {
         $basePath = realpath(__DIR__.'/'.$path);
@@ -73,7 +73,7 @@ foreach (array_filter([
 }
 
 if (! is_string($basePath)) {
-    fwrite(STDERR, 'Cannot find application base path.' . PHP_EOL);
+    fwrite(STDERR, 'Cannot find application base path.'.PHP_EOL);
 
     exit(11);
 }
