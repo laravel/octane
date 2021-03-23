@@ -4,9 +4,7 @@ namespace Laravel\Octane\Tests;
 
 use Illuminate\Support\Facades\Http;
 use Laravel\Octane\SequentialTaskDispatcher;
-use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
-use Mockery;
 use Orchestra\Testbench\TestCase;
 
 class SwooleHttpTaskDispatcherTest extends TestCase

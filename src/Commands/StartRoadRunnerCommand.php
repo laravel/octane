@@ -119,8 +119,7 @@ class StartRoadRunnerCommand extends Command
                 './vendor/bin/rr',
                 'get-binary',
             ]), base_path(), null, null, null))->run(
-                fn ($type, $buffer) =>
-                $this->output->write($buffer)
+                fn ($type, $buffer) => $this->output->write($buffer)
             );
 
             $this->line('');
