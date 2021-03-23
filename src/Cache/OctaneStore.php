@@ -7,6 +7,7 @@ use Illuminate\Contracts\Cache\Store;
 use Illuminate\Queue\SerializableClosure;
 use Illuminate\Support\Carbon;
 use Swoole\Table;
+use Throwable;
 
 class OctaneStore implements Store
 {
@@ -176,11 +177,15 @@ class OctaneStore implements Store
                 continue;
             }
 
-            $this->forever($key, $interval['resolver']());
+            try {
+                $this->forever('interval-'.$key, serialize(array_merge(
+                    $interval, ['lastRefreshedAt' => Carbon::now()->getTimestamp()],
+                )));
 
-            $this->forever('interval-'.$key, serialize(array_merge(
-                $interval, ['lastRefreshedAt' => Carbon::now()->getTimestamp()],
-            )));
+                $this->forever($key, $interval['resolver']());
+            } catch (Throwable $e) {
+                report($e);
+            }
         }
     }
 
