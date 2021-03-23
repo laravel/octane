@@ -7,6 +7,7 @@ use Laravel\Octane\Swoole\PerRequestConsoleOutput;
 use Laravel\Octane\Swoole\SwooleClient;
 use Laravel\Octane\Worker;
 use Swoole\Http\Server;
+use Throwable;
 
 class OnWorkerStart
 {
@@ -20,13 +21,19 @@ class OnWorkerStart
      */
     public function __invoke($server, $basePath, $workerState)
     {
-        $workerState->worker = tap(new Worker(
-            new ApplicationFactory($basePath),
-            $workerState->client = new SwooleClient
-        ))->boot([
-            Server::class => $server,
-            'octane.cacheTable' => $workerState->cacheTable,
-        ]);
+        try {
+            $workerState->worker = tap(new Worker(
+                new ApplicationFactory($basePath),
+                $workerState->client = new SwooleClient
+            ))->boot([
+                Server::class => $server,
+                'octane.cacheTable' => $workerState->cacheTable,
+            ]);
+        } catch (Throwable $e) {
+            fwrite(STDERR, (string) $e);
+
+            $server->shutdown();
+        }
 
         $workerState->worker->onRequestHandled(function ($request, $response, $sandbox) use ($workerState) {
             return $sandbox->environment('local')

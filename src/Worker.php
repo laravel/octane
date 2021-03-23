@@ -41,7 +41,7 @@ class Worker implements WorkerContract
      * Boot / initialize the Octane worker.
      *
      * @param  array  $initialInstances
-     * @return void
+     * @return true
      */
     public function boot(array $initialInstances = []): void
     {
