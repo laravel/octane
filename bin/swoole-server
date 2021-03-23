@@ -10,6 +10,7 @@ use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
 use Laravel\Octane\Worker;
 use Swoole\Http\Server;
+use Swoole\Timer;
 
 ini_set('display_errors', 'stderr');
 
@@ -72,6 +73,7 @@ $workerState = new class {
     public $worker;
     public $client;
     public $cacheTable;
+    public $tickTimerId;
     public $lastRequestTime;
 };
 
@@ -84,16 +86,14 @@ $server->on('workerstart', function (Server $server, $workerId) use ($bootstrap,
 
     (new OnWorkerStart)($server, $basePath, $workerState);
 
-    if ($workerId === 0 && ($serverState['octaneConfig']['tick'] ?? true)) {
-        $server->tick(1000, function () use ($server) {
+    if ($workerId === 9 &&
+        ($serverState['octaneConfig']['tick'] ?? true)) {
+        $workerState->tickTimerId = $server->tick(1000, function () use ($server) {
+            fwrite(STDERR, "TICKING...".time()."\n");
             $server->task('octane-tick');
         });
     }
 });
-
-// $server->on('workerstart', fn (Server $server, $workerId) =>
-//     (fn ($basePath) => (new OnWorkerStart)($server, $basePath, $workerState, $serverState['octaneConfig']['tick'] ?? true))($bootstrap($serverState))
-// );
 
 /*
 |--------------------------------------------------------------------------
@@ -151,7 +151,13 @@ $server->on('finish', function (Server $server, int $taskId, $result) {
 |
 */
 
-$server->on('workerstop', fn () => $workerState->worker->terminate());
+$server->on('workerstop', function () use ($workerState) {
+    if ($workerState->tickTimerId) {
+        Timer::clear($workerState->tickTimerId);
+    }
+
+    $workerState->worker->terminate();
+});
 
 $server->on('shutdown', fn () => (new OnServerShutdown(
     new ServerStateFile($serverStateFile)
