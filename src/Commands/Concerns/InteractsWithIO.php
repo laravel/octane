@@ -34,6 +34,7 @@ trait InteractsWithIO
         ['method' => $method, 'statusCode' => $statusCode] = $request;
 
         $dots = str_repeat('.', max($terminalWidth - strlen($method . $url . $duration) - 16, 0));
+
         if (empty($dots) && ! $this->output->isVerbose()) {
             $url = substr($url, 0, $terminalWidth - strlen($method . $duration) - 15 - 3) . '...';
         } else {
