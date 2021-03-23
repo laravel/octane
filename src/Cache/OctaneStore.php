@@ -4,6 +4,7 @@ namespace Laravel\Octane\Cache;
 
 use Closure;
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Queue\SerializableClosure;
 use Illuminate\Support\Carbon;
 use Swoole\Table;
 
@@ -12,13 +13,12 @@ class OctaneStore implements Store
     /**
      * All of the registered interval caches.
      *
-     * @var \Illuminate\Support\Collection
+     * @var array
      */
-    protected $intervals;
+    protected $intervals = [];
 
     public function __construct(protected Table $table)
     {
-        $this->intervals = collect();
     }
 
     /**
@@ -31,11 +31,27 @@ class OctaneStore implements Store
     {
         $record = $this->table[$key] ?? null;
 
-        if (is_null($record) || $record['expiration'] <= Carbon::now()->getTimestamp()) {
-            return null;
+        if (! $this->recordIsNullOrExpired($record)) {
+            return unserialize($record['value']);
         }
 
-        return unserialize($record['value']);
+        if (in_array($key, $this->intervals) &&
+            ! is_null($interval = $this->getInterval($key))) {
+            return $interval['resolver']();
+        }
+    }
+
+    /**
+     * Retrieve an interval item from the cache.
+     *
+     * @param  string  $key
+     * @return array|null
+     */
+    protected function getInterval($key)
+    {
+        $interval = $this->get('interval-'.$key);
+
+        return $interval ? unserialize($interval) : null;
     }
 
     /**
@@ -96,7 +112,7 @@ class OctaneStore implements Store
     {
         $record = $this->table[$key];
 
-        if (is_null($record) || $record['expiration'] <= Carbon::now()->getTimestamp()) {
+        if ($this->recordIsNullOrExpired($record)) {
             return tap($value, fn ($value) => $this->put($key, $value, 31536000));
         }
 
@@ -135,21 +151,17 @@ class OctaneStore implements Store
      * @param  string  $key
      * @param  \Closure  $resolver
      * @param  int  $refreshSeconds
-     * @return mixed
+     * @return void
      */
     public function interval($key, Closure $resolver, $refreshSeconds)
     {
-        $value = $resolver();
-
-        $this->forever($key, $value);
-
-        $this->intervals[$key] = [
-            'resolver' => $resolver,
-            'lastRefreshedAt' => Carbon::now()->getTimestamp(),
+        $this->forever('interval-'.$key, serialize([
+            'resolver' => new SerializableClosure($resolver),
+            'lastRefreshedAt' => null,
             'refreshInterval' => $refreshSeconds,
-        ];
+        ]));
 
-        return $value;
+        $this->intervals[] = $key;
     }
 
     /**
@@ -159,9 +171,29 @@ class OctaneStore implements Store
      */
     public function refreshIntervalCaches()
     {
-        foreach ($this->intervals as $key => &$interval) {
+        foreach ($this->intervals as $key) {
+            if (! $this->intervalShouldBeRefreshed($interval = $this->getInterval($key))) {
+                continue;
+            }
+
             $this->forever($key, call_user_func($interval['resolver']));
+
+            $this->forever('interval-'.$key, serialize(array_merge(
+                $interval, ['lastRefreshedAt' => Carbon::now()->getTimestamp()],
+            )));
         }
+    }
+
+    /**
+     * Determine if the given interval record should be refreshed.
+     *
+     * @param  array  $interval
+     * @return bool
+     */
+    protected function intervalShouldBeRefreshed(array $interval)
+    {
+        return is_null($interval['lastRefreshedAt']) ||
+               (Carbon::now()->getTimestamp() - $interval['lastRefreshedAt']) >= $interval['refreshInterval'];
     }
 
     /**
@@ -187,6 +219,17 @@ class OctaneStore implements Store
         }
 
         return true;
+    }
+
+    /**
+     * Determine if the record is missing or expired.
+     *
+     * @param  array|null  $record
+     * @return bool
+     */
+    protected function recordIsNullOrExpired($record)
+    {
+        return is_null($record) || $record['expiration'] <= Carbon::now()->getTimestamp();
     }
 
     /**
