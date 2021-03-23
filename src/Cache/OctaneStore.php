@@ -176,7 +176,7 @@ class OctaneStore implements Store
                 continue;
             }
 
-            $this->forever($key, call_user_func($interval['resolver']));
+            $this->forever($key, $interval['resolver']());
 
             $this->forever('interval-'.$key, serialize(array_merge(
                 $interval, ['lastRefreshedAt' => Carbon::now()->getTimestamp()],
