@@ -23,5 +23,5 @@ interface ServesStaticFiles
      * @param  \Laravel\Octane\RequestContext  $context
      * @return void
      */
-    public function serveStaticFile(Request $request, RequestContext $context) : void;
+    public function serveStaticFile(Request $request, RequestContext $context): void;
 }

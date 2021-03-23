@@ -60,7 +60,7 @@ class StartRoadRunnerCommand extends Command
         $this->info('Server running…');
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>http://' . $this->option('host').':'.$this->option('port') .' </>',
+            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
             '',
             '  <fg=yellow>Use Ctrl+C to stop the server</>',
             '',
@@ -213,7 +213,7 @@ class StartRoadRunnerCommand extends Command
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => (float) substr($duration, 1, -3)
+                        'duration' => (float) substr($duration, 1, -3),
                     ]);
                 }
             });

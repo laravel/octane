@@ -12,7 +12,7 @@ class Stream
      */
     public static function error($message)
     {
-        fwrite(STDERR, (string) str_replace("\n", ' ', $string) . "\n");
+        fwrite(STDERR, (string) str_replace("\n", ' ', $string)."\n");
     }
 
     /**
@@ -31,6 +31,6 @@ class Stream
             'url' => $url,
             'statusCode' => $statusCode,
             'duration' => $duration,
-        ]). "\n");
+        ])."\n");
     }
 }

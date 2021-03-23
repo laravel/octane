@@ -22,7 +22,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array
     {
         if (! app()->bound(Server::class)) {
-            throw new InvalidArgumentException("Tasks can only be resolved within a Swoole server context / web request.");
+            throw new InvalidArgumentException('Tasks can only be resolved within a Swoole server context / web request.');
         }
 
         $results = app(Server::class)->taskWaitMulti(collect($tasks)->mapWithKeys(function ($task, $key) {
@@ -55,7 +55,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
     public function dispatch(array $tasks)
     {
         if (! app()->bound(Server::class)) {
-            throw new InvalidArgumentException("Tasks can only be dispatched within a Swoole server context / web request.");
+            throw new InvalidArgumentException('Tasks can only be dispatched within a Swoole server context / web request.');
         }
 
         $server = app(Server::class);

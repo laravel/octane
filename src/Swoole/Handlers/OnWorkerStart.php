@@ -3,10 +3,9 @@
 namespace Laravel\Octane\Swoole\Handlers;
 
 use Laravel\Octane\ApplicationFactory;
-use Laravel\Octane\Swoole\PerRequestConsoleOutput;
+use Laravel\Octane\Stream;
 use Laravel\Octane\Swoole\SwooleClient;
 use Laravel\Octane\Worker;
-use Laravel\Octane\Stream;
 use Swoole\Http\Server;
 
 class OnWorkerStart
