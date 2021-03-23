@@ -11,7 +11,6 @@ class OnServerStart
         protected ServerStateFile $serverStateFile,
         protected SwooleExtension $extension,
         protected string $appName,
-        protected bool $shouldTick = true,
         protected bool $shouldSetProcessName = true
     ) {
     }
