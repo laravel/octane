@@ -70,6 +70,7 @@ $server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerS
 */
 
 $workerState = new class {
+    public $workerId;
     public $worker;
     public $client;
     public $cacheTable;
@@ -82,14 +83,9 @@ $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 $server->on('workerstart', function (Server $server, $workerId) use ($bootstrap, $serverState, $workerState) {
     $basePath = $bootstrap($serverState);
 
-    (new OnWorkerStart)($server, $basePath, $workerState);
+    $workerState->workerId = $workerId;
 
-    if ($workerId === 9 &&
-        ($serverState['octaneConfig']['tick'] ?? true)) {
-        $workerState->tickTimerId = $server->tick(1000, function () use ($server) {
-            $server->task('octane-tick');
-        });
-    }
+    (new OnWorkerStart)($server, $basePath, $serverState, $workerState);
 });
 
 /*
@@ -127,7 +123,7 @@ $server->on('request', function ($request, $response) use ($workerState, $server
 
 $server->on('task', function (Server $server, int $taskId, int $fromWorkerId, $data) use ($workerState) {
     if ($data === 'octane-tick') {
-            return $workerState->worker->handleTick();
+        return $workerState->worker->handleTick();
     }
 
     return $workerState->worker->handleTask($data);

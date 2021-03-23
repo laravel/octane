@@ -16,10 +16,11 @@ class OnWorkerStart
      *
      * @param  \Swoole\Http\Server  $server
      * @param  callable  $bootstrap
+     * @param  array  $serverState
      * @param  stdClass  $workerState
      * @return void
      */
-    public function __invoke($server, $basePath, $workerState)
+    public function __invoke($server, $basePath, array $serverState, $workerState)
     {
         try {
             $workerState->worker = tap(new Worker(
@@ -33,6 +34,13 @@ class OnWorkerStart
             fwrite(STDERR, (string) $e);
 
             $server->shutdown();
+        }
+
+        if ($workerState->workerId === 9 &&
+            ($serverState['octaneConfig']['tick'] ?? true)) {
+            $workerState->tickTimerId = $server->tick(1000, function () use ($server) {
+                $server->task('octane-tick');
+            });
         }
 
         $workerState->worker->onRequestHandled(function ($request, $response, $sandbox) use ($workerState) {
