@@ -17,7 +17,7 @@ ini_set('display_errors', 'stderr');
 $loaded = false;
 
 // TODO: Remove octane-app test directory...
-foreach (['../../..', '../..', '../../octane-app/vendor', '..', 'vendor', '../vendor', '../../vendor'] as $path) {
+foreach (array_filter([$serverState['octaneConfig']['vendor_path'] ?? null, '../../..', '../..', '../../octane-app/vendor', '..', 'vendor', '../vendor', '../../vendor']) as $path) {
     if (is_file($autoload_file = __DIR__ . '/' . $path . '/autoload.php')) {
         require $autoload_file;
 
@@ -47,7 +47,7 @@ if ($loaded !== true) {
 $basePath = null;
 
 // TODO: Remove octane-app test directory...
-foreach (['../../../..', '../../..', '../..', '..', '../../octane-app', '../vendor/laravel/laravel'] as $path) {
+foreach (array_filter([$serverState['octaneConfig']['base_path'] ?? null, '../../../..', '../../..', '../..', '..', '../../octane-app', '../vendor/laravel/laravel']) as $path) {
     if (is_file(__DIR__.'/'.$path.'/bootstrap/app.php')) {
         $basePath = realpath(__DIR__.'/'.$path);
 

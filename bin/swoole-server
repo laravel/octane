@@ -13,7 +13,7 @@ use Swoole\Http\Server;
 
 ini_set('display_errors', 'stderr');
 
-$bootstrap = fn () => require __DIR__.'/bootstrap.php';
+$bootstrap = fn ($serverState) => require __DIR__.'/bootstrap.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -43,14 +43,14 @@ $server = require __DIR__.'/createSwooleServer.php';
 |
 */
 
-$server->on('start', fn (Server $server) => $bootstrap() && (new OnServerStart(
+$server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnServerStart(
     new ServerStateFile($serverStateFile),
     new SwooleExtension,
     $serverState['appName'],
     $serverState['octaneConfig']['tick'] ?? true,
 ))($server));
 
-$server->on('managerstart', fn () => $bootstrap() && (new OnManagerStart(
+$server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerStart(
     new SwooleExtension, $serverState['appName']
 ))());
 
@@ -79,7 +79,7 @@ $workerState = new class {
 $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 
 $server->on('workerstart', fn (Server $server) =>
-    (fn ($basePath) => (new OnWorkerStart)($server, $basePath, $workerState))($bootstrap())
+    (fn ($basePath) => (new OnWorkerStart)($server, $basePath, $workerState))($bootstrap($serverState))
 );
 
 /*
