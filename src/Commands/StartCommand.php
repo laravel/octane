@@ -2,8 +2,6 @@
 
 namespace Laravel\Octane\Commands;
 
-use Illuminate\Console\Command;
-
 class StartCommand extends Command
 {
     /**

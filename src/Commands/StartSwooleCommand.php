@@ -2,7 +2,7 @@
 
 namespace Laravel\Octane\Commands;
 
-use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Laravel\Octane\Swoole\ServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
@@ -60,7 +60,14 @@ class StartSwooleCommand extends Command
 
         $this->writeServerStateFile($serverStateFile, $extension);
 
-        $this->line('<info>Starting Octane server:</info> '.$this->option('host').':'.$this->option('port'));
+        $this->info('Server running…');
+        $this->output->writeln([
+            '',
+            '  Local: <fg=white;options=bold>http://' . $this->option('host').':'.$this->option('port') .' </>',
+            '',
+            '  <fg=yellow>Use Ctrl+C to stop the server</>',
+            '',
+        ]);
 
         $serverProcess = tap(new Process([
             (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
@@ -69,12 +76,11 @@ class StartSwooleCommand extends Command
         $watcherProcess = $this->startWatcherProcess();
 
         while ($serverProcess->isRunning()) {
-            fwrite(STDOUT, $serverProcess->getIncrementalOutput());
-            fwrite(STDERR, $serverProcess->getIncrementalErrorOutput());
+            $this->writeServerProcessOutput($serverProcess);
 
             if ($watcherProcess->isRunning() &&
                 $watcherProcess->getIncrementalOutput()) {
-                fwrite(STDERR, "Application change detected. Restarting workers...\n");
+                $this->info('Application change detected. Restarting workers…');
 
                 $processInspector->reloadServer();
             }
@@ -82,8 +88,7 @@ class StartSwooleCommand extends Command
             usleep(500 * 1000);
         }
 
-        fwrite(STDOUT, $serverProcess->getIncrementalOutput());
-        fwrite(STDERR, $serverProcess->getIncrementalErrorOutput());
+        $this->writeServerProcessOutput($serverProcess);
 
         $watcherProcess->stop();
 
@@ -182,5 +187,22 @@ class StartSwooleCommand extends Command
         return $this->option('task-workers') === 'auto'
                     ? $extension->cpuCount()
                     : $this->option('task-workers', 1);
+    }
+
+    /**
+     * Writes the server process output.
+     *
+     * @param  \Symfony\Component\Process\Process $serverProcess
+     * @return void
+     */
+    protected function writeServerProcessOutput($serverProcess)
+    {
+        Str::of($serverProcess->getIncrementalOutput())
+            ->explode("\n")
+            ->each(fn ($output) => empty($request = json_decode($output, true))
+                ? $this->info($output)
+                : $this->request($request));
+
+        $this->error($serverProcess->getIncrementalErrorOutput());
     }
 }

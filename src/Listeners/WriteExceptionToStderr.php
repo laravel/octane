@@ -2,6 +2,8 @@
 
 namespace Laravel\Octane\Listeners;
 
+use Laravel\Octane\Stream;
+
 class WriteExceptionToStderr
 {
     /**
@@ -13,7 +15,7 @@ class WriteExceptionToStderr
     public function handle($event)
     {
         if ($event->exception) {
-            fwrite(STDERR, (string) $event->exception);
+            Stream::error($event->exception);
         }
     }
 }

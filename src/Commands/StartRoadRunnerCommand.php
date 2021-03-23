@@ -2,7 +2,7 @@
 
 namespace Laravel\Octane\Commands;
 
-use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Symfony\Component\Process\ExecutableFinder;
@@ -57,7 +57,14 @@ class StartRoadRunnerCommand extends Command
 
         $this->writeServerStateFile($serverStateFile);
 
-        $this->line('<info>Starting Octane server:</info> '.$this->option('host').':'.$this->option('port'));
+        $this->info('Server running…');
+        $this->output->writeln([
+            '',
+            '  Local: <fg=white;options=bold>http://' . $this->option('host').':'.$this->option('port') .' </>',
+            '',
+            '  <fg=yellow>Use Ctrl+C to stop the server</>',
+            '',
+        ]);
 
         $serverProcess = tap(new Process(array_filter([
             $roadRunnerBinary,
@@ -67,6 +74,7 @@ class StartRoadRunnerCommand extends Command
             '-o', 'http.workers.pool.maxJobs='.$this->option('max-requests'),
             'serve',
             app()->environment('local') ? '-d' : null,
+            '-l', 'json',
         ]), base_path(), null, null, null))->start();
 
         $watcherProcess = $this->startWatcherProcess();
@@ -78,12 +86,11 @@ class StartRoadRunnerCommand extends Command
         $serverStateFile->writeProcessId($serverProcess->getPid());
 
         while ($serverProcess->isRunning()) {
-            fwrite(STDOUT, $serverProcess->getIncrementalOutput());
-            fwrite(STDERR, $serverProcess->getIncrementalErrorOutput());
+            $this->writeServerProcessOutput($serverProcess);
 
             if ($watcherProcess->isRunning() &&
                 $watcherProcess->getIncrementalOutput()) {
-                fwrite(STDERR, "Application change detected. Restarting workers...\n");
+                $this->info('Application change detected. Restarting workers…');
 
                 $processInspector->reloadServer(base_path());
             }
@@ -91,8 +98,7 @@ class StartRoadRunnerCommand extends Command
             usleep(500 * 1000);
         }
 
-        fwrite(STDOUT, $serverProcess->getIncrementalOutput());
-        fwrite(STDERR, $serverProcess->getIncrementalErrorOutput());
+        $this->writeServerProcessOutput($serverProcess);
 
         $watcherProcess->stop();
 
@@ -119,8 +125,7 @@ class StartRoadRunnerCommand extends Command
                 './vendor/bin/rr',
                 'get-binary',
             ]), base_path(), null, null, null))->run(
-                fn ($type, $buffer) =>
-                $this->output->write($buffer)
+                fn ($type, $buffer) => $this->output->write($buffer)
             );
 
             $this->line('');
@@ -179,5 +184,38 @@ class StartRoadRunnerCommand extends Command
         return $this->option('workers') === 'auto'
                             ? 1
                             : $this->option('workers', 1);
+    }
+
+    /**
+     * Writes the server process output.
+     *
+     * @param  \Symfony\Component\Process\Process $serverProcess
+     * @return void
+     */
+    protected function writeServerProcessOutput($serverProcess)
+    {
+        Str::of($serverProcess->getIncrementalOutput())
+            ->explode("\n")
+            ->each(fn ($output) => $this->info($output));
+
+        Str::of($serverProcess->getIncrementalErrorOutput())
+            ->explode("\n")
+            ->each(function ($output) {
+                if (empty($debug = json_decode($output, true))) {
+                    return $this->error($output);
+                }
+
+                if ($debug['level'] == 'info'
+                    && Str::contains($debug['msg'], [$this->option('host').':'.$this->option('port')])) {
+                    [$_, $duration, $statusCode, $method, $url] = explode(' ', $debug['msg']);
+
+                    return $this->request([
+                        'method' => $method,
+                        'url' => $url,
+                        'statusCode' => $statusCode,
+                        'duration' => (float) substr($duration, 1, -3)
+                    ]);
+                }
+            });
     }
 }

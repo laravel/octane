@@ -6,6 +6,7 @@ use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Swoole\PerRequestConsoleOutput;
 use Laravel\Octane\Swoole\SwooleClient;
 use Laravel\Octane\Worker;
+use Laravel\Octane\Stream;
 use Swoole\Http\Server;
 
 class OnWorkerStart
@@ -28,9 +29,14 @@ class OnWorkerStart
         ]);
 
         $workerState->worker->onRequestHandled(function ($request, $response, $sandbox) use ($workerState) {
-            return $sandbox->environment('local')
-                        ? PerRequestConsoleOutput::write(STDERR, $request, $response, $workerState->lastRequestTime, $sandbox)
-                        : null;
+            if ($sandbox->environment('local')) {
+                Stream::request(
+                    $request->getMethod(),
+                    $request->fullUrl(),
+                    $response->getStatusCode(),
+                    (microtime(true) - $workerState->lastRequestTime) * 1000,
+                );
+            }
         });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Commands;
 
-use Illuminate\Console\Command;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
