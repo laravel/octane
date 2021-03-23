@@ -24,12 +24,6 @@ class OnServerStart
      */
     public function __invoke($server)
     {
-        if ($this->shouldTick) {
-            $server->tick(1000, function () use ($server) {
-                $server->task('octane-tick');
-            });
-        }
-
         $this->serverStateFile->writeProcessIds(
             $server->master_pid,
             $server->manager_pid
