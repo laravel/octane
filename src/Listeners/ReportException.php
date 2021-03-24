@@ -2,9 +2,10 @@
 
 namespace Laravel\Octane\Listeners;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Laravel\Octane\Stream;
 
-class WriteExceptionToStderr
+class ReportException
 {
     /**
      * Handle the event.
@@ -15,6 +16,8 @@ class WriteExceptionToStderr
     public function handle($event)
     {
         if ($event->exception) {
+            $event->sandbox[ExceptionHandler::class]->report($event->exception);
+
             Stream::error($event->exception);
         }
     }

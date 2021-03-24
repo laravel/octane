@@ -3,6 +3,7 @@
 namespace Laravel\Octane;
 
 use Closure;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;

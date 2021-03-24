@@ -13,8 +13,8 @@ use Laravel\Octane\Listeners\CollectGarbage;
 use Laravel\Octane\Listeners\DisconnectFromDatabases;
 use Laravel\Octane\Listeners\EnsureUploadedFilesAreValid;
 use Laravel\Octane\Listeners\FlushTemporaryContainerInstances;
+use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
-use Laravel\Octane\Listeners\WriteExceptionToStderr;
 use Laravel\Octane\Octane;
 
 return [
@@ -92,7 +92,7 @@ return [
         ],
 
         WorkerErrorOccurred::class => [
-            WriteExceptionToStderr::class,
+            ReportException::class,
             StopWorkerIfNecessary::class,
         ],
 
