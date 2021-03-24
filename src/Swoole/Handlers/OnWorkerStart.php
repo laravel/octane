@@ -31,8 +31,8 @@ class OnWorkerStart
 
         $this->workerState->worker = $this->bootWorker($server);
 
-        $this->registerServerTick($server);
-        $this->registerRequestOutputHandler($server);
+        $this->dispatchServerTaskEverySecond($server);
+        $this->streamRequestsToConsole($server);
     }
 
     /**
@@ -59,12 +59,12 @@ class OnWorkerStart
     }
 
     /**
-     * Start the Octane server tick.
+     * Start the Octane server tick to dispatch the tick task every second.
      *
      * @param  \Swoole\Http\Server  $server
      * @return void
      */
-    protected function registerServerTick($server)
+    protected function dispatchServerTaskEverySecond($server)
     {
         if ($this->workerState->workerId === 0 &&
             ($this->serverState['octaneConfig']['tick'] ?? true)) {
@@ -80,7 +80,7 @@ class OnWorkerStart
      * @param  \Swoole\Http\Server  $server
      * @return void
      */
-    protected function registerRequestOutputHandler($server)
+    protected function streamRequestsToConsole($server)
     {
         $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox) {
             if (! $sandbox->environment('local')) {
