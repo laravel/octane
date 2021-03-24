@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Commands;
 
+use Exception;
 use Illuminate\Support\Str;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
@@ -47,6 +48,8 @@ class StartRoadRunnerCommand extends Command
         ServerProcessInspector $processInspector,
         ServerStateFile $serverStateFile
     ) {
+        $this->ensureRoadRunnerPackageIsInstalled();
+
         $roadRunnerBinary = $this->ensureRoadRunnerBinaryIsInstalled();
 
         if ($processInspector->serverIsRunning()) {
@@ -96,6 +99,60 @@ class StartRoadRunnerCommand extends Command
         $watcherProcess->stop();
 
         return $serverProcess->getExitCode();
+    }
+
+    /**
+     * Ensure the RoadRunner package is installed into the project.
+     *
+     * @return void
+     */
+    protected function ensureRoadRunnerPackageIsInstalled()
+    {
+        if (class_exists('Spiral\RoadRunner\Worker') && class_exists('Spiral\RoadRunner\PSR7Client')) {
+            return;
+        }
+
+        if (! $this->confirm('Running Octane requires "spiral/roadrunner:^1.9". Do you wish to install it as a dependency?')) {
+            throw new Exception('Octane requires "spiral/roadrunner".');
+        }
+
+        $command = $this->findComposer().' require spiral/roadrunner:^1.9 --with-all-dependencies';
+
+        $process = Process::fromShellCommandline($command, null, null, null, null);
+
+        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
+            try {
+                $process->setTty(true);
+            } catch (RuntimeException $e) {
+                $this->output->writeln('Warning: '.$e->getMessage());
+            }
+        }
+
+        try {
+            $process->run(function ($type, $line) {
+                $this->output->write($line);
+            });
+        } catch (ProcessSignaledException $e) {
+            if (extension_loaded('pcntl') && $e->getSignal() !== SIGINT) {
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        $composerPath = getcwd().'/composer.phar';
+
+        if (file_exists($composerPath)) {
+            return '"'.PHP_BINARY.'" '.$composerPath;
+        }
+
+        return 'composer';
     }
 
     /**
