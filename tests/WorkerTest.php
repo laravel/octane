@@ -37,4 +37,15 @@ class WorkerTest extends TestCase
         $this->assertEquals('foo', $responses[0]);
         $this->assertEquals('bar', $responses[1]);
     }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_worker_can_dispatch_ticks_to_application_and_returns_responses_to_client()
+    {
+        [$app, $worker, $client] = $this->createOctaneContext([
+            null,
+            null,
+        ]);
+
+        $worker->runTicks();
+    }
 }

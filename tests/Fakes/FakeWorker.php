@@ -22,4 +22,9 @@ class FakeWorker extends Worker
     {
         return collect($this->client->requests)->map(fn ($data) => $this->handleTask($data))->all();
     }
+
+    public function runTicks()
+    {
+        return collect($this->client->requests)->map(fn () => $this->handleTick())->all();
+    }
 }
