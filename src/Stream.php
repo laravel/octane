@@ -9,7 +9,7 @@ class Stream
     /**
      * Stream the given error message to stderr.
      *
-     * @param  \Stringable  $error
+     * @param  \Stringable  $message
      * @return void
      */
     public static function error(Stringable $message)
