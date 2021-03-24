@@ -16,9 +16,9 @@ class ReportException
     public function handle($event)
     {
         if ($event->exception) {
-            $event->sandbox[ExceptionHandler::class]->report($event->exception);
-
             Stream::error($event->exception);
+
+            $event->sandbox[ExceptionHandler::class]->report($event->exception);
         }
     }
 }
