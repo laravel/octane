@@ -5,6 +5,7 @@ namespace Laravel\Octane\Swoole\Handlers;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Swoole\PerRequestConsoleOutput;
 use Laravel\Octane\Swoole\SwooleClient;
+use Laravel\Octane\Swoole\WorkerState;
 use Laravel\Octane\Worker;
 use Swoole\Http\Server;
 use Throwable;
@@ -13,7 +14,7 @@ class OnWorkerStart
 {
     public function __construct(protected $basePath,
                                 protected array $serverState,
-                                protected $workerState)
+                                protected WorkerState $workerState)
     {
     }
 

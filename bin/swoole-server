@@ -8,6 +8,7 @@ use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Laravel\Octane\Swoole\WorkerState;
 use Laravel\Octane\Worker;
 use Swoole\Http\Server;
 use Swoole\Timer;
@@ -69,14 +70,9 @@ $server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerS
 |
 */
 
-$workerState = new class {
-    public $workerId;
-    public $worker;
-    public $client;
-    public $cacheTable;
-    public $tickTimerId;
-    public $lastRequestTime;
-};
+require_once __DIR__.'/WorkerState.php';
+
+$workerState = new WorkerState;
 
 $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 
@@ -119,17 +115,13 @@ $server->on('request', function ($request, $response) use ($workerState, $server
 |
 */
 
-$server->on('task', function (Server $server, int $taskId, int $fromWorkerId, $data) use ($workerState) {
-    if ($data === 'octane-tick') {
-        return $workerState->worker->handleTick();
-    }
+$server->on('task', fn (Server $server, int $taskId, int $fromWorkerId, $data) =>
+    $data === 'octane-tick'
+            ? $workerState->worker->handleTick()
+            : $workerState->worker->handleTask($data)
+);
 
-    return $workerState->worker->handleTask($data);
-});
-
-$server->on('finish', function (Server $server, int $taskId, $result) {
-    return $result;
-});
+$server->on('finish', fn (Server $server, int $taskId, $result) => $result);
 
 /*
 |--------------------------------------------------------------------------
