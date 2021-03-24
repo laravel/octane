@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Queue\SerializableClosure;
 use Illuminate\Support\Carbon;
-use Swoole\Table;
 use Throwable;
 
 class OctaneStore implements Store
@@ -18,7 +17,7 @@ class OctaneStore implements Store
      */
     protected $intervals = [];
 
-    public function __construct(protected Table $table)
+    public function __construct(protected $table)
     {
     }
 
