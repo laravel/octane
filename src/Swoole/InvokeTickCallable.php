@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Octane;
+namespace Laravel\Octane\Swoole;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Carbon;

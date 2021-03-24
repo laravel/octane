@@ -27,7 +27,7 @@ class Octane
     {
         app(Dispatcher::class)->listen(
             TickReceived::class,
-            new InvokeTickCallable(
+            new Swoole\InvokeTickCallable(
                 $key,
                 $callback,
                 $seconds,
