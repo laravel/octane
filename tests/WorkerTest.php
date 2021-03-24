@@ -23,4 +23,18 @@ class WorkerTest extends TestCase
         $this->assertEquals('First Response', $client->responses[0]->getContent());
         $this->assertEquals('Second Response', $client->responses[1]->getContent());
     }
+
+    /** @test */
+    public function test_worker_can_dispatch_task_to_application_and_returns_responses_to_client()
+    {
+        [$app, $worker, $client] = $this->createOctaneContext([
+            fn () => 'foo',
+            fn () => 'bar',
+        ]);
+
+        $responses = $worker->runTasks();
+
+        $this->assertEquals('foo', $responses[0]);
+        $this->assertEquals('bar', $responses[1]);
+    }
 }

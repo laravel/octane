@@ -17,4 +17,9 @@ class FakeWorker extends Worker
             $this->handle($request, $context);
         }
     }
+
+    public function runTasks()
+    {
+        return collect($this->client->requests)->map(fn ($data) => $this->handleTask($data))->all();
+    }
 }
