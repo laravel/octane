@@ -11,41 +11,84 @@ use Throwable;
 
 class OnWorkerStart
 {
+    public function __construct(protected $basePath,
+                                protected array $serverState,
+                                protected $workerState)
+    {
+    }
+
     /**
      * Handle the "workerstart" Swoole event.
      *
      * @param  \Swoole\Http\Server  $server
-     * @param  callable  $bootstrap
-     * @param  array  $serverState
-     * @param  stdClass  $workerState
+     * @param  int  $workerId
      * @return void
      */
-    public function __invoke($server, $basePath, array $serverState, $workerState)
+    public function __invoke($server, int $workerId)
+    {
+        $this->workerState->workerId = $workerId;
+        $this->workerState->worker = $this->bootWorker($server);
+
+        $this->registerServerTick($server);
+        $this->registerRequestOutputHandler($server);
+    }
+
+    /**
+     * Boot the Octane worker and application.
+     *
+     * @param  \Swoole\Http\Server  $server
+     * @return \Laravel\Octane\Worker
+     */
+    protected function bootWorker($server)
     {
         try {
-            $workerState->worker = tap(new Worker(
-                new ApplicationFactory($basePath),
-                $workerState->client = new SwooleClient
+            return tap(new Worker(
+                new ApplicationFactory($this->basePath),
+                $this->workerState->client = new SwooleClient
             ))->boot([
                 Server::class => $server,
-                'octane.cacheTable' => $workerState->cacheTable,
+                'octane.cacheTable' => $this->workerState->cacheTable,
             ]);
         } catch (Throwable $e) {
             fwrite(STDERR, (string) $e);
 
             $server->shutdown();
         }
+    }
 
-        if ($workerState->workerId === 9 &&
-            ($serverState['octaneConfig']['tick'] ?? true)) {
-            $workerState->tickTimerId = $server->tick(1000, function () use ($server) {
+    /**
+     * Start the Octane server tick.
+     *
+     * @param  \Swoole\Http\Server  $server
+     * @return void
+     */
+    protected function registerServerTick($server)
+    {
+        if ($this->workerState->workerId === 0 &&
+            ($this->serverState['octaneConfig']['tick'] ?? true)) {
+            $this->workerState->tickTimerId = $server->tick(1000, function () use ($server) {
                 $server->task('octane-tick');
             });
         }
+    }
 
-        $workerState->worker->onRequestHandled(function ($request, $response, $sandbox) use ($workerState) {
+    /**
+     * Register the request handled listener that will output request information per request.
+     *
+     * @param  \Swoole\Http\Server  $server
+     * @return void
+     */
+    protected function registerRequestOutputHandler($server)
+    {
+        $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox) {
             return $sandbox->environment('local')
-                        ? PerRequestConsoleOutput::write(STDERR, $request, $response, $workerState->lastRequestTime, $sandbox)
+                        ? PerRequestConsoleOutput::write(
+                            STDERR,
+                            $request,
+                            $response,
+                            $this->workerState->lastRequestTime,
+                            $sandbox
+                        )
                         : null;
         });
     }

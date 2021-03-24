@@ -80,13 +80,11 @@ $workerState = new class {
 
 $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 
-$server->on('workerstart', function (Server $server, $workerId) use ($bootstrap, $serverState, $workerState) {
-    $workerState->workerId = $workerId;
-
-    $basePath = $bootstrap($serverState);
-
-    (new OnWorkerStart)($server, $basePath, $serverState, $workerState);
-});
+$server->on('workerstart', fn (Server $server, $workerId) =>
+    (fn ($basePath) => (new OnWorkerStart(
+        $basePath, $serverState, $workerState
+    ))($server, $workerId))($bootstrap($serverState))
+);
 
 /*
 |--------------------------------------------------------------------------
