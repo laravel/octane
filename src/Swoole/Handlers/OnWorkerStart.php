@@ -83,14 +83,16 @@ class OnWorkerStart
     protected function registerRequestOutputHandler($server)
     {
         $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox) {
-            if ($sandbox->environment('local')) {
-                Stream::request(
-                    $request->getMethod(),
-                    $request->fullUrl(),
-                    $response->getStatusCode(),
-                    (microtime(true) - $this->workerState->lastRequestTime) * 1000,
-                );
+            if (! $sandbox->environment('local')) {
+                return;
             }
+
+            Stream::request(
+                $request->getMethod(),
+                $request->fullUrl(),
+                $response->getStatusCode(),
+                (microtime(true) - $this->workerState->lastRequestTime) * 1000,
+            );
         });
     }
 }
