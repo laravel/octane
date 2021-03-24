@@ -17,10 +17,10 @@ trait ProvidesConcurrencySupport
      *
      * @return \Laravel\Contracts\Octane\DispatchesCoroutines
      */
-    public function coroutines()
-    {
-        return app(DispatchesCoroutines::class);
-    }
+    // public function coroutines()
+    // {
+    //     return app(DispatchesCoroutines::class);
+    // }
 
     /**
      * Get the task dispatcher.
