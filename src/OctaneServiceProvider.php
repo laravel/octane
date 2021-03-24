@@ -91,12 +91,11 @@ class OctaneServiceProvider extends PackageServiceProvider
             ));
         });
 
-        $this->app->bind(
-            DispatchesCoroutines::class,
-            class_exists('Swoole\Http\Server')
-                        ? SwooleCoroutineDispatcher::class
-                        : SequentialCoroutineDispatcher::class
-        );
+        $this->app->bind(DispatchesCoroutines::class, function ($app) {
+            return class_exists('Swoole\Http\Server')
+                        ? new SwooleCoroutineDispatcher($app->bound('Swoole\Http\Server'))
+                        : $app->make(SequentialCoroutineDispatcher::class);
+        });
     }
 
     /**
