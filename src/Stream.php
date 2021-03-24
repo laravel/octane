@@ -2,15 +2,17 @@
 
 namespace Laravel\Octane;
 
+use Stringable;
+
 class Stream
 {
     /**
      * Stream the given error message to stderr.
      *
-     * @param  string  $error
+     * @param  \Stringable  $error
      * @return void
      */
-    public static function error($message)
+    public static function error(Stringable $message)
     {
         fwrite(STDERR, (string) str_replace("\n", ' ', $message)."\n");
     }
