@@ -13,14 +13,18 @@ use Swoole\Http\Server;
 trait ProvidesConcurrencySupport
 {
     /**
-     * Get the coroutine dispatcher.
+     * Concurrently resolve the given callbacks via background tasks, returning the results.
      *
-     * @return \Laravel\Contracts\Octane\DispatchesCoroutines
+     * Results will be keyed by their given keys - if a task did not finish, the tasks value will be "false".
+     *
+     * @param  array  $tasks
+     * @param  int  $waitMilliseconds
+     * @return array
      */
-    // public function coroutines()
-    // {
-    //     return app(DispatchesCoroutines::class);
-    // }
+    public function concurrently(array $tasks, int $waitMilliseconds = 3000)
+    {
+        return $this->tasks()->resolve($tasks, $waitMilliseconds);
+    }
 
     /**
      * Get the task dispatcher.
