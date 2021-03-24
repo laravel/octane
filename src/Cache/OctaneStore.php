@@ -152,10 +152,10 @@ class OctaneStore implements Store
      *
      * @param  string  $key
      * @param  \Closure  $resolver
-     * @param  int  $refreshSeconds
+     * @param  int  $seconds
      * @return void
      */
-    public function interval($key, Closure $resolver, $refreshSeconds)
+    public function interval($key, Closure $resolver, $seconds)
     {
         if (! is_null($this->getInterval($key))) {
             $this->intervals[] = $key;
@@ -166,7 +166,7 @@ class OctaneStore implements Store
         $this->forever('interval-'.$key, serialize([
             'resolver' => new SerializableClosure($resolver),
             'lastRefreshedAt' => null,
-            'refreshInterval' => $refreshSeconds,
+            'refreshInterval' => $seconds,
         ]));
 
         $this->intervals[] = $key;
