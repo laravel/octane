@@ -40,21 +40,21 @@ EOF, $output->fetch());
     {
         [$output, $command] = $this->command();
 
-        $command->request([
+        $command->requestInfo([
             'method' => 'GET',
             'url' => 'http://127.0.0.1/welcome',
             'statusCode' => '200',
             'duration' => 10,
         ]);
 
-        $command->request([
+        $command->requestInfo([
             'method' => 'POST',
             'url' => 'http://127.0.0.1:8080',
             'statusCode' => '404',
             'duration' => 1234,
         ]);
 
-        $command->request([
+        $command->requestInfo([
             'method' => 'POST',
             'url' => 'http://127.0.0.1:8080/'.str_repeat('foo', 100),
             'statusCode' => 500,
