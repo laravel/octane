@@ -7,7 +7,7 @@ class Stream
     /**
      * Stream the given error message to stderr.
      *
-     * @param  string $error
+     * @param  string  $error
      * @return void
      */
     public static function error($message)
@@ -24,7 +24,7 @@ class Stream
      * @param  float  $duration
      * @return void
      */
-    public static function request($method, $url, $statusCode, $duration)
+    public static function request(string $method, string $url, int $statusCode, float $duration)
     {
         fwrite(STDOUT, json_encode([
             'method' => $method,
