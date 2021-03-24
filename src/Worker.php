@@ -224,7 +224,7 @@ class Worker implements WorkerContract
     public function application(): Application
     {
         if (! $this->app) {
-            throw new RuntimeException("Worker has not booted. Unable to access application.");
+            throw new RuntimeException('Worker has not booted. Unable to access application.');
         }
 
         return $this->app;
