@@ -31,7 +31,7 @@ class OnWorkerStart
 
         $this->workerState->worker = $this->bootWorker($server);
 
-        $this->dispatchServerTaskEverySecond($server);
+        $this->dispatchServerTickTaskEverySecond($server);
         $this->streamRequestsToConsole($server);
     }
 
@@ -64,7 +64,7 @@ class OnWorkerStart
      * @param  \Swoole\Http\Server  $server
      * @return void
      */
-    protected function dispatchServerTaskEverySecond($server)
+    protected function dispatchServerTickTaskEverySecond($server)
     {
         if ($this->workerState->workerId === 0 &&
             ($this->serverState['octaneConfig']['tick'] ?? true)) {
