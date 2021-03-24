@@ -188,7 +188,7 @@ class StartRoadRunnerCommand extends Command
         Str::of($serverProcess->getIncrementalErrorOutput())
             ->explode("\n")
             ->each(function ($output) {
-                if (empty($debug = json_decode($output, true))) {
+                if (! is_array($debug = json_decode($output, true))) {
                     return $this->error($output);
                 }
 

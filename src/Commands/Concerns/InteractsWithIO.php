@@ -2,6 +2,10 @@
 
 namespace Laravel\Octane\Commands\Concerns;
 
+use Laravel\Octane\Exceptions\WorkerException;
+use Laravel\Octane\WorkerExceptionInspector;
+use NunoMaduro\Collision\Writer;
+
 trait InteractsWithIO
 {
     use InteractsWithTerminal;
@@ -90,5 +94,28 @@ trait InteractsWithIO
            $dots,
            $duration,
         ), $this->parseVerbosity($verbosity));
+    }
+
+    /**
+     * Write information about a throwable to the console.
+     *
+     * @param  array  $throwable
+     * @param  int|string|null  $verbosity
+     * @return void
+     */
+    public function throwableInfo($throwable, $verbosity = null)
+    {
+        (new Writer(null, $this->output))->write(
+            new WorkerExceptionInspector(
+                new WorkerException(
+                    $throwable['message'],
+                    $throwable['code'],
+                    $throwable['file'],
+                    $throwable['line'],
+                ),
+                $throwable['class'],
+                $throwable['trace'],
+            ),
+        );
     }
 }

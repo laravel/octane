@@ -211,10 +211,14 @@ class StartSwooleCommand extends Command
     {
         Str::of($serverProcess->getIncrementalOutput())
             ->explode("\n")
-            ->each(fn ($output) => empty($request = json_decode($output, true))
+            ->each(fn ($output) => ! is_array($request = json_decode($output, true))
                 ? $this->info($output)
                 : $this->requestInfo($request));
 
-        $this->error($serverProcess->getIncrementalErrorOutput());
+        Str::of($serverProcess->getIncrementalErrorOutput())
+            ->explode("\n")
+            ->each(fn ($output) => ! is_array($throwable = json_decode($output, true))
+                ? $this->error($output)
+                : $this->throwableInfo($throwable));
     }
 }

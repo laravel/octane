@@ -2,19 +2,26 @@
 
 namespace Laravel\Octane;
 
-use Stringable;
+use Throwable;
 
 class Stream
 {
     /**
-     * Stream the given error message to stderr.
+     * Stream the given throwable to stderr.
      *
-     * @param  \Stringable  $message
+     * @param  \Throwable  $throwable
      * @return void
      */
-    public static function error(Stringable $message)
+    public static function throwable(Throwable $throwable)
     {
-        fwrite(STDERR, (string) str_replace("\n", ' ', $message)."\n");
+        fwrite(STDERR, json_encode([
+            'class' => get_class($throwable),
+            'code' => $throwable->getCode(),
+            'file' => $throwable->getFile(),
+            'line' => $throwable->getLine(),
+            'message' => $throwable->getMessage(),
+            'trace' => array_slice($throwable->getTrace(), 0, 2),
+        ])."\n");
     }
 
     /**
