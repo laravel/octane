@@ -10,6 +10,8 @@ use Throwable;
 
 class OctaneStore implements Store
 {
+    protected const ONE_YEAR = 31536000;
+
     /**
      * All of the registered interval caches.
      *
@@ -110,10 +112,10 @@ class OctaneStore implements Store
      */
     public function increment($key, $value = 1)
     {
-        $record = $this->table[$key];
+        $record = $this->table[$key] ?? null;
 
         if ($this->recordIsNullOrExpired($record)) {
-            return tap($value, fn ($value) => $this->put($key, $value, 31536000));
+            return tap($value, fn ($value) => $this->put($key, $value, static::ONE_YEAR));
         }
 
         return tap((int) (unserialize($record['value']) + $value), function ($value) use ($key, $record) {
@@ -142,7 +144,7 @@ class OctaneStore implements Store
      */
     public function forever($key, $value)
     {
-        return $this->put($key, $value, 31536000);
+        return $this->put($key, $value, static::ONE_YEAR);
     }
 
     /**
@@ -225,6 +227,10 @@ class OctaneStore implements Store
     public function flush()
     {
         foreach ($this->table as $key => $record) {
+            if (strpos($key, 'interval-') === 0) {
+                continue;
+            }
+
             $this->forget($key);
         }
 
