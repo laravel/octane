@@ -144,6 +144,7 @@ class StartSwooleCommand extends Command
     {
         return [
             'buffer_output_size' => 10 * 1024 * 1024,
+            'enable_coroutine' => false,
             'daemonize' => false,
             'log_file' => storage_path('logs/swoole_http.log'),
             'max_request' => $this->option('max-requests'),
