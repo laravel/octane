@@ -38,7 +38,7 @@ class ServerStateFile
     public function writeProcessIds(int $masterProcessId, int $managerProcessId): void
     {
         if (! is_writable($this->path) && ! is_writable(dirname($this->path))) {
-            throw new RuntimeException("Unable to write to process ID file.");
+            throw new RuntimeException('Unable to write to process ID file.');
         }
 
         file_put_contents($this->path, json_encode(
@@ -59,7 +59,7 @@ class ServerStateFile
     public function writeState(array $newState): void
     {
         if (! is_writable($this->path) && ! is_writable(dirname($this->path))) {
-            throw new RuntimeException("Unable to write to process ID file.");
+            throw new RuntimeException('Unable to write to process ID file.');
         }
 
         file_put_contents($this->path, json_encode(

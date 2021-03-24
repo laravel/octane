@@ -81,7 +81,7 @@ class OctaneStore implements Store
     {
         $this->table[$key] = [
             'value' => serialize($value),
-            'expiration' => Carbon::now()->getTimestamp() + $seconds
+            'expiration' => Carbon::now()->getTimestamp() + $seconds,
         ];
 
         return true;

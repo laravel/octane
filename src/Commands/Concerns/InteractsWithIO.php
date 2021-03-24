@@ -63,14 +63,14 @@ trait InteractsWithIO
 
         $url = parse_url($request['url'], PHP_URL_PATH) ?: '/';
 
-        $duration =  number_format(round($request['duration'], 2), 2, '.', '');
+        $duration = number_format(round($request['duration'], 2), 2, '.', '');
 
         ['method' => $method, 'statusCode' => $statusCode] = $request;
 
-        $dots = str_repeat('.', max($terminalWidth - strlen($method . $url . $duration) - 16, 0));
+        $dots = str_repeat('.', max($terminalWidth - strlen($method.$url.$duration) - 16, 0));
 
         if (empty($dots) && ! $this->output->isVerbose()) {
-            $url = substr($url, 0, $terminalWidth - strlen($method . $duration) - 15 - 3).'...';
+            $url = substr($url, 0, $terminalWidth - strlen($method.$duration) - 15 - 3).'...';
         } else {
             $dots .= ' ';
         }
