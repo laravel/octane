@@ -7,7 +7,7 @@ use Symfony\Component\Console\Terminal;
 trait InteractsWithTerminal
 {
     /**
-     * The terminal width.
+     * The current terminal width.
      *
      * @var int|null
      */
@@ -21,7 +21,7 @@ trait InteractsWithTerminal
     protected function getTerminalWidth()
     {
         if ($this->terminalWidth == null) {
-            $this->terminalWidth = (new Terminal())->getWidth();
+            $this->terminalWidth = (new Terminal)->getWidth();
 
             $this->terminalWidth = $this->terminalWidth >= 30
                 ? $this->terminalWidth

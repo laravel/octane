@@ -5,23 +5,23 @@ namespace Laravel\Octane;
 class Stream
 {
     /**
-     * Streams the given error message.
+     * Stream the given error message to stderr.
      *
      * @param  string $error
      * @return void
      */
     public static function error($message)
     {
-        fwrite(STDERR, (string) str_replace("\n", ' ', $string)."\n");
+        fwrite(STDERR, (string) str_replace("\n", ' ', $message)."\n");
     }
 
     /**
-     * Streams the given request information.
+     * Stream the given request information to stdout.
      *
-     * @param  string $method
-     * @param  string $url
-     * @param  int $statusCode
-     * @param  float $duration
+     * @param  string  $method
+     * @param  string  $url
+     * @param  int  $statusCode
+     * @param  float  $duration
      * @return void
      */
     public static function request($method, $url, $statusCode, $duration)

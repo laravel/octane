@@ -60,14 +60,7 @@ class StartSwooleCommand extends Command
 
         $this->writeServerStateFile($serverStateFile, $extension);
 
-        $this->info('Server running…');
-        $this->output->writeln([
-            '',
-            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
-            '',
-            '  <fg=yellow>Use Ctrl+C to stop the server</>',
-            '',
-        ]);
+        $this->writeServerStartMessage();
 
         $serverProcess = tap(new Process([
             (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
@@ -190,9 +183,27 @@ class StartSwooleCommand extends Command
     }
 
     /**
-     * Writes the server process output.
+     * Write the server start message to the console.
      *
-     * @param  \Symfony\Component\Process\Process $serverProcess
+     * @return void
+     */
+    protected function writeServerStartMessage()
+    {
+        $this->info('Server running…');
+
+        $this->output->writeln([
+            '',
+            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
+            '',
+            '  <fg=yellow>Use Ctrl+C to stop the server</>',
+            '',
+        ]);
+    }
+
+    /**
+     * Write the server process output ot the console.
+     *
+     * @param  \Symfony\Component\Process\Process  $serverProcess
      * @return void
      */
     protected function writeServerProcessOutput($serverProcess)
@@ -201,7 +212,7 @@ class StartSwooleCommand extends Command
             ->explode("\n")
             ->each(fn ($output) => empty($request = json_decode($output, true))
                 ? $this->info($output)
-                : $this->request($request));
+                : $this->requestInfo($request));
 
         $this->error($serverProcess->getIncrementalErrorOutput());
     }

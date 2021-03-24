@@ -8,8 +8,10 @@ use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Laravel\Octane\Swoole\WorkerState;
 use Laravel\Octane\Worker;
 use Swoole\Http\Server;
+use Swoole\Timer;
 
 ini_set('display_errors', 'stderr');
 
@@ -47,7 +49,6 @@ $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnS
     new ServerStateFile($serverStateFile),
     new SwooleExtension,
     $serverState['appName'],
-    $serverState['octaneConfig']['tick'] ?? true,
 ))($server));
 
 $server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerStart(
@@ -69,17 +70,16 @@ $server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerS
 |
 */
 
-$workerState = new class {
-    public $worker;
-    public $client;
-    public $cacheTable;
-    public $lastRequestTime;
-};
+require_once __DIR__.'/WorkerState.php';
+
+$workerState = new WorkerState;
 
 $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 
-$server->on('workerstart', fn (Server $server) =>
-    (fn ($basePath) => (new OnWorkerStart)($server, $basePath, $workerState))($bootstrap($serverState))
+$server->on('workerstart', fn (Server $server, $workerId) =>
+    (fn ($basePath) => (new OnWorkerStart(
+        $basePath, $serverState, $workerState
+    ))($server, $workerId))($bootstrap($serverState))
 );
 
 /*
@@ -115,17 +115,13 @@ $server->on('request', function ($request, $response) use ($workerState, $server
 |
 */
 
-$server->on('task', function (Server $server, int $taskId, int $fromWorkerId, $data) use ($workerState) {
-    if ($data === 'octane-tick') {
-            return $workerState->worker->handleTick();
-    }
+$server->on('task', fn (Server $server, int $taskId, int $fromWorkerId, $data) =>
+    $data === 'octane-tick'
+            ? $workerState->worker->handleTick()
+            : $workerState->worker->handleTask($data)
+);
 
-    return $workerState->worker->handleTask($data);
-});
-
-$server->on('finish', function (Server $server, int $taskId, $result) {
-    return $result;
-});
+$server->on('finish', fn (Server $server, int $taskId, $result) => $result);
 
 /*
 |--------------------------------------------------------------------------
@@ -138,7 +134,13 @@ $server->on('finish', function (Server $server, int $taskId, $result) {
 |
 */
 
-$server->on('workerstop', fn () => $workerState->worker->terminate());
+$server->on('workerstop', function () use ($workerState) {
+    if ($workerState->tickTimerId) {
+        Timer::clear($workerState->tickTimerId);
+    }
+
+    $workerState->worker->terminate();
+});
 
 $server->on('shutdown', fn () => (new OnServerShutdown(
     new ServerStateFile($serverStateFile)

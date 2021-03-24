@@ -57,14 +57,7 @@ class StartRoadRunnerCommand extends Command
 
         $this->writeServerStateFile($serverStateFile);
 
-        $this->info('Server running…');
-        $this->output->writeln([
-            '',
-            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
-            '',
-            '  <fg=yellow>Use Ctrl+C to stop the server</>',
-            '',
-        ]);
+        $this->writeServerStartMessage();
 
         $serverProcess = tap(new Process(array_filter([
             $roadRunnerBinary,
@@ -187,9 +180,27 @@ class StartRoadRunnerCommand extends Command
     }
 
     /**
-     * Writes the server process output.
+     * Write the server start message to the console.
      *
-     * @param  \Symfony\Component\Process\Process $serverProcess
+     * @return void
+     */
+    protected function writeServerStartMessage()
+    {
+        $this->info('Server running…');
+
+        $this->output->writeln([
+            '',
+            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
+            '',
+            '  <fg=yellow>Use Ctrl+C to stop the server</>',
+            '',
+        ]);
+    }
+
+    /**
+     * Write the server process output to the console.
+     *
+     * @param  \Symfony\Component\Process\Process  $serverProcess
      * @return void
      */
     protected function writeServerProcessOutput($serverProcess)
@@ -209,7 +220,7 @@ class StartRoadRunnerCommand extends Command
                     && Str::contains($debug['msg'], [$this->option('host').':'.$this->option('port')])) {
                     [$_, $duration, $statusCode, $method, $url] = explode(' ', $debug['msg']);
 
-                    return $this->request([
+                    return $this->requestInfo([
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,

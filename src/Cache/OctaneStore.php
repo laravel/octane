@@ -156,6 +156,12 @@ class OctaneStore implements Store
      */
     public function interval($key, Closure $resolver, $refreshSeconds)
     {
+        if (! is_null($this->getInterval($key))) {
+            $this->intervals[] = $key;
+
+            return;
+        }
+
         $this->forever('interval-'.$key, serialize([
             'resolver' => new SerializableClosure($resolver),
             'lastRefreshedAt' => null,
