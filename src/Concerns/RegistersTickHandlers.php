@@ -28,7 +28,8 @@ trait RegistersTickHandlers
                 $callback,
                 $seconds,
                 $immediate,
-                Cache::store('octane'), app(ExceptionHandler::class)
+                Cache::store('octane'),
+                app(ExceptionHandler::class)
             )
         );
     }
