@@ -64,7 +64,7 @@ class StartSwooleCommand extends Command
 
         $serverProcess = tap(new Process([
             (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
-        ], realpath(__DIR__.'/../../bin'), ['APP_BASE_PATH' => base_path()] , null, null))->start();
+        ], realpath(__DIR__.'/../../bin'), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
         $watcherProcess = $this->startWatcherProcess();
 
