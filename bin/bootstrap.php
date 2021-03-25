@@ -54,7 +54,7 @@ if (! is_string($basePath)) {
 
 $loaded = false;
 
-if (is_string($basePath) && is_file($autoload_file = $basePath .'/vendor/autoload.php')) {
+if (is_string($basePath) && is_file($autoload_file = $basePath.'/vendor/autoload.php')) {
     require $autoload_file;
 
     $loaded = true;
