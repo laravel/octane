@@ -112,7 +112,7 @@ class StartRoadRunnerCommand extends Command
             return;
         }
 
-        if (! $this->confirm('Running Octane requires "spiral/roadrunner:^1.9". Do you wish to install it as a dependency?')) {
+        if (! $this->confirm('Octane requires "spiral/roadrunner:^1.9". Do you wish to install it as a dependency?')) {
             throw new Exception('Octane requires "spiral/roadrunner".');
         }
 
