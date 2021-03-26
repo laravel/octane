@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\ApplicationFactory;
+use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneServiceProvider;
 use Mockery;
@@ -19,6 +20,7 @@ class TestCase extends BaseTestCase
         $app->register(new OctaneServiceProvider($app));
 
         $worker = new Fakes\FakeWorker($appFactory, $roadRunnerClient = new Fakes\FakeClient($requests));
+        $app->bind(Client::class, fn () => $roadRunnerClient);
 
         $worker->boot();
 
@@ -44,5 +46,12 @@ class TestCase extends BaseTestCase
     protected function config()
     {
         return require __DIR__.'/../config/octane.php';
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Mockery::close();
     }
 }

@@ -25,7 +25,6 @@
         "laminas/laminas-diactoros": "^2.5",
         "spatie/laravel-package-tools": "^1.4",
         "spatie/once": "^3.0",
-        "spiral/roadrunner": "^1.8",
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
@@ -34,7 +33,8 @@
         "mockery/mockery": "^1.4",
         "orchestra/testbench": "^6.15",
         "phpunit/phpunit": "^9.3",
-        "spatie/laravel-ray": "^1.14"
+        "spatie/laravel-ray": "^1.14",
+        "spiral/roadrunner": "^1.8"
     },
     "autoload": {
         "psr-4": {
