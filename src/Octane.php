@@ -9,6 +9,7 @@ class Octane
     use Concerns\ProvidesConcurrencySupport;
     use Concerns\ProvidesDefaultConfigurationOptions;
     use Concerns\ProvidesRouting;
+    use Concerns\RegistersTickHandlers;
 
     /**
      * Format an exception to a string that should be returned to the client.

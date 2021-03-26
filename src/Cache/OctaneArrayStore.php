@@ -12,10 +12,10 @@ class OctaneArrayStore extends ArrayStore
      *
      * @param  string  $key
      * @param  \Closure  $resolver
-     * @param  int  $refreshSeconds
+     * @param  int  $seconds
      * @return mixed
      */
-    public function interval($key, Closure $resolver, $refreshSeconds)
+    public function interval($key, Closure $resolver, $seconds)
     {
         return $resolver();
     }
