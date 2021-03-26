@@ -16,7 +16,7 @@ class BinaryBootstrapTest extends TestCase
             '"'.$this->phpBinary().'" base-path.php', __DIR__, ['APP_BASE_PATH' => $basePath], null, null
         );
 
-        $process->run();
+        $process->mustRun();
 
         $this->assertSame($basePath, $process->getOutput());
     }
