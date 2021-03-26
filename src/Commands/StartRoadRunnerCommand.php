@@ -68,6 +68,7 @@ class StartRoadRunnerCommand extends Command
             '-o', 'http.workers.command=php ./vendor/bin/roadrunner-worker',
             '-o', 'http.workers.pool.numWorkers='.$this->workerCount(),
             '-o', 'http.workers.pool.maxJobs='.$this->option('max-requests'),
+            '-o', 'http.static.dir=public',
             'serve',
             app()->environment('local') ? '-d' : null,
             '-l', 'json',
