@@ -15,25 +15,6 @@ ini_set('display_errors', 'stderr');
 
 $basePath = $_SERVER['APP_BASE_PATH'] ?? $_ENV['APP_BASE_PATH'] ?? $serverState['octaneConfig']['base_path'] ?? null;
 
-if (is_null($basePath)) {
-    // TODO: Remove octane-app test directory...
-    foreach (array_filter([
-        $serverState['octaneConfig']['base_path'] ?? null,
-        '../../../..',
-        '../../..',
-        '../..',
-        '..',
-        '../../octane-app',
-        '../vendor/laravel/laravel',
-    ]) as $path) {
-        if (is_file(__DIR__.'/'.$path.'/bootstrap/app.php')) {
-            $basePath = realpath(__DIR__.'/'.$path);
-
-            break;
-        }
-    }
-}
-
 if (! is_string($basePath)) {
     fwrite(STDERR, 'Cannot find application base path.'.PHP_EOL);
 
@@ -54,32 +35,10 @@ if (! is_string($basePath)) {
 
 $loaded = false;
 
-if (is_string($basePath) && is_file($autoload_file = $basePath .'/vendor/autoload.php')) {
+if (is_string($basePath) && is_file($autoload_file = $basePath.'/vendor/autoload.php')) {
     require $autoload_file;
 
     $loaded = true;
-}
-
-if ($loaded === false) {
-    // TODO: Remove octane-app test directory...
-    foreach (array_filter([
-        $serverState['octaneConfig']['vendor_path'] ?? null,
-        '../../..',
-        '../..',
-        '../../octane-app/vendor',
-        '..',
-        'vendor',
-        '../vendor',
-        '../../vendor',
-    ]) as $path) {
-        if (is_file($autoload_file = __DIR__.'/'.$path.'/autoload.php')) {
-            require $autoload_file;
-
-            $loaded = true;
-
-            break;
-        }
-    }
 }
 
 if ($loaded !== true) {
