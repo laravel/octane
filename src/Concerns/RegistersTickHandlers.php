@@ -17,20 +17,24 @@ trait RegistersTickHandlers
      * @param  callable  $callback
      * @param  int  $seconds
      * @param  bool  $immediate
-     * @return void
+     * @return \Laravel\Octane\Swoole\InvokeTickCallable
      */
     public function tick(string $key, callable $callback, int $seconds = 1, bool $immediate = true)
     {
+        $listener = new InvokeTickCallable(
+            $key,
+            $callback,
+            $seconds,
+            $immediate,
+            Cache::store('octane'),
+            app(ExceptionHandler::class)
+        );
+
         app(Dispatcher::class)->listen(
             TickReceived::class,
-            new InvokeTickCallable(
-                $key,
-                $callback,
-                $seconds,
-                $immediate,
-                Cache::store('octane'),
-                app(ExceptionHandler::class)
-            )
+            $listener
         );
+
+        return $listener;
     }
 }

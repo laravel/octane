@@ -43,4 +43,29 @@ class InvokeTickCallable
             $this->exceptionHandler->report($e);
         }
     }
+
+    /**
+     * Indicate how often the listener should be invoked.
+     *
+     * @param  int  $seconds
+     * @return $this
+     */
+    public function seconds(int $seconds)
+    {
+        $this->seconds = $seconds;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the listener should be invoked on the first tick after the server starts.
+     *
+     * @return $this
+     */
+    public function immediate()
+    {
+        $this->immediate = true;
+
+        return $this;
+    }
 }
