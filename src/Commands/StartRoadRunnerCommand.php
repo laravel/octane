@@ -72,7 +72,7 @@ class StartRoadRunnerCommand extends Command
             'serve',
             app()->environment('local') ? '-d' : null,
             '-l', 'json',
-        ]), base_path(), null, null, null))->start();
+        ]), base_path(), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
         $watcherProcess = $this->startWatcherProcess();
 
