@@ -32,11 +32,9 @@ class StopCommand extends Command
     {
         $server = $this->option('server') ?: config('octane.server');
 
-        if ($server === 'swoole') {
-            return $this->stopSwooleServer();
-        } elseif ($server === 'roadrunner') {
-            return $this->stopRoadRunnerServer();
-        }
+        return $server == 'swoole'
+            ? $this->stopSwooleServer()
+            : $this->stopRoadRunnerServer();
     }
 
     /**
@@ -48,15 +46,19 @@ class StopCommand extends Command
     {
         $inspector = app(SwooleServerProcessInspector::class);
 
-        if ($inspector->serverIsRunning()) {
-            $this->info('Stopping server...');
-
-            $inspector->stopServer();
-
-            app(SwooleServerStateFile::class)->delete();
-        } else {
+        if (! $inspector->serverIsRunning()) {
             $this->error('Swoole server is not running.');
+
+            return 1;
         }
+
+        $this->info('Stopping server...');
+
+        $inspector->stopServer();
+
+        app(SwooleServerStateFile::class)->delete();
+
+        return 0;
     }
 
     /**
@@ -68,14 +70,18 @@ class StopCommand extends Command
     {
         $inspector = app(RoadRunnerServerProcessInspector::class);
 
-        if ($inspector->serverIsRunning()) {
-            $this->info('Stopping server...');
-
-            $inspector->stopServer();
-
-            app(RoadRunnerServerStateFile::class)->delete();
-        } else {
+        if (! $inspector->serverIsRunning()) {
             $this->error('RoadRunner server is not running.');
+
+            return 1;
         }
+
+        $this->info('Stopping server...');
+
+        $inspector->stopServer();
+
+        app(RoadRunnerServerStateFile::class)->delete();
+
+        return 0;
     }
 }
