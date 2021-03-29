@@ -2,12 +2,16 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\StreamFactory;
+use Laminas\Diactoros\UploadedFileFactory;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\RoadRunner\RoadRunnerClient;
 use Laravel\Octane\Worker;
-use Spiral\Goridge\StreamRelay;
-use Spiral\RoadRunner\PSR7Client;
+use Psr\Http\Message\ServerRequestInterface;
+use Spiral\Goridge\Relay;
+use Spiral\RoadRunner\Http\PSR7Worker;
 use Spiral\RoadRunner\Worker as RoadRunnerWorker;
 
 $basePath = require __DIR__.'/bootstrap.php';
@@ -23,15 +27,22 @@ $basePath = require __DIR__.'/bootstrap.php';
 |
 */
 
-$roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Client(
-    new RoadRunnerWorker(new StreamRelay(STDIN, STDOUT))
+$roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Worker(
+    new RoadRunnerWorker(Relay::create('pipes')),
+    new ServerRequestFactory,
+    new StreamFactory,
+    new UploadedFileFactory,
 ));
 
 $worker = tap((new Worker(
     new ApplicationFactory($basePath), $roadRunnerClient
 )))->boot();
 
-while ($psr7Request = $psr7Client->acceptRequest()) {
+while ($psr7Request = $psr7Client->waitRequest()) {
+    if (! $psr7Request instanceof ServerRequestInterface) {
+        break;
+    }
+
     [$request, $context] = $roadRunnerClient->marshalRequest(new RequestContext([
         'psr7Request' => $psr7Request
     ]));

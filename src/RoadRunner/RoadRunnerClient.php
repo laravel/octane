@@ -9,7 +9,7 @@ use Laravel\Octane\Contracts\StoppableClient;
 use Laravel\Octane\MarshalsPsr7RequestsAndResponses;
 use Laravel\Octane\Octane;
 use Laravel\Octane\RequestContext;
-use Spiral\RoadRunner\PSR7Client;
+use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -17,7 +17,7 @@ class RoadRunnerClient implements Client, StoppableClient
 {
     use MarshalsPsr7RequestsAndResponses;
 
-    public function __construct(protected PSR7Client $client)
+    public function __construct(protected PSR7Worker $client)
     {
     }
 

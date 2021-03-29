@@ -16,7 +16,7 @@ trait InstallsRoadRunnerDependencies
      */
     protected function ensureRoadRunnerPackageIsInstalled()
     {
-        if (class_exists('Spiral\RoadRunner\Worker') && class_exists('Spiral\RoadRunner\PSR7Client')) {
+        if (class_exists('Spiral\RoadRunner\Http\PSR7Worker')) {
             return;
         }
 

@@ -66,13 +66,14 @@ class StartRoadRunnerCommand extends Command
         $serverProcess = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
-            '-o', 'http.workers.command=php ./vendor/bin/roadrunner-worker',
-            '-o', 'http.workers.pool.numWorkers='.$this->workerCount(),
-            '-o', 'http.workers.pool.maxJobs='.$this->option('max-requests'),
+            '-o', 'server.command=php ./vendor/bin/roadrunner-worker',
+            '-o', 'http.pool.numWorkers='.$this->workerCount(),
+            '-o', 'http.pool.maxJobs='.$this->option('max-requests'),
             '-o', 'http.static.dir=public',
+            '-o', 'http.middleware=static',
+            '-o', 'logs.encoding=json',
             'serve',
             app()->environment('local') ? '-d' : null,
-            '-l', 'json',
         ]), base_path(), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
         $watcherProcess = $this->startWatcherProcess();
