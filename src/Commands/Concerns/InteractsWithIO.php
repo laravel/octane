@@ -105,6 +105,23 @@ trait InteractsWithIO
      */
     public function throwableInfo($throwable, $verbosity = null)
     {
+        if (! class_exists('NunoMaduro\Collision\Writer')) {
+            $this->label($throwable['message'], $verbosity, $throwable['class'], 'red', 'white');
+            $this->newLine();
+
+            $outputTrace = function ($trace, $number) {
+                $number++;
+
+                ['line' => $line, 'file' => $file] = $trace;
+
+                $this->line("  <fg=yellow>$number</> $file:$line");
+            };
+
+            $outputTrace($throwable, -1);
+
+            return collect($throwable['trace'])->each($outputTrace);
+        }
+
         (new Writer(null, $this->output))->write(
             new WorkerExceptionInspector(
                 new WorkerException(
