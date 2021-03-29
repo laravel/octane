@@ -14,6 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
 trait MarshalsPsr7RequestsAndResponses
 {
     /**
+     * The Symfony PSR-7 factory.
+     *
+     * @var \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface|null
+     */
+    protected $psrHttpFactory;
+
+    /**
+     * The Symfony HttpFoundation factory.
+     *
+     * @var \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory|null
+     */
+    protected $httpFoundationFactory;
+
+    /**
      * Convert the given PSR-7 request to an HttpFoundation request.
      *
      * @param  \Psr\Http\Message\ServerRequestInterface  $request
@@ -44,7 +58,9 @@ trait MarshalsPsr7RequestsAndResponses
      */
     protected function httpFoundationRequestFactory(): HttpFoundationFactoryInterface
     {
-        return once(fn () => new HttpFoundationFactory);
+        return $this->httpFoundationFactory ?: (
+            $this->httpFoundationFactory = new HttpFoundationFactory
+        );
     }
 
     /**
@@ -56,7 +72,7 @@ trait MarshalsPsr7RequestsAndResponses
      */
     protected function psr7ResponseFactory(): HttpMessageFactoryInterface
     {
-        return once(fn () => new PsrHttpFactory(
+        return $this->psrHttpFactory ?: ($this->psrHttpFactory = new PsrHttpFactory(
             new \Spiral\RoadRunner\Diactoros\ServerRequestFactory,
             new \Spiral\RoadRunner\Diactoros\StreamFactory,
             new \Spiral\RoadRunner\Diactoros\UploadedFileFactory,
