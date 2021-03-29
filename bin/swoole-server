@@ -49,6 +49,7 @@ $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnS
     new ServerStateFile($serverStateFile),
     new SwooleExtension,
     $serverState['appName'],
+    $serverState['octaneConfig']['tick'] ?? true,
 ))($server));
 
 $server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerStart(

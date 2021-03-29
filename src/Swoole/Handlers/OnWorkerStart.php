@@ -66,12 +66,12 @@ class OnWorkerStart
      */
     protected function dispatchServerTickTaskEverySecond($server)
     {
-        if ($this->workerState->workerId === 0 &&
-            ($this->serverState['octaneConfig']['tick'] ?? true)) {
-            $this->workerState->tickTimerId = $server->tick(1000, function () use ($server) {
-                $server->task('octane-tick');
-            });
-        }
+        // if ($this->workerState->workerId === 0 &&
+        //     ($this->serverState['octaneConfig']['tick'] ?? true)) {
+        //     $this->workerState->tickTimerId = $server->tick(1000, function () use ($server) {
+        //         $server->task('octane-tick');
+        //     });
+        // }
     }
 
     /**

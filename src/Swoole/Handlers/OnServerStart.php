@@ -11,6 +11,7 @@ class OnServerStart
         protected ServerStateFile $serverStateFile,
         protected SwooleExtension $extension,
         protected string $appName,
+        protected bool $shouldTick = true,
         protected bool $shouldSetProcessName = true
     ) {
     }
@@ -30,6 +31,12 @@ class OnServerStart
 
         if ($this->shouldSetProcessName) {
             $this->extension->setProcessName($this->appName, 'master process');
+        }
+
+        if ($this->shouldTick) {
+            $server->tick(1000, function () use ($server) {
+                $server->task('octane-tick');
+            });
         }
     }
 }
