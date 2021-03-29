@@ -9,13 +9,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
 use Laravel\Octane\Cache\OctaneArrayStore;
 use Laravel\Octane\Cache\OctaneStore;
-use Laravel\Octane\Commands\ReloadCommand;
-use Laravel\Octane\Commands\StartCommand;
-use Laravel\Octane\Commands\StartRoadRunnerCommand;
-use Laravel\Octane\Commands\StartSwooleCommand;
-use Laravel\Octane\Commands\StopCommand;
 use Laravel\Octane\Contracts\DispatchesCoroutines;
 use Laravel\Octane\Events\TickReceived;
 use Laravel\Octane\Facades\Octane as OctaneFacade;
@@ -26,38 +22,18 @@ use Laravel\Octane\Swoole\ServerStateFile as SwooleServerStateFile;
 use Laravel\Octane\Swoole\SignalDispatcher;
 use Laravel\Octane\Swoole\SwooleCoroutineDispatcher;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class OctaneServiceProvider extends PackageServiceProvider
+class OctaneServiceProvider extends ServiceProvider
 {
     /**
-     * Configure the Laravel Octane package.
+     * Register Octane's services.
      *
-     * @param  \Spatie\LaravelPackageTools\Package  $package
      * @return void
      */
-    public function configurePackage(Package $package): void
+    public function register()
     {
-        $package
-            ->name('octane')
-            ->hasConfigFile()
-            ->hasCommands(
-                StartCommand::class,
-                StartRoadRunnerCommand::class,
-                StartSwooleCommand::class,
-                ReloadCommand::class,
-                StopCommand::class,
-            );
-    }
+        $this->mergeConfigFrom(__DIR__.'/../config/octane.php', 'octane');
 
-    /**
-     * Handle the package register process.
-     *
-     * @return void
-     */
-    public function packageRegistered()
-    {
         $this->bindListeners();
 
         $this->app->singleton('octane', Octane::class);
@@ -99,6 +75,27 @@ class OctaneServiceProvider extends PackageServiceProvider
     }
 
     /**
+     * Bootstrap Octane's services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $dispatcher = $this->app[Dispatcher::class];
+
+        foreach ($this->app['config']->get('octane.listeners', []) as $event => $listeners) {
+            foreach (array_filter(array_unique($listeners)) as $listener) {
+                $dispatcher->listen($event, $listener);
+            }
+        }
+
+        $this->registerCacheDriver();
+        $this->registerCommands();
+        $this->registerHttpTaskHandlingRoutes();
+        $this->registerPublishing();
+    }
+
+    /**
      * Bind the Octane event listeners in the container.
      *
      * @return void
@@ -132,25 +129,6 @@ class OctaneServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Handle the package boot process.
-     *
-     * @return void
-     */
-    public function packageBooted()
-    {
-        $dispatcher = $this->app[Dispatcher::class];
-
-        foreach ($this->app['config']->get('octane.listeners', []) as $event => $listeners) {
-            foreach (array_filter(array_unique($listeners)) as $listener) {
-                $dispatcher->listen($event, $listener);
-            }
-        }
-
-        $this->registerCacheDriver();
-        $this->registerHttpTaskHandlingRoutes();
-    }
-
-    /**
      * Register the Octane cache driver.
      *
      * @return void
@@ -168,6 +146,24 @@ class OctaneServiceProvider extends PackageServiceProvider
         Event::listen(TickReceived::class, fn () => $store->refreshIntervalCaches());
 
         Cache::extend('octane', fn () => Cache::repository($store));
+    }
+
+    /**
+     * Register the commands offered by Octane.
+     *
+     * @return void
+     */
+    protected function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Commands\StartCommand::class,
+                Commands\StartRoadRunnerCommand::class,
+                Commands\StartSwooleCommand::class,
+                Commands\ReloadCommand::class,
+                Commands\StopCommand::class,
+            ]);
+        }
     }
 
     /**
@@ -199,5 +195,19 @@ class OctaneServiceProvider extends PackageServiceProvider
 
             return new Response('', 200);
         });
+    }
+
+    /**
+     * Register Octane's publishing.
+     *
+     * @return void
+     */
+    protected function registerPublishing()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/octane.php' => config_path('octane.php'),
+            ], 'octane-config');
+        }
     }
 }
