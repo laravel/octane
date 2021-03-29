@@ -50,6 +50,7 @@ class OnWorkerStart
             ))->boot([
                 Server::class => $server,
                 'octane.cacheTable' => $this->workerState->cacheTable,
+                WorkerState::class => $this->workerState,
             ]);
         } catch (Throwable $e) {
             Stream::error($e);
