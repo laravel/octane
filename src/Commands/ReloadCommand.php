@@ -30,11 +30,9 @@ class ReloadCommand extends Command
     {
         $server = $this->option('server') ?: config('octane.server');
 
-        if ($server === 'swoole') {
-            return $this->reloadSwooleServer();
-        } elseif ($server === 'roadrunner') {
-            return $this->reloadRoadRunnerServer();
-        }
+        return $server == 'swoole'
+            ? $this->reloadSwooleServer()
+            : $this->reloadRoadRunnerServer();
     }
 
     /**
@@ -46,13 +44,17 @@ class ReloadCommand extends Command
     {
         $inspector = app(SwooleServerProcessInspector::class);
 
-        if ($inspector->serverIsRunning()) {
-            $this->info('Reloading workers...');
-
-            $inspector->reloadServer();
-        } else {
+        if (! $inspector->serverIsRunning()) {
             $this->error('Octane server is not running.');
+
+            return 1;
         }
+
+        $this->info('Reloading workers...');
+
+        $inspector->reloadServer();
+
+        return 0;
     }
 
     /**
@@ -64,12 +66,16 @@ class ReloadCommand extends Command
     {
         $inspector = app(RoadRunnerServerProcessInspector::class);
 
-        if ($inspector->serverIsRunning()) {
-            $this->info('Reloading workers...');
-
-            $inspector->reloadServer(base_path());
-        } else {
+        if (! $inspector->serverIsRunning()) {
             $this->error('Octane server is not running.');
+
+            return 1;
         }
+
+        $this->info('Reloading workers...');
+
+        $inspector->reloadServer(base_path());
+
+        return 0;
     }
 }

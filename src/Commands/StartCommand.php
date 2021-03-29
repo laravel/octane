@@ -34,11 +34,9 @@ class StartCommand extends Command
     {
         $server = $this->option('server') ?: config('octane.server');
 
-        if ($server === 'swoole') {
-            return $this->startSwooleServer();
-        } elseif ($server === 'roadrunner') {
-            return $this->startRoadRunnerServer();
-        }
+        return $server == 'swoole'
+            ? $this->startSwooleServer()
+            : $this->startRoadRunnerServer();
     }
 
     /**
