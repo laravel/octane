@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands\Concerns;
 
 use Exception;
+use Illuminate\Support\Str;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -74,7 +75,9 @@ trait InstallsRoadRunnerDependencies
         }
 
         if (! is_null($roadRunnerBinary = (new ExecutableFinder)->find('rr', null, [base_path()]))) {
-            return $roadRunnerBinary;
+            if (! Str::contains($roadRunnerBinary, 'vendor/bin/rr')) {
+                return $roadRunnerBinary;
+            }
         }
 
         if ($this->confirm('Unable to locate RoadRunner binary. Should Octane download the binary for your operating system?', true)) {
