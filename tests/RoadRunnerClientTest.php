@@ -10,14 +10,14 @@ use Laravel\Octane\RequestContext;
 use Laravel\Octane\RoadRunner\RoadRunnerClient;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
-use Spiral\RoadRunner\PSR7Client;
+use Spiral\RoadRunner\Http\PSR7Worker;
 
 class RoadRunnerClientTest extends TestCase
 {
     /** @test */
     public function test_marshal_request_method_marshals_proper_illuminate_request()
     {
-        $client = new RoadRunnerClient(Mockery::mock(PSR7Client::class));
+        $client = new RoadRunnerClient(Mockery::mock(PSR7Worker::class));
 
         $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
         $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
@@ -33,7 +33,7 @@ class RoadRunnerClientTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_respond_method_send_response_to_roadrunner()
     {
-        $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Client::class));
+        $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
 
         $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
         $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
@@ -48,7 +48,7 @@ class RoadRunnerClientTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_error_method_sends_error_response_to_roadrunner()
     {
-        $psr7Client = Mockery::mock(PSR7Client::class);
+        $psr7Client = Mockery::mock(PSR7Worker::class);
         $psr7Client->shouldReceive('getWorker->error')->once()->with('Internal server error.');
 
         $client = new RoadRunnerClient($psr7Client);
@@ -65,7 +65,7 @@ class RoadRunnerClientTest extends TestCase
     {
         $e = new Exception('Something went wrong...');
 
-        $psr7Client = Mockery::mock(PSR7Client::class);
+        $psr7Client = Mockery::mock(PSR7Worker::class);
         $psr7Client->shouldReceive('getWorker->error')->once()->with((string) $e);
 
         $client = new RoadRunnerClient($psr7Client);
