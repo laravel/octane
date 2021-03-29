@@ -133,6 +133,17 @@ return [
 
     'garbage' => 50,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Octane Cache Table
+    |--------------------------------------------------------------------------
+    |
+    | While using Swoole, you may leverage the Octane cache, which is powered
+    | by a Swoole table. You may set the maximum number of rows as well as
+    | the number of bytes per row using the configuration options below.
+    |
+    */
+
     'cache' => [
         'rows' => 1000,
         'bytes' => 10000,
