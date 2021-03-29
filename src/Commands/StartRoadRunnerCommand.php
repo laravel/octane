@@ -193,7 +193,7 @@ class StartRoadRunnerCommand extends Command
                 }
 
                 if ($debug['level'] == 'info'
-                    && Str::contains($debug['msg'], [$this->option('host').':'.$this->option('port')])) {
+                    && Str::startsWith($debug['msg'], $this->option('host') . ' {')) {
                     [$_, $duration, $statusCode, $method, $url] = explode(' ', $debug['msg']);
 
                     return $this->requestInfo([
