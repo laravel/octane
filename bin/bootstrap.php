@@ -7,7 +7,7 @@ ini_set('display_errors', 'stderr');
 | Find Application Base Path
 |--------------------------------------------------------------------------
 |
-| Next, we need to locate the path to the application bootstrapper, which
+| First we need to locate the path to the application bootstrapper, which
 | is able to create a fresh copy of the Laravel application for us and
 | we can use this to handle requests. For now we just need the path.
 |
