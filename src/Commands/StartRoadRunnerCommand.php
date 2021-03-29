@@ -156,9 +156,9 @@ class StartRoadRunnerCommand extends Command
      */
     protected function workerCount()
     {
-        return $this->option('workers') === 'auto'
-                            ? 1
-                            : $this->option('workers', 1);
+        return $this->option('workers') == 'auto'
+                            ? 0
+                            : $this->option('workers', 0);
     }
 
     /**
