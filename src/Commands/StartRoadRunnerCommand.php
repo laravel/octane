@@ -71,9 +71,9 @@ class StartRoadRunnerCommand extends Command
             '-o', 'http.pool.maxJobs='.$this->option('max-requests'),
             '-o', 'http.static.dir=public',
             '-o', 'http.middleware=static',
+            '-o', app()->environment('local') ? 'logs.mode=development' : 'logs.mode=production',
             '-o', 'logs.encoding=json',
             'serve',
-            app()->environment('local') ? '-d' : null,
         ]), base_path(), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
         $watcherProcess = $this->startWatcherProcess();

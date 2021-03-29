@@ -3,6 +3,10 @@
 namespace Laravel\Octane;
 
 use Illuminate\Http\Request;
+use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\StreamFactory;
+use Laminas\Diactoros\UploadedFileFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -73,10 +77,10 @@ trait MarshalsPsr7RequestsAndResponses
     protected function psr7ResponseFactory(): HttpMessageFactoryInterface
     {
         return $this->psrHttpFactory ?: ($this->psrHttpFactory = new PsrHttpFactory(
-            new \Spiral\RoadRunner\Diactoros\ServerRequestFactory,
-            new \Spiral\RoadRunner\Diactoros\StreamFactory,
-            new \Spiral\RoadRunner\Diactoros\UploadedFileFactory,
-            new \Laminas\Diactoros\ResponseFactory
+            new ServerRequestFactory,
+            new StreamFactory,
+            new UploadedFileFactory,
+            new ResponseFactory
         ));
     }
 }
