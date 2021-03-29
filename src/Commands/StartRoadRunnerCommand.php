@@ -71,7 +71,9 @@ class StartRoadRunnerCommand extends Command
             '-o', 'http.pool.maxJobs='.$this->option('max-requests'),
             '-o', 'http.static.dir=public',
             '-o', 'http.middleware=static',
-            '-o', app()->environment('local') ? 'logs.mode=development' : 'logs.mode=production',
+            '-o', 'logs.mode=production',
+            '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
+            '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             'serve',
         ]), base_path(), ['APP_BASE_PATH' => base_path()], null, null))->start();
@@ -184,25 +186,28 @@ class StartRoadRunnerCommand extends Command
     {
         Str::of($serverProcess->getIncrementalOutput())
             ->explode("\n")
-            ->each(fn ($output) => $this->info($output));
-
-        Str::of($serverProcess->getIncrementalErrorOutput())
-            ->explode("\n")
             ->each(function ($output) {
                 if (empty($debug = json_decode($output, true))) {
-                    return $this->error($output);
+                    return $this->info($output);
                 }
 
-                if ($debug['level'] == 'info'
-                    && Str::startsWith($debug['msg'], $this->option('host').' {')) {
-                    [$_, $duration, $statusCode, $method, $url] = explode(' ', $debug['msg']);
+                if ($debug['level'] == 'debug' && Str::contains($debug['msg'], 'http')) {
+                    [$statusCode, $method, $url] = explode(' ', $debug['msg']);
 
                     return $this->requestInfo([
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => (float) substr($duration, 1, -3),
+                        'duration' => (float) substr($debug['elapsed'], 0, -2),
                     ]);
+                }
+            });
+
+        Str::of($serverProcess->getIncrementalErrorOutput())
+            ->explode("\n")
+            ->each(function ($output) {
+                if (! Str::contains($output, ['DEBUG', 'INFO', 'WARN'])) {
+                    $this->error($output);
                 }
             });
     }
