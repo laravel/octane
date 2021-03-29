@@ -48,8 +48,8 @@ class OnWorkerStart
                 new ApplicationFactory($this->basePath),
                 $this->workerState->client = new SwooleClient
             ))->boot([
-                Server::class => $server,
                 'octane.cacheTable' => $this->workerState->cacheTable,
+                Server::class => $server,
                 WorkerState::class => $this->workerState,
             ]);
         } catch (Throwable $e) {
