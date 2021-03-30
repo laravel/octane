@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer config --unset repositories.0
-          composer require laravel/framework:"dev-nitro-prep as 8.x-dev" --no-update
+          composer require laravel/framework:"^8.35" --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
