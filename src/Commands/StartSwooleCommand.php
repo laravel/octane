@@ -152,6 +152,7 @@ class StartSwooleCommand extends Command
             'reactor_num' => $this->workerCount($extension),
             'send_yield' => true,
             'socket_buffer_size' => 128 * 1024 * 1024,
+            'task_max_request' => $this->option('max-requests'),
             'task_worker_num' => $this->taskWorkerCount($extension),
             'worker_num' => $this->workerCount($extension),
         ];
