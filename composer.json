@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^8.35",
+        "laravel/framework": "^8.35",
         "laminas/laminas-diactoros": "^2.5",
         "symfony/psr-http-message-bridge": "^2.0"
     },
