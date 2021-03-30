@@ -84,11 +84,16 @@ trait InstallsRoadRunnerDependencies
             tap(new Process(array_filter([
                 './vendor/bin/rr',
                 'get-binary',
+                '-n',
+                '--ansi',
             ]), base_path(), null, null, null))->run(
                 fn ($type, $buffer) => $this->output->write($buffer)
             );
 
             $this->line('');
+
+            chmod(base_path('rr'), 755);
+            copy(__DIR__.'/../stubs/rr.yaml', base_path('.rr.yaml'));
         }
 
         return base_path('rr');
