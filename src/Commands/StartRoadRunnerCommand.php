@@ -74,7 +74,7 @@ class StartRoadRunnerCommand extends Command
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'http.static.dir=public',
             '-o', 'http.middleware=static',
-            '-o', 'logs.mode=production',
+            '-o', app()->environment('local') ? 'logs.mode=production' : 'logs.mode=none',
             '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
