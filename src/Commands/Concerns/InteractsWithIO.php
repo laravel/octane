@@ -107,6 +107,7 @@ trait InteractsWithIO
     {
         if (! class_exists('NunoMaduro\Collision\Writer')) {
             $this->label($throwable['message'], $verbosity, $throwable['class'], 'red', 'white');
+
             $this->newLine();
 
             $outputTrace = function ($trace, $number) {
