@@ -15,13 +15,12 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^8.0",
+        "illuminate/contracts": "^8.35",
         "laminas/laminas-diactoros": "^2.5",
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^8.35",
         "mockery/mockery": "^1.4",
         "orchestra/testbench": "^6.16",
         "phpunit/phpunit": "^9.3",
