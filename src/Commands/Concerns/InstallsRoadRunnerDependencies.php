@@ -93,6 +93,7 @@ trait InstallsRoadRunnerDependencies
             $this->line('');
 
             chmod(base_path('rr'), 755);
+
             copy(__DIR__.'/../stubs/rr.yaml', base_path('.rr.yaml'));
         }
 
