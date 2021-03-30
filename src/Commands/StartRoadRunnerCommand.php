@@ -67,7 +67,6 @@ class StartRoadRunnerCommand extends Command
 
         $serverProcess = tap(new Process(array_filter([
             $roadRunnerBinary,
-            // '-c', realpath(__DIR__.'/../../bin/.rr.yaml'),
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
             '-o', 'server.command=php ./vendor/bin/roadrunner-worker',
             '-o', 'http.pool.num_workers='.$this->workerCount(),
