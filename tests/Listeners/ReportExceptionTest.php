@@ -19,7 +19,7 @@ class ReportExceptionTest extends TestCase
         $exception = new Exception('foo');
 
         Mockery::mock('alias:'.Stream::class)
-            ->shouldReceive('error')
+            ->shouldReceive('throwable')
             ->once()
             ->with($exception);
 
@@ -39,7 +39,7 @@ class ReportExceptionTest extends TestCase
             ->with($exception));
 
         Mockery::mock('alias:'.Stream::class)
-            ->shouldReceive('error')
+            ->shouldReceive('throwable')
             ->once()
             ->with($exception);
 

@@ -8,11 +8,13 @@ use Laminas\Diactoros\UploadedFileFactory;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\RoadRunner\RoadRunnerClient;
+use Laravel\Octane\Stream;
 use Laravel\Octane\Worker;
 use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Goridge\Relay;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Spiral\RoadRunner\Worker as RoadRunnerWorker;
+use Throwable;
 
 $basePath = require __DIR__.'/bootstrap.php';
 
@@ -34,9 +36,15 @@ $roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Worker(
     new UploadedFileFactory,
 ));
 
-$worker = tap((new Worker(
-    new ApplicationFactory($basePath), $roadRunnerClient
-)))->boot();
+try {
+    $worker = tap((new Worker(
+        new ApplicationFactory($basePath), $roadRunnerClient
+    )))->boot();
+} catch (Throwable $e) {
+    Stream::throwable($e);
+
+    exit(1);
+}
 
 while ($psr7Request = $psr7Client->waitRequest()) {
     if (! $psr7Request instanceof ServerRequestInterface) {
