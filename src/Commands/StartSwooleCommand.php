@@ -211,14 +211,24 @@ class StartSwooleCommand extends Command
     {
         Str::of($serverProcess->getIncrementalOutput())
             ->explode("\n")
+            ->filter()
             ->each(fn ($output) => ! is_array($request = json_decode($output, true))
                 ? $this->info($output)
                 : $this->requestInfo($request));
 
         Str::of($serverProcess->getIncrementalErrorOutput())
             ->explode("\n")
-            ->each(fn ($output) => ! is_array($throwable = json_decode($output, true))
-                ? $this->error($output)
-                : $this->throwableInfo($throwable));
+            ->filter()
+            ->groupBy(fn ($output) => $output)
+            ->each(function ($group) {
+                ! is_array($throwable = json_decode($output = $group->first(), true))
+                    ? $this->error($output)
+                    : $this->throwableInfo($throwable);
+
+                if (($count = $group->count()) > 1) {
+                    $this->newLine();
+                    $this->line("  <fg=red;options=bold>↑</>   $count similar errors were reported.");
+                }
+            });
     }
 }

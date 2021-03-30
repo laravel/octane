@@ -114,7 +114,7 @@ trait InteractsWithIO
 
                 ['line' => $line, 'file' => $file] = $trace;
 
-                $this->line("  <fg=yellow>$number</> $file:$line");
+                $this->line("  <fg=yellow>$number</>   $file:$line");
             };
 
             $outputTrace($throwable, -1);
