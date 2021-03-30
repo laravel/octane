@@ -16,15 +16,15 @@ trait InstallsRoadRunnerDependencies
      */
     protected function ensureRoadRunnerPackageIsInstalled()
     {
-        if (class_exists('Spiral\RoadRunner\Worker') && class_exists('Spiral\RoadRunner\PSR7Client')) {
+        if (class_exists('Spiral\RoadRunner\Http\PSR7Worker')) {
             return;
         }
 
-        if (! $this->confirm('Octane requires "spiral/roadrunner:^1.9". Do you wish to install it as a dependency?')) {
+        if (! $this->confirm('Octane requires "spiral/roadrunner:^2.0". Do you wish to install it as a dependency?')) {
             throw new Exception('Octane requires "spiral/roadrunner".');
         }
 
-        $command = $this->findComposer().' require spiral/roadrunner:^1.9 --with-all-dependencies';
+        $command = $this->findComposer().' require spiral/roadrunner:^2.0 --with-all-dependencies';
 
         $process = Process::fromShellCommandline($command, null, null, null, null);
 
@@ -84,11 +84,17 @@ trait InstallsRoadRunnerDependencies
             tap(new Process(array_filter([
                 './vendor/bin/rr',
                 'get-binary',
+                '-n',
+                '--ansi',
             ]), base_path(), null, null, null))->run(
                 fn ($type, $buffer) => $this->output->write($buffer)
             );
 
             $this->line('');
+
+            chmod(base_path('rr'), 755);
+
+            copy(__DIR__.'/../stubs/rr.yaml', base_path('.rr.yaml'));
         }
 
         return base_path('rr');

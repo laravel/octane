@@ -63,16 +63,22 @@ class StartRoadRunnerCommand extends Command
 
         $this->writeServerStartMessage();
 
+        touch(base_path('.rr.yaml'));
+
         $serverProcess = tap(new Process(array_filter([
             $roadRunnerBinary,
+            // '-c', realpath(__DIR__.'/../../bin/.rr.yaml'),
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
-            '-o', 'http.workers.command=php ./vendor/bin/roadrunner-worker',
-            '-o', 'http.workers.pool.numWorkers='.$this->workerCount(),
-            '-o', 'http.workers.pool.maxJobs='.$this->option('max-requests'),
+            '-o', 'server.command=php ./vendor/bin/roadrunner-worker',
+            '-o', 'http.pool.num_workers='.$this->workerCount(),
+            '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'http.static.dir=public',
+            '-o', 'http.middleware=static',
+            '-o', app()->environment('local') ? 'logs.mode=production' : 'logs.mode=none',
+            '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
+            '-o', 'logs.output=stdout',
+            '-o', 'logs.encoding=json',
             'serve',
-            app()->environment('local') ? '-d' : null,
-            '-l', 'json',
         ]), base_path(), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
         $watcherProcess = $this->startWatcherProcess();
@@ -150,9 +156,9 @@ class StartRoadRunnerCommand extends Command
      */
     protected function workerCount()
     {
-        return $this->option('workers') === 'auto'
-                            ? 1
-                            : $this->option('workers', 1);
+        return $this->option('workers') == 'auto'
+                            ? 0
+                            : $this->option('workers', 0);
     }
 
     /**
@@ -183,25 +189,28 @@ class StartRoadRunnerCommand extends Command
     {
         Str::of($serverProcess->getIncrementalOutput())
             ->explode("\n")
-            ->each(fn ($output) => $this->info($output));
-
-        Str::of($serverProcess->getIncrementalErrorOutput())
-            ->explode("\n")
             ->each(function ($output) {
                 if (empty($debug = json_decode($output, true))) {
-                    return $this->error($output);
+                    return $this->info($output);
                 }
 
-                if ($debug['level'] == 'info'
-                    && Str::startsWith($debug['msg'], $this->option('host').' {')) {
-                    [$_, $duration, $statusCode, $method, $url] = explode(' ', $debug['msg']);
+                if ($debug['level'] == 'debug' && Str::contains($debug['msg'], 'http')) {
+                    [$statusCode, $method, $url] = explode(' ', $debug['msg']);
 
                     return $this->requestInfo([
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => (float) substr($duration, 1, -3),
+                        'duration' => (float) substr($debug['elapsed'], 0, -2),
                     ]);
+                }
+            });
+
+        Str::of($serverProcess->getIncrementalErrorOutput())
+            ->explode("\n")
+            ->each(function ($output) {
+                if (! Str::contains($output, ['DEBUG', 'INFO', 'WARN'])) {
+                    $this->error($output);
                 }
             });
     }
