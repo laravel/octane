@@ -52,8 +52,10 @@ class ServerProcessInspector
     {
         [
             'masterProcessId' => $masterProcessId,
+            'managerProcessId' => $managerProcessId
         ] = $this->serverStateFile->read();
 
-        return $this->dispatcher->terminate($masterProcessId, 15);
+        return $this->dispatcher->terminate($masterProcessId, 15)
+            && $this->dispatcher->terminate($managerProcessId, 15);
     }
 }
