@@ -40,9 +40,9 @@ class OnServerStart
             });
         }
 
-        $server->tick(1000, function () use ($server) {
+        $server->tick(1000, function () {
             foreach ($this->timerTable as $workerId => $row) {
-                if(time() - $row['time'] > 1){
+                if (time() - $row['time'] > 1) {
                     $this->timerTable->del($workerId);
 
                     \Swoole\Process::kill($row['worker_pid'], SIGKILL);
