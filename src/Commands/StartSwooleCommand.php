@@ -3,11 +3,9 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
-use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Swoole\ServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
-use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -43,79 +41,29 @@ class StartSwooleCommand extends Command
     /**
      * Handle the command.
      *
-     * @param  \Laravel\Octane\Swoole\ServerProcessInspector  $processInspector
+     * @param  \Laravel\Octane\Swoole\ServerProcessInspector  $inspector
      * @param  \Laravel\Octane\Swoole\ServerStateFile  $serverStateFile
      * @param  \Laravel\Octane\Swoole\SwooleExtension  $extension
      * @return int
      */
     public function handle(
-        ServerProcessInspector $processInspector,
+        ServerProcessInspector $inspector,
         ServerStateFile $serverStateFile,
         SwooleExtension $extension
     ) {
-        if ($processInspector->serverIsRunning()) {
-            $this->error('Swoole server is already running.');
+        if ($inspector->serverIsRunning()) {
+            $this->error('Server is already running.');
 
             return 1;
         }
 
         $this->writeServerStateFile($serverStateFile, $extension);
 
-        $serverProcess = tap(new Process([
+        $server = tap(new Process([
             (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
         ], realpath(__DIR__.'/../../bin'), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
-        $watcherProcess = $this->startWatcherProcess();
-
-        $this->writeServerStartMessage();
-
-        try {
-            while ($serverProcess->isRunning()) {
-                $this->writeServerProcessOutput($serverProcess);
-
-                if ($watcherProcess->isRunning() &&
-                    $watcherProcess->getIncrementalOutput()) {
-                    $this->info('Application change detected. Restarting workers…');
-
-                    $processInspector->reloadServer();
-                }
-
-                usleep(500 * 1000);
-            }
-
-            $this->writeServerProcessOutput($serverProcess);
-        } catch (ServerShutdownException $e) {
-            return 1;
-        } finally {
-            $this->callSilent('octane:stop', [
-                '--server' => 'swoole',
-            ]);
-
-            $watcherProcess->stop();
-        }
-
-        return $serverProcess->getExitCode();
-    }
-
-    /**
-     * Get the watcher process for the Swoole server.
-     *
-     * @return \Symfony\Component\Process\Process|object
-     */
-    protected function startWatcherProcess()
-    {
-        if (! $this->option('watch')) {
-            return new class {
-                public function __call($method, $parameters)
-                {
-                    return null;
-                }
-            };
-        }
-
-        return tap(new Process([
-            (new ExecutableFinder)->find('node'), 'file-watcher.js', base_path(),
-        ], realpath(__DIR__.'/../../bin'), null, null, null))->start();
+        return $this->runServer($server, $inspector, 'swoole');
     }
 
     /**
@@ -194,32 +142,14 @@ class StartSwooleCommand extends Command
     }
 
     /**
-     * Write the server start message to the console.
-     *
-     * @return void
-     */
-    protected function writeServerStartMessage()
-    {
-        $this->info('Server running…');
-
-        $this->output->writeln([
-            '',
-            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
-            '',
-            '  <fg=yellow>Use Ctrl+C to stop the server</>',
-            '',
-        ]);
-    }
-
-    /**
      * Write the server process output ot the console.
      *
-     * @param  \Symfony\Component\Process\Process  $serverProcess
+     * @param  \Symfony\Component\Process\Process  $server
      * @return void
      */
-    protected function writeServerProcessOutput($serverProcess)
+    protected function writeServerOutput($server)
     {
-        Str::of($serverProcess->getIncrementalOutput())
+        Str::of($server->getIncrementalOutput())
             ->explode("\n")
             ->filter()
             ->each(fn ($output) => is_array($stream = json_decode($output, true))
@@ -227,19 +157,13 @@ class StartSwooleCommand extends Command
                 : $this->info($output)
             );
 
-        Str::of($serverProcess->getIncrementalErrorOutput())
+        Str::of($server->getIncrementalErrorOutput())
             ->explode("\n")
             ->filter()
-            ->groupBy(fn ($output) => $output)
-            ->each(function ($group) {
-                is_array($stream = json_decode($output = $group->first(), true))
+            ->each(function ($output) {
+                is_array($stream = json_decode($output, true))
                     ? $this->handleStream($stream)
                     : $this->error($output);
-
-                if (($count = $group->count()) > 1) {
-                    $this->newLine();
-                    $this->line("  <fg=red;options=bold>↑</>   $count similar errors were reported.");
-                }
             });
     }
 }

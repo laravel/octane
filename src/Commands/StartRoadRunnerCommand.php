@@ -3,10 +3,8 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
-use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
-use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
 class StartRoadRunnerCommand extends Command
@@ -42,19 +40,19 @@ class StartRoadRunnerCommand extends Command
     /**
      * Handle the command.
      *
-     * @param  \Laravel\Octane\RoadRunner\ServerProcessInspector  $processInspector
+     * @param  \Laravel\Octane\RoadRunner\ServerProcessInspector  $inspector
      * @param  \Laravel\Octane\RoadRunner\ServerStateFile  $serverStateFile
      * @return int
      */
     public function handle(
-        ServerProcessInspector $processInspector,
+        ServerProcessInspector $inspector,
         ServerStateFile $serverStateFile
     ) {
         $this->ensureRoadRunnerPackageIsInstalled();
 
         $roadRunnerBinary = $this->ensureRoadRunnerBinaryIsInstalled();
 
-        if ($processInspector->serverIsRunning()) {
+        if ($inspector->serverIsRunning()) {
             $this->error('RoadRunner server is already running.');
 
             return 1;
@@ -64,7 +62,7 @@ class StartRoadRunnerCommand extends Command
 
         touch(base_path('.rr.yaml'));
 
-        $serverProcess = tap(new Process(array_filter([
+        $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
             '-o', 'server.command=php ./vendor/bin/roadrunner-worker',
@@ -79,63 +77,9 @@ class StartRoadRunnerCommand extends Command
             'serve',
         ]), base_path(), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
-        $watcherProcess = $this->startWatcherProcess();
+        $serverStateFile->writeProcessId($server->getPid());
 
-        while (! $serverProcess->isStarted()) {
-            sleep(1);
-        }
-
-        $serverStateFile->writeProcessId($serverProcess->getPid());
-
-        $this->writeServerStartMessage();
-
-        try {
-            while ($serverProcess->isRunning()) {
-                $this->writeServerProcessOutput($serverProcess);
-
-                if ($watcherProcess->isRunning() &&
-                    $watcherProcess->getIncrementalOutput()) {
-                    $this->info('Application change detected. Restarting workers…');
-
-                    $processInspector->reloadServer(base_path());
-                }
-
-                usleep(500 * 1000);
-            }
-
-            $this->writeServerProcessOutput($serverProcess);
-        } catch (ServerShutdownException $e) {
-            return 1;
-        } finally {
-            $this->callSilent('octane:stop', [
-                '--server' => 'roadrunner',
-            ]);
-
-            $watcherProcess->stop();
-        }
-
-        return $serverProcess->getExitCode();
-    }
-
-    /**
-     * Get the watcher process for the RoadRunner server.
-     *
-     * @return \Symfony\Component\Process\Process|object
-     */
-    protected function startWatcherProcess()
-    {
-        if (! $this->option('watch')) {
-            return new class {
-                public function __call($method, $parameters)
-                {
-                    return null;
-                }
-            };
-        }
-
-        return tap(new Process([
-            (new ExecutableFinder)->find('node'), 'file-watcher.js', base_path(),
-        ], realpath(__DIR__.'/../../bin'), null, null, null))->start();
+        return $this->runServer($server, $inspector, 'roadrunner');
     }
 
     /**
@@ -170,32 +114,14 @@ class StartRoadRunnerCommand extends Command
     }
 
     /**
-     * Write the server start message to the console.
-     *
-     * @return void
-     */
-    protected function writeServerStartMessage()
-    {
-        $this->info('Server running…');
-
-        $this->output->writeln([
-            '',
-            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
-            '',
-            '  <fg=yellow>Use Ctrl+C to stop the server</>',
-            '',
-        ]);
-    }
-
-    /**
      * Write the server process output to the console.
      *
-     * @param  \Symfony\Component\Process\Process  $serverProcess
+     * @param  \Symfony\Component\Process\Process  $server
      * @return void
      */
-    protected function writeServerProcessOutput($serverProcess)
+    protected function writeServerOutput($server)
     {
-        Str::of($serverProcess->getIncrementalOutput())
+        Str::of($server->getIncrementalOutput())
             ->explode("\n")
             ->filter()
             ->each(function ($output) {
@@ -219,7 +145,7 @@ class StartRoadRunnerCommand extends Command
                 }
             });
 
-        Str::of($serverProcess->getIncrementalErrorOutput())
+        Str::of($server->getIncrementalErrorOutput())
             ->explode("\n")
             ->filter()
             ->each(function ($output) {
