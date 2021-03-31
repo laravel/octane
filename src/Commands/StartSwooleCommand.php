@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
+use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Swoole\ServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
@@ -68,22 +69,30 @@ class StartSwooleCommand extends Command
 
         $this->writeServerStartMessage();
 
-        while ($serverProcess->isRunning()) {
-            $this->writeServerProcessOutput($serverProcess);
+        try {
+            while ($serverProcess->isRunning()) {
+                $this->writeServerProcessOutput($serverProcess);
 
-            if ($watcherProcess->isRunning() &&
-                $watcherProcess->getIncrementalOutput()) {
-                $this->info('Application change detected. Restarting workers…');
+                if ($watcherProcess->isRunning() &&
+                    $watcherProcess->getIncrementalOutput()) {
+                    $this->info('Application change detected. Restarting workers…');
 
-                $processInspector->reloadServer();
+                    $processInspector->reloadServer();
+                }
+
+                usleep(500 * 1000);
             }
 
-            usleep(500 * 1000);
+            $this->writeServerProcessOutput($serverProcess);
+        } catch (ServerShutdownException $e) {
+            return 1;
+        } finally {
+            $this->callSilent('octane:stop', [
+                '--server' => 'swoole',
+            ]);
+
+            $watcherProcess->stop();
         }
-
-        $this->writeServerProcessOutput($serverProcess);
-
-        $watcherProcess->stop();
 
         return $serverProcess->getExitCode();
     }

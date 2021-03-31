@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
+use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Symfony\Component\Process\ExecutableFinder;
@@ -88,22 +89,30 @@ class StartRoadRunnerCommand extends Command
 
         $this->writeServerStartMessage();
 
-        while ($serverProcess->isRunning()) {
-            $this->writeServerProcessOutput($serverProcess);
+        try {
+            while ($serverProcess->isRunning()) {
+                $this->writeServerProcessOutput($serverProcess);
 
-            if ($watcherProcess->isRunning() &&
-                $watcherProcess->getIncrementalOutput()) {
-                $this->info('Application change detected. Restarting workers…');
+                if ($watcherProcess->isRunning() &&
+                    $watcherProcess->getIncrementalOutput()) {
+                    $this->info('Application change detected. Restarting workers…');
 
-                $processInspector->reloadServer(base_path());
+                    $processInspector->reloadServer(base_path());
+                }
+
+                usleep(500 * 1000);
             }
 
-            usleep(500 * 1000);
+            $this->writeServerProcessOutput($serverProcess);
+        } catch (ServerShutdownException $e) {
+            return 1;
+        } finally {
+            $this->callSilent('octane:stop', [
+                '--server' => 'roadrunner',
+            ]);
+
+            $watcherProcess->stop();
         }
-
-        $this->writeServerProcessOutput($serverProcess);
-
-        $watcherProcess->stop();
 
         return $serverProcess->getExitCode();
     }

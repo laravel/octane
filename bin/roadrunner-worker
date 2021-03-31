@@ -43,7 +43,7 @@ while ($psr7Request = $psr7Client->waitRequest()) {
             new ApplicationFactory($basePath), $roadRunnerClient
         )))->boot();
     } catch (Throwable $e) {
-        Stream::throwable($e);
+        Stream::shutdown($e);
 
         exit(1);
     }

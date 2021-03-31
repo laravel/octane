@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Commands\Concerns;
 
+use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Exceptions\WorkerException;
 use Laravel\Octane\WorkerExceptionInspector;
 use NunoMaduro\Collision\Writer;
@@ -44,7 +45,7 @@ trait InteractsWithIO
      * @param  string  $foreground
      * @return void
      */
-    protected function label($string, $verbosity, $level, $background, $foreground)
+    public function label($string, $verbosity, $level, $background, $foreground)
     {
         if (! empty($string)) {
             $this->output->writeln([
@@ -138,17 +139,32 @@ trait InteractsWithIO
     }
 
     /**
+     * Write information about a "shutdown" throwable to the console.
+     *
+     * @param  array  $throwable
+     * @param  int|string|null  $verbosity
+     * @return void
+     */
+    public function shutdownInfo($throwable, $verbosity = null)
+    {
+        $this->throwableInfo($throwable, $verbosity);
+
+        throw new ServerShutdownException;
+    }
+
+    /**
      * Handle stream information from the worker.
      *
      * @param  array  $stream
      * @param  int|string|null  $verbosity
      * @return void
      */
-    protected function handleStream($stream, $verbosity = null)
+    public function handleStream($stream, $verbosity = null)
     {
         match ($stream['type']) {
             'request' => $this->requestInfo($stream, $verbosity),
             'throwable' => $this->throwableInfo($stream, $verbosity),
+            'shutdown' => $this->shutdownInfo($stream, $verbosity),
             default => $this->info(json_encode($stream, $verbosity))
         };
     }
