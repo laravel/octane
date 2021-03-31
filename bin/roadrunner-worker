@@ -14,7 +14,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Spiral\Goridge\Relay;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Spiral\RoadRunner\Worker as RoadRunnerWorker;
-use Throwable;
 
 $basePath = require __DIR__.'/bootstrap.php';
 
