@@ -15,6 +15,7 @@ class Stream
     public static function throwable(Throwable $throwable)
     {
         fwrite(STDERR, json_encode([
+            'type' => 'throwable',
             'class' => get_class($throwable),
             'code' => $throwable->getCode(),
             'file' => $throwable->getFile(),
@@ -36,6 +37,7 @@ class Stream
     public static function request(string $method, string $url, int $statusCode, float $duration)
     {
         fwrite(STDOUT, json_encode([
+            'type' => 'request',
             'method' => $method,
             'url' => $url,
             'statusCode' => $statusCode,

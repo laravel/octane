@@ -35,17 +35,19 @@ $roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Worker(
     new UploadedFileFactory,
 ));
 
-try {
-    $worker = tap((new Worker(
-        new ApplicationFactory($basePath), $roadRunnerClient
-    )))->boot();
-} catch (Throwable $e) {
-    Stream::throwable($e);
-
-    exit(1);
-}
+$worker = null;
 
 while ($psr7Request = $psr7Client->waitRequest()) {
+    try {
+        $worker = $worker ?: tap((new Worker(
+            new ApplicationFactory($basePath), $roadRunnerClient
+        )))->boot();
+    } catch (Throwable $e) {
+        Stream::throwable($e);
+
+        exit(1);
+    }
+
     if (! $psr7Request instanceof ServerRequestInterface) {
         break;
     }

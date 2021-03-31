@@ -136,4 +136,20 @@ trait InteractsWithIO
             ),
         );
     }
+
+    /**
+     * Handle stream information from the worker.
+     *
+     * @param  array  $stream
+     * @param  int|string|null  $verbosity
+     * @return void
+     */
+    protected function handleStream($stream, $verbosity = null)
+    {
+        match ($stream['type']) {
+            'request' => $this->requestInfo($stream, $verbosity),
+            'throwable' => $this->throwableInfo($stream, $verbosity),
+            default => $this->info(json_encode($stream, $verbosity))
+        };
+    }
 }
