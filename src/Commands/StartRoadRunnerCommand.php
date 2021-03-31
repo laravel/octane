@@ -108,7 +108,7 @@ class StartRoadRunnerCommand extends Command
             return 1;
         } finally {
             $this->callSilent('octane:stop', [
-                '--server' => 'swoole',
+                '--server' => 'roadrunner',
             ]);
 
             $watcherProcess->stop();
