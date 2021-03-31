@@ -78,6 +78,7 @@ require_once __DIR__.'/WorkerState.php';
 $workerState = new WorkerState;
 
 $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
+$workerState->tables = require __DIR__.'/createSwooleTables.php';
 
 $server->on('workerstart', fn (Server $server, $workerId) =>
     (fn ($basePath) => (new OnWorkerStart(

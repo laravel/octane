@@ -149,4 +149,22 @@ return [
         'bytes' => 10000,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Octane Swoole Tables
+    |--------------------------------------------------------------------------
+    |
+    | While using Swoole, you may define additional tables as required by the
+    | application. These tables can be used to store data that needs to be
+    | quickly accessed by other workers on the particular Swoole server.
+    |
+    */
+
+    'tables' => [
+        'example:1000' => [
+            'name' => 'string:1000',
+            'votes' => 'int',
+        ],
+    ],
+
 ];
