@@ -149,7 +149,7 @@ trait InteractsWithIO
     {
         $this->throwableInfo($throwable, $verbosity);
 
-        throw new ServerShutdownException();
+        throw new ServerShutdownException;
     }
 
     /**
