@@ -7,21 +7,22 @@ use Throwable;
 class Stream
 {
     /**
-     * Stream the given shutdown throwable to stderr.
+     * Stream the given request information to stdout.
      *
-     * @param  \Throwable  $throwable
+     * @param  string  $method
+     * @param  string  $url
+     * @param  int  $statusCode
+     * @param  float  $duration
      * @return void
      */
-    public static function shutdown(Throwable $throwable)
+    public static function request(string $method, string $url, int $statusCode, float $duration)
     {
-        fwrite(STDERR, json_encode([
-            'type' => 'shutdown',
-            'class' => get_class($throwable),
-            'code' => $throwable->getCode(),
-            'file' => $throwable->getFile(),
-            'line' => $throwable->getLine(),
-            'message' => $throwable->getMessage(),
-            'trace' => array_slice($throwable->getTrace(), 0, 2),
+        fwrite(STDOUT, json_encode([
+            'type' => 'request',
+            'method' => $method,
+            'url' => $url,
+            'statusCode' => $statusCode,
+            'duration' => $duration,
         ])."\n");
     }
 
@@ -45,22 +46,21 @@ class Stream
     }
 
     /**
-     * Stream the given request information to stdout.
+     * Stream the given shutdown throwable to stderr.
      *
-     * @param  string  $method
-     * @param  string  $url
-     * @param  int  $statusCode
-     * @param  float  $duration
+     * @param  \Throwable  $throwable
      * @return void
      */
-    public static function request(string $method, string $url, int $statusCode, float $duration)
+    public static function shutdown(Throwable $throwable)
     {
-        fwrite(STDOUT, json_encode([
-            'type' => 'request',
-            'method' => $method,
-            'url' => $url,
-            'statusCode' => $statusCode,
-            'duration' => $duration,
+        fwrite(STDERR, json_encode([
+            'type' => 'shutdown',
+            'class' => get_class($throwable),
+            'code' => $throwable->getCode(),
+            'file' => $throwable->getFile(),
+            'line' => $throwable->getLine(),
+            'message' => $throwable->getMessage(),
+            'trace' => array_slice($throwable->getTrace(), 0, 2),
         ])."\n");
     }
 }
