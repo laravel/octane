@@ -5,9 +5,7 @@ use Swoole\Table;
 $tables = [];
 
 foreach ($serverState['octaneConfig']['tables'] ?? [] as $name => $columns) {
-    $nameSegments = explode(':', $name);
-
-    $table = new Table($nameSegments[1] ?? 1000);
+    $table = new Table(explode(':', $name)[1] ?? 1000);
 
     foreach ($columns ?? [] as $columnName => $column) {
         $table->column($columnName, match (explode(':', $column)[0] ?? 'string') {
@@ -19,7 +17,7 @@ foreach ($serverState['octaneConfig']['tables'] ?? [] as $name => $columns) {
 
     $table->create();
 
-    $tables[$nameSegments[0]] = $table;
+    $tables[explode(':', $name)[0]] = $table;
 }
 
 return $tables;
