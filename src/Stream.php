@@ -7,6 +7,25 @@ use Throwable;
 class Stream
 {
     /**
+     * Stream the given shutdown throwable to stderr.
+     *
+     * @param  \Throwable  $throwable
+     * @return void
+     */
+    public static function shutdown(Throwable $throwable)
+    {
+        fwrite(STDERR, json_encode([
+            'type' => 'shutdown',
+            'class' => get_class($throwable),
+            'code' => $throwable->getCode(),
+            'file' => $throwable->getFile(),
+            'line' => $throwable->getLine(),
+            'message' => $throwable->getMessage(),
+            'trace' => array_slice($throwable->getTrace(), 0, 2),
+        ])."\n");
+    }
+
+    /**
      * Stream the given throwable to stderr.
      *
      * @param  \Throwable  $throwable

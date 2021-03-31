@@ -53,7 +53,7 @@ class OnWorkerStart
                 WorkerState::class => $this->workerState,
             ]);
         } catch (Throwable $e) {
-            Stream::throwable($e);
+            Stream::shutdown($e);
 
             $server->shutdown();
         }
