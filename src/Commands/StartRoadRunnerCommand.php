@@ -197,11 +197,15 @@ class StartRoadRunnerCommand extends Command
                 if ($debug['level'] == 'debug' && Str::contains($debug['msg'], 'http')) {
                     [$statusCode, $method, $url] = explode(' ', $debug['msg']);
 
+                    $elapsed = Str::endsWith($debug['elapsed'], 'ms')
+                        ? substr($debug['elapsed'], 0, -2)
+                        : substr($debug['elapsed'], 0, -1) * 1000;
+
                     return $this->requestInfo([
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => (float) substr($debug['elapsed'], 0, -2),
+                        'duration' => (float) $elapsed,
                     ]);
                 }
             });
