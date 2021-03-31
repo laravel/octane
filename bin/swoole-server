@@ -15,7 +15,7 @@ use Swoole\Timer;
 
 ini_set('display_errors', 'stderr');
 
-require_once __DIR__ . '/../src/Stream.php';
+require_once __DIR__.'/../src/Stream.php';
 
 $bootstrap = fn ($serverState) => require __DIR__.'/bootstrap.php';
 
