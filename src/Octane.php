@@ -24,7 +24,7 @@ class Octane
     public function table(string $table): Table
     {
         if (! app()->bound(Server::class)) {
-            throw new Exception("Tables may only be accessed when using the Swoole server.");
+            throw new Exception('Tables may only be accessed when using the Swoole server.');
         }
 
         $tables = app(WorkerState::class)->tables;
