@@ -11,6 +11,7 @@ class OnServerStart
         protected ServerStateFile $serverStateFile,
         protected SwooleExtension $extension,
         protected string $appName,
+        protected \Swoole\Table $timerTable,
         protected bool $shouldTick = true,
         protected bool $shouldSetProcessName = true
     ) {
@@ -38,5 +39,15 @@ class OnServerStart
                 $server->task('octane-tick');
             });
         }
+
+        $server->tick(1000, function () use ($server) {
+            foreach ($this->timerTable as $workerId => $row) {
+                if(time() - $row['time'] > 1){
+                    $this->timerTable->del($workerId);
+
+                    \Swoole\Process::kill($row['worker_pid'], SIGKILL);
+                }
+            }
+        });
     }
 }
