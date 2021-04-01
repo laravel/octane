@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
+use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Symfony\Component\Process\ExecutableFinder;
@@ -61,8 +62,6 @@ class StartRoadRunnerCommand extends Command
 
         $this->writeServerStateFile($serverStateFile);
 
-        $this->writeServerStartMessage();
-
         touch(base_path('.rr.yaml'));
 
         $serverProcess = tap(new Process(array_filter([
@@ -88,22 +87,32 @@ class StartRoadRunnerCommand extends Command
 
         $serverStateFile->writeProcessId($serverProcess->getPid());
 
-        while ($serverProcess->isRunning()) {
-            $this->writeServerProcessOutput($serverProcess);
+        $this->writeServerStartMessage();
 
-            if ($watcherProcess->isRunning() &&
-                $watcherProcess->getIncrementalOutput()) {
-                $this->info('Application change detected. Restarting workers…');
+        try {
+            while ($serverProcess->isRunning()) {
+                $this->writeServerProcessOutput($serverProcess);
 
-                $processInspector->reloadServer(base_path());
+                if ($watcherProcess->isRunning() &&
+                    $watcherProcess->getIncrementalOutput()) {
+                    $this->info('Application change detected. Restarting workers…');
+
+                    $processInspector->reloadServer(base_path());
+                }
+
+                usleep(500 * 1000);
             }
 
-            usleep(500 * 1000);
+            $this->writeServerProcessOutput($serverProcess);
+        } catch (ServerShutdownException $e) {
+            return 1;
+        } finally {
+            $this->callSilent('octane:stop', [
+                '--server' => 'roadrunner',
+            ]);
+
+            $watcherProcess->stop();
         }
-
-        $this->writeServerProcessOutput($serverProcess);
-
-        $watcherProcess->stop();
 
         return $serverProcess->getExitCode();
     }
@@ -190,11 +199,15 @@ class StartRoadRunnerCommand extends Command
             ->explode("\n")
             ->filter()
             ->each(function ($output) {
-                if (empty($debug = json_decode($output, true))) {
+                if (! is_array($debug = json_decode($output, true))) {
                     return $this->info($output);
                 }
 
-                if ($debug['level'] == 'debug' && Str::contains($debug['msg'], 'http')) {
+                if (is_array($stream = json_decode($debug['msg'], true))) {
+                    return $this->handleStream($stream);
+                }
+
+                if ($debug['level'] == 'debug' && isset($debug['remote'])) {
                     [$statusCode, $method, $url] = explode(' ', $debug['msg']);
 
                     return $this->requestInfo([

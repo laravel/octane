@@ -15,6 +15,8 @@ use Swoole\Timer;
 
 ini_set('display_errors', 'stderr');
 
+require_once __DIR__.'/../src/Stream.php';
+
 $bootstrap = fn ($serverState) => require __DIR__.'/bootstrap.php';
 
 /*
@@ -51,6 +53,7 @@ $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnS
     new ServerStateFile($serverStateFile),
     new SwooleExtension,
     $serverState['appName'],
+    $serverState['octaneConfig']['max_execution_time'] ?? 0,
     $timerTable,
     $serverState['octaneConfig']['tick'] ?? true
 ))($server));
@@ -80,6 +83,7 @@ $workerState = new WorkerState;
 
 $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 $workerState->timerTable = $timerTable;
+$workerState->tables = require __DIR__.'/createSwooleTables.php';
 
 $server->on('workerstart', fn (Server $server, $workerId) =>
     (fn ($basePath) => (new OnWorkerStart(
@@ -101,10 +105,12 @@ $server->on('workerstart', fn (Server $server, $workerId) =>
 $server->on('request', function ($request, $response) use ($server, $workerState, $serverState) {
     $workerState->lastRequestTime = microtime(true);
 
-    $workerState->timerTable->set($workerState->workerId, [
-        'worker_pid' => $workerState->workerPid,
-        'time' => time(),
-    ]);
+    if ($workerState->timerTable) {
+        $workerState->timerTable->set($workerState->workerId, [
+            'worker_pid' => $workerState->workerPid,
+            'time' => time(),
+        ]);
+    }
 
     $workerState->worker->handle(...$workerState->client->marshalRequest(new RequestContext([
         'swooleRequest' => $request,
@@ -113,7 +119,9 @@ $server->on('request', function ($request, $response) use ($server, $workerState
         'octaneConfig' => $serverState['octaneConfig'],
     ])));
 
-    $workerState->timerTable->del($workerState->workerId);
+    if ($workerState->timerTable) {
+        $workerState->timerTable->del($workerState->workerId);
+    }
 });
 
 /*

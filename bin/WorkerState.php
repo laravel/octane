@@ -10,6 +10,7 @@ class WorkerState
     public $client;
     public $cacheTable;
     public $timerTable;
+    public $tables = [];
     public $tickTimerId;
     public $lastRequestTime;
 }

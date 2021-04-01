@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
+use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Swoole\ServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
@@ -60,30 +61,38 @@ class StartSwooleCommand extends Command
 
         $this->writeServerStateFile($serverStateFile, $extension);
 
-        $this->writeServerStartMessage();
-
         $serverProcess = tap(new Process([
             (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
         ], realpath(__DIR__.'/../../bin'), ['APP_BASE_PATH' => base_path()], null, null))->start();
 
         $watcherProcess = $this->startWatcherProcess();
 
-        while ($serverProcess->isRunning()) {
-            $this->writeServerProcessOutput($serverProcess);
+        $this->writeServerStartMessage();
 
-            if ($watcherProcess->isRunning() &&
-                $watcherProcess->getIncrementalOutput()) {
-                $this->info('Application change detected. Restarting workers…');
+        try {
+            while ($serverProcess->isRunning()) {
+                $this->writeServerProcessOutput($serverProcess);
 
-                $processInspector->reloadServer();
+                if ($watcherProcess->isRunning() &&
+                    $watcherProcess->getIncrementalOutput()) {
+                    $this->info('Application change detected. Restarting workers…');
+
+                    $processInspector->reloadServer();
+                }
+
+                usleep(500 * 1000);
             }
 
-            usleep(500 * 1000);
+            $this->writeServerProcessOutput($serverProcess);
+        } catch (ServerShutdownException $e) {
+            return 1;
+        } finally {
+            $this->callSilent('octane:stop', [
+                '--server' => 'swoole',
+            ]);
+
+            $watcherProcess->stop();
         }
-
-        $this->writeServerProcessOutput($serverProcess);
-
-        $watcherProcess->stop();
 
         return $serverProcess->getExitCode();
     }
@@ -213,18 +222,19 @@ class StartSwooleCommand extends Command
         Str::of($serverProcess->getIncrementalOutput())
             ->explode("\n")
             ->filter()
-            ->each(fn ($output) => ! is_array($request = json_decode($output, true))
-                ? $this->info($output)
-                : $this->requestInfo($request));
+            ->each(fn ($output) => is_array($stream = json_decode($output, true))
+                ? $this->handleStream($stream)
+                : $this->info($output)
+            );
 
         Str::of($serverProcess->getIncrementalErrorOutput())
             ->explode("\n")
             ->filter()
             ->groupBy(fn ($output) => $output)
             ->each(function ($group) {
-                ! is_array($throwable = json_decode($output = $group->first(), true))
-                    ? $this->error($output)
-                    : $this->throwableInfo($throwable);
+                is_array($stream = json_decode($output = $group->first(), true))
+                    ? $this->handleStream($stream)
+                    : $this->error($output);
 
                 if (($count = $group->count()) > 1) {
                     $this->newLine();

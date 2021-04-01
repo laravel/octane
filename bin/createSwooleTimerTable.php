@@ -2,7 +2,7 @@
 
 use Swoole\Table;
 
-//if ($serverState['octaneConfig']['cache'] ?? false) {
+if ($serverState['octaneConfig']['max_execution_time'] ?? false) {
     $timerTable = new Table(1000);
 
     $timerTable->column('worker_pid', Table::TYPE_INT, 1000);
@@ -11,4 +11,6 @@ use Swoole\Table;
     $timerTable->create();
 
     return $timerTable;
-//}
+}
+
+return null;

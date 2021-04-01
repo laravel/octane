@@ -4,6 +4,7 @@ namespace Laravel\Octane\Swoole\Handlers;
 
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Swoole\Table;
 
 class OnServerStart
 {
@@ -11,7 +12,8 @@ class OnServerStart
         protected ServerStateFile $serverStateFile,
         protected SwooleExtension $extension,
         protected string $appName,
-        protected \Swoole\Table $timerTable,
+        protected int $maxExecutionTime,
+        protected ?Table $timerTable,
         protected bool $shouldTick = true,
         protected bool $shouldSetProcessName = true
     ) {
@@ -40,14 +42,16 @@ class OnServerStart
             });
         }
 
-        $server->tick(1000, function () use ($server) {
-            foreach ($this->timerTable as $workerId => $row) {
-                if(time() - $row['time'] > 1){
-                    $this->timerTable->del($workerId);
+        if ($this->maxExecutionTime) {
+            $server->tick(1000, function () use ($server) {
+                foreach ($this->timerTable as $workerId => $row) {
+                    if (time() - $row['time'] > $this->maxExecutionTime) {
+                        $this->timerTable->del($workerId);
 
-                    \Swoole\Process::kill($row['worker_pid'], SIGKILL);
+                        \Swoole\Process::kill($row['worker_pid'], SIGKILL);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
