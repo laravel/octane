@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Commands\Concerns;
 
-use Illuminate\Support\Str;
 use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Exceptions\WorkerException;
 use Laravel\Octane\WorkerExceptionInspector;
@@ -11,16 +10,6 @@ use NunoMaduro\Collision\Writer;
 trait InteractsWithIO
 {
     use InteractsWithTerminal;
-
-    /**
-     * A list of error messages that should be ignored.
-     *
-     * @var array
-     */
-    protected $ignoreErrors = [
-        'stop signal received, grace timeout is: ',
-        'exit forced',
-    ];
 
     /**
      * Write a string as information output.
@@ -43,9 +32,7 @@ trait InteractsWithIO
      */
     public function error($string, $verbosity = null)
     {
-        if (! Str::contains($string, $this->ignoreErrors)) {
-            $this->label($string, $verbosity, 'ERROR', 'red', 'white');
-        }
+        $this->label($string, $verbosity, 'ERROR', 'red', 'white');
     }
 
     /**

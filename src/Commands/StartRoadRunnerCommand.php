@@ -5,12 +5,11 @@ namespace Laravel\Octane\Commands;
 use Illuminate\Support\Str;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
-use Symfony\Component\Console\Command\SignalableCommandInterface;
 use Symfony\Component\Process\Process;
 
-class StartRoadRunnerCommand extends Command implements SignalableCommandInterface
+class StartRoadRunnerCommand extends Command
 {
-    use Concerns\InstallsRoadRunnerDependencies, Concerns\InteractsWithServers;
+    use Concerns\InstallsRoadRunnerDependencies;
 
     /**
      * The command's signature.

@@ -2,12 +2,8 @@
 
 namespace Laravel\Octane\Commands;
 
-use Symfony\Component\Console\Command\SignalableCommandInterface;
-
-class StartCommand extends Command implements SignalableCommandInterface
+class StartCommand extends Command
 {
-    use Concerns\InteractsWithServers;
-
     /**
      * The command's signature.
      *
