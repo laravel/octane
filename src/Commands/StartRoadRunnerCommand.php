@@ -70,6 +70,7 @@ class StartRoadRunnerCommand extends Command
             '-o', 'server.command=php ./vendor/bin/roadrunner-worker',
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
+            '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir=public',
             '-o', 'http.middleware=static',
             '-o', app()->environment('local') ? 'logs.mode=production' : 'logs.mode=none',
@@ -170,6 +171,16 @@ class StartRoadRunnerCommand extends Command
     }
 
     /**
+     * Get the maximum number of seconds that workers should be allowed to execute a single request.
+     *
+     * @return string
+     */
+    protected function maxExecutionTime()
+    {
+        return config('octane.max_execution_time', '30').'s';
+    }
+
+    /**
      * Write the server start message to the console.
      *
      * @return void
@@ -210,11 +221,15 @@ class StartRoadRunnerCommand extends Command
                 if ($debug['level'] == 'debug' && isset($debug['remote'])) {
                     [$statusCode, $method, $url] = explode(' ', $debug['msg']);
 
+                    $elapsed = Str::endsWith($debug['elapsed'], 'ms')
+                        ? substr($debug['elapsed'], 0, -2)
+                        : substr($debug['elapsed'], 0, -1) * 1000;
+
                     return $this->requestInfo([
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => (float) substr($debug['elapsed'], 0, -2),
+                        'duration' => (float) $elapsed,
                     ]);
                 }
             });
