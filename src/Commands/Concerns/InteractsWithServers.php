@@ -66,18 +66,6 @@ trait InteractsWithServers
     }
 
     /**
-     * Stop the server.
-     *
-     * @return void
-     */
-    protected function stopServer()
-    {
-        if ($this->stopServerUsing) {
-            $this->stopServerUsing->__invoke();
-        }
-    }
-
-    /**
      * Start the watcher process for the server.
      *
      * @return \Symfony\Component\Process\Process|object
@@ -96,6 +84,18 @@ trait InteractsWithServers
         return tap(new Process([
             (new ExecutableFinder)->find('node'), 'file-watcher.js', base_path(),
         ], realpath(__DIR__.'/../../../bin'), null, null, null))->start();
+    }
+
+    /**
+     * Stop the server.
+     *
+     * @return void
+     */
+    protected function stopServer()
+    {
+        if ($this->stopServerUsing) {
+            $this->stopServerUsing->__invoke();
+        }
     }
 
     /**
