@@ -163,7 +163,7 @@ class StartRoadRunnerCommand extends Command
     }
 
     /**
-     * Get the number of workers that should be started.
+     * Get the maximum number of seconds that workers should be allowed to execute a single request.
      *
      * @return string
      */
