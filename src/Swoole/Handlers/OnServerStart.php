@@ -43,7 +43,7 @@ class OnServerStart
         }
 
         if ($this->maxExecutionTime > 0) {
-            $server->tick(1000, function () use ($server) {
+            $server->tick(1000, function () {
                 foreach ($this->timerTable as $workerId => $row) {
                     if (time() - $row['time'] > $this->maxExecutionTime) {
                         $this->timerTable->del($workerId);
