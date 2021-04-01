@@ -72,6 +72,7 @@ class StartRoadRunnerCommand extends Command
             '-o', 'server.command=php ./vendor/bin/roadrunner-worker',
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
+            '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir=public',
             '-o', 'http.middleware=static',
             '-o', 'logs.mode=production',
@@ -159,6 +160,16 @@ class StartRoadRunnerCommand extends Command
         return $this->option('workers') == 'auto'
                             ? 0
                             : $this->option('workers', 0);
+    }
+
+    /**
+     * Get the number of workers that should be started.
+     *
+     * @return string
+     */
+    protected function maxExecutionTime()
+    {
+        return config('octane.max_execution_time', '30').'s';
     }
 
     /**
