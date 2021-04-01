@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Swoole\Handlers;
 
+use Laravel\Octane\Swoole\Actions\EnsureRequestsDontExceedMaxExecutionTime;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
 
@@ -11,6 +12,8 @@ class OnServerStart
         protected ServerStateFile $serverStateFile,
         protected SwooleExtension $extension,
         protected string $appName,
+        protected int $maxExecutionTime,
+        protected $timerTable,
         protected bool $shouldTick = true,
         protected bool $shouldSetProcessName = true
     ) {
@@ -36,6 +39,14 @@ class OnServerStart
         if ($this->shouldTick) {
             $server->tick(1000, function () use ($server) {
                 $server->task('octane-tick');
+            });
+        }
+
+        if ($this->maxExecutionTime > 0) {
+            $server->tick(1000, function () {
+                (new EnsureRequestsDontExceedMaxExecutionTime(
+                    $this->extension, $this->timerTable, $this->maxExecutionTime
+                ))();
             });
         }
     }
