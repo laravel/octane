@@ -2,9 +2,9 @@
 
 namespace Laravel\Octane\Swoole\Handlers;
 
+use Laravel\Octane\Swoole\Actions\EnsureRequestsDontExceedMaxExecutionTime;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
-use Swoole\Table;
 
 class OnServerStart
 {
@@ -13,7 +13,7 @@ class OnServerStart
         protected SwooleExtension $extension,
         protected string $appName,
         protected int $maxExecutionTime,
-        protected ?Table $timerTable,
+        protected $timerTable,
         protected bool $shouldTick = true,
         protected bool $shouldSetProcessName = true
     ) {
@@ -44,13 +44,9 @@ class OnServerStart
 
         if ($this->maxExecutionTime > 0) {
             $server->tick(1000, function () {
-                foreach ($this->timerTable as $workerId => $row) {
-                    if (time() - $row['time'] > $this->maxExecutionTime) {
-                        $this->timerTable->del($workerId);
-
-                        \Swoole\Process::kill($row['worker_pid'], SIGKILL);
-                    }
-                }
+                (new EnsureRequestsDontExceedMaxExecutionTime(
+                    $this->extension, $this->timerTable, $this->maxExecutionTime
+                ))();
             });
         }
     }

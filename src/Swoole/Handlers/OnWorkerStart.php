@@ -29,7 +29,6 @@ class OnWorkerStart
     {
         $this->workerState->workerId = $workerId;
         $this->workerState->workerPid = posix_getpid();
-
         $this->workerState->worker = $this->bootWorker($server);
 
         $this->dispatchServerTickTaskEverySecond($server);

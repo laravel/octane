@@ -8,8 +8,8 @@ class WorkerState
     public $workerPid;
     public $worker;
     public $client;
-    public $cacheTable;
     public $timerTable;
+    public $cacheTable;
     public $tables = [];
     public $tickTimerId;
     public $lastRequestTime;
