@@ -9,6 +9,8 @@ use Symfony\Component\Process\Process;
 trait InteractsWithServers
 {
     /**
+     * Run the given server process.
+     *
      * @param  \Symfony\Component\Process\Process  $server
      * @param  \Laravel\Octane\Swoole\ServerProcessInspector|\Laravel\Octane\RoadRunner\ServerProcessInspector  $inspector
      * @param  string  $type
@@ -20,7 +22,7 @@ trait InteractsWithServers
             sleep(1);
         }
 
-        $this->writeServerRunning();
+        $this->writeServerRunningMessage();
 
         $watcher = $this->startServerWatcher();
 
@@ -78,7 +80,7 @@ trait InteractsWithServers
      *
      * @return void
      */
-    protected function writeServerRunning()
+    protected function writeServerRunningMessage()
     {
         $this->info('Server running…');
 
