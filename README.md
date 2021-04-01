@@ -180,11 +180,11 @@ $this->app->singleton(Service::class, function ($app) {
 $service->method($request->input('name'));
 ```
 
-**Note:** It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and routes closures.
+**Note:** It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
 
 ### General Memory Leaks
 
-Remember, Octane keeps your application in memory between requests; therefore, adding data to a statically maintained array will result in a memory leak. For example, the following controller has a memory leak. Each request to the application will continue to add data to the static `$data` array:
+Remember, Octane keeps your application in memory between requests; therefore, adding data to a statically maintained array will result in a memory leak. For example, the following controller has a memory leak since each request to the application will continue to add data to the static `$data` array:
 
 ```php
 use App\Service;
@@ -203,6 +203,58 @@ public function index(Request $request)
 
     // ...
 }
+```
+
+### Concurrent Tasks
+
+When using Swoole, you may execute operations concurrently via light-weight background tasks. You may accomplish this using Octane's `concurrently` method. You may combine this method with PHP array destructuring to retrieve the results of each operation:
+
+```php
+use App\User;
+use App\Server;
+use Laravel\Octane\Facades\Octane;
+
+[$users, $servers] = Octane::concurrently([
+    fn () => User::all(),
+    fn () => Server::all(),
+]);
+```
+
+### Ticks / Intervals
+
+When using Swoole, you may register "tick" operations that will be executed every specified number of seconds. You may register "tick" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval. In this example, we will register a closure to be invoked every 10 seconds:
+
+```php
+Octane::tick('simple-ticker', fn () => ray('Ticking...'))
+        ->seconds(10);
+```
+
+Using the `immediate` method, you may instruct Octane to immediately invoke the tick callback when the Octane server initially boots, and every N seconds thereafter:
+
+```php
+Octane::tick('simple-ticker', fn () => ray('Ticking...'))
+        ->seconds(10)
+        ->immediate();
+```
+
+### The Octane Cache
+
+When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. This cache driver is powered by [Swoole Tables](https://www.swoole.co.uk/docs/modules/swoole-table). All data stored in the cache is available to all workers on the server. However, the cached data will be flushed when the server is restarted:
+
+```php
+Cache::store('octane')->put('framework', 'Laravel', 30);
+```
+
+#### Cache Intervals
+
+In addition to the typical methods provided by Laravel's cache system, the Octane cache driver features interval based caches. These caches are automatically refreshed at the specified interval. For example, the following cache will be refreshed every five seconds:
+
+```php
+use Illuminate\Support\Str;
+
+Cache::store('octane')->interval('random', function () {
+    return Str::random(10);
+}, seconds: 5)
 ```
 
 ## Contributing
