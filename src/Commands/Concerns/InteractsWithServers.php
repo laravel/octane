@@ -9,6 +9,13 @@ use Symfony\Component\Process\Process;
 trait InteractsWithServers
 {
     /**
+     * The callable used to stop the server, if any.
+     *
+     * @var \Closure|null
+     */
+    protected $stopServerUsing;
+
+    /**
      * Run the given server process.
      *
      * @param  \Symfony\Component\Process\Process  $server
@@ -25,6 +32,16 @@ trait InteractsWithServers
         $this->writeServerRunningMessage();
 
         $watcher = $this->startServerWatcher();
+
+        $this->stopServerUsing = function () use ($type, $watcher) {
+            $watcher->stop();
+
+            $this->callSilent('octane:stop', [
+                '--server' => $type,
+            ]);
+
+            $this->stopServerUsing = null;
+        };
 
         try {
             while ($server->isRunning()) {
@@ -44,11 +61,7 @@ trait InteractsWithServers
         } catch (ServerShutdownException $e) {
             return 1;
         } finally {
-            $this->callSilent('octane:stop', [
-                '--server' => $type,
-            ]);
-
-            $watcher->stop();
+            $this->stopServer();
         }
 
         return $server->getExitCode();
@@ -76,6 +89,18 @@ trait InteractsWithServers
     }
 
     /**
+     * Stop the server.
+     *
+     * @return void
+     */
+    protected function stopServer()
+    {
+        if ($this->stopServerUsing) {
+            $this->stopServerUsing->__invoke();
+        }
+    }
+
+    /**
      * Write the server start "message" to the console.
      *
      * @return void
@@ -91,5 +116,25 @@ trait InteractsWithServers
             '  <fg=yellow>Use Ctrl+C to stop the server</>',
             '',
         ]);
+    }
+
+    /**
+     * Returns the list of signals to subscribe.
+     *
+     * @return array
+     */
+    public function getSubscribedSignals(): array
+    {
+        return [SIGINT, SIGTERM];
+    }
+
+    /**
+     * The method will be called when the application is signaled.
+     *
+     * @param int $signal
+     */
+    public function handleSignal(int $signal): void
+    {
+        $this->stopServer();
     }
 }
