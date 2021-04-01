@@ -239,11 +239,13 @@ Octane::tick('simple-ticker', fn () => ray('Ticking...'))
 
 ### The Octane Cache
 
-When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. This cache driver is powered by [Swoole Tables](https://www.swoole.co.uk/docs/modules/swoole-table). All data stored in the cache is available to all workers on the server. However, the cached data will be flushed when the server is restarted:
+When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. This cache driver is powered by [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). All data stored in the cache is available to all workers on the server. However, the cached data will be flushed when the server is restarted:
 
 ```php
 Cache::store('octane')->put('framework', 'Laravel', 30);
 ```
+
+**Note:** The maximum number of entries allowed in the Octane cache may be defined in your application's `octane` configuration file.
 
 #### Cache Intervals
 
@@ -256,6 +258,36 @@ Cache::store('octane')->interval('random', function () {
     return Str::random(10);
 }, seconds: 5)
 ```
+
+### Tables
+
+When using Swoole, you may define and interact with your own arbitrary [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). Swoole tables provide extreme performance throughput and the data in these tables can be accessed by all workers on the server. However, the data within them will be lost when the server is restarted.
+
+Tables should be defined within the `tables` configuration array of your application's `octane` configuration file. An example table that allows a maximum of 1000 rows is already configured for you. The maximum size of string columns may be configured by specifying the column size after the column type as seen below:
+
+```php
+'tables' => [
+    'example:1000' => [
+        'name' => 'string:1000',
+        'votes' => 'int',
+    ],
+],
+```
+
+To access a table, you may use the `Octane::table` method:
+
+```php
+use Laravel\Octane\Facades\Octane;
+
+Octane::table('example')->set('uuid', [
+    'name' => 'Nuno Maduro',
+    'votes' => 1000,
+]);
+
+return Octane::table('example')->get('uuid');
+```
+
+**Note:** The column types supported by Swoole tables are: `string`, `int`, and `float`.
 
 ## Contributing
 
