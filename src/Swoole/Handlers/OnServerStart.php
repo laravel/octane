@@ -42,7 +42,7 @@ class OnServerStart
             });
         }
 
-        if ($this->maxExecutionTime) {
+        if ($this->maxExecutionTime > 0) {
             $server->tick(1000, function () use ($server) {
                 foreach ($this->timerTable as $workerId => $row) {
                     if (time() - $row['time'] > $this->maxExecutionTime) {

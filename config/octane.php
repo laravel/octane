@@ -138,6 +138,8 @@ return [
     | Maximum Execution Time
     |--------------------------------------------------------------------------
     |
+    | (info) 0 means no maximum limit
+    |
     */
 
     'max_execution_time' => 30,
