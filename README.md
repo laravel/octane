@@ -39,7 +39,27 @@ If you plan to use the Swoole application server to serve your Laravel Octane ap
 pecl install swoole
 ```
 
-Alternatively, you may use [Laravel Sail](https://laravel.com/docs/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default.
+#### Swoole Via Laravel Sail
+
+Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](https://laravel.com/docs/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+
+```bash
+php artisan sail:publish
+```
+
+Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
+
+```ini
+command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80
+```
+
+Next, build your Sail images and start your Sail application:
+
+```bash
+./vendor/bin/sail build
+
+./vendor/bind/sail up
+```
 
 #### RoadRunner
 
