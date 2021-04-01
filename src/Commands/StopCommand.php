@@ -47,6 +47,8 @@ class StopCommand extends Command
         $inspector = app(SwooleServerProcessInspector::class);
 
         if (! $inspector->serverIsRunning()) {
+            app(SwooleServerStateFile::class)->delete();
+
             $this->error('Swoole server is not running.');
 
             return 1;
@@ -71,6 +73,8 @@ class StopCommand extends Command
         $inspector = app(RoadRunnerServerProcessInspector::class);
 
         if (! $inspector->serverIsRunning()) {
+            app(RoadRunnerServerStateFile::class)->delete();
+
             $this->error('RoadRunner server is not running.');
 
             return 1;
