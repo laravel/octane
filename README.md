@@ -53,12 +53,10 @@ Next, update the `command` directive of your application's `docker/supervisord.c
 command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80
 ```
 
-Next, build your Sail images and start your Sail application:
+Next, build your Sail images:
 
 ```bash
 ./vendor/bin/sail build
-
-./vendor/bind/sail up
 ```
 
 #### RoadRunner
