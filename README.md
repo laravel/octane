@@ -9,7 +9,7 @@
 
 ## Introduction
 
-Laravel Octane supercharges your application's performance by serving your application using high-powered application servers, including [Swoole](https://swoole.co.uk) and [RoadRunner](https://roadrunner.dev).
+Laravel Octane supercharges your application's performance by serving your application using high-powered application servers, including [Swoole](https://swoole.co.uk) and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it memory, and then feeds it requests at supersonic speeds.
 
 ## Documentation
 
