@@ -17,7 +17,7 @@ Laravel Octane supercharges your application's performance by serving your appli
 
 ### Package Support
 
-We are in the process of updating our first-party packages to ensure Octane compatibility. You can find a table of our progress below:
+We are in the process of updating our first-party packages to ensure Octane compatibility. You can find a table of our progress below. You must be using the latest tagged release of these libraries in order to receive Octane compatibility:
 
 Package | Status
 ------------ | -------------
