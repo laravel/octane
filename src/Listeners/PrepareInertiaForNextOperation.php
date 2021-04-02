@@ -14,11 +14,11 @@ class PrepareInertiaForNextOperation
      */
     public function handle($event)
     {
-        if (! $this->app->resolved(ResponseFactory::class)) {
+        if (! $event->sandbox->resolved(ResponseFactory::class)) {
             return;
         }
 
-        $factory = $this->app->make(ResponseFactory::class);
+        $factory = $event->sandbox->make(ResponseFactory::class);
 
         if (method_exists($factory, 'flushShared')) {
             $factory->flushShared();
