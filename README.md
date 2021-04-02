@@ -24,9 +24,9 @@ Package | Status
 Breeze | ✅ Operational
 Cashier | ✅ Operational
 Dusk | ✅ Operational
-Fortify | ❓ Unknown
+Fortify | ✅ Operational
 Horizon UI | ❓ Unknown
-Jetstream Inertia | 👷‍♀️ In Progress
+Jetstream Inertia | ✅ Operational
 Jetstream Livewire | 👷‍♀️ In Progress
 Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
