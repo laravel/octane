@@ -124,6 +124,8 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToViewFactory::class);
         $this->app->singleton(Listeners\GiveNewRequestInstanceToApplication::class);
         $this->app->singleton(Listeners\GiveNewRequestInstanceToPaginator::class);
+        $this->app->singleton(Listeners\PrepareScoutForNextOperation::class);
+        $this->app->singleton(Listeners\PrepareSocialiteForNextOperation::class);
         $this->app->singleton(Listeners\StopWorkerIfNecessary::class);
         $this->app->singleton(Listeners\WriteExceptionToStderr::class);
     }
