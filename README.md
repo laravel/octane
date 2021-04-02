@@ -32,7 +32,7 @@ Livewire | ❓ Unknown
 Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
 Sanctum | ❓ Unknown
-Scout | ❓ Unknown
+Scout | 👷‍♀️ In Progress
 Socialite | 👷‍♀️ In Progress
 Spark | ❓ Unknown
 Telescope | ❓ Unknown
