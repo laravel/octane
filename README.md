@@ -30,7 +30,7 @@ Jetstream Inertia | ✅ Operational
 Jetstream Livewire | 👷‍♀️ In Progress
 Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
-Sanctum | ❓ Unknown
+Sanctum | ✅ Operational
 Scout | ✅ Operational
 Socialite | ✅ Operational
 Spark | ❓ Unknown
