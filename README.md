@@ -15,6 +15,26 @@ Laravel Octane supercharges your application's performance by serving your appli
 
 **IMPORTANT: Laravel Octane is within a beta period. It should only be used for local development and testing in order to improve the quality of the library and resolve any existing bugs. We are still in the process of ensuring Octane compatibility with all first-party Laravel packages.**
 
+### Package Support
+
+We are in the process of updating our first-party packages to ensure Octane compatibility. You can find a table of our progress below:
+
+Package | Status
+------------ | -------------
+Breeze | ✅ Operational
+Cashier | ❓ Unknown
+Dusk | ✅ Operational
+Fortify | ❓ Unknown
+Horizon UI | ❓ Unknown
+Jetstream | ❓ Unknown
+Nova | 👷‍♀️ In Progress
+Passport | ❓ Unknown
+Sanctum | ❓ Unknown
+Scout | ❓ Unknown
+Socialite | ❓ Unknown
+Spark | ❓ Unknown
+Telescope | ❓ Unknown
+
 ### Installation
 
 Octane may be installed via the Composer package manager:
