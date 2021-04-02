@@ -1,6 +1,6 @@
 {
     "name": "laravel/octane",
-    "description": "octane",
+    "description": "Supercharge your Laravel application's performance.",
     "keywords": ["laravel", "octane", "roadrunner"],
     "license": "MIT",
     "support": {
