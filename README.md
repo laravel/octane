@@ -22,7 +22,7 @@ We are in the process of updating our first-party packages to ensure Octane comp
 Package | Status
 ------------ | -------------
 Breeze | ✅ Operational
-Cashier | ❓ Unknown
+Cashier | ✅ Operational
 Dusk | ✅ Operational
 Fortify | ❓ Unknown
 Horizon UI | ❓ Unknown
