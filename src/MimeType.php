@@ -796,7 +796,7 @@ class MimeType
      * @param  string  $extension
      * @return string
      */
-    protected static function getMimeTypeFromExtension($extension)
+    protected static function getMimeTypeFromExtension(string $extension): string
     {
         return self::$mimes[$extension] ?? 'application/octet-stream';
     }

@@ -13,7 +13,7 @@ class SwooleExtension
      * @param  string  $signal
      * @return bool
      */
-    public function dispatchProcessSignal(int $processId, $signal)
+    public function dispatchProcessSignal(int $processId, string $signal): bool
     {
         return Process::kill($processId, $signal);
     }

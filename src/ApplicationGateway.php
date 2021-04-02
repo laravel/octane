@@ -45,7 +45,7 @@ class ApplicationGateway
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return void
      */
-    public function terminate(Request $request, Response $response)
+    public function terminate(Request $request, Response $response): void
     {
         $this->sandbox->make(Kernel::class)->terminate($request, $response);
 

@@ -2,19 +2,12 @@
 
 namespace Laravel\Octane;
 
+use Throwable;
 use Whoops\Exception\Inspector;
 
 class WorkerExceptionInspector extends Inspector
 {
-    /**
-     * Create a worker exception inspector instance.
-     *
-     * @param  \Throwable  $throwable
-     * @param  string  $class
-     * @param  array  $trace
-     * @return void
-     */
-    public function __construct($throwable, protected $class, protected $trace)
+    public function __construct(Throwable $throwable, protected string $class, protected array $trace)
     {
         parent::__construct($throwable);
     }

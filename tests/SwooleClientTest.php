@@ -119,7 +119,7 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
-        $swooleResponse = Mockery::mock('stdClass');
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
@@ -137,7 +137,7 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
-        $swooleResponse = Mockery::spy('stdClass');
+        $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
         $app = $this->createApplication();
         $request = Request::create('/', 'GET');
@@ -155,7 +155,7 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
-        $swooleResponse = Mockery::spy('stdClass');
+        $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
         $app = $this->createApplication();
         $app['config']['app.debug'] = true;

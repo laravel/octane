@@ -52,7 +52,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
      * @param  array  $tasks
      * @return void
      */
-    public function dispatch(array $tasks)
+    public function dispatch(array $tasks): void
     {
         if (! app()->bound(Server::class)) {
             throw new InvalidArgumentException('Tasks can only be dispatched within a Swoole server context / web request.');

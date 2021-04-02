@@ -21,5 +21,5 @@ interface DispatchesTasks
      * @param  array  $tasks
      * @return void
      */
-    public function dispatch(array $tasks);
+    public function dispatch(array $tasks): void;
 }

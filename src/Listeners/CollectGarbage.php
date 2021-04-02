@@ -10,7 +10,7 @@ class CollectGarbage
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $garbage = (int) $event->app->make('config')->get('octane.garbage');
 

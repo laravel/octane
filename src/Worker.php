@@ -149,7 +149,7 @@ class Worker implements WorkerContract
      *
      * @return void
      */
-    public function handleTick()
+    public function handleTick(): void
     {
         CurrentApplication::set($sandbox = clone $this->app);
 
@@ -196,7 +196,7 @@ class Worker implements WorkerContract
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return void
      */
-    protected function invokeRequestHandledCallbacks($request, $response, $sandbox)
+    protected function invokeRequestHandledCallbacks($request, $response, $sandbox): void
     {
         foreach ($this->requestHandledCallbacks as $callback) {
             $callback($request, $response, $sandbox);

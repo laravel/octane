@@ -43,7 +43,7 @@ class Octane
      * @param  bool  $debug
      * @return string
      */
-    public static function formatExceptionForClient(Throwable $e, $debug = false): string
+    public static function formatExceptionForClient(Throwable $e, bool $debug = false): string
     {
         return $debug ? (string) $e : 'Internal server error.';
     }

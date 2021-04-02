@@ -227,7 +227,7 @@ class OctaneStore implements Store
     public function flush()
     {
         foreach ($this->table as $key => $record) {
-            if (strpos($key, 'interval-') === 0) {
+            if (str_starts_with($key, 'interval-')) {
                 continue;
             }
 

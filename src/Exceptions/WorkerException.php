@@ -6,19 +6,10 @@ use Exception;
 
 class WorkerException extends Exception
 {
-    /**
-     * Create a new worker exception instance.
-     *
-     * @param  string  $message
-     * @param  int  $code
-     * @param  string  $file
-     * @param  int  $line
-     * @return void
-     */
-    public function __construct($message, $code, $file, $line)
+    public function __construct(string $message, int $code, string $file, int $line)
     {
-        $this->message = $message;
-        $this->code = $code;
+        parent::__construct($message, $code);
+
         $this->file = $file;
         $this->line = $line;
     }
