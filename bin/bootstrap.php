@@ -2,6 +2,8 @@
 
 ini_set('display_errors', 'stderr');
 
+$_ENV['APP_RUNNING_IN_CONSOLE'] = false;
+
 /*
 |--------------------------------------------------------------------------
 | Find Application Base Path
