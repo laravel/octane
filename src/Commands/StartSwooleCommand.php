@@ -64,7 +64,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
 
         $server = tap(new Process([
             (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
-        ], realpath(__DIR__.'/../../bin'), ['APP_BASE_PATH' => base_path()], null, null))->start();
+        ], realpath(__DIR__.'/../../bin'), ['APP_BASE_PATH' => base_path(), 'LARAVEL_OCTANE' => 1], null, null))->start();
 
         return $this->runServer($server, $inspector, 'swoole');
     }

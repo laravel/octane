@@ -77,7 +77,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             'serve',
-        ]), base_path(), ['APP_BASE_PATH' => base_path()], null, null))->start();
+        ]), base_path(), ['APP_BASE_PATH' => base_path(), 'LARAVEL_OCTANE' => 1], null, null))->start();
 
         $serverStateFile->writeProcessId($server->getPid());
 
