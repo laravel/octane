@@ -33,7 +33,7 @@ Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
 Sanctum | ❓ Unknown
 Scout | ❓ Unknown
-Socialite | ❓ Unknown
+Socialite | 👷‍♀️ In Progress
 Spark | ❓ Unknown
 Telescope | ❓ Unknown
 
