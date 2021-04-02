@@ -25,7 +25,7 @@ Breeze | ✅ Operational
 Cashier | ✅ Operational
 Dusk | ✅ Operational
 Fortify | ✅ Operational
-Horizon UI | ❓ Unknown
+Horizon UI | ✅ Operational
 Jetstream Inertia | ✅ Operational
 Jetstream Livewire | 👷‍♀️ In Progress
 Nova | 👷‍♀️ In Progress
