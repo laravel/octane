@@ -44,6 +44,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
 
             // First-Party Packages...
+            \Laravel\Octane\Listeners\PrepareInertiaForNextOperation::class,
             \Laravel\Octane\Listeners\PrepareScoutForNextOperation::class,
             \Laravel\Octane\Listeners\PrepareSocialiteForNextOperation::class,
         ];
