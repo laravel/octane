@@ -5,7 +5,7 @@
 
 namespace Symfony\Component\HttpFoundation\File;
 
-    function is_uploaded_file($filename)
-    {
-        return true;
-    }
+function is_uploaded_file($filename)
+{
+    return true;
+}
