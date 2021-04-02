@@ -23,7 +23,7 @@ Octane may be installed via the Composer package manager:
 composer require laravel/octane
 ```
 
-After installing Octane, you should publish its configuration file using the `vendor:publish` Artisan command:
+After installing Octane, you can optionally publish its configuration file using the `vendor:publish` Artisan command:
 
 ```bash
 php artisan vendor:publish --tag=octane-config
