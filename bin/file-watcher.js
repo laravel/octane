@@ -12,6 +12,7 @@ const watcher = chokidar.watch(
         basePath + '/resources',
         basePath + '/routes',
         basePath + '/composer.lock',
+        basePath + '/.env',
     ],
     {
         ignoreInitial: true,
