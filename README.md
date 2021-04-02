@@ -31,7 +31,7 @@ Jetstream Livewire | 👷‍♀️ In Progress
 Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
 Sanctum | ❓ Unknown
-Scout | 👷‍♀️ In Progress
+Scout | ✅ Operational
 Socialite | 👷‍♀️ In Progress
 Spark | ❓ Unknown
 Telescope | ❓ Unknown
