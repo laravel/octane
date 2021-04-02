@@ -79,7 +79,7 @@ class ApplicationFactory
      * @param  array  $bootstrappers
      * @return array
      */
-    protected function injectBootstrapperBefore(string $before, string $inject, array $bootstrappers)
+    protected function injectBootstrapperBefore(string $before, string $inject, array $bootstrappers): array
     {
         $injectIndex = array_search($before, $bootstrappers, true);
 
@@ -94,6 +94,7 @@ class ApplicationFactory
      * Warm the application with pre-resolved, cached services that persist across requests.
      *
      * @param  \Illuminate\Foundation\Application  $app
+     * @param  array  $services
      * @return \Illuminate\Foundation\Application
      */
     public function warm(Application $app, array $services = []): Application

@@ -14,7 +14,7 @@ class CurrentApplication
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
-    public static function set(Application $app)
+    public static function set(Application $app): void
     {
         $app->instance('app', $app);
         $app->instance(Container::class, $app);

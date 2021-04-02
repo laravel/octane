@@ -10,6 +10,7 @@ use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\MimeType;
 use Laravel\Octane\Octane;
 use Laravel\Octane\RequestContext;
+use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -109,7 +110,7 @@ class SwooleClient implements Client, ServesStaticFiles
      * @param  \Swoole\Http\Response  $response
      * @return void
      */
-    public function sendResponseHeaders(Response $response, $swooleResponse): void
+    public function sendResponseHeaders(Response $response, SwooleResponse $swooleResponse): void
     {
         if (! $response->headers->has('Date')) {
             $response->setDate(DateTime::createFromFormat('U', time()));
@@ -149,18 +150,24 @@ class SwooleClient implements Client, ServesStaticFiles
      * @param  \Swoole\Http\Response  $response
      * @return void
      */
-    protected function sendResponseContent(Response $response, $swooleResponse)
+    protected function sendResponseContent(Response $response, SwooleResponse $swooleResponse): void
     {
         if ($response instanceof StreamedResponse && property_exists($response, 'output')) {
-            return $swooleResponse->end($response->output);
+            $swooleResponse->end($response->output);
+
+            return;
         } elseif ($response instanceof BinaryFileResponse) {
-            return $swooleResponse->sendfile($response->getFile()->getPathname());
+            $swooleResponse->sendfile($response->getFile()->getPathname());
+
+            return;
         }
 
         $content = $response->getContent();
 
         if (strlen($content) <= 8192) {
-            return $swooleResponse->end($content);
+            $swooleResponse->end($content);
+
+            return;
         }
 
         foreach (str_split($content, 8192) as $chunk) {

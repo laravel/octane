@@ -54,7 +54,7 @@ class SignalDispatcher
      * @param  string  $signal
      * @return bool
      */
-    public function signal(int $processId, $signal): bool
+    public function signal(int $processId, string $signal): bool
     {
         return $this->extension->dispatchProcessSignal($processId, $signal);
     }

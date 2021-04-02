@@ -4,7 +4,6 @@ namespace Laravel\Octane\Contracts;
 
 use Illuminate\Http\Request;
 use Laravel\Octane\RequestContext;
-use Symfony\Component\HttpFoundation\Response;
 
 interface Worker
 {

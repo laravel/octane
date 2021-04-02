@@ -28,8 +28,8 @@ class SequentialTaskDispatcher implements DispatchesTasks
      * @param  array  $tasks
      * @return void
      */
-    public function dispatch(array $tasks)
+    public function dispatch(array $tasks): void
     {
-        return $this->resolve($tasks);
+        $this->resolve($tasks);
     }
 }

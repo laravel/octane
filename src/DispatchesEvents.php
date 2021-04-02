@@ -14,7 +14,7 @@ trait DispatchesEvents
      * @param  mixed  $event
      * @return void
      */
-    public function dispatchEvent(Application $app, $event)
+    public function dispatchEvent(Application $app, $event): void
     {
         if ($app->bound(Dispatcher::class)) {
             $app[Dispatcher::class]->dispatch($event);

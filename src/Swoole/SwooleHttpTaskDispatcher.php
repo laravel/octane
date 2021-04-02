@@ -55,7 +55,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
      * @param  array  $tasks
      * @return void
      */
-    public function dispatch(array $tasks)
+    public function dispatch(array $tasks): void
     {
         $tasks = collect($tasks)->mapWithKeys(function ($task, $key) {
             return [$key => $task instanceof Closure
@@ -68,7 +68,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
                 'tasks' => Crypt::encryptString(serialize($tasks)),
             ]);
         } catch (ConnectionException $e) {
-            return $this->fallbackDispatcher->dispatch($tasks);
+            $this->fallbackDispatcher->dispatch($tasks);
         }
     }
 }

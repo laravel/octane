@@ -33,7 +33,7 @@ class ConvertSwooleRequestToIlluminateRequest
             $swooleRequest->rawContent(),
         );
 
-        if (strpos($request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded') === 0 &&
+        if (str_starts_with($request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded') &&
             in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'PATCH', 'DELETE'])) {
             parse_str($request->getContent(), $data);
 

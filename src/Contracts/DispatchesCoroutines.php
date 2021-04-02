@@ -11,5 +11,5 @@ interface DispatchesCoroutines
      * @param  int  $waitSeconds
      * @return array
      */
-    public function resolve(array $coroutines, int $waitSeconds = -1);
+    public function resolve(array $coroutines, int $waitSeconds = -1): array;
 }
