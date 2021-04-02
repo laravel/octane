@@ -39,6 +39,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToPipelineHub::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToQueueManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToRouter::class,
+            \Laravel\Octane\Listeners\GiveNewApplicationInstanceToSocialiteManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToValidationFactory::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToViewFactory::class,
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
