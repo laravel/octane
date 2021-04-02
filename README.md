@@ -27,7 +27,7 @@ Dusk | ✅ Operational
 Fortify | ❓ Unknown
 Horizon UI | ❓ Unknown
 Inertia | ❓ Unknown
-Jetstream | ❓ Unknown
+Jetstream | 👷‍♀️ In Progress
 Livewire | ❓ Unknown
 Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
