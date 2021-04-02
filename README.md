@@ -26,9 +26,8 @@ Cashier | ❓ Unknown
 Dusk | ✅ Operational
 Fortify | ❓ Unknown
 Horizon UI | ❓ Unknown
-Inertia | ❓ Unknown
-Jetstream | 👷‍♀️ In Progress
-Livewire | ❓ Unknown
+Jetstream Inertia | 👷‍♀️ In Progress
+Jetstream Livewire | 👷‍♀️ In Progress
 Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
 Sanctum | ❓ Unknown
