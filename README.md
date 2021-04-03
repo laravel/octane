@@ -34,7 +34,7 @@ Sanctum | ✅ Operational
 Scout | ✅ Operational
 Socialite | ✅ Operational
 Spark | ❓ Unknown
-Telescope | 👷‍♀️ In Progress
+Telescope | ✅ Operational
 
 ### Installation
 
