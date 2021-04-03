@@ -19,6 +19,8 @@ trait ProvidesConcurrencySupport
      * @param  array  $tasks
      * @param  int  $waitMilliseconds
      * @return array
+     *
+     * @throws \Laravel\Octane\Exceptions\TaskException
      */
     public function concurrently(array $tasks, int $waitMilliseconds = 3000)
     {
