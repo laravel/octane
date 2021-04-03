@@ -45,7 +45,7 @@ class Stream
             'file' => $fallbackTrace['file'] ?? $throwable->getFile(),
             'line' => $fallbackTrace['line'] ?? (int) $throwable->getLine(),
             'message' => $throwable->getMessage(),
-            'trace' => array_slice($throwable->getTrace(), 0, 10),
+            'trace' => array_slice($throwable->getTrace(), 0, 2),
         ])."\n");
     }
 
