@@ -24,12 +24,16 @@ class TaskExceptionResult
      */
     public static function from($throwable)
     {
+        $fallbackTrace = str_starts_with($throwable->getFile(), 'closure://')
+            ? collect($throwable->getTrace())->whereNotNull('file')->first()
+            : null;
+
         return new static(
             get_class($throwable),
             $throwable->getMessage(),
             (int) $throwable->getCode(),
-            $throwable->getFile(),
-            (int) $throwable->getLine(),
+            $fallbackTrace['file'] ?? $throwable->getFile(),
+            $fallbackTrace['line'] ?? (int) $throwable->getLine(),
         );
     }
 
