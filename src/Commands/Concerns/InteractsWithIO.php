@@ -141,9 +141,9 @@ trait InteractsWithIO
             new WorkerExceptionInspector(
                 new WorkerException(
                     $throwable['message'],
-                    $throwable['code'],
+                    (int) $throwable['code'],
                     $throwable['file'],
-                    $throwable['line'],
+                    (int) $throwable['line'],
                 ),
                 $throwable['class'],
                 $throwable['trace'],
