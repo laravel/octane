@@ -17,7 +17,7 @@ class ReportException
     {
         if ($event->exception) {
             tap($event->sandbox, function ($sandbox) use ($event) {
-                if ($sandbox->environment('local')) {
+                if ($sandbox->environment('local', 'testing')) {
                     Stream::throwable($event->exception);
                 }
 

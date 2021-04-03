@@ -84,7 +84,7 @@ class OnWorkerStart
     protected function streamRequestsToConsole($server)
     {
         $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox) {
-            if (! $sandbox->environment('local')) {
+            if (! $sandbox->environment('local', 'testing')) {
                 return;
             }
 
