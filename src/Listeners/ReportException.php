@@ -16,13 +16,9 @@ class ReportException
     public function handle($event)
     {
         if ($event->exception) {
-            tap($event->sandbox, function ($sandbox) use ($event) {
-                if ($sandbox->environment('local')) {
-                    Stream::throwable($event->exception);
-                }
+            Stream::throwable($event->exception);
 
-                $sandbox[ExceptionHandler::class]->report($event->exception);
-            });
+            $event->sandbox[ExceptionHandler::class]->report($event->exception);
         }
     }
 }
