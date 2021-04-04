@@ -163,10 +163,24 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         Str::of($server->getIncrementalErrorOutput())
             ->explode("\n")
             ->filter()
-            ->each(function ($output) {
-                is_array($stream = json_decode($output, true))
+            ->groupBy(fn ($output) => $output)
+            ->each(function ($group) {
+                is_array($stream = json_decode($group->first(), true))
                     ? $this->handleStream($stream)
                     : $this->error($output);
+
+                if (($count = $group->count()) > 1) {
+                    $this->newLine();
+
+                    $count--;
+
+                    $this->line(sprintf('  <fg=red;options=bold>↑</>   %s %s',
+                        $count,
+                        $count > 1
+                            ? 'similar errors were reported.'
+                            : 'similar error was reported.'
+                    ));
+                }
             });
     }
 }
