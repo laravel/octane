@@ -27,7 +27,7 @@ Dusk | ✅ Operational
 Fortify | ✅ Operational
 Horizon UI | ✅ Operational
 Jetstream Inertia | ✅ Operational
-Jetstream Livewire | 👷‍♀️ In Progress
+Jetstream Livewire | ✅ Operational
 Nova | 👷‍♀️ In Progress
 Passport | ❓ Unknown
 Sanctum | ✅ Operational
