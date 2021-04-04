@@ -9,15 +9,15 @@
 
 ## Introduction
 
-Laravel Octane supercharges your application's performance by serving your application using high-powered application servers, including [Swoole](https://swoole.co.uk) and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it memory, and then feeds it requests at supersonic speeds.
+Laravel Octane supercharges your application's performance by serving your application using high-powered application servers, including [Swoole](https://swoole.co.uk) and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it memory, and then feeds its requests at supersonic speeds.
 
 ## Documentation
 
-**IMPORTANT: Laravel Octane is within a beta period. It should only be used for local development and testing in order to improve the quality of the library and resolve any existing bugs. We are still in the process of ensuring Octane compatibility with all first-party Laravel packages.**
+**IMPORTANT: Laravel Octane is within a beta period. It should only be used for local development and testing to improve the quality of the library and resolve any existing bugs. We are still in the process of ensuring Octane compatibility with all first-party Laravel packages.**
 
 ### Package Support
 
-We are in the process of updating our first-party packages to ensure Octane compatibility. You can find a table of our progress below. You must be using the latest tagged release of these libraries in order to receive Octane compatibility:
+We are in the process of updating our first-party packages to ensure Octane compatibility. You can find a table of our progress below. You must be using the latest tagged release of these libraries to receive Octane compatibility:
 
 Package | Status
 ------------ | -------------
@@ -50,7 +50,15 @@ After installing Octane, you should publish its configuration file using the `ve
 php artisan vendor:publish --tag=octane-config
 ```
 
+Finally, choose the application server, `roadrunner` or `swoole`, in your `config/octane.php` configuration file.
+
 ### Server Prerequisites
+
+> **Requires [PHP 8.0+](https://php.net/releases/)**
+
+#### RoadRunner
+
+RoadRunner is powered by the RoadRunner binary, which is built using Go. The first time you start a RoadRunner based Octane server, Octane will offer to download and install the RoadRunner binary for you.
 
 #### Swoole
 
@@ -60,7 +68,7 @@ If you plan to use the Swoole application server to serve your Laravel Octane ap
 pecl install swoole
 ```
 
-#### Swoole Via Laravel Sail
+##### Swoole Via Laravel Sail
 
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](https://laravel.com/docs/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
@@ -79,10 +87,6 @@ Next, build your Sail images:
 ```bash
 ./vendor/bin/sail build
 ```
-
-#### RoadRunner
-
-RoadRunner is powered by the RoadRunner binary, which is built using Go. The first time you start a RoadRunner based Octane server, Octane will offer to download and install the RoadRunner binary for you.
 
 ### Serving Your Application
 
@@ -142,7 +146,7 @@ Since Octane boots your application once and keeps it in memory while serving re
 
 In light of this, you should take special care when injecting the application service container or request into any object's constructor. By doing so, that object may have a  stale version of the container or request on subsequent requests.
 
-Octane will automatically handle resetting any first-party framework state between requests. However, Octane does not always know how to reset global state created by your application. Therefore, you should be aware of how to build your application in a way that is Octane friendly. Below, we will discuss the most common situations that may cause problems while using Octane.
+Octane will automatically handle resetting any first-party framework state between requests. However, Octane does not always know how to reset the global state created by your application. Therefore, you should be aware of how to build your application in a way that is Octane friendly. Below, we will discuss the most common situations that may cause problems while using Octane.
 
 #### Container Injection
 
@@ -248,6 +252,8 @@ public function index(Request $request)
 
 ### Concurrent Tasks
 
+> **Requires [Swoole](#swoole)**
+
 When using Swoole, you may execute operations concurrently via light-weight background tasks. You may accomplish this using Octane's `concurrently` method. You may combine this method with PHP array destructuring to retrieve the results of each operation:
 
 ```php
@@ -262,6 +268,8 @@ use Laravel\Octane\Facades\Octane;
 ```
 
 ### Ticks / Intervals
+
+> **Requires [Swoole](#swoole)**
 
 When using Swoole, you may register "tick" operations that will be executed every specified number of seconds. You may register "tick" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval. In this example, we will register a closure to be invoked every 10 seconds:
 
@@ -279,6 +287,8 @@ Octane::tick('simple-ticker', fn () => ray('Ticking...'))
 ```
 
 ### The Octane Cache
+
+> **Requires [Swoole](#swoole)**
 
 When using Swoole, you may leverage the Octane cache driver, which provides read and write speeds of up to 2 million operations per second. This cache driver is powered by [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). All data stored in the cache is available to all workers on the server. However, the cached data will be flushed when the server is restarted:
 
@@ -301,6 +311,8 @@ Cache::store('octane')->interval('random', function () {
 ```
 
 ### Tables
+
+> **Requires [Swoole](#swoole)**
 
 When using Swoole, you may define and interact with your own arbitrary [Swoole tables](https://www.swoole.co.uk/docs/modules/swoole-table). Swoole tables provide extreme performance throughput and the data in these tables can be accessed by all workers on the server. However, the data within them will be lost when the server is restarted.
 
