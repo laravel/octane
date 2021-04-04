@@ -50,7 +50,7 @@ After installing Octane, you should publish its configuration file using the `ve
 php artisan vendor:publish --tag=octane-config
 ```
 
-Finally, choose the application server, `roadrunner` or `swoole`, in your `config/octane.php` configuration file.
+Finally, choose the application server (`roadrunner` or `swoole`) in your `config/octane.php` configuration file.
 
 ### Server Prerequisites
 
