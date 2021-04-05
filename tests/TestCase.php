@@ -6,6 +6,8 @@ use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneServiceProvider;
+use Laravel\Octane\Testing\Fakes\FakeClient;
+use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
@@ -19,7 +21,7 @@ class TestCase extends BaseTestCase
 
         $app->register(new OctaneServiceProvider($app));
 
-        $worker = new Fakes\FakeWorker($appFactory, $roadRunnerClient = new Fakes\FakeClient($requests));
+        $worker = new FakeWorker($appFactory, $roadRunnerClient = new FakeClient($requests));
         $app->bind(Client::class, fn () => $roadRunnerClient);
 
         $worker->boot();

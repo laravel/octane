@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Octane\Tests\Fakes;
+namespace Laravel\Octane\Testing\Fakes;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Octane\Tests\Fakes;
+namespace Laravel\Octane\Testing\Fakes;
 
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Worker;
