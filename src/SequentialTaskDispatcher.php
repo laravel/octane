@@ -18,6 +18,7 @@ class SequentialTaskDispatcher implements DispatchesTasks
      * @return array
      *
      * @throws \Laravel\Octane\Exceptions\TaskException
+     * @throws \Laravel\Octane\Exceptions\TaskTimeoutException
      */
     public function resolve(array $tasks, int $waitMilliseconds = 1): array
     {
