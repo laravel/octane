@@ -2,7 +2,9 @@
 
 namespace Laravel\Octane\Tests;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
+use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\SequentialTaskDispatcher;
 use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
 use Orchestra\Testbench\TestCase;
@@ -66,6 +68,36 @@ class SwooleHttpTaskDispatcherTest extends TestCase
             'first' => fn () => 1,
             'second' => fn () => 2,
         ]));
+    }
+
+    /** @test */
+    public function test_tasks_propagates_original_exceptions()
+    {
+        $dispatcher = new SwooleHttpTaskDispatcher(
+            '127.0.0.1',
+            '8000',
+            new SequentialTaskDispatcher,
+        );
+
+        $exception = null;
+        $result = null;
+
+        try {
+            $result = $dispatcher->resolve([
+                'first' => fn () => 1,
+                'second' => fn () => throw new Exception('Something went wrong.', 128),
+            ]);
+        } catch (Exception $exception) {
+            //
+        }
+
+        $this->assertNull($result);
+        $this->assertInstanceOf(TaskException::class, $exception);
+        $this->assertEquals(Exception::class, $exception->getClass());
+        $this->assertEquals('Something went wrong.', $exception->getMessage());
+        $this->assertEquals(128, $exception->getCode());
+        $this->assertEquals(__FILE__, $exception->getFile());
+        $this->assertEquals(88, $exception->getLine());
     }
 
     /** @doesNotPerformAssertions @test */

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Queue\SerializableClosure;
 use InvalidArgumentException;
 use Laravel\Octane\Contracts\DispatchesTasks;
+use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Swoole\Http\Server;
 
 class SwooleTaskDispatcher implements DispatchesTasks
@@ -18,6 +19,8 @@ class SwooleTaskDispatcher implements DispatchesTasks
      * @param  array  $tasks
      * @param  int  $waitMilliseconds
      * @return array
+     *
+     * @throws \Laravel\Octane\Exceptions\TaskException
      */
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array
     {
@@ -39,6 +42,10 @@ class SwooleTaskDispatcher implements DispatchesTasks
 
         foreach ($tasks as $key => $task) {
             $tasks[$key] = $results[$i] ?? false;
+
+            if ($tasks[$key] instanceof TaskExceptionResult) {
+                throw $tasks[$key]->getOriginal();
+            }
 
             $i++;
         }

@@ -3,6 +3,8 @@
 namespace Laravel\Octane;
 
 use Laravel\Octane\Contracts\DispatchesTasks;
+use Laravel\Octane\Exceptions\TaskExceptionResult;
+use Throwable;
 
 class SequentialTaskDispatcher implements DispatchesTasks
 {
@@ -14,11 +16,21 @@ class SequentialTaskDispatcher implements DispatchesTasks
      * @param  array  $tasks
      * @param  int  $waitMilliseconds
      * @return array
+     *
+     * @throws \Laravel\Octane\Exceptions\TaskException
      */
     public function resolve(array $tasks, int $waitMilliseconds = 1): array
     {
         return collect($tasks)->mapWithKeys(
-            fn ($task, $key) => [$key => $task()]
+            fn ($task, $key) => [$key => (function () use ($task) {
+                try {
+                    return $task();
+                } catch (Throwable $e) {
+                    report($e);
+
+                    throw TaskExceptionResult::from($e)->getOriginal();
+                }
+            })()]
         )->all();
     }
 

@@ -34,12 +34,16 @@ class Stream
      */
     public static function throwable(Throwable $throwable)
     {
+        $fallbackTrace = str_starts_with($throwable->getFile(), 'closure://')
+            ? collect($throwable->getTrace())->whereNotNull('file')->first()
+            : null;
+
         fwrite(STDERR, json_encode([
             'type' => 'throwable',
             'class' => get_class($throwable),
             'code' => $throwable->getCode(),
-            'file' => $throwable->getFile(),
-            'line' => $throwable->getLine(),
+            'file' => $fallbackTrace['file'] ?? $throwable->getFile(),
+            'line' => $fallbackTrace['line'] ?? (int) $throwable->getLine(),
             'message' => $throwable->getMessage(),
             'trace' => array_slice($throwable->getTrace(), 0, 2),
         ])."\n");

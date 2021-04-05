@@ -12,6 +12,8 @@ interface DispatchesTasks
      * @param  array  $tasks
      * @param  int  $waitMilliseconds
      * @return array
+     *
+     * @throws \Laravel\Octane\Exceptions\TaskException
      */
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array;
 

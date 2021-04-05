@@ -15,6 +15,7 @@ use Laravel\Octane\Events\TickTerminated;
 use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
+use Laravel\Octane\Exceptions\TaskExceptionResult;
 use RuntimeException;
 use Throwable;
 
@@ -132,6 +133,8 @@ class Worker implements WorkerContract
             $this->dispatchEvent($sandbox, new TaskTerminated($this->app, $sandbox, $data, $result));
         } catch (Throwable $e) {
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
+
+            return TaskExceptionResult::from($e);
         } finally {
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
