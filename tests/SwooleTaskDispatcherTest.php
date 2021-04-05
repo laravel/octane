@@ -68,6 +68,18 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => 1]);
     }
 
+    public function test_dispatching_tasks_do_not_propagate_exceptions()
+    {
+        $dispatcher = new SwooleTaskDispatcher();
+
+        $this->instance(Server::class, Mockery::mock(Server::class, function ($mock) {
+            $mock->shouldReceive('task')
+                ->once();
+        }));
+
+        $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
+    }
+
     /** @test */
     public function test_tasks_can_be_resolved()
     {
