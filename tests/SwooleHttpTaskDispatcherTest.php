@@ -108,6 +108,22 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => throw new Exception('Something went wrong.')]);
     }
 
+    /** @doesNotPerformAssertions @test */
+     public function test_dispatching_tasks_do_not_propagate_exceptions()
+     {
+        $dispatcher = new SwooleHttpTaskDispatcher(
+            '127.0.0.1',
+            '8000',
+            new SequentialTaskDispatcher,
+        );
+
+        Http::fake([
+            '127.0.0.1:8000/octane/dispatch-tasks' => Http::response(null, 500),
+        ]);
+
+        $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
+     }
+
     /** @test */
     public function test_resolving_tasks_may_timeout()
     {
