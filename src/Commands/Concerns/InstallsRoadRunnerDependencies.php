@@ -2,8 +2,8 @@
 
 namespace Laravel\Octane\Commands\Concerns;
 
-use Exception;
 use Illuminate\Support\Str;
+use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -12,16 +12,18 @@ trait InstallsRoadRunnerDependencies
     /**
      * Ensure the RoadRunner package is installed into the project.
      *
-     * @return void
+     * @return bool
      */
     protected function ensureRoadRunnerPackageIsInstalled()
     {
-        if (class_exists('Spiral\RoadRunner\Http\PSR7Worker')) {
-            return;
+        if (class_exists(PSR7Worker::class)) {
+            return true;
         }
 
         if (! $this->confirm('Octane requires "spiral/roadrunner:^2.0". Do you wish to install it as a dependency?')) {
-            throw new Exception('Octane requires "spiral/roadrunner".');
+            $this->error('Octane requires "spiral/roadrunner".');
+
+            return false;
         }
 
         $command = $this->findComposer().' require spiral/roadrunner:^2.0 --with-all-dependencies';
@@ -45,6 +47,8 @@ trait InstallsRoadRunnerDependencies
                 throw $e;
             }
         }
+
+        return true;
     }
 
     /**

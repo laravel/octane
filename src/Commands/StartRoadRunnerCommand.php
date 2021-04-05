@@ -45,11 +45,11 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      * @param  \Laravel\Octane\RoadRunner\ServerStateFile  $serverStateFile
      * @return int
      */
-    public function handle(
-        ServerProcessInspector $inspector,
-        ServerStateFile $serverStateFile
-    ) {
-        $this->ensureRoadRunnerPackageIsInstalled();
+    public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
+    {
+        if (! $this->ensureRoadRunnerPackageIsInstalled()) {
+            return 1;
+        }
 
         $roadRunnerBinary = $this->ensureRoadRunnerBinaryIsInstalled();
 
