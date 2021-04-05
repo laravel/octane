@@ -4,7 +4,6 @@ namespace Laravel\Octane\Tests;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 
 class LocaleStateTest extends TestCase
 {
