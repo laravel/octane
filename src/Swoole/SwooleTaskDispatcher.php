@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializableClosure;
 use InvalidArgumentException;
 use Laravel\Octane\Contracts\DispatchesTasks;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
+use Laravel\Octane\Exceptions\TaskTimeoutException;
 use Swoole\Http\Server;
 
 class SwooleTaskDispatcher implements DispatchesTasks
@@ -21,6 +22,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
      * @return array
      *
      * @throws \Laravel\Octane\Exceptions\TaskException
+     * @throws \Laravel\Octane\Exceptions\TaskTimeoutException
      */
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array
     {
@@ -35,7 +37,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
         })->all(), $waitMilliseconds);
 
         if ($results === false) {
-            return collect($tasks)->mapWithKeys(fn ($value, $key) => [$key => false])->all();
+            throw TaskTimeoutException::after($waitMilliseconds);
         }
 
         $i = 0;

@@ -26,6 +26,9 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
      * @param  array  $tasks
      * @param  int  $waitMilliseconds
      * @return array
+     *
+     * @throws \Laravel\Octane\Exceptions\TaskException
+     * @throws \Laravel\Octane\Exceptions\TaskTimeoutException
      */
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array
     {
