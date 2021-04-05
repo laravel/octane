@@ -109,8 +109,8 @@ class SwooleHttpTaskDispatcherTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-     public function test_dispatching_tasks_do_not_propagate_exceptions()
-     {
+    public function test_dispatching_tasks_do_not_propagate_exceptions()
+    {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
@@ -122,7 +122,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]);
 
         $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
-     }
+    }
 
     /** @test */
     public function test_resolving_tasks_may_timeout()
