@@ -2,6 +2,8 @@
 
 namespace Laravel\Octane\Tests;
 
+use Exception;
+use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\SequentialTaskDispatcher;
 
 class SequentialTaskDispatcherTest extends TestCase
@@ -18,6 +20,37 @@ class SequentialTaskDispatcherTest extends TestCase
             'first' => fn () => 1,
             'second' => fn () => 2,
         ]));
+    }
+
+    /** @test */
+    public function test_resolving_tasks_with_exceptions_do_not_effect_other_tasks()
+    {
+        $dispatcher = new SequentialTaskDispatcher;
+
+        $a = false;
+
+        try {
+            $dispatcher->resolve([
+                'first' => fn () => throw new Exception('Something went wrong'),
+                'second' => function () use (&$a) {
+                    $a = true;
+                },
+            ]);
+        } catch (TaskException $e) {
+            //
+        }
+
+        $this->assertTrue($a);
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_dispatching_tasks_do_not_propagate_exceptions()
+    {
+        $dispatcher = new SequentialTaskDispatcher;
+
+        $dispatcher->dispatch([
+            'first' => fn () => throw new Exception('Something went wrong'),
+        ]);
     }
 
     /** @test */
