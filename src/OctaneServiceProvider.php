@@ -160,6 +160,7 @@ class OctaneServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
+                Commands\InstallCommand::class,
                 Commands\StartCommand::class,
                 Commands\StartRoadRunnerCommand::class,
                 Commands\StartSwooleCommand::class,
