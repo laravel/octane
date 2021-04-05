@@ -245,7 +245,7 @@ public function boot()
 
 In this example, if the configuration values change between requests, that service will not have access to the new values because it's depending on the original repository instance.
 
-As a work-around, you could either stop registering the binding as a singleton, or you could use the container to resolve the repository instance inside the service when you need it.
+As a work-around, you could either stop registering the binding as a singleton, or you could inject a configuration repository resolver closure to the class:
 
 ```php
 use App\Service;
@@ -255,13 +255,9 @@ $this->app->bind(Service::class, function ($app) {
     return new Service($app->make('config'));
 });
 
-$this->app->singleton(Service::class, function ($app) {
-    return new Service(fn () => Container::getInstance());
+$this->app->singleton(Service::class, function () {
+    return new Service(fn () => Container::getInstance()->make('config'));
 });
-
-// And then you can resolve the repo inside the service:
-
-$this->appResolver()['config'];
 ```
 
 ### General Memory Leaks
