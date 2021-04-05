@@ -29,10 +29,14 @@ class SequentialTaskDispatcher implements DispatchesTasks
                 } catch (Throwable $e) {
                     report($e);
 
-                    throw TaskExceptionResult::from($e)->getOriginal();
+                    return TaskExceptionResult::from($e);
                 }
             })()]
-        )->all();
+        )->each(function ($result) {
+            if ($result instanceof TaskExceptionResult) {
+                throw $result->getOriginal();
+            }
+        })->all();
     }
 
     /**
@@ -43,6 +47,10 @@ class SequentialTaskDispatcher implements DispatchesTasks
      */
     public function dispatch(array $tasks): void
     {
-        $this->resolve($tasks);
+        try {
+            $this->resolve($tasks);
+        } catch (Throwable $e) {
+            // ..
+        }
     }
 }
