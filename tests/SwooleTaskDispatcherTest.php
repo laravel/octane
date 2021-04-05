@@ -14,11 +14,6 @@ use Swoole\Http\Server;
 
 class SwooleTaskDispatcherTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /** @test */
     public function test_tasks_can_only_be_resolved_via_server_context()
     {
@@ -26,15 +21,21 @@ class SwooleTaskDispatcherTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        $this->assertEquals([
-            'first' => 1,
-        ], $dispatcher->resolve([
-            'first' => fn () => 1,
-        ]));
+        $dispatcher->resolve(['first' => fn () => 1]);
     }
 
     /** @test */
-    public function test_tasks_timeout()
+    public function test_tasks_can_only_be_dispatched_via_server_context()
+    {
+        $dispatcher = new SwooleTaskDispatcher();
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $dispatcher->dispatch(['first' => fn () => 1]);
+    }
+
+    /** @test */
+    public function test_resolving_tasks_may_timeout()
     {
         $dispatcher = new SwooleTaskDispatcher();
 
@@ -51,7 +52,7 @@ class SwooleTaskDispatcherTest extends TestCase
     }
 
     /** @test */
-    public function test_tasks_propagate_exceptions()
+    public function test_resolving_tasks_propagate_exceptions()
     {
         $dispatcher = new SwooleTaskDispatcher();
 
