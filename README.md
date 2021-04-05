@@ -223,6 +223,47 @@ $service->method($request->input('name'));
 
 **Note:** It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
 
+#### Configuration Repository Injection
+
+In general, you should avoid injecting the configuration repository instance into the constructors of other objects. For example, the following binding injects the configuration repository into an object that is bound as a singleton:
+
+```php
+use App\Service;
+
+/**
+ * Register any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    $this->app->singleton(Service::class, function ($app) {
+        return new Service($app->make('config'));
+    });
+}
+```
+
+In this example, if the configuration values change between requests, that service will not have access to the new values because it's depending on the original repository instance.
+
+As a work-around, you could either stop registering the binding as a singleton, or you could use the container to resolve the repository instance inside the service when you need it.
+
+```php
+use App\Service;
+use Illuminate\Container\Container;
+
+$this->app->bind(Service::class, function ($app) {
+    return new Service($app->make('config'));
+});
+
+$this->app->singleton(Service::class, function ($app) {
+    return new Service(fn () => Container::getInstance());
+});
+
+// And then you can resolve the repo inside the service:
+
+$this->appResolver()['config'];
+```
+
 ### General Memory Leaks
 
 Remember, Octane keeps your application in memory between requests; therefore, adding data to a statically maintained array will result in a memory leak. For example, the following controller has a memory leak since each request to the application will continue to add data to the static `$data` array:
