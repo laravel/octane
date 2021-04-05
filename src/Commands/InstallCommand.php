@@ -28,10 +28,9 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        // Publish...
         $this->callSilent('vendor:publish', ['--tag' => 'octane-config', '--force' => true]);
 
-        // Updates .gitignore...
+        // Update .gitignore...
         if (File::exists(base_path('.gitignore'))) {
             collect(['rr', '.rr.yaml'])
                 ->each(function ($file) {
