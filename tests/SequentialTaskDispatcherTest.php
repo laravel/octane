@@ -73,4 +73,17 @@ class SequentialTaskDispatcherTest extends TestCase
         $this->assertEquals('first', $first);
         $this->assertEquals('second', $second);
     }
+
+    /** @test */
+    public function test_resolving_tasks_propagate_exceptions()
+    {
+        $dispatcher = new SequentialTaskDispatcher();
+
+        $this->expectException(TaskException::class);
+        $this->expectExceptionMessage('Something went wrong.');
+
+        $dispatcher->resolve([
+            'first' => fn () => throw new Exception('Something went wrong.'),
+        ]);
+    }
 }
