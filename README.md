@@ -29,11 +29,11 @@ Horizon UI | ✅ Operational
 Jetstream Inertia | ✅ Operational
 Jetstream Livewire | ✅ Operational
 Nova | 👷‍♀️ In Progress
-Passport | ❓ Unknown
+Passport | ✅ Operational
 Sanctum | ✅ Operational
 Scout | ✅ Operational
 Socialite | ✅ Operational
-Spark | ❓ Unknown
+Spark | ✅ Operational
 Telescope | ✅ Operational
 
 ### Installation
