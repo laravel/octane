@@ -34,8 +34,8 @@ class WorkerTest extends TestCase
 
         $responses = $worker->runTasks();
 
-        $this->assertEquals('foo', $responses[0]);
-        $this->assertEquals('bar', $responses[1]);
+        $this->assertEquals('foo', $responses[0]->result);
+        $this->assertEquals('bar', $responses[1]->result);
     }
 
     /** @doesNotPerformAssertions @test */
