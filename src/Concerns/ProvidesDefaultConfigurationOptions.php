@@ -12,8 +12,8 @@ trait ProvidesDefaultConfigurationOptions
     public static function prepareApplicationForNextRequest(): array
     {
         return [
-            \Laravel\Octane\Listeners\FlushQueuedCookies::class,
             \Laravel\Octane\Listeners\FlushLocaleState::class,
+            \Laravel\Octane\Listeners\FlushQueuedCookies::class,
             \Laravel\Octane\Listeners\FlushSessionState::class,
             \Laravel\Octane\Listeners\FlushAuthenticationState::class,
             \Laravel\Octane\Listeners\EnforceRequestScheme::class,
