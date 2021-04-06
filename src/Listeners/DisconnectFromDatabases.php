@@ -10,7 +10,7 @@ class DisconnectFromDatabases
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         foreach ($event->sandbox->make('db')->getConnections() as $connection) {
             $connection->disconnect();
