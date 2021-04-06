@@ -151,12 +151,12 @@ class OctaneStoreTest extends TestCase
         $store = new OctaneStore($table);
 
         $store->put('foo', 'bar', 5);
-        $store->forget('foo');
+        $this->assertTrue($store->forget('foo'));
 
         $this->assertNull($store->get('foo'));
 
         $store->put('foo', 'bar', 5);
-        $store->flush('foo');
+        $this->assertTrue($store->flush('foo'));
 
         $this->assertNull($store->get('foo'));
     }
@@ -169,7 +169,7 @@ class OctaneStoreTest extends TestCase
         $store = new OctaneStore($table);
 
         $store->interval('foo', fn () => 'bar', 1);
-        $store->flush();
+        $this->assertTrue($store->flush());
 
         $this->assertEquals('bar', $store->get('foo'));
     }
