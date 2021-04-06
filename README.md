@@ -28,7 +28,7 @@ Fortify | ✅ Operational
 Horizon UI | ✅ Operational
 Jetstream Inertia | ✅ Operational
 Jetstream Livewire | ✅ Operational
-Nova | 👷‍♀️ In Progress
+Nova | ✅ Operational
 Passport | ✅ Operational
 Sanctum | ✅ Operational
 Scout | ✅ Operational
@@ -69,6 +69,8 @@ pecl install swoole
 ```
 
 ##### Swoole Via Laravel Sail
+
+> **Note:** Before using Octane with Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
 
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](https://laravel.com/docs/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
