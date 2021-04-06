@@ -14,9 +14,12 @@ class SequentialCoroutineDispatcherTest extends TestCase
         $this->assertEquals([
             'first' => 1,
             'second' => 2,
+            'third' => null,
         ], $dispatcher->resolve([
             'first' => fn () => 1,
             'second' => fn () => 2,
+            'third' => function () {
+            },
         ]));
     }
 }

@@ -43,11 +43,11 @@ class SwooleTaskDispatcher implements DispatchesTasks
         $i = 0;
 
         foreach ($tasks as $key => $task) {
-            $tasks[$key] = $results[$i] ?? false;
-
-            if ($tasks[$key] instanceof TaskExceptionResult) {
-                throw $tasks[$key]->getOriginal();
+            if ($results[$i] instanceof TaskExceptionResult) {
+                throw $results[$i]->getOriginal();
             }
+
+            $tasks[$key] = isset($results[$i]) ? $results[$i]->result : false;
 
             $i++;
         }

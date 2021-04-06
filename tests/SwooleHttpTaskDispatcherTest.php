@@ -21,15 +21,18 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         );
 
         Http::fake([
-            '127.0.0.1:8000/octane/resolve-tasks' => Http::response(serialize(['first' => 1, 'second' => 2])),
+            '127.0.0.1:8000/octane/resolve-tasks' => Http::response(serialize(['first' => 1, 'second' => 2, 'third' => null])),
         ]);
 
         $this->assertEquals([
             'first' => 1,
             'second' => 2,
+            'third' => null,
         ], $dispatcher->resolve([
             'first' => fn () => 1,
             'second' => fn () => 2,
+            'third' => function () {
+            },
         ]));
     }
 
@@ -97,7 +100,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $this->assertEquals('Something went wrong.', $exception->getMessage());
         $this->assertEquals(128, $exception->getCode());
         $this->assertEquals(__FILE__, $exception->getFile());
-        $this->assertEquals(88, $exception->getLine());
+        $this->assertEquals(91, $exception->getLine());
     }
 
     /** @doesNotPerformAssertions @test */

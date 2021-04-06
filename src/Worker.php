@@ -16,6 +16,7 @@ use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
+use Laravel\Octane\Swoole\TaskResult;
 use RuntimeException;
 use Throwable;
 
@@ -144,7 +145,7 @@ class Worker implements WorkerContract
             CurrentApplication::set($this->app);
         }
 
-        return $result;
+        return new TaskResult($result);
     }
 
     /**
