@@ -60,6 +60,45 @@ Finally, specify your preferred application server (`roadrunner` or `swoole`) in
 
 RoadRunner is powered by the RoadRunner binary, which is built using Go. The first time you start a RoadRunner based Octane server, Octane will offer to download and install the RoadRunner binary for you.
 
+##### RoadRunner Via Laravel Sail
+
+If you plan to develop your application using [Laravel Sail](https://laravel.com/docs/sail), you should run the following commands to install Octane and RoadRunner:
+
+```bash
+./vendor/bin/sail up
+
+./vendor/bin/sail composer require spiral/roadrunner
+```
+
+Next, you should start a Sail shell and use the `rr` executable to retrieve the latest Linux based build of the RoadRunner binary:
+
+```bash
+./vendor/bin/sail shell
+
+# Within the Sail shell...
+./vendor/bin/rr get-binary
+```
+
+After installing the RoadRunner binary, you may exit your Sail shell session. You will now need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
+
+```bash
+./vendor/bin/sail artisan sail:publish
+```
+
+Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
+
+```ini
+command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --port=80
+```
+
+Next, ensure the `rr` binary is executable and build your Sail images:
+
+```bash
+chmod +x ./rr
+
+./vendor/bin/sail build
+```
+
 #### Swoole
 
 If you plan to use the Swoole application server to serve your Laravel Octane application, you must install the Swoole PHP extension. Typically, this can be done via PECL:
@@ -75,7 +114,7 @@ pecl install swoole
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](https://laravel.com/docs/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
 ```bash
-php artisan sail:publish
+./vendor/bin/sail artisan sail:publish
 ```
 
 Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
