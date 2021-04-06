@@ -4,7 +4,6 @@ namespace Laravel\Octane\RoadRunner;
 
 use Laravel\Octane\PosixExtension;
 use Laravel\Octane\SymfonyProcessFactory;
-use Symfony\Component\Process\Process;
 
 class ServerProcessInspector
 {
