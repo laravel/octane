@@ -10,7 +10,7 @@ class EnforceRequestScheme
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         if (! $event->sandbox->make('config')->get('octane.https')) {
             return;

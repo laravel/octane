@@ -10,7 +10,7 @@ class GiveNewApplicationInstanceToViewFactory
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         with($event->sandbox->make('view'), function ($view) use ($event) {
             $view->setContainer($event->sandbox);

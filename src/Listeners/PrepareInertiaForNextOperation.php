@@ -12,7 +12,7 @@ class PrepareInertiaForNextOperation
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         if (! $event->sandbox->resolved(ResponseFactory::class)) {
             return;

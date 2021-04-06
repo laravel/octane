@@ -10,7 +10,7 @@ class GiveNewApplicationInstanceToRouter
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $event->sandbox->make('router')->setContainer($event->sandbox);
     }
