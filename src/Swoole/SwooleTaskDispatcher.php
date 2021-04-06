@@ -38,7 +38,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
         $i = 0;
 
         foreach ($tasks as $key => $task) {
-            $tasks[$key] = $results[$i] ?? false;
+            $tasks[$key] = isset($results[$i]) ? $results[$i]->result : false;
 
             $i++;
         }
