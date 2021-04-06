@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array concurrently(array $tasks, int $waitMilliseconds = 3000)
  * @method static bool hasRouteFor(string $method, string $uri)
  * @method static void route(string $method, string $uri, \Closure $callback)
- * 
+ *
  * @see \Laravel\Octane\Octane
  */
 class Octane extends Facade
