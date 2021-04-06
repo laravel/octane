@@ -30,9 +30,11 @@ class ReloadCommand extends Command
     {
         $server = $this->option('server') ?: config('octane.server');
 
-        return $server == 'swoole'
-            ? $this->reloadSwooleServer()
-            : $this->reloadRoadRunnerServer();
+        return match ($server) {
+            'swoole' => $this->reloadSwooleServer(),
+            'roadrunner' => $this->reloadRoadRunnerServer(),
+            default => $this->handleInvalidServer($server),
+        };
     }
 
     /**
@@ -77,5 +79,17 @@ class ReloadCommand extends Command
         $inspector->reloadServer(base_path());
 
         return 0;
+    }
+
+    /**
+     * Handle invalid server.
+     *
+     * @return int
+     */
+    protected function handleInvalidServer(string $server)
+    {
+        $this->error("Invalid server: {$server}.");
+
+        return 1;
     }
 }
