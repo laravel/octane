@@ -49,6 +49,18 @@ trait InteractsWithIO
     }
 
     /**
+     * Write a string as warning output.
+     *
+     * @param  string  $string
+     * @param  int|string|null  $verbosity
+     * @return void
+     */
+    public function warn($string, $verbosity = null)
+    {
+        $this->label($string, $verbosity, 'WARN', 'yellow', 'black');
+    }
+
+    /**
      * Write a string as label output.
      *
      * @param  string  $string
