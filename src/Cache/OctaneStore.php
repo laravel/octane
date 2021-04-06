@@ -217,6 +217,8 @@ class OctaneStore implements Store
     public function forget($key)
     {
         unset($this->table[$key]);
+
+        return true;
     }
 
     /**
