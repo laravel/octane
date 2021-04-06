@@ -156,7 +156,9 @@ class SwooleClient implements Client, ServesStaticFiles
             $swooleResponse->end($response->output);
 
             return;
-        } elseif ($response instanceof BinaryFileResponse) {
+        }
+
+        if ($response instanceof BinaryFileResponse) {
             $swooleResponse->sendfile($response->getFile()->getPathname());
 
             return;
