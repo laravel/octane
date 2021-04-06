@@ -8,6 +8,7 @@ use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Exceptions\TaskTimeoutException;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
+use Laravel\Octane\Swoole\TaskResult;
 use Mockery;
 use Orchestra\Testbench\TestCase;
 use Swoole\Http\Server;
@@ -88,7 +89,7 @@ class SwooleTaskDispatcherTest extends TestCase
         $this->instance(Server::class, Mockery::mock(Server::class, function ($mock) {
             $mock->shouldReceive('taskWaitMulti')
                 ->once()
-                ->andReturn([1, 2]);
+                ->andReturn([new TaskResult(1), new TaskResult(2)]);
         }));
 
         $this->assertEquals([

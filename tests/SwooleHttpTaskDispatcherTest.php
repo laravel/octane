@@ -100,7 +100,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $this->assertEquals('Something went wrong.', $exception->getMessage());
         $this->assertEquals(128, $exception->getCode());
         $this->assertEquals(__FILE__, $exception->getFile());
-        $this->assertEquals(88, $exception->getLine());
+        $this->assertEquals(91, $exception->getLine());
     }
 
     /** @doesNotPerformAssertions @test */
