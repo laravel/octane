@@ -165,7 +165,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             ->filter()
             ->groupBy(fn ($output) => $output)
             ->each(function ($group) {
-                is_array($stream = json_decode($group->first(), true))
+                is_array($stream = json_decode($output = $group->first(), true))
                     ? $this->handleStream($stream)
                     : $this->error($output);
 
