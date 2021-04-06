@@ -14,6 +14,8 @@ use Laravel\Octane\Cache\OctaneArrayStore;
 use Laravel\Octane\Cache\OctaneStore;
 use Laravel\Octane\Contracts\DispatchesCoroutines;
 use Laravel\Octane\Events\TickReceived;
+use Laravel\Octane\Exceptions\TaskException;
+use Laravel\Octane\Exceptions\TaskTimeoutException;
 use Laravel\Octane\Facades\Octane as OctaneFacade;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
@@ -185,6 +187,10 @@ class OctaneServiceProvider extends ServiceProvider
                 )), 200);
             } catch (DecryptException $e) {
                 return new Response('', 403);
+            } catch (TaskException $e) {
+                return new Response('', 500);
+            } catch (TaskTimeoutException $e) {
+                return new Response('', 504);
             }
         });
 

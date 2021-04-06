@@ -9,6 +9,8 @@ use Illuminate\Queue\SerializableClosure;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Laravel\Octane\Contracts\DispatchesTasks;
+use Laravel\Octane\Exceptions\TaskExceptionResult;
+use Laravel\Octane\Exceptions\TaskTimeoutException;
 
 class SwooleHttpTaskDispatcher implements DispatchesTasks
 {
@@ -44,9 +46,13 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
                 'wait' => $waitMilliseconds,
             ]);
 
-            return $response->status() === 200
-                        ? unserialize($response)
-                        : throw new Exception('Invalid response from task server.');
+            return match($response->status()) {
+                200 => unserialize($response),
+                504 => throw TaskTimeoutException::after($waitMilliseconds),
+                default => throw TaskExceptionResult::from(new Exception(
+                    new Exception('Invalid response from task server.'),
+                ))->getOriginal(),
+            };
         } catch (ConnectionException $e) {
             return $this->fallbackDispatcher->resolve($tasks, $waitMilliseconds);
         }

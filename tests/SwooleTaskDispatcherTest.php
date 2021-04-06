@@ -60,11 +60,11 @@ class SwooleTaskDispatcherTest extends TestCase
         $this->instance(Server::class, Mockery::mock(Server::class, function ($mock) {
             $mock->shouldReceive('taskWaitMulti')
                 ->once()
-                ->andReturn([TaskExceptionResult::from(new Exception('Something went wrong.'))]);
+                ->andReturn([TaskExceptionResult::from(new Exception('Something went wrong'))]);
         }));
 
         $this->expectException(TaskException::class);
-        $this->expectExceptionMessage('Something went wrong.');
+        $this->expectExceptionMessage('Something went wrong');
 
         $dispatcher->resolve(['first' => fn () => 1]);
     }
