@@ -30,12 +30,14 @@ class WorkerTest extends TestCase
         [$app, $worker, $client] = $this->createOctaneContext([
             fn () => 'foo',
             fn () => 'bar',
+            function () {},
         ]);
 
         $responses = $worker->runTasks();
 
         $this->assertEquals('foo', $responses[0]->result);
         $this->assertEquals('bar', $responses[1]->result);
+        $this->assertNull($responses[2]->result);
     }
 
     /** @doesNotPerformAssertions @test */
