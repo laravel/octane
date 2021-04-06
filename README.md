@@ -355,7 +355,7 @@ use Laravel\Octane\Facades\Octane;
 
 > **This feature requires [Swoole](#swoole).**
 
-When using Swoole, you may register "tick" operations that will be executed every specified number of seconds. You may register "tick" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval. In this example, we will register a closure to be invoked every 10 seconds:
+When using Swoole, you may register "tick" operations that will be executed every specified number of seconds. You may register "tick" callbacks via the `tick` method. The first argument provided to the `tick` method should be a string that represents the name of the ticker. The second argument should be a callable that will be invoked at the specified interval. In this example, we will register a closure to be invoked every 10 seconds. Typically, the `tick` method should be called within the `boot` method of one of your application's service providers:
 
 ```php
 Octane::tick('simple-ticker', fn () => ray('Ticking...'))
@@ -384,7 +384,7 @@ Cache::store('octane')->put('framework', 'Laravel', 30);
 
 #### Cache Intervals
 
-In addition to the typical methods provided by Laravel's cache system, the Octane cache driver features interval based caches. These caches are automatically refreshed at the specified interval. For example, the following cache will be refreshed every five seconds:
+In addition to the typical methods provided by Laravel's cache system, the Octane cache driver features interval based caches. These caches are automatically refreshed at the specified interval and should be registered within the `boot` method of one of your application's service providers. For example, the following cache will be refreshed every five seconds:
 
 ```php
 use Illuminate\Support\Str;
