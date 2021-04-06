@@ -8,13 +8,14 @@ use Throwable;
 
 class InvokeTickCallable
 {
-    public function __construct(protected string $key,
-                                protected $callback,
-                                protected int $seconds,
-                                protected bool $immediate,
-                                protected $cache,
-                                protected ExceptionHandler $exceptionHandler)
-    {
+    public function __construct(
+        protected string $key,
+        protected $callback,
+        protected int $seconds,
+        protected bool $immediate,
+        protected $cache,
+        protected ExceptionHandler $exceptionHandler
+    ) {
     }
 
     /**
