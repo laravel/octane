@@ -47,6 +47,8 @@ class ApplicationFactory
 
         $app->bootstrapWith($this->getBootstrappers($app));
 
+        $app->loadDeferredProviders();
+
         return $app;
     }
 
