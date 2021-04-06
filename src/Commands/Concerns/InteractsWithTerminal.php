@@ -20,7 +20,7 @@ trait InteractsWithTerminal
      */
     protected function getTerminalWidth()
     {
-        if ($this->terminalWidth == null) {
+        if ($this->terminalWidth === null) {
             $this->terminalWidth = (new Terminal)->getWidth();
 
             $this->terminalWidth = $this->terminalWidth >= 30
