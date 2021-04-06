@@ -73,7 +73,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      * Write the Swoole server state file.
      *
      * @param  \Laravel\Octane\Swoole\ServerStateFile  $serverStateFile
-     * @param  \Laravel\Octane\SwooleExtension  $extension
+     * @param  \Laravel\Octane\Swoole\SwooleExtension  $extension
      * @return void
      */
     protected function writeServerStateFile(
@@ -97,7 +97,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     /**
      * Get the default Swoole server options.
      *
-     * @param  \Laravel\Swoole\SwooleExtension  $extension
+     * @param  \Laravel\Octane\Swoole\SwooleExtension  $extension
      * @return array
      */
     protected function defaultServerOptions(SwooleExtension $extension)
