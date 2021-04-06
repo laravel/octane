@@ -13,7 +13,7 @@ class StopWorkerIfNecessary
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $client = $event->sandbox->make(Client::class);
 

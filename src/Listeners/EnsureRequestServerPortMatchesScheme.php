@@ -10,7 +10,7 @@ class EnsureRequestServerPortMatchesScheme
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $port = $event->request->getPort();
 

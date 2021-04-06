@@ -13,7 +13,7 @@ class ReportException
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         if ($event->exception) {
             tap($event->sandbox, function ($sandbox) use ($event) {

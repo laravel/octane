@@ -10,7 +10,7 @@ class GiveNewRequestInstanceToApplication
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $event->app->instance('request', $event->request);
         $event->sandbox->instance('request', $event->request);

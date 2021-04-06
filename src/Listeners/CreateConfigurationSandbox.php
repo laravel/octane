@@ -10,7 +10,7 @@ class CreateConfigurationSandbox
      * @param  mixed  $event
      * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $event->sandbox->instance('config', clone $event->sandbox['config']);
     }
