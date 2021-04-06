@@ -270,6 +270,8 @@ $this->app->singleton(Service::class, function () {
 });
 ```
 
+The global `config` will always return the latest version of the configuration repository and is therefore safe to use within your application.
+
 ### General Memory Leaks
 
 Remember, Octane keeps your application in memory between requests; therefore, adding data to a statically maintained array will result in a memory leak. For example, the following controller has a memory leak since each request to the application will continue to add data to the static `$data` array:
