@@ -38,7 +38,7 @@ class ServerProcessInspector
     public function reloadServer(string $basePath): void
     {
         $this->processFactory->createProcess([
-            './rr', 'http:reset',
+            './rr', 'reset',
         ], $basePath, null, null, null)->run();
     }
 
