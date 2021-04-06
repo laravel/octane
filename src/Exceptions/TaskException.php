@@ -7,6 +7,13 @@ use Exception;
 class TaskException extends Exception
 {
     /**
+     * The original throwable class name.
+     *
+     * @var string
+     */
+    protected $class;
+
+    /**
      * Creates a new task exception.
      *
      * @param  string  $class
@@ -26,7 +33,7 @@ class TaskException extends Exception
     }
 
     /**
-     * The original throwable class name.
+     * Returns the original throwable class name.
      *
      * @return string
      */
