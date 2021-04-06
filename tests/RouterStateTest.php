@@ -9,7 +9,6 @@ class RouterStateTest extends TestCase
     /** @test */
     public function test_router_and_route_container_is_refreshed_across_subsequent_requests()
     {
-
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
             Request::create('/second', 'GET'),

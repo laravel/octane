@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Laravel\Octane\Tests;
 
 use Illuminate\Http\Request;
