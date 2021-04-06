@@ -36,6 +36,20 @@ EOF, $output->fetch());
     }
 
     /** @test */
+    public function test_warn()
+    {
+        [$output, $command] = $this->command();
+
+        $command->warn('beta period');
+
+        $this->assertEquals(<<<'EOF'
+
+   WARN  beta period
+
+EOF, $output->fetch());
+    }
+
+    /** @test */
     public function test_request()
     {
         [$output, $command] = $this->command();
