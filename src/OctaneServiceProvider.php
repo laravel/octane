@@ -104,9 +104,9 @@ class OctaneServiceProvider extends ServiceProvider
      */
     protected function bindListeners()
     {
-        $this->app->singleton(Listeners\CollecGarbage::class);
+        $this->app->singleton(Listeners\CollectGarbage::class);
         $this->app->singleton(Listeners\CreateConfigurationSandbox::class);
-        $this->app->singleton(Listeners\DisconnectFromDatabase::class);
+        $this->app->singleton(Listeners\DisconnectFromDatabases::class);
         $this->app->singleton(Listeners\EnforceRequestScheme::class);
         $this->app->singleton(Listeners\EnsureRequestServerPortMatchesScheme::class);
         $this->app->singleton(Listeners\EnsureUploadedFilesAreValid::class);
@@ -129,8 +129,8 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\PrepareInertiaForNextOperation::class);
         $this->app->singleton(Listeners\PrepareScoutForNextOperation::class);
         $this->app->singleton(Listeners\PrepareSocialiteForNextOperation::class);
+        $this->app->singleton(Listeners\ReportException::class);
         $this->app->singleton(Listeners\StopWorkerIfNecessary::class);
-        $this->app->singleton(Listeners\WriteExceptionToStderr::class);
     }
 
     /**
