@@ -1,7 +1,7 @@
 {
     "name": "laravel/octane",
     "description": "Supercharge your Laravel application's performance.",
-    "keywords": ["laravel", "octane", "roadrunner"],
+    "keywords": ["laravel", "octane", "roadrunner", "swoole"],
     "license": "MIT",
     "support": {
         "issues": "https://github.com/laravel/octane/issues",
@@ -42,10 +42,6 @@
         "bin/roadrunner-worker",
         "bin/swoole-server"
     ],
-    "scripts": {
-        "test": "vendor/bin/phpunit --colors=always",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-    },
     "config": {
         "sort-packages": true
     },
