@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'server' => 'roadrunner',
+    'server' => env('OCTANE_SERVER', 'roadrunner'),
 
     /*
     |--------------------------------------------------------------------------
