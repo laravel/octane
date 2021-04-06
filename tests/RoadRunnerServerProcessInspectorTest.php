@@ -56,7 +56,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         );
 
         $processFactory->shouldReceive('createProcess')->with(
-            ['./rr', 'http:reset'],
+            ['./rr', 'reset'],
             'base-path',
             null,
             null,
