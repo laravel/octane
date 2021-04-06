@@ -137,6 +137,8 @@ The Octane server can be started via the `octane:start` Artisan command. By defa
 php artisan octane:start
 ```
 
+By default, Octane will start the server on port 8000, so you may access your application in a web browser via `http://localhost:8000`.
+
 #### Watching For File Changes
 
 Since your application is loaded in memory once when the Octane server starts, any changes to your application's files will not be reflected when you refresh your browser. For example, route definitions added to your `routes/web.php` file will not be reflected until the server is restarted. For convenience, you may use the `--watch` flag to instruct Octane to automatically restart the server on any file changes within your application:
