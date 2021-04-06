@@ -2,8 +2,6 @@
 
 namespace Laravel\Octane\Listeners;
 
-use Illuminate\Support\Facades\Cache;
-
 class FlushArrayCache
 {
     /**
