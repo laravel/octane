@@ -187,6 +187,8 @@ $this->app->singleton(Service::class, function () {
 });
 ```
 
+The global `app` helper and the `Container::getInstance()` method will always return the latest version of the application container.
+
 #### Request Injection
 
 In general, you should avoid injecting the application service container or HTTP request instance into the constructors of other objects. For example, the following binding injects the entire request instance into an object that is bound as a singleton:
@@ -226,6 +228,8 @@ $this->app->singleton(Service::class, function ($app) {
 
 $service->method($request->input('name'));
 ```
+
+The global `request` helper will always return the request the application is currently handling and is therefore safe to use within your application.
 
 **Note:** It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
 
