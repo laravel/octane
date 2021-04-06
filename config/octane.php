@@ -28,7 +28,7 @@ return [
     | when starting, restarting, or stopping your server via the CLI. You
     | are free to change this to the supported server of your choosing.
     |
-    |  Supported: "roadrunner", "swoole"
+    | Supported: "roadrunner", "swoole"
     |
     */
 
