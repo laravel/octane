@@ -42,6 +42,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToValidationFactory::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToViewFactory::class,
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
+            \Laravel\Octane\Listeners\FlushArrayCache::class,
 
             // First-Party Packages...
             \Laravel\Octane\Listeners\PrepareInertiaForNextOperation::class,
