@@ -8,8 +8,6 @@ use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneServiceProvider;
-use Laravel\Octane\Testing\Fakes\FakeClient;
-use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
 
 class OctaneRequest
@@ -48,7 +46,7 @@ class OctaneRequest
 
         $app->register(new OctaneServiceProvider($app));
 
-        $worker = new FakeWorker($appFactory, $roadRunnerClient = new FakeClient($requests));
+        $worker = new Fakes\FakeWorker($appFactory, $roadRunnerClient = new Fakes\FakeClient($requests));
         $app->bind(Client::class, fn () => $roadRunnerClient);
 
         $worker->boot();
