@@ -3,7 +3,9 @@
 namespace Laravel\Octane\Commands\Concerns;
 
 use Illuminate\Support\Str;
+use RuntimeException;
 use Spiral\RoadRunner\Http\PSR7Worker;
+use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
