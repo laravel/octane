@@ -51,10 +51,10 @@ class SignalDispatcher
      * Send a signal to the given process.
      *
      * @param  int  $processId
-     * @param  string  $signal
+     * @param  int  $signal
      * @return bool
      */
-    public function signal(int $processId, string $signal): bool
+    public function signal(int $processId, int $signal): bool
     {
         return $this->extension->dispatchProcessSignal($processId, $signal);
     }
