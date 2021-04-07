@@ -6,6 +6,7 @@ about: 'Report a general library issue. Please ensure your version is still supp
 - Octane Version: #.#.#
 - Laravel Version: #.#.#
 - PHP Version: #.#.#
+- Server: Swoole / Roadrunner
 - Database Driver & Version:
 
 ### Description:
