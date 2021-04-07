@@ -53,7 +53,7 @@ class SwooleClient implements Client, ServesStaticFiles
 
         return $this->fileIsServable(
             $publicPath,
-            realpath($publicPath.'/'.$request->path()),
+            $publicPath.'/'.$request->path()
         );
     }
 
