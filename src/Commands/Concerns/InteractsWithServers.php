@@ -51,7 +51,7 @@ trait InteractsWithServers
                     $watcher->getIncrementalOutput()) {
                     $this->info('Application change detected. Restarting workers…');
 
-                    $inspector->reloadServer();
+                    $inspector->reloadServer(request()->path);
                 }
 
                 usleep(500 * 1000);
