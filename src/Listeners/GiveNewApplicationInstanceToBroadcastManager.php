@@ -20,7 +20,8 @@ class GiveNewApplicationInstanceToBroadcastManager
 
         with($event->sandbox->make(BroadcastManager::class), function ($manager) use ($event) {
             $manager->setApplication($event->sandbox);
-            $manager->forgetDrivers();
+
+            // $manager->forgetDrivers();
         });
     }
 }
