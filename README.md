@@ -203,7 +203,7 @@ use App\Service;
  *
  * @return void
  */
-public function boot()
+public function register()
 {
     $this->app->singleton(Service::class, function ($app) {
         return new Service($app);
@@ -242,7 +242,7 @@ use App\Service;
  *
  * @return void
  */
-public function boot()
+public function register()
 {
     $this->app->singleton(Service::class, function ($app) {
         return new Service($app['request']);
@@ -286,7 +286,7 @@ use App\Service;
  *
  * @return void
  */
-public function boot()
+public function register()
 {
     $this->app->singleton(Service::class, function ($app) {
         return new Service($app->make('config'));
