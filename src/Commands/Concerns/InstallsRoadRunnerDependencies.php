@@ -64,8 +64,8 @@ trait InstallsRoadRunnerDependencies
         $composerPath = getcwd().'/composer.phar';
         $phpPath = (new PhpExecutableFinder)->find();
 
-        if (!file_exists($composerPath)) {
-           $composerPath = (new ExecutableFinder())->find('composer');
+        if (! file_exists($composerPath)) {
+            $composerPath = (new ExecutableFinder())->find('composer');
         }
 
         return '"'.$phpPath.'" '.$composerPath;
