@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Swoole;
 
 use Laravel\Octane\Contracts\DispatchesCoroutines;
+use Swoole\Coroutine;
 use Swoole\Coroutine\WaitGroup;
 
 class SwooleCoroutineDispatcher implements DispatchesCoroutines
@@ -26,7 +27,7 @@ class SwooleCoroutineDispatcher implements DispatchesCoroutines
             $waitGroup = new WaitGroup;
 
             foreach ($coroutines as $key => $callback) {
-                go(function () use ($key, $callback, $waitGroup, &$results) {
+                Coroutine::create(function () use ($key, $callback, $waitGroup, &$results) {
                     $waitGroup->add();
 
                     $results[$key] = $callback();
@@ -39,7 +40,7 @@ class SwooleCoroutineDispatcher implements DispatchesCoroutines
         };
 
         if (! $this->withinCoroutineContext) {
-            \Co\run($callback);
+            Coroutine\run($callback);
         } else {
             $callback();
         }
