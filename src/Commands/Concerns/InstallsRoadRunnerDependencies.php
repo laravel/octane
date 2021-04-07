@@ -7,8 +7,8 @@ use RuntimeException;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 
 trait InstallsRoadRunnerDependencies
 {
