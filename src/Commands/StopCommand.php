@@ -35,7 +35,7 @@ class StopCommand extends Command
         return match ($server) {
             'swoole' => $this->stopSwooleServer(),
             'roadrunner' => $this->stopRoadRunnerServer(),
-            default => $this->handleInvalidServer($server),
+            default => $this->invalidServer($server),
         };
     }
 
@@ -92,11 +92,12 @@ class StopCommand extends Command
     }
 
     /**
-     * Handle invalid server.
+     * Inform the user that the server type is invalid.
      *
+     * @param  string  $server
      * @return int
      */
-    protected function handleInvalidServer(string $server)
+    protected function invalidServer(string $server)
     {
         $this->error("Invalid server: {$server}.");
 

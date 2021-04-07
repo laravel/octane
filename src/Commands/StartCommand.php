@@ -48,7 +48,7 @@ class StartCommand extends Command implements SignalableCommandInterface
         return match ($server) {
             'swoole' => $this->startSwooleServer(),
             'roadrunner' => $this->startRoadRunnerServer(),
-            default => $this->handleInvalidServer($server),
+            default => $this->invalidServer($server),
         };
     }
 
@@ -86,11 +86,12 @@ class StartCommand extends Command implements SignalableCommandInterface
     }
 
     /**
-     * Handle invalid server.
+     * Inform the user that the server type is invalid.
      *
+     * @param  string  $server
      * @return int
      */
-    protected function handleInvalidServer(string $server)
+    protected function invalidServer(string $server)
     {
         $this->error("Invalid server: {$server}.");
 
