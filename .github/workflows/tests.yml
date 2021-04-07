@@ -7,16 +7,16 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  tests:
-    runs-on: ubuntu-20.04
-
+  tests: 
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
         php: [8.0]
+        os: [ubuntu-20.04, windows-latest, macOS-latest]
         laravel: [^8.35]
 
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - OS ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -33,6 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require laravel/framework:"^8.35" --no-update
+
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
