@@ -15,7 +15,11 @@ class SwooleExtension
      */
     public function dispatchProcessSignal(int $processId, string $signal): bool
     {
-        return Process::kill($processId, $signal);
+        if (Process::kill($processId, 0)) {
+            return Process::kill($processId, $signal);
+        }
+
+        return false;
     }
 
     /**
