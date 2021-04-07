@@ -62,6 +62,7 @@ trait InstallsRoadRunnerDependencies
     protected function findComposer()
     {
         $composerPath = getcwd().'/composer.phar';
+
         $phpPath = (new PhpExecutableFinder)->find();
 
         if (! file_exists($composerPath)) {
