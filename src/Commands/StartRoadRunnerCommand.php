@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 
 class StartRoadRunnerCommand extends Command implements SignalableCommandInterface
 {
