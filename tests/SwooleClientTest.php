@@ -82,6 +82,20 @@ class SwooleClientTest extends TestCase
     }
 
     /** @test */
+    public function test_can_serve_static_symlinked_files()
+    {
+        $client = new SwooleClient;
+
+        $request = Request::create('/symlink/original.txt', 'GET');
+
+        $context = new RequestContext([
+            'publicPath' => __DIR__.'/public/files',
+        ]);
+
+        $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
+    }
+
+    /** @test */
     public function test_cant_serve_static_files_if_file_has_forbidden_extension()
     {
         $client = new SwooleClient;

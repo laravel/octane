@@ -50,11 +50,39 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         $publicPath = $context->publicPath;
+        $fullPath = $publicPath.'/'.$request->path();
+
+        if (realpath($fullPath) !== $fullPath && $this->isSymlink($publicPath, $request->path())) {
+            $path = $publicPath.'/'.$request->path();
+        } else {
+            $path = realpath($fullPath);
+        }
 
         return $this->fileIsServable(
             $publicPath,
-            realpath($publicPath.'/'.$request->path()),
+            $path,
         );
+    }
+
+    /**
+     * Check if file lives within a symlink directory.
+     * @param $publicPath
+     * @param $path
+     * @return bool
+     */
+    private function isSymlink($publicPath, $path)
+    {
+        $dirs = explode('/', $path);
+        while (count($dirs) > 0) {
+            $dir = array_shift($dirs);
+            $publicPath .= '/'.$dir;
+            // if any parent directory or the file is symlink.
+            if (is_link($publicPath)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
