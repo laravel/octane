@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 class StartRoadRunnerCommand extends Command implements SignalableCommandInterface
@@ -66,7 +67,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
-            '-o', 'server.command=php ./vendor/bin/roadrunner-worker',
+            '-o', 'server.command='.(new PhpExecutableFinder)->find().' ./vendor/bin/roadrunner-worker',
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
