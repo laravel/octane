@@ -54,7 +54,7 @@ trait InteractsWithServers
                     $inspector->reloadServer();
                 } elseif ($watcher->isTerminated()) {
                     $this->error(
-                        'Watcher terminated, make sure Node and chokidar are installed.' . PHP_EOL .
+                        'Watcher has terminated, make sure Node and chokidar are installed.'.PHP_EOL.
                         $watcher->getErrorOutput()
                     );
                     return 1;
