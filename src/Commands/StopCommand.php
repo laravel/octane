@@ -32,9 +32,11 @@ class StopCommand extends Command
     {
         $server = $this->option('server') ?: config('octane.server');
 
-        return $server == 'swoole'
-            ? $this->stopSwooleServer()
-            : $this->stopRoadRunnerServer();
+        return match ($server) {
+            'swoole' => $this->stopSwooleServer(),
+            'roadrunner' => $this->stopRoadRunnerServer(),
+            default => $this->invalidServer($server),
+        };
     }
 
     /**
@@ -87,5 +89,18 @@ class StopCommand extends Command
         app(RoadRunnerServerStateFile::class)->delete();
 
         return 0;
+    }
+
+    /**
+     * Inform the user that the server type is invalid.
+     *
+     * @param  string  $server
+     * @return int
+     */
+    protected function invalidServer(string $server)
+    {
+        $this->error("Invalid server: {$server}.");
+
+        return 1;
     }
 }
