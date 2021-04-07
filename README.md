@@ -15,27 +15,6 @@ Laravel Octane supercharges your application's performance by serving your appli
 
 **IMPORTANT: Laravel Octane is within a beta period. It should only be used for local development and testing in order to improve the quality of the library and resolve any existing bugs. We are still in the process of ensuring Octane compatibility with all first-party Laravel packages.**
 
-### Package Support
-
-We are in the process of updating our first-party packages to ensure Octane compatibility. You can find a table of our progress below. You must be using the latest tagged release of these libraries to receive Octane compatibility:
-
-Package | Status
------------- | -------------
-Breeze | ✅ Operational
-Cashier | ✅ Operational
-Dusk | ✅ Operational
-Fortify | ✅ Operational
-Horizon UI | ✅ Operational
-Jetstream Inertia | ✅ Operational
-Jetstream Livewire | ✅ Operational
-Nova | ✅ Operational
-Passport | ✅ Operational
-Sanctum | ✅ Operational
-Scout | ✅ Operational
-Socialite | ✅ Operational
-Spark | ✅ Operational
-Telescope | ✅ Operational
-
 ### Installation
 
 Octane may be installed via the Composer package manager:
