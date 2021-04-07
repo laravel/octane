@@ -28,7 +28,7 @@ class SwooleExtension
     public function setProcessName(string $appName, string $processName): void
     {
         if (PHP_OS_FAMILY === 'Linux') {
-            swoole_set_process_name('swoole_http_server: '.$processName.' for '.$appName);
+            cli_set_process_title('swoole_http_server: '.$processName.' for '.$appName);
         }
     }
 
