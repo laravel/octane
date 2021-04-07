@@ -21,6 +21,7 @@ class GiveNewApplicationInstanceToBroadcastManager
         with($event->sandbox->make(BroadcastManager::class), function ($manager) use ($event) {
             $manager->setApplication($event->sandbox);
 
+            // Forgetting drivers will flush all channel routes which is unwanted...
             // $manager->forgetDrivers();
         });
     }
