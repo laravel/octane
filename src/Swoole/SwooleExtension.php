@@ -10,10 +10,10 @@ class SwooleExtension
      * Send a signal to the given process.
      *
      * @param  int  $processId
-     * @param  string  $signal
+     * @param  int  $signal
      * @return bool
      */
-    public function dispatchProcessSignal(int $processId, string $signal): bool
+    public function dispatchProcessSignal(int $processId, int $signal): bool
     {
         if (Process::kill($processId, 0)) {
             return Process::kill($processId, $signal);
