@@ -52,6 +52,13 @@ trait InteractsWithServers
                     $this->info('Application change detected. Restarting workers…');
 
                     $inspector->reloadServer();
+                } elseif ($watcher->isTerminated()) {
+                    $this->error(
+                        'Watcher process has terminated. please ensure Node and chokidar are installed.'.PHP_EOL.
+                        $watcher->getErrorOutput()
+                    );
+
+                    return 1;
                 }
 
                 usleep(500 * 1000);
