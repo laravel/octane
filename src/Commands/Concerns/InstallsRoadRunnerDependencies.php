@@ -8,6 +8,7 @@ use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 trait InstallsRoadRunnerDependencies
 {
@@ -61,12 +62,13 @@ trait InstallsRoadRunnerDependencies
     protected function findComposer()
     {
         $composerPath = getcwd().'/composer.phar';
+        $phpPath = (new PhpExecutableFinder)->find();
 
-        if (file_exists($composerPath)) {
-            return '"'.PHP_BINARY.'" '.$composerPath;
+        if (!file_exists($composerPath)) {
+           $composerPath = (new ExecutableFinder())->find('composer');
         }
 
-        return 'composer';
+        return '"'.$phpPath.'" '.$composerPath;
     }
 
     /**
@@ -88,6 +90,7 @@ trait InstallsRoadRunnerDependencies
 
         if ($this->confirm('Unable to locate RoadRunner binary. Should Octane download the binary for your operating system?', true)) {
             tap(new Process(array_filter([
+                (new PhpExecutableFinder)->find(),
                 './vendor/bin/rr',
                 'get-binary',
                 '-n',
