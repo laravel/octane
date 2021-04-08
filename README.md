@@ -164,7 +164,7 @@ php artisan octane:reload
 
 ### Debugging
 
-Because Octane starts a long running process that continually serves requests to your application, it is not possible to use the `dump` or `dd` helpers. Instead, we recommend using [Telescope](https://github.com/laravel/telescope), [Ray](https://spatie.be/products/ray), [Debug Bar](https://github.com/barryvdh/laravel-debugbar), or [logging](https://laravel.com/docs/logging).
+Because Octane starts a long running process that continually serves requests to your application, it is not possible to use the `dump` helper. Instead, we recommend using [Telescope](https://github.com/laravel/telescope), [Ray](https://spatie.be/products/ray), [Debug Bar](https://github.com/barryvdh/laravel-debugbar), or [logging](https://laravel.com/docs/logging).
 
 ### Dependency Injection & Octane
 
