@@ -4,6 +4,7 @@ namespace Laravel\Octane\Tests;
 
 use Exception;
 use InvalidArgumentException;
+use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Exceptions\TaskTimeoutException;
@@ -67,6 +68,27 @@ class SwooleTaskDispatcherTest extends TestCase
         $this->expectExceptionMessage('Something went wrong');
 
         $dispatcher->resolve(['first' => fn () => 1]);
+    }
+
+    /** @test */
+    public function test_resolving_tasks_propagate_dd_calls()
+    {
+        $dispatcher = new SwooleTaskDispatcher();
+
+        $this->instance(Server::class, Mockery::mock(Server::class, function ($mock) {
+            $mock->shouldReceive('taskWaitMulti')
+                ->once()
+                ->andReturn([TaskExceptionResult::from(
+                    new DdException(['foo' => 'bar'])
+                )]);
+        }));
+
+        $this->expectException(DdException::class);
+        $this->expectExceptionMessage(json_encode(['foo' => 'bar']));
+
+        $dispatcher->resolve([
+            'first' => fn () => throw new DdException(['foo' => 'bar']),
+        ]);
     }
 
     public function test_dispatching_tasks_do_not_propagate_exceptions()

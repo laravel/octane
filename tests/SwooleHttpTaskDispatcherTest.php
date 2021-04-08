@@ -4,6 +4,7 @@ namespace Laravel\Octane\Tests;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\Exceptions\TaskTimeoutException;
 use Laravel\Octane\SequentialTaskDispatcher;
@@ -106,6 +107,25 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $this->expectExceptionMessage('Invalid response from task server.');
 
         $dispatcher->resolve(['first' => fn () => throw new Exception('Something went wrong.')]);
+    }
+
+    /** @test */
+    public function test_resolving_tasks_propagate_dd_calls()
+    {
+        $dispatcher = new SwooleHttpTaskDispatcher(
+            '127.0.0.1',
+            '8000',
+            new SequentialTaskDispatcher,
+        );
+
+        Http::fake([
+            '127.0.0.1:8000/octane/resolve-tasks' => Http::response(null, 500),
+        ]);
+
+        $this->expectException(TaskException::class);
+        $this->expectExceptionMessage('Invalid response from task server.');
+
+        $dispatcher->resolve(['first' => fn () => throw new DdException(['foo' => 'bar'])]);
     }
 
     /** @doesNotPerformAssertions @test */
