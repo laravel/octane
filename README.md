@@ -35,10 +35,6 @@ Finally, specify your preferred application server (`roadrunner` or `swoole`) in
 
 > **Laravel Octane requires [PHP 8.0+](https://php.net/releases/)**
 
-### Debugging
-
-Because of Octane's long running process it's not possible to use the `dump` or `dd` helpers. Instead, we recommend to use something like [Telescope](https://github.com/laravel/telescope), [Ray](https://spatie.be/products/ray) or [logging](https://laravel.com/docs/logging). 
-
 #### RoadRunner
 
 RoadRunner is powered by the RoadRunner binary, which is built using Go. The first time you start a RoadRunner based Octane server, Octane will offer to download and install the RoadRunner binary for you.
@@ -165,6 +161,10 @@ You may gracefully restart the Octane server's application workers using the `oc
 ```bash
 php artisan octane:reload
 ```
+
+### Debugging
+
+Because Octane starts a long running process that continually serves requests to your application, it is not possible to use the `dump` or `dd` helpers. Instead, we recommend using [Telescope](https://github.com/laravel/telescope), [Ray](https://spatie.be/products/ray), [Debug Bar](https://github.com/barryvdh/laravel-debugbar), or [logging](https://laravel.com/docs/logging).
 
 ### Dependency Injection & Octane
 
