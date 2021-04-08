@@ -35,6 +35,10 @@ Finally, specify your preferred application server (`roadrunner` or `swoole`) in
 
 > **Laravel Octane requires [PHP 8.0+](https://php.net/releases/)**
 
+### Debugging
+
+Because of Octane's long running process it's not possible to use the `dump` or `dd` helpers. Instead, we recommend to use something like [Ray](https://spatie.be/products/ray) or [logging](https://laravel.com/docs/logging). 
+
 #### RoadRunner
 
 RoadRunner is powered by the RoadRunner binary, which is built using Go. The first time you start a RoadRunner based Octane server, Octane will offer to download and install the RoadRunner binary for you.
