@@ -180,4 +180,20 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Swoole configuration options
+    |--------------------------------------------------------------------------
+    |
+    | While using Swoole, you can set additional configuration options
+    | as needed. You can see
+    | https://www.swoole.co.uk/docs/modules/swoole-server/configuration
+    | to get the supported configuration options.
+    |
+    */
+
+    'swoole' => [
+        'options' => [
+        ],
+    ],
 ];
