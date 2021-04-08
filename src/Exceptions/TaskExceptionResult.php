@@ -29,7 +29,7 @@ class TaskExceptionResult
             : null;
 
         return new static(
-            get_class($throwable),
+            $throwable::class,
             $throwable->getMessage(),
             (int) $throwable->getCode(),
             $fallbackTrace['file'] ?? $throwable->getFile(),

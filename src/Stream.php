@@ -40,7 +40,7 @@ class Stream
 
         fwrite(STDERR, json_encode([
             'type' => 'throwable',
-            'class' => get_class($throwable),
+            'class' => $throwable::class,
             'code' => $throwable->getCode(),
             'file' => $fallbackTrace['file'] ?? $throwable->getFile(),
             'line' => $fallbackTrace['line'] ?? (int) $throwable->getLine(),
@@ -59,7 +59,7 @@ class Stream
     {
         fwrite(STDERR, json_encode([
             'type' => 'shutdown',
-            'class' => get_class($throwable),
+            'class' => $throwable::class,
             'code' => $throwable->getCode(),
             'file' => $throwable->getFile(),
             'line' => $throwable->getLine(),
