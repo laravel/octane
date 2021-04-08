@@ -120,7 +120,7 @@ trait InteractsWithServers
             '',
             '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
             '',
-            '  <fg=yellow>Use Ctrl+C to stop the server</>',
+            '  <fg=yellow>Press Ctrl+C to stop the server</>',
             '',
         ]);
     }
