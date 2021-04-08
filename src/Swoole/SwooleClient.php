@@ -18,10 +18,6 @@ use Throwable;
 
 class SwooleClient implements Client, ServesStaticFiles
 {
-    /**
-     * SwooleClient constructor.
-     * @param int $chunkSize The size of chunk to write, default 1MB. @see https://www.swoole.co.uk/docs/modules/swoole-server/configuration#socket_buffer_size
-     */
     public function __construct(protected int $chunkSize = 1048576)
     {
     }
@@ -171,6 +167,7 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         $content = $response->getContent();
+
         $length = strlen($content);
 
         if ($length <= $this->chunkSize) {
@@ -180,8 +177,7 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
-            $chunk = substr($content, $offset, $this->chunkSize);
-            $swooleResponse->write($chunk);
+            $swooleResponse->write(substr($content, $offset, $this->chunkSize));
         }
 
         $swooleResponse->end();
