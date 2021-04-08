@@ -65,7 +65,7 @@ trait InteractsWithServers
             }
 
             $this->writeServerOutput($server);
-        } catch (ServerShutdownException $e) {
+        } catch (ServerShutdownException) {
             return 1;
         } finally {
             $this->stopServer();
