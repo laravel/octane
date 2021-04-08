@@ -37,7 +37,7 @@ Finally, specify your preferred application server (`roadrunner` or `swoole`) in
 
 ### Debugging
 
-Because of Octane's long running process it's not possible to use the `dump` or `dd` helpers. Instead, we recommend to use something like [Ray](https://spatie.be/products/ray) or [logging](https://laravel.com/docs/logging). 
+Because of Octane's long running process it's not possible to use the `dump` or `dd` helpers. Instead, we recommend to use something like [Telescope](https://github.com/laravel/telescope), [Ray](https://spatie.be/products/ray) or [logging](https://laravel.com/docs/logging). 
 
 #### RoadRunner
 
