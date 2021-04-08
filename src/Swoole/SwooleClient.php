@@ -19,6 +19,13 @@ use Throwable;
 class SwooleClient implements Client, ServesStaticFiles
 {
     /**
+     * The size of chunk to write, default 1MB.
+     * @see https://www.swoole.co.uk/docs/modules/swoole-server/configuration#socket_buffer_size
+     * @var int
+     */
+    protected int $chunkSize = 1048576;
+
+    /**
      * Marshal the given request context into an Illuminate request.
      *
      * @param  \Laravel\Octane\RequestContext  $context
@@ -163,14 +170,16 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         $content = $response->getContent();
+        $length = strlen($content);
 
-        if (strlen($content) <= 8192) {
+        if ($length <= $this->chunkSize) {
             $swooleResponse->end($content);
 
             return;
         }
 
-        foreach (str_split($content, 8192) as $chunk) {
+        for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
+            $chunk = substr($content, $offset, $this->chunkSize);
             $swooleResponse->write($chunk);
         }
 
@@ -194,5 +203,24 @@ class SwooleClient implements Client, ServesStaticFiles
         $context->swooleResponse->end(
             Octane::formatExceptionForClient($e, $app->make('config')->get('app.debug'))
         );
+    }
+
+    /**
+     * Set the size of chunk.
+     * @see https://www.swoole.co.uk/docs/modules/swoole-server/configuration#socket_buffer_size
+     * @param int $chunkSize
+     */
+    public function setChunkSize(int $chunkSize): void
+    {
+        $this->chunkSize = $chunkSize;
+    }
+
+    /**
+     * Get the size of chunk.
+     * @return int
+     */
+    public function getChunkSize(): int
+    {
+        return $this->chunkSize;
     }
 }
