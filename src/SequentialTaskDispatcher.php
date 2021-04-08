@@ -49,7 +49,7 @@ class SequentialTaskDispatcher implements DispatchesTasks
     {
         try {
             $this->resolve($tasks);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // ..
         }
     }

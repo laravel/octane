@@ -39,7 +39,7 @@ class SequentialTaskDispatcherTest extends TestCase
                     $a = true;
                 },
             ]);
-        } catch (TaskException $e) {
+        } catch (TaskException) {
             //
         }
 
