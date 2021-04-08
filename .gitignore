@@ -2,4 +2,3 @@
 composer.lock
 /phpunit.xml
 .phpunit.result.cache
-.idea
