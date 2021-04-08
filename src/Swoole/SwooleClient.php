@@ -18,6 +18,10 @@ use Throwable;
 
 class SwooleClient implements Client, ServesStaticFiles
 {
+    public function __construct(protected int $chunkSize = 1048576)
+    {
+    }
+
     /**
      * Marshal the given request context into an Illuminate request.
      *
@@ -164,14 +168,16 @@ class SwooleClient implements Client, ServesStaticFiles
 
         $content = $response->getContent();
 
-        if (strlen($content) <= 8192) {
+        $length = strlen($content);
+
+        if ($length <= $this->chunkSize) {
             $swooleResponse->end($content);
 
             return;
         }
 
-        foreach (str_split($content, 8192) as $chunk) {
-            $swooleResponse->write($chunk);
+        for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
+            $swooleResponse->write(substr($content, $offset, $this->chunkSize));
         }
 
         $swooleResponse->end();
