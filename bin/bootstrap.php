@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Octane\Exceptions\DdException;
+
 ini_set('display_errors', 'stderr');
 
 $_ENV['APP_RUNNING_IN_CONSOLE'] = false;
@@ -21,6 +23,13 @@ if (! is_string($basePath)) {
     fwrite(STDERR, 'Cannot find application base path.'.PHP_EOL);
 
     exit(11);
+}
+
+if (! function_exists('dd')) {
+    function dd(...$vars)
+    {
+        throw new DdException($vars);
+    }
 }
 
 /*

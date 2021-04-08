@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Tests;
 
 use Exception;
+use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\SequentialTaskDispatcher;
 
@@ -87,6 +88,19 @@ class SequentialTaskDispatcherTest extends TestCase
 
         $dispatcher->resolve([
             'first' => fn () => throw new Exception('Something went wrong.'),
+        ]);
+    }
+
+    /** @test */
+    public function test_resolving_tasks_propagate_dd_calls()
+    {
+        $dispatcher = new SequentialTaskDispatcher();
+
+        $this->expectException(DdException::class);
+        $this->expectExceptionMessage(json_encode(['foo' => 'bar']));
+
+        $dispatcher->resolve([
+            'first' => fn () => throw new DdException(['foo' => 'bar']),
         ]);
     }
 }

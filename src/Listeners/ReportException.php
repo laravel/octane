@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Listeners;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Stream;
 
 class ReportException
@@ -17,6 +18,10 @@ class ReportException
     {
         if ($event->exception) {
             tap($event->sandbox, function ($sandbox) use ($event) {
+                if ($event->exception instanceof DdException) {
+                    return;
+                }
+
                 if ($sandbox->environment('local', 'testing')) {
                     Stream::throwable($event->exception);
                 }

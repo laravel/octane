@@ -44,6 +44,12 @@ class TaskExceptionResult
      */
     public function getOriginal()
     {
+        if ($this->class == DdException::class) {
+            return new DdException(
+                json_decode($this->message, true)
+            );
+        }
+
         return new TaskException(
             $this->class,
             $this->message,

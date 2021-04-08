@@ -3,10 +3,12 @@
 namespace Laravel\Octane\Commands\Concerns;
 
 use Illuminate\Support\Str;
+use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Exceptions\WorkerException;
 use Laravel\Octane\WorkerExceptionInspector;
 use NunoMaduro\Collision\Writer;
+use Symfony\Component\VarDumper\VarDumper;
 
 trait InteractsWithIO
 {
@@ -123,6 +125,19 @@ trait InteractsWithIO
     }
 
     /**
+     * Write information about a dd to the console.
+     *
+     * @param  array  $throwable
+     * @param  int|string|null  $verbosity
+     * @return void
+     */
+    public function ddInfo($throwable, $verbosity = null)
+    {
+        collect(json_decode($throwable['message'], true))
+            ->each(fn ($var) => VarDumper::dump($var));
+    }
+
+    /**
      * Write information about a throwable to the console.
      *
      * @param  array  $throwable
@@ -131,6 +146,10 @@ trait InteractsWithIO
      */
     public function throwableInfo($throwable, $verbosity = null)
     {
+        if ($throwable['class'] == DdException::class) {
+            return $this->ddInfo($throwable, $verbosity);
+        }
+
         if (! class_exists('NunoMaduro\Collision\Writer')) {
             $this->label($throwable['message'], $verbosity, $throwable['class'], 'red', 'white');
 
