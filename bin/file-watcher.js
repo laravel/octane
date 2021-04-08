@@ -1,23 +1,10 @@
 const chokidar = require('chokidar');
 
-const basePath = process.argv[2];
+const paths = JSON.parse(process.argv[2]);
 
-const watcher = chokidar.watch(
-    [
-        basePath + '/app',
-        basePath + '/bootstrap',
-        basePath + '/config',
-        basePath + '/database',
-        basePath + '/public',
-        basePath + '/resources',
-        basePath + '/routes',
-        basePath + '/composer.lock',
-        basePath + '/.env',
-    ],
-    {
-        ignoreInitial: true,
-    }
-);
+const watcher = chokidar.watch(paths, {
+    ignoreInitial: true,
+});
 
 watcher
     .on('add', () => console.log('File added...'))

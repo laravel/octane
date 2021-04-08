@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Commands\Concerns;
 
+use InvalidArgumentException;
 use Laravel\Octane\Exceptions\ServerShutdownException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -90,8 +91,16 @@ trait InteractsWithServers
             };
         }
 
+        if (empty($paths = config('octane.watch'))) {
+            throw new InvalidArgumentException(
+                'List of directories/files to watch not found. Please update your "config/octane.php" configuration file.',
+            );
+        }
+
         return tap(new Process([
-            (new ExecutableFinder)->find('node'), 'file-watcher.js', base_path(),
+            (new ExecutableFinder)->find('node'),
+            'file-watcher.js',
+            json_encode(collect(config('octane.watch'))->map(fn ($path) => base_path($path))),
         ], realpath(__DIR__.'/../../../bin'), null, null, null))->start();
     }
 
