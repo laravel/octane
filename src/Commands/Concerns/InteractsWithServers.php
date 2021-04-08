@@ -54,7 +54,7 @@ trait InteractsWithServers
                     $inspector->reloadServer();
                 } elseif ($watcher->isTerminated()) {
                     $this->error(
-                        'Watcher process has terminated. please ensure Node and chokidar are installed.'.PHP_EOL.
+                        'Watcher process has terminated. Please ensure Node and chokidar are installed.'.PHP_EOL.
                         $watcher->getErrorOutput()
                     );
 
