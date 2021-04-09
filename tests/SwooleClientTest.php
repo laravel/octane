@@ -148,7 +148,7 @@ class SwooleClientTest extends TestCase
 
         $client->respond(new RequestContext([
             'swooleResponse' => $swooleResponse,
-        ]), new StreamedResponse(function(){
+        ]), new StreamedResponse(function () {
             echo 'Hello World';
         }, 200, ['Content-Type' => 'text/html']));
     }
