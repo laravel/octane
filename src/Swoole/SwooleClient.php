@@ -169,7 +169,7 @@ class SwooleClient implements Client, ServesStaticFiles
 
         if ($octaneResponse->response instanceof StreamedResponse) {
             ob_start(function ($data) use ($swooleResponse) {
-                logger('write ' . strlen($data));
+                logger('write '.strlen($data));
                 if (strlen($data) > 0) {
                     $swooleResponse->write($data);
                 }
