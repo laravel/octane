@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laminas\Diactoros\ServerRequestFactory;
+use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\RoadRunner\RoadRunnerClient;
 use Mockery;
@@ -42,7 +43,7 @@ class RoadRunnerClientTest extends TestCase
 
         $client->respond(new RequestContext([
             'psr7Request' => $psr7Request,
-        ]), new Response('Hello World', 200));
+        ]), new OctaneResponse(new Response('Hello World', 200)));
     }
 
     /** @doesNotPerformAssertions @test */

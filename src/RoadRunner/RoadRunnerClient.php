@@ -8,9 +8,12 @@ use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\StoppableClient;
 use Laravel\Octane\MarshalsPsr7RequestsAndResponses;
 use Laravel\Octane\Octane;
+use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Spiral\RoadRunner\Http\PSR7Worker;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
 class RoadRunnerClient implements Client, StoppableClient
@@ -39,12 +42,20 @@ class RoadRunnerClient implements Client, StoppableClient
      * Send the response to the server.
      *
      * @param  \Laravel\Octane\RequestContext  $context
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Laravel\Octane\OctaneResponse  $octaneResponse
      * @return void
      */
-    public function respond(RequestContext $context, Response $response): void
+    public function respond(RequestContext $context, OctaneResponse $octaneResponse): void
     {
-        $this->client->respond($this->toPsr7Response($response));
+        if ($octaneResponse->outputBuffer &&
+            ! $octaneResponse->response instanceof StreamedResponse &&
+            ! $octaneResponse->response instanceof BinaryFileResponse) {
+            $octaneResponse->response->setContent(
+                $octaneResponse->outputBuffer.$octaneResponse->response->getContent()
+            );
+        }
+
+        $this->client->respond($this->toPsr7Response($octaneResponse->response));
     }
 
     /**
