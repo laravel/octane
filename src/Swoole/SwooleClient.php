@@ -167,7 +167,17 @@ class SwooleClient implements Client, ServesStaticFiles
             return;
         }
 
-        $content = $octaneResponse->response->getContent();
+        if ($octaneResponse->response instanceof StreamedResponse) {
+            ob_start();
+
+            $octaneResponse->response->sendContent();
+
+            $content = ob_get_contents();
+
+            ob_end_clean();
+        } else {
+            $content = $octaneResponse->response->getContent();
+        }
 
         if ($octaneResponse->outputBuffer) {
             $content = $octaneResponse->outputBuffer.$content;
