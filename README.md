@@ -132,7 +132,7 @@ Before using this feature, you should ensure that [Node](https://nodejs.org) is 
 npm install --save-dev chokidar
 ```
 
-You may configure the list of directories/files under watch in your application's `config/octane.php` configuration file.
+You may configure the directories and files that should be watched using the `watch` configuration option within your application's `config/octane.php` configuration file.
 
 #### Specifying The Worker Count
 
