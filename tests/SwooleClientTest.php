@@ -9,6 +9,7 @@ use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\SwooleClient;
 use Mockery;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SwooleClientTest extends TestCase
 {
@@ -131,6 +132,26 @@ class SwooleClientTest extends TestCase
         $client->respond(new RequestContext([
             'swooleResponse' => $swooleResponse,
         ]), new OctaneResponse(new Response('Hello World', 200, ['Content-Type' => 'text/html'])));
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_send_streamed_response_to_swoole()
+    {
+        $client = new SwooleClient;
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('end')->once()->with('Hello World');
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse(new StreamedResponse(function () {
+            echo 'Hello World';
+        }, 200, ['Content-Type' => 'text/html'])));
     }
 
     /** @doesNotPerformAssertions @test */
