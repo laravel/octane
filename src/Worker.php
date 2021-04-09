@@ -206,6 +206,7 @@ class Worker implements WorkerContract
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Illuminate\Foundation\Application  $sandbox
      * @return void
      */
     protected function invokeRequestHandledCallbacks($request, $response, $sandbox): void
