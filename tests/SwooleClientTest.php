@@ -145,7 +145,8 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
-        $swooleResponse->shouldReceive('end')->once()->with('Hello World');
+        $swooleResponse->shouldReceive('write')->once()->with('Hello World');
+        $swooleResponse->shouldReceive('end')->once();
 
         $client->respond(new RequestContext([
             'swooleResponse' => $swooleResponse,
