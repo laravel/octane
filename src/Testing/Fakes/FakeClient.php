@@ -5,8 +5,8 @@ namespace Laravel\Octane\Testing\Fakes;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;
+use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
-use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class FakeClient implements Client
@@ -24,9 +24,9 @@ class FakeClient implements Client
         return [$context->request, $context];
     }
 
-    public function respond(RequestContext $context, Response $response): void
+    public function respond(RequestContext $context, OctaneResponse $octaneResponse): void
     {
-        $this->responses[] = $response;
+        $this->responses[] = $octaneResponse->response;
     }
 
     public function error(Throwable $e, Application $app, Request $request, RequestContext $context): void

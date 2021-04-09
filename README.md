@@ -164,10 +164,6 @@ You may gracefully restart the Octane server's application workers using the `oc
 php artisan octane:reload
 ```
 
-### Debugging
-
-Because Octane starts a long running process that continually serves requests to your application, it is not possible to use the `dump` helper. Instead, we recommend using [Telescope](https://github.com/laravel/telescope), [Ray](https://spatie.be/products/ray), [Debug Bar](https://github.com/barryvdh/laravel-debugbar), or [logging](https://laravel.com/docs/logging).
-
 ### Dependency Injection & Octane
 
 Since Octane boots your application once and keeps it in memory while serving requests, there are a few caveats you should consider while building your application. For example, the `register` and `boot` methods of your application's service providers will only be executed once when the request worker initially boots. On subsequent requests, the same application instance will be reused.

@@ -5,6 +5,7 @@ namespace Laravel\Octane\Tests;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\SwooleClient;
 use Mockery;
@@ -129,7 +130,7 @@ class SwooleClientTest extends TestCase
 
         $client->respond(new RequestContext([
             'swooleResponse' => $swooleResponse,
-        ]), new Response('Hello World', 200, ['Content-Type' => 'text/html']));
+        ]), new OctaneResponse(new Response('Hello World', 200, ['Content-Type' => 'text/html'])));
     }
 
     /** @doesNotPerformAssertions @test */
