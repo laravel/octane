@@ -157,31 +157,35 @@ class SwooleClient implements Client, ServesStaticFiles
      */
     protected function sendResponseContent(OctaneResponse $octaneResponse, SwooleResponse $swooleResponse): void
     {
-        if ($octaneResponse->response instanceof StreamedResponse && property_exists($octaneResponse->response, 'output')) {
-            $swooleResponse->end($octaneResponse->response->output);
-
-            return;
-        } elseif ($octaneResponse->response instanceof BinaryFileResponse) {
+        if ($octaneResponse->response instanceof BinaryFileResponse) {
             $swooleResponse->sendfile($octaneResponse->response->getFile()->getPathname());
 
             return;
         }
 
+        if ($octaneResponse->outputBuffer) {
+            $swooleResponse->write($octaneResponse->outputBuffer);
+        }
+
         if ($octaneResponse->response instanceof StreamedResponse) {
-            ob_start();
+            ob_start(function ($data) use ($swooleResponse) {
+                if ($data) {
+                    $swooleResponse->write($data);
+                }
+
+                return '';
+            }, 10);
 
             $octaneResponse->response->sendContent();
 
-            $content = ob_get_contents();
-
             ob_end_clean();
-        } else {
-            $content = $octaneResponse->response->getContent();
+
+            $swooleResponse->end();
+
+            return;
         }
 
-        if ($octaneResponse->outputBuffer) {
-            $content = $octaneResponse->outputBuffer.$content;
-        }
+        $content = $octaneResponse->response->getContent();
 
         $length = strlen($content);
 
