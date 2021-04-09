@@ -11,6 +11,7 @@ use Laravel\Octane\RoadRunner\RoadRunnerClient;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 use Spiral\RoadRunner\Http\PSR7Worker;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RoadRunnerClientTest extends TestCase
 {
@@ -43,6 +44,23 @@ class RoadRunnerClientTest extends TestCase
         $client->respond(new RequestContext([
             'psr7Request' => $psr7Request,
         ]), new Response('Hello World', 200));
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_send_streamed_response_to_roadrunner()
+    {
+        $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
+
+        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+        $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
+
+        $psr7Client->shouldReceive('respond')->once()->with(Mockery::type(ResponseInterface::class));
+
+        $client->respond(new RequestContext([
+            'psr7Request' => $psr7Request,
+        ]), new StreamedResponse(function () {
+            echo 'Hello World';
+        }, 200));
     }
 
     /** @doesNotPerformAssertions @test */
