@@ -124,30 +124,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Garbage Collection Threshold
-    |--------------------------------------------------------------------------
-    |
-    | When executing long-lived PHP scripts such as Octane, memory can build
-    | up before being cleared by PHP. You can force Octane to run garbage
-    | collection if your application consumes this amount of megabytes.
-    |
-    */
-
-    'garbage' => 50,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Maximum Execution Time
-    |--------------------------------------------------------------------------
-    |
-    | (info) 0 means no maximum limit
-    |
-    */
-
-    'max_execution_time' => 30,
-
-    /*
-    |--------------------------------------------------------------------------
     | Octane Cache Table
     |--------------------------------------------------------------------------
     |
@@ -179,5 +155,54 @@ return [
             'votes' => 'int',
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | File Watching
+    |--------------------------------------------------------------------------
+    |
+    | The following list of files and directories will be watched when using
+    | the --watch option offered by Octane. If any of the directories and
+    | files are changed, Octane will automatically reload your workers.
+    |
+    */
+
+    'watch' => [
+        'app',
+        'bootstrap',
+        'config',
+        'database',
+        'public',
+        'resources',
+        'routes',
+        'composer.lock',
+        '.env',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Garbage Collection Threshold
+    |--------------------------------------------------------------------------
+    |
+    | When executing long-lived PHP scripts such as Octane, memory can build
+    | up before being cleared by PHP. You can force Octane to run garbage
+    | collection if your application consumes this amount of megabytes.
+    |
+    */
+
+    'garbage' => 50,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Maximum Execution Time
+    |--------------------------------------------------------------------------
+    |
+    | The following setting configures the maximum execution time for requests
+    | being handled by Octane. You may set this value to 0 to indicate that
+    | there isn't a specific time limit on Octane request execution time.
+    |
+    */
+
+    'max_execution_time' => 30,
 
 ];

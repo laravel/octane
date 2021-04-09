@@ -132,6 +132,8 @@ Before using this feature, you should ensure that [Node](https://nodejs.org) is 
 npm install --save-dev chokidar
 ```
 
+You may configure the directories and files that should be watched using the `watch` configuration option within your application's `config/octane.php` configuration file.
+
 #### Specifying The Worker Count
 
 By default, Octane will start an application request worker for each CPU core provided by your machine. However, you may manually specify how many workers you would like to start using the `--workers` option when invoking the `octane:start` command:
