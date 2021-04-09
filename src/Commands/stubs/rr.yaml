@@ -1,9 +1,4 @@
-# RPC is required to run rr commands in the terminal
-# Ex: `rr workers` to view workers status
-# or `rr reset` to reset workers without restart Octane
 rpc:
   listen: tcp://127.0.0.1:6001
-# Healthcheck
 status:
-  # Ex: 127.0.0.1:2114/health?plugin=http
   address: 127.0.0.1:2114
