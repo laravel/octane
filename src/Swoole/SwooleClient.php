@@ -56,17 +56,67 @@ class SwooleClient implements Client, ServesStaticFiles
 
         $publicPath = $context->publicPath;
 
+        $realpath = realpath($publicPath.'/'.$request->path());
+
+        if($this->checkSymlinkInPath($publicPath, $realpath, $request->path())) {
+            $realpath = $publicPath.'/'.$request->path();
+        }
+
         return $this->fileIsServable(
             $publicPath,
-            realpath($publicPath.'/'.$request->path()),
+            $realpath,
         );
+    }
+
+    /**
+     * Checks whether the request path contains a Symlink.
+     * When a Symlink is found, it is checked against the the resolved real path,
+     * in order to protect against directory traversal.
+     *
+     * @param  string  $publicPath
+     * @param  string  $realPath
+     * @param  string  $requestPath
+     * @return bool
+     */
+    private function checkSymlinkInPath(string $publicPath, string $realPath, string $requestPath): bool
+    {
+        $resolvedPathIfSymlink = $this->pathContainsSymlink($publicPath, $requestPath);
+
+        if (! $resolvedPathIfSymlink) {
+            return false;
+        }
+
+        return str_ends_with($realPath, $resolvedPathIfSymlink);
+    }
+
+    /**
+     * Determine whether the path contains a symlink.
+     * When a symlink is found, the path after it is returned.
+     *
+     * @param  string $publicPath
+     * @param  string $path
+     * @return string|bool
+     */
+    private function pathContainsSymlink(string $publicPath, string $path): string|bool
+    {
+        $dirs = explode('/', $path);
+
+        while ($dir = array_shift($dirs)) {
+            $publicPath .= '/'.$dir;
+
+            if (is_link($publicPath)) {
+                return implode('/', $dirs);
+            }
+        }
+
+        return false;
     }
 
     /**
      * Determine if the given file is servable.
      *
-     * @param  string  $publicPath
-     * @param  string  $pathToFile
+     * @param  string $publicPath
+     * @param  string $pathToFile
      * @return bool
      */
     protected function fileIsServable(string $publicPath, string $pathToFile): bool
