@@ -9,6 +9,7 @@ use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\MimeType;
 use Laravel\Octane\Octane;
+use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -98,13 +99,13 @@ class SwooleClient implements Client, ServesStaticFiles
      * Send the response to the server.
      *
      * @param  \Laravel\Octane\RequestContext  $context
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Laravel\Octane\OctaneResponse  $octaneResponse
      * @return void
      */
-    public function respond(RequestContext $context, Response $response): void
+    public function respond(RequestContext $context, OctaneResponse $octaneResponse): void
     {
-        $this->sendResponseHeaders($response, $context->swooleResponse);
-        $this->sendResponseContent($response, $context->swooleResponse);
+        $this->sendResponseHeaders($octaneResponse->response, $context->swooleResponse);
+        $this->sendResponseContent($octaneResponse, $context->swooleResponse);
     }
 
     /**
@@ -150,23 +151,41 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * Send the headers from the Illuminate response to the Swoole response.
      *
-     * @param  \Symfony\Component\HtpFoundation\Response  $response
+     * @param  \Laravel\Octane\OctaneResponse  $response
      * @param  \Swoole\Http\Response  $response
      * @return void
      */
-    protected function sendResponseContent(Response $response, SwooleResponse $swooleResponse): void
+    protected function sendResponseContent(OctaneResponse $octaneResponse, SwooleResponse $swooleResponse): void
     {
-        if ($response instanceof StreamedResponse && property_exists($response, 'output')) {
-            $swooleResponse->end($response->output);
-
-            return;
-        } elseif ($response instanceof BinaryFileResponse) {
-            $swooleResponse->sendfile($response->getFile()->getPathname());
+        if ($octaneResponse->response instanceof BinaryFileResponse) {
+            $swooleResponse->sendfile($octaneResponse->response->getFile()->getPathname());
 
             return;
         }
 
-        $content = $response->getContent();
+        if ($octaneResponse->outputBuffer) {
+            $swooleResponse->write($octaneResponse->outputBuffer);
+        }
+
+        if ($octaneResponse->response instanceof StreamedResponse) {
+            ob_start(function ($data) use ($swooleResponse) {
+                if (strlen($data) > 0) {
+                    $swooleResponse->write($data);
+                }
+
+                return '';
+            }, 1);
+
+            $octaneResponse->response->sendContent();
+
+            ob_end_clean();
+
+            $swooleResponse->end();
+
+            return;
+        }
+
+        $content = $octaneResponse->response->getContent();
 
         $length = strlen($content);
 

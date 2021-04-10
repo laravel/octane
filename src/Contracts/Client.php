@@ -4,6 +4,7 @@ namespace Laravel\Octane\Contracts;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -22,10 +23,10 @@ interface Client
      * Send the response to the server.
      *
      * @param  \Laravel\Octane\RequestContext  $context
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Laravel\Octane\OctaneResponse  $response
      * @return void
      */
-    public function respond(RequestContext $context, Response $response): void;
+    public function respond(RequestContext $context, OctaneResponse $response): void;
 
     /**
      * Send an error message to the server.
