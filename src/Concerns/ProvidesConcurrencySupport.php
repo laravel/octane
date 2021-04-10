@@ -31,7 +31,7 @@ trait ProvidesConcurrencySupport
     /**
      * Get the task dispatcher.
      *
-     * @return \Laravel\Contracts\Octane\DispatchesTasks
+     * @return \Laravel\Octane\Contracts\DispatchesTasks
      */
     public function tasks()
     {
