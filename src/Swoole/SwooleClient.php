@@ -58,7 +58,7 @@ class SwooleClient implements Client, ServesStaticFiles
 
         $realpath = realpath($publicPath.'/'.$request->path());
 
-        if($this->checkSymlinkInPath($publicPath, $realpath, $request->path())) {
+        if ($this->checkSymlinkInPath($publicPath, $realpath, $request->path())) {
             $realpath = $publicPath.'/'.$request->path();
         }
 
@@ -97,7 +97,7 @@ class SwooleClient implements Client, ServesStaticFiles
      * @param  string $path
      * @return string|bool
      */
-    private function pathContainsSymlink(string $publicPath, string $path): string|bool
+    private function pathContainsSymlink(string $publicPath, string $path): string | bool
     {
         $dirs = explode('/', $path);
 
