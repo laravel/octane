@@ -156,7 +156,7 @@ class OctaneStoreTest extends TestCase
         $this->assertNull($store->get('foo'));
 
         $store->put('foo', 'bar', 5);
-        $this->assertTrue($store->flush('foo'));
+        $this->assertTrue($store->flush());
 
         $this->assertNull($store->get('foo'));
     }
