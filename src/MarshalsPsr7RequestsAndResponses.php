@@ -58,7 +58,7 @@ trait MarshalsPsr7RequestsAndResponses
      *
      * This instance can turn a PSR-7 request into an HttpFoundation request.
      *
-     * @return \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactoryInterface
+     * @return \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface
      */
     protected function httpFoundationRequestFactory(): HttpFoundationFactoryInterface
     {
