@@ -12,10 +12,11 @@ use Throwable;
 
 class OnWorkerStart
 {
-    public function __construct(protected $basePath,
-                                protected array $serverState,
-                                protected WorkerState $workerState)
-    {
+    public function __construct(
+        protected $basePath,
+        protected array $serverState,
+        protected WorkerState $workerState
+    ) {
     }
 
     /**
