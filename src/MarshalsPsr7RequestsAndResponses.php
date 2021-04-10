@@ -60,7 +60,7 @@ trait MarshalsPsr7RequestsAndResponses
      *
      * @return \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
      */
-    protected function httpFoundationRequestFactory(): HttpFoundationFactoryInterface
+    protected function httpFoundationRequestFactory(): HttpFoundationFactory
     {
         return $this->httpFoundationFactory ?: (
             $this->httpFoundationFactory = new HttpFoundationFactory
