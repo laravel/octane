@@ -2,8 +2,6 @@
 
 namespace Laravel\Octane\Exceptions;
 
-use Throwable;
-
 class TaskExceptionResult
 {
     public function __construct(
@@ -40,7 +38,7 @@ class TaskExceptionResult
     /**
      * Gets the original throwable.
      *
-     * @return \Laravel\Octane\Exceptions\TaskException
+     * @return \Laravel\Octane\Exceptions\TaskException|\Laravel\Octane\Exceptions\DdException
      */
     public function getOriginal()
     {
