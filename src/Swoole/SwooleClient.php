@@ -73,7 +73,7 @@ class SwooleClient implements Client, ServesStaticFiles
         return $pathToFile &&
                ! in_array(pathinfo($pathToFile, PATHINFO_EXTENSION), ['php', 'htaccess', 'config']) &&
                str_starts_with($pathToFile, $publicPath) &&
-               is_file($pathToFile) && filesize($pathToFile);
+               is_file($pathToFile);
     }
 
     /**
