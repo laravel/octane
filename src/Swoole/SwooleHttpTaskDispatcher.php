@@ -14,10 +14,11 @@ use Laravel\Octane\Exceptions\TaskTimeoutException;
 
 class SwooleHttpTaskDispatcher implements DispatchesTasks
 {
-    public function __construct(protected string $host,
-                                protected string $port,
-                                protected DispatchesTasks $fallbackDispatcher)
-    {
+    public function __construct(
+        protected string $host,
+        protected string $port,
+        protected DispatchesTasks $fallbackDispatcher
+    ) {
     }
 
     /**

@@ -11,7 +11,6 @@ class TaskExceptionResult
         protected string $file,
         protected int $line,
     ) {
-        //
     }
 
     /**
