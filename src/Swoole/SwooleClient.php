@@ -56,17 +56,60 @@ class SwooleClient implements Client, ServesStaticFiles
 
         $publicPath = $context->publicPath;
 
+        $pathToFile = realpath($publicPath.'/'.$request->path());
+
+        if ($this->isValidFileWithinSymlink($request, $publicPath, $pathToFile)) {
+            $pathToFile = $publicPath.'/'.$request->path();
+        }
+
         return $this->fileIsServable(
             $publicPath,
-            realpath($publicPath.'/'.$request->path()),
+            $pathToFile,
         );
+    }
+
+    /**
+     * Determine if the request is for a valid static file within a symlink.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $publicPath
+     * @param  string  $pathToFile
+     * @return bool
+     */
+    private function isValidFileWithinSymlink(Request $request, string $publicPath, string $pathToFile): bool
+    {
+        $pathAfterSymlink = $this->pathAfterSymlink($publicPath, $request->path());
+
+        return $pathAfterSymlink && str_ends_with($pathToFile, $pathAfterSymlink);
+    }
+
+    /**
+     * If the given public file is within a symlinked directory, return the path after the symlink.
+     *
+     * @param  string  $publicPath
+     * @param  string  $path
+     * @return string|bool
+     */
+    private function pathAfterSymlink(string $publicPath, string $path)
+    {
+        $directories = explode('/', $path);
+
+        while ($directory = array_shift($directories)) {
+            $publicPath .= '/'.$directory;
+
+            if (is_link($publicPath)) {
+                return implode('/', $directories);
+            }
+        }
+
+        return false;
     }
 
     /**
      * Determine if the given file is servable.
      *
-     * @param  string  $publicPath
-     * @param  string  $pathToFile
+     * @param  string $publicPath
+     * @param  string $pathToFile
      * @return bool
      */
     protected function fileIsServable(string $publicPath, string $pathToFile): bool
