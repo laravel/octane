@@ -56,56 +56,49 @@ class SwooleClient implements Client, ServesStaticFiles
 
         $publicPath = $context->publicPath;
 
-        $realpath = realpath($publicPath.'/'.$request->path());
+        $pathToFile = realpath($publicPath.'/'.$request->path());
 
-        if ($this->checkSymlinkInPath($publicPath, $realpath, $request->path())) {
-            $realpath = $publicPath.'/'.$request->path();
+        if ($this->isValidFileWithinSymlink($request, $publicPath, $pathToFile)) {
+            $pathToFile = $publicPath.'/'.$request->path();
         }
 
         return $this->fileIsServable(
             $publicPath,
-            $realpath,
+            $pathToFile,
         );
     }
 
     /**
-     * Checks whether the request path contains a Symlink.
-     * When a Symlink is found, it is checked against the the resolved real path,
-     * in order to protect against directory traversal.
+     * Determine if the request is for a valid static file within a symlink.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $publicPath
-     * @param  string  $realPath
-     * @param  string  $requestPath
+     * @param  string  $pathToFile
      * @return bool
      */
-    private function checkSymlinkInPath(string $publicPath, string $realPath, string $requestPath): bool
+    private function isValidFileWithinSymlink(Request $request, string $publicPath, string $pathToFile): bool
     {
-        $resolvedPathIfSymlink = $this->pathContainsSymlink($publicPath, $requestPath);
+        $pathAfterSymlink = $this->pathAfterSymlink($publicPath, $request->path());
 
-        if (! $resolvedPathIfSymlink) {
-            return false;
-        }
-
-        return str_ends_with($realPath, $resolvedPathIfSymlink);
+        return $pathAfterSymlink && str_ends_with($pathToFile, $pathAfterSymlink);
     }
 
     /**
-     * Determine whether the path contains a symlink.
-     * When a symlink is found, the path after it is returned.
+     * If the given public file is within a symlinked directory, return the path after the symlink.
      *
-     * @param  string $publicPath
-     * @param  string $path
+     * @param  string  $publicPath
+     * @param  string  $path
      * @return string|bool
      */
-    private function pathContainsSymlink(string $publicPath, string $path)
+    private function pathAfterSymlink(string $publicPath, string $path)
     {
-        $dirs = explode('/', $path);
+        $directories = explode('/', $path);
 
-        while ($dir = array_shift($dirs)) {
-            $publicPath .= '/'.$dir;
+        while ($directory = array_shift($directories)) {
+            $publicPath .= '/'.$directory;
 
             if (is_link($publicPath)) {
-                return implode('/', $dirs);
+                return implode('/', $directories);
             }
         }
 
