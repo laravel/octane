@@ -51,11 +51,9 @@ class ServerProcessInspector
     public function stopServer(): bool
     {
         [
-            'masterProcessId' => $masterProcessId,
-            'managerProcessId' => $managerProcessId
+            'masterProcessId' => $masterProcessId
         ] = $this->serverStateFile->read();
 
-        return $this->dispatcher->terminate($masterProcessId, 15)
-            && $this->dispatcher->terminate($managerProcessId, 15);
+        return $this->dispatcher->terminate($masterProcessId, 15);
     }
 }
