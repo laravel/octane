@@ -149,7 +149,7 @@ class SwooleClient implements Client, ServesStaticFiles
     }
 
     /**
-     * Send the headers from the Illuminate response to the Swoole response.
+     * Send the content from the Illuminate response to the Swoole response.
      *
      * @param  \Laravel\Octane\OctaneResponse  $response
      * @param  \Swoole\Http\Response  $response
