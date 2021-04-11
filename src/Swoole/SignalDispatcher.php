@@ -2,8 +2,6 @@
 
 namespace Laravel\Octane\Swoole;
 
-use Swoole\Process;
-
 class SignalDispatcher
 {
     public function __construct(protected SwooleExtension $extension)
@@ -30,21 +28,19 @@ class SignalDispatcher
      */
     public function terminate(int $processId, int $wait = 0): bool
     {
-        $this->extension->dispatchProcessSignal($processId, SIGTERM);
+        $start = time();
 
-        if ($wait) {
-            $start = time();
+        do {
+            $killed = $this->signal($processId, SIGTERM);
 
-            do {
-                if ($this->canCommunicateWith($processId)) {
-                    return true;
-                }
+            if (!$wait) {
+                return $killed;
+            }
 
-                sleep(1);
-            } while (time() < $start + $wait);
-        }
+            sleep(1);
+        } while (time() < $start + $wait);
 
-        return false;
+        return $killed;
     }
 
     /**

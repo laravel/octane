@@ -58,7 +58,11 @@ class StopCommand extends Command
 
         $this->info('Stopping server...');
 
-        $inspector->stopServer();
+        if (!$inspector->stopServer()) {
+            $this->error('Stopping server fails.');
+
+            return 1;
+        }
 
         app(SwooleServerStateFile::class)->delete();
 
@@ -84,7 +88,11 @@ class StopCommand extends Command
 
         $this->info('Stopping server...');
 
-        $inspector->stopServer();
+        if (!$inspector->stopServer()) {
+            $this->error('Stopping server fails.');
+
+            return 1;
+        }
 
         app(RoadRunnerServerStateFile::class)->delete();
 
