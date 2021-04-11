@@ -35,14 +35,7 @@ class ServerStateFile
      */
     public function writeProcessId(int $masterProcessId): void
     {
-        if (! is_writable($this->path) && ! is_writable(dirname($this->path))) {
-            throw new RuntimeException('Unable to write to process ID file.');
-        }
-
-        file_put_contents($this->path, json_encode(
-            array_merge($this->read(), ['masterProcessId' => $masterProcessId]),
-            JSON_PRETTY_PRINT
-        ));
+        $this->write(['masterProcessId' => $masterProcessId]);
     }
 
     /**
@@ -53,12 +46,22 @@ class ServerStateFile
      */
     public function writeState(array $newState): void
     {
+        $this->write(['state' => $newState]);
+    }
+
+    /**
+     * Write server states to file.
+     *
+     * @param array $states
+     */
+    protected function write(array $states): void
+    {
         if (! is_writable($this->path) && ! is_writable(dirname($this->path))) {
             throw new RuntimeException('Unable to write to process ID file.');
         }
 
         file_put_contents($this->path, json_encode(
-            array_merge($this->read(), ['state' => $newState]),
+            array_merge($this->read(), $states),
             JSON_PRETTY_PRINT
         ));
     }
