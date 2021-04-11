@@ -97,7 +97,7 @@ class SwooleClient implements Client, ServesStaticFiles
      * @param  string $path
      * @return string|bool
      */
-    private function pathContainsSymlink(string $publicPath, string $path): string | bool
+    private function pathContainsSymlink(string $publicPath, string $path)
     {
         $dirs = explode('/', $path);
 
