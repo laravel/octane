@@ -57,7 +57,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
 
         $processFactory->shouldReceive('createProcess')->with(
             ['./rr', 'reset'],
-            'base-path',
+            base_path(),
             null,
             null,
             null
@@ -65,6 +65,6 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
 
         $process->shouldReceive('mustRun')->once()->andReturn(0);
 
-        $inspector->reloadServer('base-path');
+        $inspector->reloadServer();
     }
 }
