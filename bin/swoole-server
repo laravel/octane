@@ -3,6 +3,7 @@
 
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\Handlers\OnManagerStart;
+use Laravel\Octane\Swoole\Handlers\OnManagerStop;
 use Laravel\Octane\Swoole\Handlers\OnServerShutdown;
 use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
@@ -40,12 +41,12 @@ $timerTable = require __DIR__.'/createSwooleTimerTable.php';
 
 /*
 |--------------------------------------------------------------------------
-| Handle Server & Manager Start
+| Handle Server Start
 |--------------------------------------------------------------------------
 |
-| The following callbacks manage the master process and manager process
-| start events. These handlers primarily are responsible for writing
-| the process ID to the server state file so we can remember them.
+| The following callback manage the master process start event.
+| These handler primarily is responsible for writing the process ID
+| to the server state file so we can remember them.
 |
 */
 
@@ -57,10 +58,6 @@ $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnS
     $timerTable,
     $serverState['octaneConfig']['tick'] ?? true
 ))($server));
-
-$server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerStart(
-    new SwooleExtension, $serverState['appName']
-))());
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +87,22 @@ $server->on('workerstart', fn (Server $server, $workerId) =>
         $basePath, $serverState, $workerState
     ))($server, $workerId))($bootstrap($serverState))
 );
+
+/*
+|--------------------------------------------------------------------------
+| Handle Manager Start
+|--------------------------------------------------------------------------
+|
+| The following callback manage the master process start event.
+| These handler primarily is responsible for writing the process ID
+| to the server state file so we can remember them. And restore the
+| octane cache.
+|
+*/
+
+$server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerStart(
+    new SwooleExtension, $serverState, $bootstrap, $workerState
+))());
 
 /*
 |--------------------------------------------------------------------------
@@ -165,5 +178,7 @@ $server->on('workerstop', function () use ($workerState) {
 $server->on('shutdown', fn () => (new OnServerShutdown(
     new ServerStateFile($serverStateFile)
 ))());
+
+$server->on('managerstop', fn () => (new OnManagerStop($bootstrap($serverState), $workerState))());
 
 $server->start();
