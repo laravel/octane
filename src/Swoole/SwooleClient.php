@@ -233,13 +233,11 @@ class SwooleClient implements Client, ServesStaticFiles
         $length = strlen($content);
 
         if ($length <= $this->chunkSize) {
-            $swooleResponse->end($content);
-
-            return;
-        }
-
-        for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
-            $swooleResponse->write(substr($content, $offset, $this->chunkSize));
+            $swooleResponse->write($content);
+        } else {
+            for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
+                $swooleResponse->write(substr($content, $offset, $this->chunkSize));
+            }
         }
 
         $swooleResponse->end();
