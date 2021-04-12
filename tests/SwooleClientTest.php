@@ -135,7 +135,7 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
-        $request = Request::create('/symlink/../files/bar.txt', 'GET');
+        $request = Request::create('/symlink/../foo.txt', 'GET');
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
