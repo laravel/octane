@@ -63,7 +63,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
             null
         )->andReturn($process = Mockery::mock('stdClass'));
 
-        $process->shouldReceive('run')->once()->andReturn(0);
+        $process->shouldReceive('mustRun')->once()->andReturn(0);
 
         $inspector->reloadServer('base-path');
     }
