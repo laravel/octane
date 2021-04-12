@@ -76,7 +76,7 @@ class ReloadCommand extends Command
 
         $this->info('Reloading workers...');
 
-        $inspector->reloadServer(base_path());
+        $inspector->reloadServer();
 
         return 0;
     }

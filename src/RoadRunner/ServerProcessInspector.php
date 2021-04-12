@@ -32,14 +32,13 @@ class ServerProcessInspector
     /**
      * Reload the RoadRunner workers.
      *
-     * @param  string  $basePath
      * @return void
      */
-    public function reloadServer(string $basePath): void
+    public function reloadServer(): void
     {
         $this->processFactory->createProcess([
             './rr', 'reset',
-        ], $basePath, null, null, null)->run();
+        ], base_path(), null, null, null)->run();
     }
 
     /**
