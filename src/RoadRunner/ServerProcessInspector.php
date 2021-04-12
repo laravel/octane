@@ -39,7 +39,7 @@ class ServerProcessInspector
     {
         $this->processFactory->createProcess([
             './rr', 'reset',
-        ], $basePath, null, null, null)->run();
+        ], $basePath, null, null, null)->mustRun();
     }
 
     /**
