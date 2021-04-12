@@ -38,7 +38,11 @@ class ServerProcessInspector
     {
         $this->processFactory->createProcess([
             './rr', 'reset',
-        ], base_path(), null, null, null)->mustRun();
+        ], base_path(), null, null, null)->start(function ($type, $buffer) {
+            if ($type === Process::ERR) {
+                throw new \RuntimeException('Cannot reload RoadRunner: '.$buffer);
+            }
+        });
     }
 
     /**
