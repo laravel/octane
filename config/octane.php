@@ -205,4 +205,16 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+    |--------------------------------------------------------------------------
+    | State File Location
+    |--------------------------------------------------------------------------
+    |
+    | The state file tracks the current workers details. You might want
+    | to change the location here.
+    |
+    */
+
+    'state_file' => storage_path('logs/octane-server-state.json'),
+
 ];
