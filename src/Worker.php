@@ -3,8 +3,11 @@
 namespace Laravel\Octane;
 
 use Closure;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\Contracts\Worker as WorkerContract;
@@ -110,6 +113,15 @@ class Worker implements WorkerContract
         } catch (Throwable $e) {
             $this->handleWorkerError($e, $sandbox, $request, $context, $responded);
         } finally {
+            $sandbox->forgetInstance('request');
+            $sandbox->forgetInstance('app');
+            $sandbox->forgetInstance(Container::class);
+            $sandbox->forgetInstance(StartSession::class);
+            $sandbox->forgetInstance(Gate::class);
+
+            $this->app->make('view.engine.resolver')->forget('blade');
+            $this->app->make('view.engine.resolver')->forget('php');
+
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.
