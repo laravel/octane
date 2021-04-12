@@ -43,7 +43,7 @@ class OnManagerStart
         $tmpApp = new ApplicationFactory($basePath);
         $tmpApp->createApplication();
 
-        $cache = (array) Cache::get("octane-cache");
+        $cache = (array) Cache::get('octane-cache');
 
         foreach ($cache as $key => $row) {
             $this->workerState->cacheTable[$key] = $row;

@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Swoole\Handlers;
 
-use Exception;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Swoole\WorkerState;
@@ -31,7 +30,7 @@ class OnManagerStop
             $cache[$key] = $row;
         }
 
-        Cache::put("octane-cache", $cache);
+        Cache::put('octane-cache', $cache);
 
         unset($tmpApp, $cache);
     }
