@@ -108,8 +108,8 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * Determine if the given file is servable.
      *
-     * @param  string $publicPath
-     * @param  string $pathToFile
+     * @param  string  $publicPath
+     * @param  string  $pathToFile
      * @return bool
      */
     protected function fileIsServable(string $publicPath, string $pathToFile): bool

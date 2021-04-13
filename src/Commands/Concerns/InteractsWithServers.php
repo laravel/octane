@@ -147,7 +147,8 @@ trait InteractsWithServers
     /**
      * The method will be called when the application is signaled.
      *
-     * @param int $signal
+     * @param  int  $signal
+     * @return void
      */
     public function handleSignal(int $signal): void
     {
