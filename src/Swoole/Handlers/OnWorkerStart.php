@@ -40,6 +40,7 @@ class OnWorkerStart
 
         if ($this->shouldSetProcessName) {
             $isTaskWorker = $workerId >= $server->setting['worker_num'];
+
             $this->extension->setProcessName(
                 $this->serverState['appName'],
                 $isTaskWorker ? 'task worker process' : 'worker process',
