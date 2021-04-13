@@ -5,6 +5,7 @@ namespace Laravel\Octane\Swoole\Handlers;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Stream;
 use Laravel\Octane\Swoole\SwooleClient;
+use Laravel\Octane\Swoole\SwooleExtension;
 use Laravel\Octane\Swoole\WorkerState;
 use Laravel\Octane\Worker;
 use Swoole\Http\Server;
@@ -13,9 +14,11 @@ use Throwable;
 class OnWorkerStart
 {
     public function __construct(
+        protected SwooleExtension $extension,
         protected $basePath,
         protected array $serverState,
-        protected WorkerState $workerState
+        protected WorkerState $workerState,
+        protected bool $shouldSetProcessName = true
     ) {
     }
 
@@ -34,6 +37,15 @@ class OnWorkerStart
 
         $this->dispatchServerTickTaskEverySecond($server);
         $this->streamRequestsToConsole($server);
+
+        if ($this->shouldSetProcessName) {
+            $isTaskWorker = $workerId >= $server->setting['worker_num'];
+
+            $this->extension->setProcessName(
+                $this->serverState['appName'],
+                $isTaskWorker ? 'task worker process' : 'worker process',
+            );
+        }
     }
 
     /**
