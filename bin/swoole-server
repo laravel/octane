@@ -87,7 +87,7 @@ $workerState->tables = require __DIR__.'/createSwooleTables.php';
 
 $server->on('workerstart', fn (Server $server, $workerId) =>
     (fn ($basePath) => (new OnWorkerStart(
-        new SwooleExtension(), $basePath, $serverState, $workerState
+        new SwooleExtension, $basePath, $serverState, $workerState
     ))($server, $workerId))($bootstrap($serverState))
 );
 
