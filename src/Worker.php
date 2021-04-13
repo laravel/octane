@@ -4,10 +4,8 @@ namespace Laravel\Octane;
 
 use Closure;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Session\Middleware\StartSession;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\Contracts\Worker as WorkerContract;
