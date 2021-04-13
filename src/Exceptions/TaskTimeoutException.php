@@ -9,7 +9,7 @@ class TaskTimeoutException extends Exception
     /**
      * Creates a new task timeout exception with the given milliseconds.
      *
-     * @param  int $milliseconds
+     * @param  int  $milliseconds
      * @return static
      */
     public static function after($milliseconds)
