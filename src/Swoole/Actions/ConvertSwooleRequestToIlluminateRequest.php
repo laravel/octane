@@ -64,6 +64,12 @@ class ConvertSwooleRequestToIlluminateRequest
             $this->formatHttpHeadersIntoServerVariables($headers)
         );
 
+        if (isset($results['REQUEST_URI'], $results['QUERY_STRING']) &&
+            strlen($results['QUERY_STRING']) > 0 &&
+            strpos($results['REQUEST_URI'], '?') === false) {
+            $results['REQUEST_URI'] .= '?'.$results['QUERY_STRING'];
+        }
+
         return $phpSapi === 'cli-server'
                 ? $this->correctHeadersSetIncorrectlyByPhpDevServer($results)
                 : $results;
