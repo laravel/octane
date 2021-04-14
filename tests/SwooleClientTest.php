@@ -32,7 +32,8 @@ class SwooleClientTest extends TestCase
                 'PATH_INFO' => '/foo/bar',
                 'REMOTE_ADDR' => '127.0.0.1',
                 'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/foo/bar?name=Taylor',
+                'REQUEST_URI' => '/foo/bar',
+                'QUERY_STRING' => 'name=Taylor',
             ];
 
             public function rawContent()
@@ -50,6 +51,7 @@ class SwooleClientTest extends TestCase
         $this->assertEquals('Hello World', $request->getContent());
         $this->assertEquals('127.0.0.1', $request->ip());
         $this->assertEquals('foo/bar', $request->path());
+        $this->assertEquals('/foo/bar?name=Taylor', $request->getRequestUri());
         $this->assertEquals('Taylor', $request->query('name'));
         $this->assertEquals('blue', $request->cookies->get('color'));
         $this->assertSame($givenContext, $context);
