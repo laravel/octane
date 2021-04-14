@@ -23,7 +23,7 @@ trait InstallsRoadRunnerDependencies
             return true;
         }
 
-        if (! $this->confirm('Octane requires "spiral/roadrunner:^2.0". Do you wish to install it as a dependency?')) {
+        if (! $this->confirm('Octane requires "spiral/roadrunner:^2.0". Do you wish to install it as a dependency?', true)) {
             $this->error('Octane requires "spiral/roadrunner".');
 
             return false;
