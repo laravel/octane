@@ -4,6 +4,7 @@ namespace Laravel\Octane\RoadRunner;
 
 use Laravel\Octane\PosixExtension;
 use Laravel\Octane\SymfonyProcessFactory;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class ServerProcessInspector
@@ -36,12 +37,15 @@ class ServerProcessInspector
      */
     public function reloadServer(): void
     {
-        $this->processFactory->createProcess([
-            './rr', 'reset',
-        ], base_path(), null, null, null)->start(function ($type, $buffer) {
+        tap($this->processFactory->createProcess(
+            ['./rr', 'reset'],
+            base_path()
+        ))->start()->waitUntil(function ($type, $buffer) {
             if ($type === Process::ERR) {
-                throw new \RuntimeException('Cannot reload RoadRunner: '.$buffer);
+                throw new RuntimeException('Cannot reload RoadRunner: '.$buffer);
             }
+
+            return true;
         });
     }
 
