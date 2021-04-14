@@ -58,12 +58,11 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         $processFactory->shouldReceive('createProcess')->with(
             ['./rr', 'reset'],
             base_path(),
-            null,
-            null,
-            null
         )->andReturn($process = Mockery::mock('stdClass'));
 
         $process->shouldReceive('start')->once()->andReturn(0);
+
+        $process->shouldReceive('waitUntil')->once();
 
         $inspector->reloadServer();
     }
