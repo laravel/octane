@@ -230,7 +230,7 @@ class SwooleClient implements Client, ServesStaticFiles
 
         $content = $octaneResponse->response->getContent();
 
-        if($length = strlen($content) === 0){
+        if ($length = strlen($content) === 0) {
             $swooleResponse->end();
 
             return;
