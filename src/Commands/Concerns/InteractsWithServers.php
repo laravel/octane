@@ -10,13 +10,6 @@ use Symfony\Component\Process\Process;
 trait InteractsWithServers
 {
     /**
-     * The callable used to stop the server, if any.
-     *
-     * @var \Closure|null
-     */
-    protected $stopServerUsing;
-
-    /**
      * Run the given server process.
      *
      * @param  \Symfony\Component\Process\Process  $server
@@ -33,16 +26,6 @@ trait InteractsWithServers
         $this->writeServerRunningMessage();
 
         $watcher = $this->startServerWatcher();
-
-        $this->stopServerUsing = function () use ($type, $watcher) {
-            $watcher->stop();
-
-            $this->callSilent('octane:stop', [
-                '--server' => $type,
-            ]);
-
-            $this->stopServerUsing = null;
-        };
 
         try {
             while ($server->isRunning()) {
@@ -102,18 +85,6 @@ trait InteractsWithServers
             'file-watcher.js',
             json_encode(collect(config('octane.watch'))->map(fn ($path) => base_path($path))),
         ], realpath(__DIR__.'/../../../bin'), null, null, null))->start();
-    }
-
-    /**
-     * Stop the server.
-     *
-     * @return void
-     */
-    protected function stopServer()
-    {
-        if ($this->stopServerUsing) {
-            $this->stopServerUsing->__invoke();
-        }
     }
 
     /**

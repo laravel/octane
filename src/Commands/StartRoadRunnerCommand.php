@@ -172,4 +172,16 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                 }
             });
     }
+
+    /**
+     * Stop the server.
+     *
+     * @return void
+     */
+    protected function stopServer()
+    {
+        $this->callSilent('octane:stop', [
+            '--server' => 'roadrunner',
+        ]);
+    }
 }
