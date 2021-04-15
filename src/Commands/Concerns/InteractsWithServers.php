@@ -100,8 +100,20 @@ trait InteractsWithServers
         return tap(new Process([
             (new ExecutableFinder)->find('node'),
             'file-watcher.js',
-            json_encode(collect(config('octane.watch'))->map(fn ($path) => base_path($path))),
+            $this->pathsWithBasePath(config('octane.watch')),
+            $this->pathsWithBasePath(config('octane.unwatch')),
         ], realpath(__DIR__.'/../../../bin'), null, null, null))->start();
+    }
+
+    /**
+     * Prepends base path to each paths.
+     *
+     * @param array $paths
+     * @return string
+     */
+    private function pathsWithBasePath($paths = []): string
+    {
+        return json_encode(collect($paths)->map(fn ($path) => base_path($path)));
     }
 
     /**
