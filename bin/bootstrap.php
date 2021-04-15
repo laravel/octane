@@ -44,18 +44,12 @@ if (! function_exists('dd')) {
 |
 */
 
-$loaded = false;
-
-if (is_string($basePath) && is_file($autoload_file = $basePath.'/vendor/autoload.php')) {
-    require $autoload_file;
-
-    $loaded = true;
-}
-
-if ($loaded !== true) {
+if (! is_file($autoload_file = $basePath.'/vendor/autoload.php')) {
     fwrite(STDERR, "Composer autoload file was not found. Did you install the project's dependencies?".PHP_EOL);
 
     exit(10);
 }
+
+require_once $autoload_file;
 
 return $basePath;
