@@ -59,7 +59,7 @@ class StopCommand extends Command
         $this->info('Stopping server...');
 
         if (! $inspector->stopServer()) {
-            $this->error('Failed not stop swoole server.');
+            $this->error('Failed to stop Swoole server.');
 
             return 1;
         }
