@@ -409,6 +409,12 @@ return Octane::table('example')->get('uuid');
 
 **Note:** The column types supported by Swoole tables are: `string`, `int`, and `float`.
 
+### FAQ
+
+#### `Octane::concurrently` may cause requests to be unresponsive
+
+The process will be terminated after `config('octane.max_execution_time')` passes. With Swoole, there's no way we can send a response so the request will hang. We reached out to the Swoole team and there's currently no way around this.
+
 ## Contributing
 
 Thank you for considering contributing to Octane! You can read the contribution guide [here](.github/CONTRIBUTING.md).
