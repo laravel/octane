@@ -2,8 +2,6 @@
 
 namespace Laravel\Octane\Swoole;
 
-use Swoole\Process;
-
 class SignalDispatcher
 {
     public function __construct(protected SwooleExtension $extension)
@@ -36,7 +34,7 @@ class SignalDispatcher
             $start = time();
 
             do {
-                if (!$this->canCommunicateWith($processId)) {
+                if (! $this->canCommunicateWith($processId)) {
                     return true;
                 }
 
