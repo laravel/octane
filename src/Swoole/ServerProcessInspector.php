@@ -2,8 +2,6 @@
 
 namespace Laravel\Octane\Swoole;
 
-use Swoole\Process;
-
 class ServerProcessInspector
 {
     public function __construct(
