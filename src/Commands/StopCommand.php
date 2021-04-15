@@ -58,7 +58,11 @@ class StopCommand extends Command
 
         $this->info('Stopping server...');
 
-        $inspector->stopServer();
+        if (! $inspector->stopServer()) {
+            $this->error('Failed not stop swoole server.');
+
+            return 1;
+        }
 
         app(SwooleServerStateFile::class)->delete();
 
