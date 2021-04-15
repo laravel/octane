@@ -183,4 +183,16 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                 }
             });
     }
+
+    /**
+     * Stop the server.
+     *
+     * @return void
+     */
+    protected function stopServer()
+    {
+        $this->callSilent('octane:stop', [
+            '--server' => 'swoole',
+        ]);
+    }
 }
