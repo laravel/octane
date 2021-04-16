@@ -168,6 +168,7 @@ class OctaneServiceProvider extends ServiceProvider
                 Commands\StartRoadRunnerCommand::class,
                 Commands\StartSwooleCommand::class,
                 Commands\ReloadCommand::class,
+                Commands\StatusCommand::class,
                 Commands\StopCommand::class,
             ]);
         }
