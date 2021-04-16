@@ -114,7 +114,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     {
         return $this->option('workers') == 'auto'
                             ? 0
-                            : $this->option('workers', 0);
+                            : $this->option('workers');
     }
 
     /**

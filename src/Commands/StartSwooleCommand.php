@@ -128,7 +128,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     {
         return $this->option('workers') === 'auto'
                     ? $extension->cpuCount()
-                    : $this->option('workers', 1);
+                    : $this->option('workers');
     }
 
     /**
@@ -141,7 +141,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     {
         return $this->option('task-workers') === 'auto'
                     ? $extension->cpuCount()
-                    : $this->option('task-workers', 1);
+                    : $this->option('task-workers');
     }
 
     /**
