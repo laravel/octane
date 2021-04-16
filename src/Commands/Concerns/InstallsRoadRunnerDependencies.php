@@ -13,7 +13,7 @@ use Symfony\Component\Process\Process;
 trait InstallsRoadRunnerDependencies
 {
     /**
-     * Checks if RoadRunner is installed.
+     * Determine if RoadRunner is installed.
      *
      * @return bool
      */
