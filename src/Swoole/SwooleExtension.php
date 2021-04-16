@@ -23,6 +23,16 @@ class SwooleExtension
     }
 
     /**
+     * Checks if the Swoole extension is installed.
+     *
+     * @return int
+     */
+    public function isInstalled(): bool
+    {
+        return function_exists('swoole_cpu_num');
+    }
+
+    /**
      * Set the current process name.
      *
      * @param  string  $appName

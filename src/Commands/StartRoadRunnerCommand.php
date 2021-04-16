@@ -48,7 +48,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
     {
-        if (! $this->ensureRoadRunnerPackageIsInstalled()) {
+        if (! $this->isRoadRunnerInstalled()) {
+            $this->error('RoadRunner not installed. Please execute the `octane:install` Artisan command.');
+
             return 1;
         }
 
