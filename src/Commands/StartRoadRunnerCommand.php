@@ -170,6 +170,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
+     * Calculate the elapsed time for a request.
+     *
      * @param  string  $debug
      * @return int
      */
