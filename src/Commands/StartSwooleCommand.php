@@ -54,6 +54,12 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         ServerStateFile $serverStateFile,
         SwooleExtension $extension
     ) {
+        if (! $extension->isInstalled()) {
+            $this->error('The Swoole extension is missing.');
+
+            return 1;
+        }
+
         if ($inspector->serverIsRunning()) {
             $this->error('Server is already running.');
 

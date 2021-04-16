@@ -7,6 +7,16 @@ use Swoole\Process;
 class SwooleExtension
 {
     /**
+     * Determine if the Swoole extension is installed.
+     *
+     * @return int
+     */
+    public function isInstalled(): bool
+    {
+        return function_exists('swoole_cpu_num');
+    }
+
+    /**
      * Send a signal to the given process.
      *
      * @param  int  $processId

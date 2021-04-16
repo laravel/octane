@@ -29,8 +29,6 @@ After installing Octane, you may execute the `octane:install` Artisan command:
 php artisan octane:install
 ```
 
-Finally, specify your preferred application server (`roadrunner` or `swoole`) in your application's `config/octane.php` configuration file.
-
 ### Server Prerequisites
 
 > **Laravel Octane requires [PHP 8.0+](https://php.net/releases/)**

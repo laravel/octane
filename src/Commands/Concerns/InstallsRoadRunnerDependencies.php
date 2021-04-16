@@ -13,13 +13,23 @@ use Symfony\Component\Process\Process;
 trait InstallsRoadRunnerDependencies
 {
     /**
+     * Determine if RoadRunner is installed.
+     *
+     * @return bool
+     */
+    protected function isRoadRunnerInstalled()
+    {
+        return class_exists(PSR7Worker::class);
+    }
+
+    /**
      * Ensure the RoadRunner package is installed into the project.
      *
      * @return bool
      */
     protected function ensureRoadRunnerPackageIsInstalled()
     {
-        if (class_exists(PSR7Worker::class)) {
+        if ($this->isRoadRunnerInstalled()) {
             return true;
         }
 
