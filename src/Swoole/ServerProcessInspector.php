@@ -60,8 +60,5 @@ class ServerProcessInspector
         }
 
         return true;
-
-        // return $this->dispatcher->terminate($masterProcessId, 3)
-        //     && $this->dispatcher->terminate($managerProcessId, 3);
     }
 }
