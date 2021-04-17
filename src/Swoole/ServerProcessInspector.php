@@ -53,7 +53,15 @@ class ServerProcessInspector
             'managerProcessId' => $managerProcessId
         ] = $this->serverStateFile->read();
 
-        return $this->dispatcher->terminate($masterProcessId, 15)
-            && $this->dispatcher->terminate($managerProcessId, 15);
+        exec('pgrep -P '.$managerProcessId, $workerProcessIds);
+
+        foreach ([$masterProcessId, $managerProcessId, ...$workerProcessIds] as $processId) {
+            $this->dispatcher->signal($processId, SIGKILL);
+        }
+
+        return true;
+
+        // return $this->dispatcher->terminate($masterProcessId, 3)
+        //     && $this->dispatcher->terminate($managerProcessId, 3);
     }
 }
