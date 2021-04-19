@@ -82,7 +82,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
-            'serve',
+            '--dotenv=""', 'serve',
         ]), base_path(), collect(array_merge($_ENV, [
             'APP_BASE_PATH' => base_path(),
             'LARAVEL_OCTANE' => 1, ]))->mapWithKeys(function ($value, $key) {
