@@ -3,6 +3,11 @@
 ## [Unreleased](https://github.com/laravel/octane/compare/v0.2.0...master)
 
 
+## [v0.3.0 (2021-04-19)](https://github.com/laravel/octane/compare/v0.2.0...v0.3.0)
+
+Various fixes and changes.
+
+
 ## [v0.2.0 (2021-04-13)](https://github.com/laravel/octane/compare/v0.1.1...v0.2.0)
 
 Various fixes and changes.
