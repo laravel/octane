@@ -3,7 +3,6 @@
 
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\Handlers\OnManagerStart;
-use Laravel\Octane\Swoole\Handlers\OnServerShutdown;
 use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
 use Laravel\Octane\Swoole\ServerStateFile;
@@ -161,9 +160,5 @@ $server->on('workerstop', function () use ($workerState) {
 
     $workerState->worker->terminate();
 });
-
-$server->on('shutdown', fn () => (new OnServerShutdown(
-    new ServerStateFile($serverStateFile)
-))());
 
 $server->start();

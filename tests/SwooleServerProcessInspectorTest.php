@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Tests;
 
+use Laravel\Octane\Exec;
 use Laravel\Octane\Swoole\ServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SignalDispatcher;
@@ -14,7 +15,8 @@ class SwooleServerProcessInspectorTest extends TestCase
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
-            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid')
+            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
+            Mockery::mock(Exec::class),
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(2)->andReturn(true);
@@ -31,7 +33,8 @@ class SwooleServerProcessInspectorTest extends TestCase
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
-            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid')
+            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
+            Mockery::mock(Exec::class),
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(2)->andReturn(false);
@@ -48,7 +51,8 @@ class SwooleServerProcessInspectorTest extends TestCase
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
-            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid')
+            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
+            Mockery::mock(Exec::class),
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(1)->andReturn(true);
@@ -65,7 +69,8 @@ class SwooleServerProcessInspectorTest extends TestCase
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
-            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid')
+            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
+            Mockery::mock(Exec::class),
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(1)->andReturn(false);
@@ -73,6 +78,29 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->writeProcessIds(1, 0);
 
         $this->assertFalse($inspector->serverIsRunning());
+
+        $processIdFile->delete();
+    }
+
+    public function test_swoole_server_process_can_be_stop()
+    {
+        $inspector = new ServerProcessInspector(
+            $dispatcher = Mockery::mock(SignalDispatcher::class),
+            $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
+            $exec = Mockery::mock(Exec::class),
+        );
+
+        $processIdFile->writeProcessIds(3, 2);
+        $exec->shouldReceive('run')->once()->with('pgrep -P 2')->andReturn([4, 5]);
+
+        collect([2, 3, 4, 5])->each(
+            fn ($processId) => $dispatcher
+                ->shouldReceive('signal')
+                ->with($processId, SIGKILL)
+                ->once(),
+        );
+
+        $this->assertTrue($inspector->stopServer());
 
         $processIdFile->delete();
     }
