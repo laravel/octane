@@ -170,7 +170,7 @@ You may check the current status of the Octane server using the `octane:status` 
 php artisan octane:status
 ```
 
-### Stoping The Server
+### Stopping The Server
 
 You may stop the Octane server using the `octane:stop` Artisan command:
 
