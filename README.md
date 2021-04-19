@@ -170,6 +170,14 @@ You may check the current status of the Octane server using the `octane:status` 
 php artisan octane:status
 ```
 
+### Stopping The Server
+
+You may stop the Octane server using the `octane:stop` Artisan command:
+
+```bash
+php artisan octane:stop
+```
+
 ### Dependency Injection & Octane
 
 Since Octane boots your application once and keeps it in memory while serving requests, there are a few caveats you should consider while building your application. For example, the `register` and `boot` methods of your application's service providers will only be executed once when the request worker initially boots. On subsequent requests, the same application instance will be reused.
