@@ -37,10 +37,18 @@ class ServerProcessInspector
      */
     public function reloadServer(): void
     {
-        tap($this->processFactory->createProcess(
-            ['./rr', 'reset'],
-            base_path()
-        ))->start()->waitUntil(function ($type, $buffer) {
+        [
+            'state' => [
+                'host' => $host,
+                'rpcPort' => $rpcPort,
+            ],
+        ] = $this->serverStateFile->read();
+
+        tap($this->processFactory->createProcess([
+            './rr',
+            'reset',
+            '-o', "rpc.listen=tcp://$host:$rpcPort",
+        ], base_path()))->start()->waitUntil(function ($type, $buffer) {
             if ($type === Process::ERR) {
                 throw new RuntimeException('Cannot reload RoadRunner: '.$buffer);
             }

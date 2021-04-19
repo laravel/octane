@@ -55,8 +55,13 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
             new PosixExtension
         );
 
+        $processIdFile->writeState([
+            'host' => '127.0.0.1',
+            'rpcPort' => '6002',
+        ]);
+
         $processFactory->shouldReceive('createProcess')->with(
-            ['./rr', 'reset'],
+            ['./rr', 'reset', '-o', 'rpc.listen=tcp://127.0.0.1:6002'],
             base_path(),
         )->andReturn($process = Mockery::mock('stdClass'));
 
