@@ -21,6 +21,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     public $signature = 'octane:roadrunner
                     {--host=127.0.0.1 : The IP address the server should bind to}
                     {--port=8000 : The port the server should be available on}
+                    {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--watch : Automatically reload the server when the application is modified}';
@@ -73,6 +74,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' ./vendor/bin/roadrunner-worker',
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
+            '-o', 'rpc.listen=tcp://'.$this->option('host').':'.$this->rpcPort(),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir=public',
             '-o', 'http.middleware=static',
@@ -101,6 +103,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             'appName' => config('app.name', 'Laravel'),
             'host' => $this->option('host'),
             'port' => $this->option('port'),
+            'rpcPort' => $this->rpcPort(),
             'workers' => $this->workerCount(),
             'maxRequests' => $this->option('max-requests'),
             'octaneConfig' => config('octane'),
@@ -127,6 +130,16 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     protected function maxExecutionTime()
     {
         return config('octane.max_execution_time', '30').'s';
+    }
+
+    /**
+     * Get the RPC port the server should be available on.
+     *
+     * @return int
+     */
+    protected function rpcPort()
+    {
+        return $this->option('rpc-port') ?: $this->option('port') - 1999;
     }
 
     /**
