@@ -60,6 +60,7 @@ class OctaneServiceProvider extends ServiceProvider
             return new SwooleServerProcessInspector(
                 $app->make(SignalDispatcher::class),
                 $app->make(SwooleServerStateFile::class),
+                $app->make(Exec::class),
             );
         });
 
