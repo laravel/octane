@@ -13,7 +13,7 @@ Laravel Octane supercharges your application's performance by serving your appli
 
 ## Documentation
 
-**IMPORTANT: Laravel Octane is within a beta period. It should only be used for local development and testing in order to improve the quality of the library and resolve any existing bugs. We are still in the process of ensuring Octane compatibility with all first-party Laravel packages.**
+**IMPORTANT: Laravel Octane is within a beta period. It should only be used for local development and testing in order to improve the quality of the library and resolve any existing bugs.**
 
 ### Installation
 
