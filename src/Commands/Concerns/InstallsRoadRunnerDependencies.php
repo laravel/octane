@@ -145,11 +145,11 @@ trait InstallsRoadRunnerDependencies
                 try {
                     $this->downloadRoadRunnerBinary();
                 } catch (Throwable $e) {
+                    report($e);
+
                     rename("$roadRunnerBinary.backup", $roadRunnerBinary);
 
-                    return $this->warn(
-                        'Unable to download RoadRunner binary. Reason: '.$e->getMessage(),
-                    );
+                    return $this->warn('Unable to download RoadRunner binary. The error has been reported to the exception logger.');
                 }
 
                 unlink("$roadRunnerBinary.backup");
