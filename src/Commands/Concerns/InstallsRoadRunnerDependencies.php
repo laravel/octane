@@ -9,9 +9,17 @@ use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
+use Throwable;
 
 trait InstallsRoadRunnerDependencies
 {
+    /**
+     * The minimum required version of the RoadRunner binary.
+     *
+     * @var string
+     */
+    protected $requiredVersion = '2.0.4';
+
     /**
      * Determine if RoadRunner is installed.
      *
@@ -100,23 +108,74 @@ trait InstallsRoadRunnerDependencies
         }
 
         if ($this->confirm('Unable to locate RoadRunner binary. Should Octane download the binary for your operating system?', true)) {
-            tap(new Process(array_filter([
-                (new PhpExecutableFinder)->find(),
-                './vendor/bin/rr',
-                'get-binary',
-                '-n',
-                '--ansi',
-            ]), base_path(), null, null, null))->run(
-                fn ($type, $buffer) => $this->output->write($buffer)
-            );
-
-            $this->line('');
-
-            chmod(base_path('rr'), 755);
+            $this->downloadRoadRunnerBinary();
 
             copy(__DIR__.'/../stubs/rr.yaml', base_path('.rr.yaml'));
         }
 
         return base_path('rr');
+    }
+
+    /**
+     * Ensure the RoadRunner binary installed in your project meets Octane requirements.
+     *
+     * @param  string  $roadRunnerBinary
+     * @return void
+     */
+    protected function ensureRoadRunnerBinaryMeetsRequirements($roadRunnerBinary)
+    {
+        $version = tap(new Process([$roadRunnerBinary, '--version'], base_path()))
+            ->run()
+            ->getOutput();
+
+        if (! Str::startsWith($version, 'rr version 2.')) {
+            return $this->warn(
+                'Unable to get the RoadRunner binary version. Please report this issue: https://github.com/laravel/octane/issues/new.'
+            );
+        }
+
+        $version = explode(' ', $version)[2];
+
+        if (version_compare($version, $this->requiredVersion, '<')) {
+            $this->warn("The downloaded RoadRunner binary version (<fg=red>$version</>) may be incompatible with Octane.");
+
+            if ($this->confirm('Should Octane download the latest RoadRunner binary version for your operating system?', true)) {
+                rename($roadRunnerBinary, "$roadRunnerBinary.backup");
+
+                try {
+                    $this->downloadRoadRunnerBinary();
+                } catch (Throwable $e) {
+                    rename("$roadRunnerBinary.backup", $roadRunnerBinary);
+
+                    return $this->warn(
+                        'Unable to download RoadRunner binary. Reason: '.$e->getMessage(),
+                    );
+                }
+
+                unlink("$roadRunnerBinary.backup");
+            }
+        }
+    }
+
+    /**
+     * Downloads the latest version of the RoadRunner binary.
+     *
+     * @return void
+     */
+    protected function downloadRoadRunnerBinary()
+    {
+        tap(new Process(array_filter([
+            (new PhpExecutableFinder)->find(),
+            './vendor/bin/rr',
+            'get-binary',
+            '-n',
+            '--ansi',
+        ]), base_path(), null, null, null))->mustRun(
+            fn ($type, $buffer) => $this->output->write($buffer)
+        );
+
+        chmod(base_path('rr'), 755);
+
+        $this->line('');
     }
 }

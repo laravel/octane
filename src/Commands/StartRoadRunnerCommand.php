@@ -63,6 +63,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             return 1;
         }
 
+        $this->ensureRoadRunnerBinaryMeetsRequirements($roadRunnerBinary);
+
         $this->writeServerStateFile($serverStateFile);
 
         touch(base_path('.rr.yaml'));
