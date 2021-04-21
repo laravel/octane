@@ -119,7 +119,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'enable_coroutine' => false,
             'daemonize' => false,
             'log_file' => storage_path('logs/swoole_http.log'),
-            'log_level' => app()->environment('local') ? 1 : 5,
+            'log_level' => app()->environment('local') ? SWOOLE_LOG_INFO : SWOOLE_LOG_ERROR,
             'max_request' => $this->option('max-requests'),
             'package_max_length' => 20 * 1024 * 1024,
             'reactor_num' => $this->workerCount($extension),
