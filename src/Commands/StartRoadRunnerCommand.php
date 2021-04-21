@@ -208,7 +208,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             return mb_substr($elapsed, 0, -2) * 0.001;
         }
 
-        return (float)$elapsed * 1000;
+        return (float) $elapsed * 1000;
     }
 
     /**
