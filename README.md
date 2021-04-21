@@ -116,6 +116,26 @@ php artisan octane:start
 
 By default, Octane will start the server on port 8000, so you may access your application in a web browser via `http://localhost:8000`.
 
+#### Serving Your Application in HTTPS
+
+By default, applications running in an Octane server generate links using plain HTTP. The `OCTANE_HTTPS` environment variable, used within your application's `config/octane.php` configuration file, should be set to `true` when you plan to serve your application on HTTPS.
+
+```php
+    /*
+    |--------------------------------------------------------------------------
+    | Force HTTPS
+    |--------------------------------------------------------------------------
+    |
+    | When this configuration value is set to "true", Octane will inform the
+    | framework that all absolute links must be generated using the HTTPS
+    | protocol. Otherwise your links may be generated using plain HTTP.
+    |
+    */
+
+    'https' => env('OCTANE_HTTPS', false),
+```
+
+
 #### Watching For File Changes
 
 Since your application is loaded in memory once when the Octane server starts, any changes to your application's files will not be reflected when you refresh your browser. For example, route definitions added to your `routes/web.php` file will not be reflected until the server is restarted. For convenience, you may use the `--watch` flag to instruct Octane to automatically restart the server on any file changes within your application:
