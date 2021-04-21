@@ -130,14 +130,14 @@ trait InstallsRoadRunnerDependencies
 
         if (! Str::startsWith($version, 'rr version 2.')) {
             return $this->warn(
-                'Unable to get the RoadRunner binary version. Please report this issue: https://github.com/laravel/octane/issues/new.'
+                'Unable to determine the current RoadRunner binary version. Please report this issue: https://github.com/laravel/octane/issues/new.'
             );
         }
 
         $version = explode(' ', $version)[2];
 
         if (version_compare($version, $this->requiredVersion, '<')) {
-            $this->warn("The downloaded RoadRunner binary version (<fg=red>$version</>) may be incompatible with Octane.");
+            $this->warn("Your RoadRunner binary version (<fg=red>$version</>) may be incompatible with Octane.");
 
             if ($this->confirm('Should Octane download the latest RoadRunner binary version for your operating system?', true)) {
                 rename($roadRunnerBinary, "$roadRunnerBinary.backup");
@@ -149,7 +149,7 @@ trait InstallsRoadRunnerDependencies
 
                     rename("$roadRunnerBinary.backup", $roadRunnerBinary);
 
-                    return $this->warn('Unable to download RoadRunner binary. The error has been reported to the exception logger.');
+                    return $this->warn('Unable to download RoadRunner binary. The HTTP request exception has been logged.');
                 }
 
                 unlink("$roadRunnerBinary.backup");
@@ -158,7 +158,7 @@ trait InstallsRoadRunnerDependencies
     }
 
     /**
-     * Downloads the latest version of the RoadRunner binary.
+     * Download the latest version of the RoadRunner binary.
      *
      * @return void
      */
