@@ -9,11 +9,11 @@ class SwooleExtension
     /**
      * Determine if the Swoole extension is installed.
      *
-     * @return int
+     * @return bool
      */
     public function isInstalled(): bool
     {
-        return function_exists('swoole_cpu_num');
+        return extension_loaded('swoole');
     }
 
     /**
