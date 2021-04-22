@@ -156,7 +156,7 @@ php artisan octane:start --workers=4 --task-workers=6
 
 #### Specifying The Max Request Count
 
-To help prevent stray memory leaks, Octane can gracefully restart a worker once it has handled a given number of requests. To instruct Octane to do this, you may use the `--max-request` option:
+To help prevent stray memory leaks, Octane can gracefully restart a worker once it has handled a given number of requests. To instruct Octane to do this, you may use the `--max-requests` option:
 
 ```bash
 php artisan octane:start --max-requests=250
