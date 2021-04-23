@@ -28,17 +28,15 @@ class SignalDispatcher
      */
     public function terminate(int $processId, int $wait = 0): bool
     {
-        $this->extension->dispatchProcessSignal($processId, SIGTERM);
+        $this->signal($processId, SIGTERM);
 
         if ($wait) {
             $start = time();
 
             do {
-                if (! $this->canCommunicateWith($processId)) {
+                if (! $this->signal($processId, SIGTERM)) {
                     return true;
                 }
-
-                $this->extension->dispatchProcessSignal($processId, SIGTERM);
 
                 sleep(1);
             } while (time() < $start + $wait);
