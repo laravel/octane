@@ -47,7 +47,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
                 'wait' => $waitMilliseconds,
             ]);
 
-            return match($response->status()) {
+            return match ($response->status()) {
                 200 => unserialize($response),
                 504 => throw TaskTimeoutException::after($waitMilliseconds),
                 default => throw TaskExceptionResult::from(
