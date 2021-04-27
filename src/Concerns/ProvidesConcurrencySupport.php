@@ -35,7 +35,7 @@ trait ProvidesConcurrencySupport
      */
     public function tasks()
     {
-        return match(true) {
+        return match (true) {
             app()->bound(DispatchesTasks::class) => app(DispatchesTasks::class),
             app()->bound(Server::class) => new SwooleTaskDispatcher,
             class_exists(Server::class) => (fn (array $serverState) => new SwooleHttpTaskDispatcher(
