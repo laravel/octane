@@ -13,7 +13,6 @@ use Orchestra\Testbench\TestCase;
 
 class SwooleHttpTaskDispatcherTest extends TestCase
 {
-    /** @test */
     public function test_tasks_can_be_resolved_via_http()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -57,7 +56,6 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]);
     }
 
-    /** @test */
     public function test_tasks_can_be_resolved_via_fallback_dispatcher()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -90,7 +88,6 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]);
     }
 
-    /** @test */
     public function test_resolving_tasks_propagate_exceptions()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -109,7 +106,6 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => throw new Exception('Something went wrong.')]);
     }
 
-    /** @test */
     public function test_resolving_tasks_propagate_dd_calls()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -144,7 +140,6 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
     }
 
-    /** @test */
     public function test_resolving_tasks_may_timeout()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(

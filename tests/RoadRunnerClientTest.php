@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RoadRunnerClientTest extends TestCase
 {
-    /** @test */
     public function test_marshal_request_method_marshals_proper_illuminate_request()
     {
         $client = new RoadRunnerClient(Mockery::mock(PSR7Worker::class));

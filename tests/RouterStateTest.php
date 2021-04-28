@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class RouterStateTest extends TestCase
 {
-    /** @test */
     public function test_router_and_route_container_is_refreshed_across_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

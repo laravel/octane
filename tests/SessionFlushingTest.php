@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class SessionFlushingTest extends TestCase
 {
-    /** @test */
     public function test_session_is_flushed_between_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

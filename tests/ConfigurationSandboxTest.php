@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class ConfigurationSandboxTest extends TestCase
 {
-    /** @test */
     public function test_config_is_reset_between_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

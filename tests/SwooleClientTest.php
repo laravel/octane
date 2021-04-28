@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SwooleClientTest extends TestCase
 {
-    /** @test */
     public function test_marshal_request_method_marshals_proper_illuminate_request()
     {
         $client = new SwooleClient;
@@ -57,7 +56,6 @@ class SwooleClientTest extends TestCase
         $this->assertSame($givenContext, $context);
     }
 
-    /** @test */
     public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory()
     {
         $client = new SwooleClient;
@@ -71,7 +69,6 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    /** @test */
     public function test_cant_serve_static_files_if_file_is_outside_public_directory()
     {
         $client = new SwooleClient;
@@ -85,7 +82,6 @@ class SwooleClientTest extends TestCase
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    /** @test */
     public function test_cant_serve_static_files_if_file_has_forbidden_extension()
     {
         $client = new SwooleClient;
@@ -118,7 +114,6 @@ class SwooleClientTest extends TestCase
         $client->serveStaticFile($request, $context);
     }
 
-    /** @test */
     public function test_can_serve_static_files_through_symlink()
     {
         $client = new SwooleClient;
@@ -132,7 +127,6 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    /** @test */
     public function test_cant_serve_static_files_through_symlink_using_directory_traversal()
     {
         $client = new SwooleClient;

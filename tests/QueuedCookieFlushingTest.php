@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class QueuedCookieFlushingTest extends TestCase
 {
-    /** @test */
     public function test_queued_cookies_from_previous_requests_are_flushed()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

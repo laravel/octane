@@ -8,7 +8,6 @@ use Illuminate\Notifications\ChannelManager;
 
 class NotificationChannelManagerStateTest extends TestCase
 {
-    /** @test */
     public function test_notification_channel_manager_has_fresh_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

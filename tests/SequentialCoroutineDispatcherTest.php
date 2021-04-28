@@ -6,7 +6,6 @@ use Laravel\Octane\SequentialCoroutineDispatcher;
 
 class SequentialCoroutineDispatcherTest extends TestCase
 {
-    /** @test */
     public function test_coroutines_can_be_resolved()
     {
         $dispatcher = new SequentialCoroutineDispatcher;

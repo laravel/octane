@@ -16,7 +16,6 @@ use Swoole\Http\Server;
 
 class SwooleTaskDispatcherTest extends TestCase
 {
-    /** @test */
     public function test_tasks_can_only_be_resolved_via_server_context()
     {
         $dispatcher = new SwooleTaskDispatcher();
@@ -26,7 +25,6 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => 1]);
     }
 
-    /** @test */
     public function test_tasks_can_only_be_dispatched_via_server_context()
     {
         $dispatcher = new SwooleTaskDispatcher();
@@ -36,7 +34,6 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->dispatch(['first' => fn () => 1]);
     }
 
-    /** @test */
     public function test_resolving_tasks_may_timeout()
     {
         $dispatcher = new SwooleTaskDispatcher();
@@ -53,7 +50,6 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => 1], 2000);
     }
 
-    /** @test */
     public function test_resolving_tasks_propagate_exceptions()
     {
         $dispatcher = new SwooleTaskDispatcher();
@@ -70,7 +66,6 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => 1]);
     }
 
-    /** @test */
     public function test_resolving_tasks_propagate_dd_calls()
     {
         $dispatcher = new SwooleTaskDispatcher();
@@ -103,7 +98,6 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
     }
 
-    /** @test */
     public function test_tasks_can_be_resolved()
     {
         $dispatcher = new SwooleTaskDispatcher();

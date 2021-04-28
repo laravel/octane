@@ -9,7 +9,6 @@ use Laravel\Octane\Cache\OctaneStore;
 
 class OctaneStoreTest extends TestCase
 {
-    /** @test */
     public function test_can_retrieve_items_from_store()
     {
         $table = new ArrayObject;

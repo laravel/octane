@@ -10,7 +10,6 @@ use Mockery;
 
 class SwooleServerProcessInspectorTest extends TestCase
 {
-    /** @test */
     public function test_can_determine_if_swoole_server_process_is_running_when_manager_is_running()
     {
         $inspector = new ServerProcessInspector(
@@ -28,7 +27,6 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    /** @test */
     public function test_can_determine_if_swoole_server_process_is_running_when_manager_cant_be_communicated_with()
     {
         $inspector = new ServerProcessInspector(
@@ -46,7 +44,6 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    /** @test */
     public function test_can_determine_if_swoole_server_process_is_running_when_only_master_is_running()
     {
         $inspector = new ServerProcessInspector(
@@ -64,7 +61,6 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    /** @test */
     public function test_can_determine_if_swoole_server_process_is_running_when_master_cant_be_communicated_with()
     {
         $inspector = new ServerProcessInspector(

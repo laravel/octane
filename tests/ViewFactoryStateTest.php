@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class ViewFactoryStateTest extends TestCase
 {
-    /** @test */
     public function test_view_factory_application_is_updated_on_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
@@ -27,7 +26,6 @@ class ViewFactoryStateTest extends TestCase
         );
     }
 
-    /** @test */
     public function test_shared_view_state_is_persisted_across_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

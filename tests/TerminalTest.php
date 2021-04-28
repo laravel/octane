@@ -8,7 +8,6 @@ class TerminalTest extends TestCase
 {
     use InteractsWithTerminal;
 
-    /** @test */
     public function test_width()
     {
         $this->assertGreaterThanOrEqual(30, $this->getTerminalWidth());

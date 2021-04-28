@@ -9,7 +9,6 @@ use Mockery;
 
 class InvokeTickCallableTest extends TestCase
 {
-    /** @test */
     public function test_callable_is_invoked_when_due()
     {
         Carbon::setTestNow($now = now());
@@ -31,7 +30,6 @@ class InvokeTickCallableTest extends TestCase
         unset($_SERVER['__test.invokeTickCallable']);
     }
 
-    /** @test */
     public function test_callable_is_not_invoked_when_not_due()
     {
         Carbon::setTestNow($now = now());
@@ -55,7 +53,6 @@ class InvokeTickCallableTest extends TestCase
         unset($_SERVER['__test.invokeTickCallable']);
     }
 
-    /** @test */
     public function test_callable_is_invoked_when_first_run_and_immediate()
     {
         Carbon::setTestNow($now = now());
@@ -77,7 +74,6 @@ class InvokeTickCallableTest extends TestCase
         unset($_SERVER['__test.invokeTickCallable']);
     }
 
-    /** @test */
     public function test_callable_is_not_invoked_when_first_run_and_not_immediate()
     {
         Carbon::setTestNow($now = now());
