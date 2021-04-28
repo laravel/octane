@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class WorkerTest extends TestCase
 {
-    /** @test */
     public function test_worker_can_dispatch_request_to_application_and_returns_responses_to_client()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
@@ -24,7 +23,6 @@ class WorkerTest extends TestCase
         $this->assertEquals('Second Response', $client->responses[1]->getContent());
     }
 
-    /** @test */
     public function test_worker_can_dispatch_task_to_application_and_returns_responses_to_client()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

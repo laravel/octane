@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class MailManagerStateTest extends TestCase
 {
-    /** @test */
     public function test_mail_manager_has_fresh_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

@@ -6,7 +6,6 @@ use Laravel\Octane\Swoole\ServerStateFile;
 
 class SwooleServerStateFileTest extends TestCase
 {
-    /** @test */
     public function test_server_state_file_can_be_managed()
     {
         $stateFile = new ServerStateFile(sys_get_temp_dir().'/swoole.json');

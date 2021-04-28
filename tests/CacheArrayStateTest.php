@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class CacheArrayStateTest extends TestCase
 {
-    /** @test */
     public function test_array_cache_is_flushed_between_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

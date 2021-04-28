@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class QueueManagerStateTest extends TestCase
 {
-    /** @test */
     public function test_queue_manager_has_fresh_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

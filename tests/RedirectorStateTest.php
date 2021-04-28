@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class RedirectorStateTest extends TestCase
 {
-    /** @test */
     public function test_redirector_has_correct_request_state_across_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

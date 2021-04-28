@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Gate;
 
 class AuthorizationStateTest extends TestCase
 {
-    /** @test */
     public function test_authorization_state_is_updated_across_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

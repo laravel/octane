@@ -7,7 +7,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class CommandTest extends TestCase
 {
-    /** @test */
     public function test_info()
     {
         [$output, $command] = $this->command();
@@ -21,7 +20,6 @@ class CommandTest extends TestCase
 EOF, $output->fetch());
     }
 
-    /** @test */
     public function test_error()
     {
         [$output, $command] = $this->command();
@@ -35,7 +33,6 @@ EOF, $output->fetch());
 EOF, $output->fetch());
     }
 
-    /** @test */
     public function test_warn()
     {
         [$output, $command] = $this->command();
@@ -49,7 +46,6 @@ EOF, $output->fetch());
 EOF, $output->fetch());
     }
 
-    /** @test */
     public function test_request()
     {
         [$output, $command] = $this->command();

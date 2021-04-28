@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class RequestStateTest extends TestCase
 {
-    /** @test */
     public function test_request_is_rebound_on_sandbox()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
@@ -30,7 +29,6 @@ class RequestStateTest extends TestCase
         $this->assertEquals('Abigail', $client->responses[1]->getContent());
     }
 
-    /** @test */
     public function test_form_requests_contain_the_correct_state_across_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

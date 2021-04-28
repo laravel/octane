@@ -9,7 +9,6 @@ use Laravel\Octane\SequentialTaskDispatcher;
 
 class SequentialTaskDispatcherTest extends TestCase
 {
-    /** @test */
     public function test_tasks_can_be_resolved()
     {
         $dispatcher = new SequentialTaskDispatcher;
@@ -26,7 +25,6 @@ class SequentialTaskDispatcherTest extends TestCase
         ]));
     }
 
-    /** @test */
     public function test_resolving_tasks_with_exceptions_do_not_effect_other_tasks()
     {
         $dispatcher = new SequentialTaskDispatcher;
@@ -57,7 +55,6 @@ class SequentialTaskDispatcherTest extends TestCase
         ]);
     }
 
-    /** @test */
     public function test_tasks_can_be_dispatched()
     {
         $dispatcher = new SequentialTaskDispatcher;
@@ -78,7 +75,6 @@ class SequentialTaskDispatcherTest extends TestCase
         $this->assertEquals('second', $second);
     }
 
-    /** @test */
     public function test_resolving_tasks_propagate_exceptions()
     {
         $dispatcher = new SequentialTaskDispatcher();
@@ -91,7 +87,6 @@ class SequentialTaskDispatcherTest extends TestCase
         ]);
     }
 
-    /** @test */
     public function test_resolving_tasks_propagate_dd_calls()
     {
         $dispatcher = new SequentialTaskDispatcher();

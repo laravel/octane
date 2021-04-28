@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class LocaleStateTest extends TestCase
 {
-    /** @test */
     public function test_translator_state_is_reset_across_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

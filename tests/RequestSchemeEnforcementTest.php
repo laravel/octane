@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class RequestSchemeEnforcementTest extends TestCase
 {
-    /** @test */
     public function test_request_scheme_is_enforced()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

@@ -10,7 +10,6 @@ use Mockery;
 
 class RoadRunnerServerProcessInspectorTest extends TestCase
 {
-    /** @test */
     public function test_can_determine_if_roadrunner_server_process_is_running_when_master_is_running()
     {
         $inspector = new ServerProcessInspector(
@@ -28,7 +27,6 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    /** @test */
     public function test_can_determine_if_roadrunner_server_process_is_running_when_master_cant_be_communicated_with()
     {
         $inspector = new ServerProcessInspector(

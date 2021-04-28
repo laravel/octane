@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class AuthenticationFlushingTest extends TestCase
 {
-    /** @test */
     public function test_authentication_state_is_flushed_across_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
