@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class TemporaryContainerInstanceFlushingTest extends TestCase
 {
-    public function test_temporary_container_bindings_are_flushed()
+    public function test_temporary_container_bindings_are_flushed(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),

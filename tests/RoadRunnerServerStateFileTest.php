@@ -6,7 +6,7 @@ use Laravel\Octane\RoadRunner\ServerStateFile;
 
 class RoadRunnerServerStateFileTest extends TestCase
 {
-    public function test_server_state_file_can_be_managed()
+    public function test_server_state_file_can_be_managed(): void
     {
         $stateFile = new ServerStateFile(sys_get_temp_dir().'/roadrunner.json');
 

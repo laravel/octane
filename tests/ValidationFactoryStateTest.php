@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ValidationFactoryStateTest extends TestCase
 {
-    public function test_validation_factory_has_fresh_application_instance()
+    public function test_validation_factory_has_fresh_application_instance(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),

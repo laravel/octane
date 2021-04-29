@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class RequestSchemeEnforcementTest extends TestCase
 {
-    public function test_request_scheme_is_enforced()
+    public function test_request_scheme_is_enforced(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class RequestServerPortTest extends TestCase
 {
-    public function test_request_server_port_is_correct()
+    public function test_request_server_port_is_correct(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('http://localhost/server-port', 'GET'),

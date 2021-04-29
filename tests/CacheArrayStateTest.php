@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CacheArrayStateTest extends TestCase
 {
-    public function test_array_cache_is_flushed_between_requests()
+    public function test_array_cache_is_flushed_between_requests(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/test-cache?remember=first', 'GET'),

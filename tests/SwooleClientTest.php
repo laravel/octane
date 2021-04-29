@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SwooleClientTest extends TestCase
 {
-    public function test_marshal_request_method_marshals_proper_illuminate_request()
+    public function test_marshal_request_method_marshals_proper_illuminate_request(): void
     {
         $client = new SwooleClient;
 
@@ -56,7 +56,7 @@ class SwooleClientTest extends TestCase
         $this->assertSame($givenContext, $context);
     }
 
-    public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory()
+    public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory(): void
     {
         $client = new SwooleClient;
 
@@ -69,7 +69,7 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    public function test_cant_serve_static_files_if_file_is_outside_public_directory()
+    public function test_cant_serve_static_files_if_file_is_outside_public_directory(): void
     {
         $client = new SwooleClient;
 
@@ -82,7 +82,7 @@ class SwooleClientTest extends TestCase
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    public function test_cant_serve_static_files_if_file_has_forbidden_extension()
+    public function test_cant_serve_static_files_if_file_has_forbidden_extension(): void
     {
         $client = new SwooleClient;
 
@@ -96,7 +96,7 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_static_file_can_be_served()
+    public function test_static_file_can_be_served(): void
     {
         $client = new SwooleClient;
 
@@ -114,7 +114,7 @@ class SwooleClientTest extends TestCase
         $client->serveStaticFile($request, $context);
     }
 
-    public function test_can_serve_static_files_through_symlink()
+    public function test_can_serve_static_files_through_symlink(): void
     {
         $client = new SwooleClient;
 
@@ -127,7 +127,7 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    public function test_cant_serve_static_files_through_symlink_using_directory_traversal()
+    public function test_cant_serve_static_files_through_symlink_using_directory_traversal(): void
     {
         $client = new SwooleClient;
 
@@ -141,7 +141,7 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_respond_method_sends_response_to_swoole()
+    public function test_respond_method_sends_response_to_swoole(): void
     {
         $client = new SwooleClient;
 
@@ -160,7 +160,7 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_respond_method_send_streamed_response_to_swoole()
+    public function test_respond_method_send_streamed_response_to_swoole(): void
     {
         $client = new SwooleClient;
 
@@ -181,7 +181,7 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_error_method_sends_error_response_to_swoole()
+    public function test_error_method_sends_error_response_to_swoole(): void
     {
         $client = new SwooleClient;
 
@@ -199,7 +199,7 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_error_method_sends_detailed_error_response_to_swoole_in_debug_mode()
+    public function test_error_method_sends_detailed_error_response_to_swoole_in_debug_mode(): void
     {
         $client = new SwooleClient;
 

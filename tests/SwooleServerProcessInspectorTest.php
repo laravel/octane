@@ -10,7 +10,7 @@ use Mockery;
 
 class SwooleServerProcessInspectorTest extends TestCase
 {
-    public function test_can_determine_if_swoole_server_process_is_running_when_manager_is_running()
+    public function test_can_determine_if_swoole_server_process_is_running_when_manager_is_running(): void
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
@@ -27,7 +27,7 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    public function test_can_determine_if_swoole_server_process_is_running_when_manager_cant_be_communicated_with()
+    public function test_can_determine_if_swoole_server_process_is_running_when_manager_cant_be_communicated_with(): void
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
@@ -44,7 +44,7 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    public function test_can_determine_if_swoole_server_process_is_running_when_only_master_is_running()
+    public function test_can_determine_if_swoole_server_process_is_running_when_only_master_is_running(): void
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
@@ -61,7 +61,7 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    public function test_can_determine_if_swoole_server_process_is_running_when_master_cant_be_communicated_with()
+    public function test_can_determine_if_swoole_server_process_is_running_when_master_cant_be_communicated_with(): void
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),
@@ -78,7 +78,7 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    public function test_swoole_server_process_can_be_stop()
+    public function test_swoole_server_process_can_be_stop(): void
     {
         $inspector = new ServerProcessInspector(
             $dispatcher = Mockery::mock(SignalDispatcher::class),

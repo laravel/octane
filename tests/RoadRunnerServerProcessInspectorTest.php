@@ -10,7 +10,7 @@ use Mockery;
 
 class RoadRunnerServerProcessInspectorTest extends TestCase
 {
-    public function test_can_determine_if_roadrunner_server_process_is_running_when_master_is_running()
+    public function test_can_determine_if_roadrunner_server_process_is_running_when_master_is_running(): void
     {
         $inspector = new ServerProcessInspector(
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
@@ -27,7 +27,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    public function test_can_determine_if_roadrunner_server_process_is_running_when_master_cant_be_communicated_with()
+    public function test_can_determine_if_roadrunner_server_process_is_running_when_master_cant_be_communicated_with(): void
     {
         $inspector = new ServerProcessInspector(
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
@@ -45,7 +45,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_roadrunner_server_process_can_be_reloaded()
+    public function test_roadrunner_server_process_can_be_reloaded(): void
     {
         $inspector = new ServerProcessInspector(
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),

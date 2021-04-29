@@ -13,7 +13,7 @@ use Orchestra\Testbench\TestCase;
 
 class SwooleHttpTaskDispatcherTest extends TestCase
 {
-    public function test_tasks_can_be_resolved_via_http()
+    public function test_tasks_can_be_resolved_via_http(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
@@ -38,7 +38,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_tasks_can_be_dispatched_via_http()
+    public function test_tasks_can_be_dispatched_via_http(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
@@ -56,7 +56,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]);
     }
 
-    public function test_tasks_can_be_resolved_via_fallback_dispatcher()
+    public function test_tasks_can_be_resolved_via_fallback_dispatcher(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
@@ -74,7 +74,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_tasks_can_be_dispatched_via_fallback_dispatcher()
+    public function test_tasks_can_be_dispatched_via_fallback_dispatcher(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
@@ -88,7 +88,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]);
     }
 
-    public function test_resolving_tasks_propagate_exceptions()
+    public function test_resolving_tasks_propagate_exceptions(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
@@ -106,7 +106,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => throw new Exception('Something went wrong.')]);
     }
 
-    public function test_resolving_tasks_propagate_dd_calls()
+    public function test_resolving_tasks_propagate_dd_calls(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
@@ -125,7 +125,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_dispatching_tasks_do_not_propagate_exceptions()
+    public function test_dispatching_tasks_do_not_propagate_exceptions(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
@@ -140,7 +140,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
     }
 
-    public function test_resolving_tasks_may_timeout()
+    public function test_resolving_tasks_may_timeout(): void
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',

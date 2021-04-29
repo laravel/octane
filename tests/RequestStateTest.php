@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class RequestStateTest extends TestCase
 {
-    public function test_request_is_rebound_on_sandbox()
+    public function test_request_is_rebound_on_sandbox(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first?name=Taylor', 'GET'),

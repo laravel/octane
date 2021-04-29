@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class BindingStateTest extends TestCase
 {
-    public function test_container_instances_given_to_dependencies_can_be_stale_if_an_old_instance_is_given()
+    public function test_container_instances_given_to_dependencies_can_be_stale_if_an_old_instance_is_given(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -30,7 +30,7 @@ class BindingStateTest extends TestCase
         );
     }
 
-    public function test_container_instances_given_to_dependencies_will_be_fresh_if_injected_container_is_used()
+    public function test_container_instances_given_to_dependencies_will_be_fresh_if_injected_container_is_used(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -53,7 +53,7 @@ class BindingStateTest extends TestCase
         );
     }
 
-    public function test_container_instances_given_to_dependencies_will_be_fresh_if_singleton_but_not_resolved_before_boot()
+    public function test_container_instances_given_to_dependencies_will_be_fresh_if_singleton_but_not_resolved_before_boot(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -76,7 +76,7 @@ class BindingStateTest extends TestCase
         );
     }
 
-    public function test_container_instances_given_to_dependencies_will_be_stale_if_singleton_and_resolved_during_boot()
+    public function test_container_instances_given_to_dependencies_will_be_stale_if_singleton_and_resolved_during_boot(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -101,7 +101,7 @@ class BindingStateTest extends TestCase
         );
     }
 
-    public function test_injecting_request_from_bind_will_always_be_fresh_since_sandbox_request_is_rebound()
+    public function test_injecting_request_from_bind_will_always_be_fresh_since_sandbox_request_is_rebound(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first?name=Taylor', 'GET'),
@@ -120,7 +120,7 @@ class BindingStateTest extends TestCase
         $this->assertEquals('Abigail', $client->responses[1]->original);
     }
 
-    public function test_injecting_request_from_singleton_can_be_fresh_if_it_is_not_resolved_during_boot()
+    public function test_injecting_request_from_singleton_can_be_fresh_if_it_is_not_resolved_during_boot(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first?name=Taylor', 'GET'),
@@ -139,7 +139,7 @@ class BindingStateTest extends TestCase
         $this->assertEquals('Abigail', $client->responses[1]->original);
     }
 
-    public function test_injecting_request_from_singleton_can_be_stale_if_it_is_resolved_during_boot()
+    public function test_injecting_request_from_singleton_can_be_stale_if_it_is_resolved_during_boot(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first?name=Taylor', 'GET'),

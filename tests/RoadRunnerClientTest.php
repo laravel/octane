@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RoadRunnerClientTest extends TestCase
 {
-    public function test_marshal_request_method_marshals_proper_illuminate_request()
+    public function test_marshal_request_method_marshals_proper_illuminate_request(): void
     {
         $client = new RoadRunnerClient(Mockery::mock(PSR7Worker::class));
 
@@ -32,7 +32,7 @@ class RoadRunnerClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_respond_method_send_response_to_roadrunner()
+    public function test_respond_method_send_response_to_roadrunner(): void
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
 
@@ -47,7 +47,7 @@ class RoadRunnerClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_respond_method_send_streamed_response_to_roadrunner()
+    public function test_respond_method_send_streamed_response_to_roadrunner(): void
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
 
@@ -64,7 +64,7 @@ class RoadRunnerClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_error_method_sends_error_response_to_roadrunner()
+    public function test_error_method_sends_error_response_to_roadrunner(): void
     {
         $psr7Client = Mockery::mock(PSR7Worker::class);
         $psr7Client->shouldReceive('getWorker->error')->once()->with('Internal server error.');
@@ -79,7 +79,7 @@ class RoadRunnerClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_error_method_sends_detailed_error_response_to_roadrunner_in_debug_mode()
+    public function test_error_method_sends_detailed_error_response_to_roadrunner_in_debug_mode(): void
     {
         $e = new Exception('Something went wrong...');
 

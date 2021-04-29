@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class LocaleStateTest extends TestCase
 {
-    public function test_translator_state_is_reset_across_subsequent_requests()
+    public function test_translator_state_is_reset_across_subsequent_requests(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/test-locale?locale=nl', 'GET'),

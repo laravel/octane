@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class BroadcastManagerStateTest extends TestCase
 {
-    public function test_broadcast_manager_has_fresh_application_instance()
+    public function test_broadcast_manager_has_fresh_application_instance(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first?name=Taylor', 'GET'),

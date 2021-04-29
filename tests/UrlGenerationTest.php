@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UrlGenerationTest extends TestCase
 {
-    public function test_url_generator_creates_correct_urls_across_subsequent_requests()
+    public function test_url_generator_creates_correct_urls_across_subsequent_requests(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),

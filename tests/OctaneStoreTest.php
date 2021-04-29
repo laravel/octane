@@ -9,7 +9,7 @@ use Laravel\Octane\Cache\OctaneStore;
 
 class OctaneStoreTest extends TestCase
 {
-    public function test_can_retrieve_items_from_store()
+    public function test_can_retrieve_items_from_store(): void
     {
         $table = new ArrayObject;
 
@@ -21,7 +21,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_missing_items_return_null()
+    public function test_missing_items_return_null(): void
     {
         $table = new ArrayObject;
 
@@ -31,7 +31,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_expired_items_return_null()
+    public function test_expired_items_return_null(): void
     {
         $table = new ArrayObject;
 
@@ -43,7 +43,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_get_method_can_resolve_pending_interval()
+    public function test_get_method_can_resolve_pending_interval(): void
     {
         $table = new ArrayObject;
 
@@ -55,7 +55,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_many_method_can_return_many_values()
+    public function test_many_method_can_return_many_values(): void
     {
         $table = new ArrayObject;
 
@@ -68,7 +68,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_put_stores_value_in_table()
+    public function test_put_stores_value_in_table(): void
     {
         $table = new ArrayObject;
 
@@ -80,7 +80,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_put_many_stores_value_in_table()
+    public function test_put_many_stores_value_in_table(): void
     {
         $table = new ArrayObject;
 
@@ -93,7 +93,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_increment_and_decrement_operations()
+    public function test_increment_and_decrement_operations(): void
     {
         $table = new ArrayObject;
 
@@ -110,7 +110,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_forever_stores_value_in_table()
+    public function test_forever_stores_value_in_table(): void
     {
         $table = new ArrayObject;
 
@@ -122,7 +122,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_intervals_can_be_refreshed()
+    public function test_intervals_can_be_refreshed(): void
     {
         $table = new ArrayObject;
 
@@ -143,7 +143,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_can_forget_cache_items()
+    public function test_can_forget_cache_items(): void
     {
         $table = new ArrayObject;
 
@@ -161,7 +161,7 @@ class OctaneStoreTest extends TestCase
     }
 
     /** @test */
-    public function test_intervals_are_not_flushed()
+    public function test_intervals_are_not_flushed(): void
     {
         $table = new ArrayObject;
 

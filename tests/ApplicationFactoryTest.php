@@ -6,14 +6,14 @@ use Illuminate\Foundation\Application;
 
 class ApplicationFactoryTest extends TestCase
 {
-    public function test_application_can_be_created()
+    public function test_application_can_be_created(): void
     {
         $app = $this->createApplication();
 
         $this->assertInstanceOf(Application::class, $app);
     }
 
-    public function test_services_can_be_warmed()
+    public function test_services_can_be_warmed(): void
     {
         $app = $this->createApplication();
         $this->appFactory()->warm($app, $this->config()['warm']);

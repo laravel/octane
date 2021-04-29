@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PipelineHubStateTest extends TestCase
 {
-    public function test_pipeline_hub_has_fresh_application_instance()
+    public function test_pipeline_hub_has_fresh_application_instance(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),

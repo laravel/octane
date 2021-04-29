@@ -8,7 +8,7 @@ use Illuminate\Pagination\Paginator;
 
 class PaginationStateTest extends TestCase
 {
-    public function test_pagination_state_is_updated_across_subsequent_requests()
+    public function test_pagination_state_is_updated_across_subsequent_requests(): void
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first?page=1', 'GET'),

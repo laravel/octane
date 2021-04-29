@@ -9,7 +9,7 @@ use Laravel\Octane\SequentialTaskDispatcher;
 
 class SequentialTaskDispatcherTest extends TestCase
 {
-    public function test_tasks_can_be_resolved()
+    public function test_tasks_can_be_resolved(): void
     {
         $dispatcher = new SequentialTaskDispatcher;
 
@@ -25,7 +25,7 @@ class SequentialTaskDispatcherTest extends TestCase
         ]));
     }
 
-    public function test_resolving_tasks_with_exceptions_do_not_effect_other_tasks()
+    public function test_resolving_tasks_with_exceptions_do_not_effect_other_tasks(): void
     {
         $dispatcher = new SequentialTaskDispatcher;
 
@@ -46,7 +46,7 @@ class SequentialTaskDispatcherTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_dispatching_tasks_do_not_propagate_exceptions()
+    public function test_dispatching_tasks_do_not_propagate_exceptions(): void
     {
         $dispatcher = new SequentialTaskDispatcher;
 
@@ -55,7 +55,7 @@ class SequentialTaskDispatcherTest extends TestCase
         ]);
     }
 
-    public function test_tasks_can_be_dispatched()
+    public function test_tasks_can_be_dispatched(): void
     {
         $dispatcher = new SequentialTaskDispatcher;
 
@@ -75,7 +75,7 @@ class SequentialTaskDispatcherTest extends TestCase
         $this->assertEquals('second', $second);
     }
 
-    public function test_resolving_tasks_propagate_exceptions()
+    public function test_resolving_tasks_propagate_exceptions(): void
     {
         $dispatcher = new SequentialTaskDispatcher();
 
@@ -87,7 +87,7 @@ class SequentialTaskDispatcherTest extends TestCase
         ]);
     }
 
-    public function test_resolving_tasks_propagate_dd_calls()
+    public function test_resolving_tasks_propagate_dd_calls(): void
     {
         $dispatcher = new SequentialTaskDispatcher();
 

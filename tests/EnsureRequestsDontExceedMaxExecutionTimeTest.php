@@ -10,7 +10,7 @@ use Mockery;
 class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
 {
     /** @doesNotPerformAssertions @test */
-    public function test_process_is_killed_if_current_request_exceeds_max_execution_time()
+    public function test_process_is_killed_if_current_request_exceeds_max_execution_time(): void
     {
         $table = new FakeTimerTable;
 

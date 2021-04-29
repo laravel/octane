@@ -16,7 +16,7 @@ use Swoole\Http\Server;
 
 class SwooleTaskDispatcherTest extends TestCase
 {
-    public function test_tasks_can_only_be_resolved_via_server_context()
+    public function test_tasks_can_only_be_resolved_via_server_context(): void
     {
         $dispatcher = new SwooleTaskDispatcher();
 
@@ -25,7 +25,7 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => 1]);
     }
 
-    public function test_tasks_can_only_be_dispatched_via_server_context()
+    public function test_tasks_can_only_be_dispatched_via_server_context(): void
     {
         $dispatcher = new SwooleTaskDispatcher();
 
@@ -34,7 +34,7 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->dispatch(['first' => fn () => 1]);
     }
 
-    public function test_resolving_tasks_may_timeout()
+    public function test_resolving_tasks_may_timeout(): void
     {
         $dispatcher = new SwooleTaskDispatcher();
 
@@ -50,7 +50,7 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => 1], 2000);
     }
 
-    public function test_resolving_tasks_propagate_exceptions()
+    public function test_resolving_tasks_propagate_exceptions(): void
     {
         $dispatcher = new SwooleTaskDispatcher();
 
@@ -66,7 +66,7 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => 1]);
     }
 
-    public function test_resolving_tasks_propagate_dd_calls()
+    public function test_resolving_tasks_propagate_dd_calls(): void
     {
         $dispatcher = new SwooleTaskDispatcher();
 
@@ -86,7 +86,7 @@ class SwooleTaskDispatcherTest extends TestCase
         ]);
     }
 
-    public function test_dispatching_tasks_do_not_propagate_exceptions()
+    public function test_dispatching_tasks_do_not_propagate_exceptions(): void
     {
         $dispatcher = new SwooleTaskDispatcher();
 
@@ -98,7 +98,7 @@ class SwooleTaskDispatcherTest extends TestCase
         $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
     }
 
-    public function test_tasks_can_be_resolved()
+    public function test_tasks_can_be_resolved(): void
     {
         $dispatcher = new SwooleTaskDispatcher();
 
