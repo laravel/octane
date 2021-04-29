@@ -20,7 +20,6 @@ class OctaneStoreTest extends TestCase
         $this->assertEquals('bar', $store->get('foo'));
     }
 
-    /** @test */
     public function test_missing_items_return_null()
     {
         $table = new ArrayObject;
@@ -30,7 +29,6 @@ class OctaneStoreTest extends TestCase
         $this->assertNull($store->get('foo'));
     }
 
-    /** @test */
     public function test_expired_items_return_null()
     {
         $table = new ArrayObject;
@@ -42,7 +40,6 @@ class OctaneStoreTest extends TestCase
         $this->assertNull($store->get('foo'));
     }
 
-    /** @test */
     public function test_get_method_can_resolve_pending_interval()
     {
         $table = new ArrayObject;
@@ -54,7 +51,6 @@ class OctaneStoreTest extends TestCase
         $this->assertEquals('bar', $store->get('foo'));
     }
 
-    /** @test */
     public function test_many_method_can_return_many_values()
     {
         $table = new ArrayObject;
@@ -67,7 +63,6 @@ class OctaneStoreTest extends TestCase
         $this->assertEquals(['foo' => 'bar', 'bar' => 'baz'], $store->many(['foo', 'bar']));
     }
 
-    /** @test */
     public function test_put_stores_value_in_table()
     {
         $table = new ArrayObject;
@@ -79,7 +74,6 @@ class OctaneStoreTest extends TestCase
         $this->assertEquals('bar', $store->get('foo'));
     }
 
-    /** @test */
     public function test_put_many_stores_value_in_table()
     {
         $table = new ArrayObject;
@@ -92,7 +86,6 @@ class OctaneStoreTest extends TestCase
         $this->assertEquals('baz', $store->get('bar'));
     }
 
-    /** @test */
     public function test_increment_and_decrement_operations()
     {
         $table = new ArrayObject;
@@ -109,7 +102,6 @@ class OctaneStoreTest extends TestCase
         $this->assertEquals(1, $store->get('counter'));
     }
 
-    /** @test */
     public function test_forever_stores_value_in_table()
     {
         $table = new ArrayObject;
@@ -121,7 +113,6 @@ class OctaneStoreTest extends TestCase
         $this->assertEquals('bar', $store->get('foo'));
     }
 
-    /** @test */
     public function test_intervals_can_be_refreshed()
     {
         $table = new ArrayObject;
@@ -142,7 +133,6 @@ class OctaneStoreTest extends TestCase
         Carbon::setTestNow();
     }
 
-    /** @test */
     public function test_can_forget_cache_items()
     {
         $table = new ArrayObject;
@@ -160,7 +150,6 @@ class OctaneStoreTest extends TestCase
         $this->assertNull($store->get('foo'));
     }
 
-    /** @test */
     public function test_intervals_are_not_flushed()
     {
         $table = new ArrayObject;
