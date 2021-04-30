@@ -5,6 +5,8 @@
 > **Requires to stop, and re-start your Octane server**
 
 ### Fixed
+- Default `--watch` options making Octane reload on file uploads ([#247](https://github.com/laravel/octane/pull/247))
+- Error `No buffer space available` when using Swoole ([#253](https://github.com/laravel/octane/pull/253))
 - Global environment variables not being taken in by workers ([#257](https://github.com/laravel/octane/pull/257))
 
 ### Changed
