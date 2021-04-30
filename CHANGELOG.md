@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/laravel/octane/compare/v0.4.0...master)
 
+> **Requires to stop, and re-start your Octane server**
+
+### Fixed
+- Global environment variables not being taken in by workers ([#257](https://github.com/laravel/octane/pull/257))
 
 ## [v0.4.0 (2021-04-27)](https://github.com/laravel/octane/compare/v0.3.2...v0.4.0)
 
