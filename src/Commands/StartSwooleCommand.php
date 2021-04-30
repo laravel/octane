@@ -12,7 +12,7 @@ use Symfony\Component\Process\Process;
 
 class StartSwooleCommand extends Command implements SignalableCommandInterface
 {
-    use Concerns\InteractsWithServers;
+    use Concerns\InteractsWithServers, Concerns\InteractsWithEnvironmentVariables;
 
     /**
      * The command's signature.
@@ -68,15 +68,15 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
 
         $this->writeServerStateFile($serverStateFile, $extension);
 
+        $this->forgetEnvironmentVariables();
+
         $server = tap(new Process([
             (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
-        ], realpath(__DIR__.'/../../bin'), collect(array_merge($_ENV, [
+        ], realpath(__DIR__.'/../../bin'), [
+            'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
-            'LARAVEL_OCTANE' => 1, ]))->mapWithKeys(function ($value, $key) {
-                return in_array($key, ['APP_ENV', 'APP_BASE_PATH', 'LARAVEL_OCTANE'])
-                        ? [$key => $value]
-                        : [$key => false];
-            })->all(), null, null))->start();
+            'LARAVEL_OCTANE' => 1,
+        ]))->start();
 
         return $this->runServer($server, $inspector, 'swoole');
     }

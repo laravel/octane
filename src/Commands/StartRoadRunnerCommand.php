@@ -11,7 +11,9 @@ use Symfony\Component\Process\Process;
 
 class StartRoadRunnerCommand extends Command implements SignalableCommandInterface
 {
-    use Concerns\InstallsRoadRunnerDependencies, Concerns\InteractsWithServers;
+    use Concerns\InstallsRoadRunnerDependencies,
+        Concerns\InteractsWithServers,
+        Concerns\InteractsWithEnvironmentVariables;
 
     /**
      * The command's signature.
@@ -69,6 +71,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
         touch(base_path('.rr.yaml'));
 
+        $this->forgetEnvironmentVariables();
+
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-c', base_path('.rr.yaml'),
@@ -85,13 +89,11 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             '--dotenv=""', 'serve',
-        ]), base_path(), collect(array_merge($_ENV, [
+        ]), base_path(), [
+            'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
-            'LARAVEL_OCTANE' => 1, ]))->mapWithKeys(function ($value, $key) {
-                return in_array($key, ['APP_ENV', 'APP_BASE_PATH', 'LARAVEL_OCTANE'])
-                        ? [$key => $value]
-                        : [$key => false];
-            })->all(), null, null))->start();
+            'LARAVEL_OCTANE' => 1,
+        ]))->start();
 
         $serverStateFile->writeProcessId($server->getPid());
 
