@@ -18,7 +18,7 @@ trait InstallsRoadRunnerDependencies
      *
      * @var string
      */
-    protected $requiredVersion = '2.0.4';
+    protected $requiredVersion = '2.1.1';
 
     /**
      * Determine if RoadRunner is installed.

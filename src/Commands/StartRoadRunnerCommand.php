@@ -88,7 +88,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
-            '--dotenv=""', 'serve',
+            'serve',
         ]), base_path(), [
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),

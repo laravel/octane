@@ -7,6 +7,10 @@
 ### Fixed
 - Global environment variables not being taken in by workers ([#257](https://github.com/laravel/octane/pull/257))
 
+### Changed
+- The new minimum RoadRunner binary version is now 2.1.1 ([#258](https://github.com/laravel/octane/pull/258))
+
+
 ## [v0.4.0 (2021-04-27)](https://github.com/laravel/octane/compare/v0.3.2...v0.4.0)
 
 Various fixes and changes.
