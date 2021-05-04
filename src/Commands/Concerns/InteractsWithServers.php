@@ -66,7 +66,8 @@ trait InteractsWithServers
     protected function startServerWatcher()
     {
         if (! $this->option('watch')) {
-            return new class {
+            return new class
+            {
                 public function __call($method, $parameters)
                 {
                     return null;
