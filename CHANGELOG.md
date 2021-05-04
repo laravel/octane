@@ -1,13 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v0.4.0...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v0.5.0...master)
+
+
+## [v0.5.0 (2021-05-04)](https://github.com/laravel/octane/compare/v0.4.0...v0.5.0)
 
 > **Requires to stop, and re-start your Octane server**
 
 ### Fixed
-- Default `--watch` options making Octane reload on file uploads ([#247](https://github.com/laravel/octane/pull/247))
+- Default `--watch` options making Octanes servers reload on file uploads ([#247](https://github.com/laravel/octane/pull/247))
 - Error `No buffer space available` when using Swoole ([#253](https://github.com/laravel/octane/pull/253))
-- Global environment variables not being taken in by workers ([#257](https://github.com/laravel/octane/pull/257))
+- Global environment variables not being used by workers ([#257](https://github.com/laravel/octane/pull/257))
 
 ### Changed
 - The new minimum RoadRunner binary version is now 2.1.1 ([#258](https://github.com/laravel/octane/pull/258))
