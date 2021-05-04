@@ -17,7 +17,8 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
-        $swooleRequest = new class {
+        $swooleRequest = new class
+        {
             public $get = [
                 'name' => 'Taylor',
             ];

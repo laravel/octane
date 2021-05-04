@@ -83,7 +83,8 @@ EOF, $output->fetch());
     {
         $output = new BufferedOutput();
 
-        return [$output, new class($output) extends Command {
+        return [$output, new class($output) extends Command
+        {
             public function __construct($output)
             {
                 parent::__construct('foo');
@@ -95,6 +96,6 @@ EOF, $output->fetch());
             {
                 return 50;
             }
-        }];
+        }, ];
     }
 }
