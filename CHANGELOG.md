@@ -1,6 +1,8 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v0.5.0...1.x)
+## [v1.0.0 (2021-05-11)](https://github.com/laravel/octane/compare/v0.5.0...1.x)
+
+Stable release.
 
 
 ## [v0.5.0 (2021-05-04)](https://github.com/laravel/octane/compare/v0.4.0...v0.5.0)
