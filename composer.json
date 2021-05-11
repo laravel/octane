@@ -29,6 +29,10 @@
         "spiral/roadrunner": "^2.0",
         "swoole/ide-helper": "^4.6"
     },
+    "bin": [
+        "bin/roadrunner-worker",
+        "bin/swoole-server"
+    ],
     "autoload": {
         "psr-4": {
             "Laravel\\Octane\\": "src"
@@ -39,14 +43,10 @@
             "Laravel\\Octane\\Tests\\": "tests"
         }
     },
-    "bin": [
-        "bin/roadrunner-worker",
-        "bin/swoole-server"
-    ],
-    "config": {
-        "sort-packages": true
-    },
     "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
         "laravel": {
             "providers": [
                 "Laravel\\Octane\\OctaneServiceProvider"
@@ -55,6 +55,9 @@
                 "Octane": "Laravel\\Octane\\OctaneFacade"
             }
         }
+    },
+    "config": {
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
