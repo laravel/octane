@@ -52,7 +52,7 @@
                 "Laravel\\Octane\\OctaneServiceProvider"
             ],
             "aliases": {
-                "Octane": "Laravel\\Octane\\OctaneFacade"
+                "Octane": "Laravel\\Octane\\Facades\\Octane"
             }
         }
     },
