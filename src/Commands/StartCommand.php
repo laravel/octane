@@ -38,10 +38,10 @@ class StartCommand extends Command implements SignalableCommandInterface
     public function handle()
     {
         if (! app()->environment('local', 'testing')) {
-            $this->warn('Laravel Octane is within a beta period. '
+            /* $this->warn('Laravel Octane is within a beta period. '
                 .'It should only be used for local development and '
                 .'testing in order to improve the quality of the library '
-                .'and resolve any existing bugs.');
+                .'and resolve any existing bugs.'); */
         }
 
         $server = $this->option('server') ?: config('octane.server');
