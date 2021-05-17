@@ -149,7 +149,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function rpcPort()
     {
-        return $this->option('rpc-port') ?: $this->option('port') - 1999;
+        return $this->option('rpc-port') ?: 6001;
     }
 
     /**
