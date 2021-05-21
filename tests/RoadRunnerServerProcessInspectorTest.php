@@ -3,11 +3,11 @@
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\PosixExtension;
+use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Laravel\Octane\SymfonyProcessFactory;
 use Mockery;
-use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 
 class RoadRunnerServerProcessInspectorTest extends TestCase
 {

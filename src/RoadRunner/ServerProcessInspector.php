@@ -3,10 +3,10 @@
 namespace Laravel\Octane\RoadRunner;
 
 use Laravel\Octane\PosixExtension;
+use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 use Laravel\Octane\SymfonyProcessFactory;
 use RuntimeException;
 use Symfony\Component\Process\Process;
-use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 
 class ServerProcessInspector
 {
