@@ -7,6 +7,11 @@ use Symfony\Component\Process\ExecutableFinder;
 
 trait FindsRoadRunnerBinary
 {
+    /**
+     * Find the RoadRunner binary used by the application.
+     *
+     * @return string
+     */
     protected function findRoadRunnerBinary(): ?string
     {
         if (file_exists(base_path('rr'))) {
