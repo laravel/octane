@@ -7,9 +7,12 @@ use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Laravel\Octane\SymfonyProcessFactory;
 use Mockery;
+use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 
 class RoadRunnerServerProcessInspectorTest extends TestCase
 {
+    use FindsRoadRunnerBinary;
+
     public function test_can_determine_if_roadrunner_server_process_is_running_when_master_is_running()
     {
         $inspector = new ServerProcessInspector(
@@ -59,7 +62,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         ]);
 
         $processFactory->shouldReceive('createProcess')->with(
-            ['./rr', 'reset', '-o', 'rpc.listen=tcp://127.0.0.1:6002'],
+            [$this->findRoadRunnerBinary(), 'reset', '-o', 'rpc.listen=tcp://127.0.0.1:6002'],
             base_path(),
         )->andReturn($process = Mockery::mock('stdClass'));
 
