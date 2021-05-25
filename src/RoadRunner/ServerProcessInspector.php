@@ -3,12 +3,15 @@
 namespace Laravel\Octane\RoadRunner;
 
 use Laravel\Octane\PosixExtension;
+use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 use Laravel\Octane\SymfonyProcessFactory;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class ServerProcessInspector
 {
+    use FindsRoadRunnerBinary;
+
     public function __construct(
         protected ServerStateFile $serverStateFile,
         protected SymfonyProcessFactory $processFactory,
@@ -45,7 +48,7 @@ class ServerProcessInspector
         ] = $this->serverStateFile->read();
 
         tap($this->processFactory->createProcess([
-            './rr',
+            $this->findRoadRunnerBinary(),
             'reset',
             '-o', "rpc.listen=tcp://$host:$rpcPort",
         ], base_path()))->start()->waitUntil(function ($type, $buffer) {
