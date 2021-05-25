@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.1...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.2...1.x)
+
+
+## [v1.0.2 (2021-05-25)](https://github.com/laravel/octane/compare/v1.0.1...v1.0.2)
+
+### Changed
+- Remove buffer_output_size from Swoole's default options ([#286](https://github.com/laravel/octane/pull/286))
+
+### Fixed
+- Reload RoadRunner using the global executable if it's present ([#288](https://github.com/laravel/octane/pull/288))
 
 
 ## [v1.0.1 (2021-05-18)](https://github.com/laravel/octane/compare/v1.0.0...v1.0.1)
