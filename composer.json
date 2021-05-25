@@ -29,6 +29,9 @@
         "spiral/roadrunner": "^2.0",
         "swoole/ide-helper": "^4.6"
     },
+    "suggest": {
+        "ext-swoole": "High Performance Programmatic Server"
+    },
     "bin": [
         "bin/roadrunner-worker",
         "bin/swoole-server"
