@@ -277,7 +277,7 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * Get the HTTP reason clause for non-standard status codes.
      *
-     * @param int $code
+     * @param  int  $code
      * @return string|null
      */
     protected function getReasonFromStatusCode(int $code): ?string
