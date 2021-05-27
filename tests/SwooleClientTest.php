@@ -182,6 +182,25 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
+    public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole()
+    {
+        $client = new SwooleClient;
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+
+        $swooleResponse->shouldReceive('status')->once()->with(419, 'Page Expired');
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('write')->with('Hello World');
+        $swooleResponse->shouldReceive('end')->once();
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse(new Response('Hello World', 419, ['Content-Type' => 'text/html'])));
+    }
+
+    /** @doesNotPerformAssertions @test */
     public function test_error_method_sends_error_response_to_swoole()
     {
         $client = new SwooleClient;
