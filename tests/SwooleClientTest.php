@@ -148,7 +148,7 @@ class SwooleClientTest extends TestCase
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
-        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('status')->once()->with(200, 'OK');
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
@@ -167,7 +167,7 @@ class SwooleClientTest extends TestCase
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
-        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('status')->once()->with(200, 'OK');
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
