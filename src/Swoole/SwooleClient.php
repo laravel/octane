@@ -176,7 +176,7 @@ class SwooleClient implements Client, ServesStaticFiles
             }
         }
 
-        $swooleResponse->status($response->getStatusCode());
+        $swooleResponse->status($response->getStatusCode(), Response::$statusTexts[$response->getStatusCode()] ?? 'unknown status');
 
         foreach ($response->headers->getCookies() as $cookie) {
             $swooleResponse->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
