@@ -40,4 +40,6 @@ class OctaneRouteTest extends TestCase
     }
 }
 
-class OctaneRouteTestDependency {}
+class OctaneRouteTestDependency
+{
+}

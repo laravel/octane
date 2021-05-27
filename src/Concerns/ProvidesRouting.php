@@ -27,7 +27,7 @@ trait ProvidesRouting
      */
     public function route(string $method, string $uri, Closure $callback): void
     {
-        $route = $method . Str::start($uri, '/');
+        $route = $method.Str::start($uri, '/');
 
         $this->routes[$route] = $callback;
     }
@@ -41,7 +41,7 @@ trait ProvidesRouting
      */
     public function hasRouteFor(string $method, string $uri): bool
     {
-        $route = $method . Str::start($uri, '/');
+        $route = $method.Str::start($uri, '/');
 
         return isset($this->routes[$route]);
     }
@@ -56,7 +56,7 @@ trait ProvidesRouting
      */
     public function invokeRoute(Request $request, string $method, string $uri): Response
     {
-        $route = $method . Str::start($uri, '/');
+        $route = $method.Str::start($uri, '/');
 
         return Container::getInstance()->call($this->routes[$route]);
     }
