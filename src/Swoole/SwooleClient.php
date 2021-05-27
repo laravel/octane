@@ -41,7 +41,7 @@ class SwooleClient implements Client, ServesStaticFiles
     }
 
     /**
-     * Detemrine if the request can be served as a static file.
+     * Determine if the request can be served as a static file.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Laravel\Octane\RequestContext  $context
