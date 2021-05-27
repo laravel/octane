@@ -3,7 +3,9 @@
 namespace Laravel\Octane\Concerns;
 
 use Closure;
+use Illuminate\Container\Container;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 trait ProvidesRouting
@@ -25,7 +27,9 @@ trait ProvidesRouting
      */
     public function route(string $method, string $uri, Closure $callback): void
     {
-        $this->routes[$method.$uri] = $callback;
+        $route = $method . Str::start($uri, '/');
+
+        $this->routes[$route] = $callback;
     }
 
     /**
@@ -37,7 +41,9 @@ trait ProvidesRouting
      */
     public function hasRouteFor(string $method, string $uri): bool
     {
-        return isset($this->routes[$method.$uri]);
+        $route = $method . Str::start($uri, '/');
+
+        return isset($this->routes[$route]);
     }
 
     /**
@@ -50,6 +56,8 @@ trait ProvidesRouting
      */
     public function invokeRoute(Request $request, string $method, string $uri): Response
     {
-        return call_user_func($this->routes[$method.$uri], $request);
+        $route = $method . Str::start($uri, '/');
+
+        return Container::getInstance()->call($this->routes[$route]);
     }
 }
