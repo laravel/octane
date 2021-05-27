@@ -23,7 +23,7 @@ trait ProvidesRouting
      * @param  array|string|callable  $action
      * @return void
      */
-    public function route(string $method, string $uri, array|string|callable $action): void
+    public function route(string $method, string $uri, array | string | callable $action): void
     {
         $route = $method.Str::start($uri, '/');
 

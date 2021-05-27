@@ -49,7 +49,7 @@ class OctaneRouteTest extends TestCase
 
         $app->bind(OctaneRouteTestDependency::class, fn () => $stub);
 
-        $app['octane']->route('GET', '/autowire_action', OctaneRouteTestController::class . '@action');
+        $app['octane']->route('GET', '/autowire_action', OctaneRouteTestController::class.'@action');
 
         $worker->run();
 
@@ -63,7 +63,8 @@ class OctaneRouteTestDependency
 
 class OctaneRouteTestController
 {
-    public function action(OctaneRouteTestDependency $foo) {
+    public function action(OctaneRouteTestDependency $foo)
+    {
         return new Response(spl_object_hash($foo));
     }
 }
