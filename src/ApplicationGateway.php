@@ -30,7 +30,7 @@ class ApplicationGateway
         $this->dispatchEvent($this->sandbox, new RequestReceived($this->app, $this->sandbox, $request));
 
         if (Octane::hasRouteFor($request->getMethod(), '/'.$request->path())) {
-            return Octane::invokeRoute($request, $request->getMethod(), '/'.$request->path());
+            return Octane::invokeRoute($request->getMethod(), '/'.$request->path());
         }
 
         return tap($this->sandbox->make(Kernel::class)->handle($request), function ($response) use ($request) {

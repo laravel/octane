@@ -2,9 +2,7 @@
 
 namespace Laravel\Octane\Concerns;
 
-use Closure;
 use Illuminate\Container\Container;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,18 +16,18 @@ trait ProvidesRouting
     protected $routes = [];
 
     /**
-     * Register a Octane route.
+     * Register an Octane route.
      *
      * @param  string  $method
      * @param  string  $uri
-     * @param  \Closure  $callback
+     * @param  array|string|callable  $action
      * @return void
      */
-    public function route(string $method, string $uri, Closure $callback): void
+    public function route(string $method, string $uri, array|string|callable $action): void
     {
         $route = $method.Str::start($uri, '/');
 
-        $this->routes[$route] = $callback;
+        $this->routes[$route] = $action;
     }
 
     /**
@@ -49,12 +47,11 @@ trait ProvidesRouting
     /**
      * Invoke the route for the given method and URI.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  string  $method
      * @param  string  $uri
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function invokeRoute(Request $request, string $method, string $uri): Response
+    public function invokeRoute(string $method, string $uri): Response
     {
         $route = $method.Str::start($uri, '/');
 

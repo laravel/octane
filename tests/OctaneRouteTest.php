@@ -38,8 +38,32 @@ class OctaneRouteTest extends TestCase
 
         $this->assertSame('no leading slash', $client->responses[0]->getContent());
     }
+
+    public function test_dependency_injection_in_actions()
+    {
+        [$app, $worker, $client] = $this->createOctaneContext([
+            Request::create('/autowire_action', 'GET'),
+        ]);
+
+        $stub = new OctaneRouteTestDependency();
+
+        $app->bind(OctaneRouteTestDependency::class, fn () => $stub);
+
+        $app['octane']->route('GET', '/autowire_action', OctaneRouteTestController::class . '@action');
+
+        $worker->run();
+
+        $this->assertSame(spl_object_hash($stub), $client->responses[0]->getContent());
+    }
 }
 
 class OctaneRouteTestDependency
 {
+}
+
+class OctaneRouteTestController
+{
+    public function action(OctaneRouteTestDependency $foo) {
+        return new Response(spl_object_hash($foo));
+    }
 }
