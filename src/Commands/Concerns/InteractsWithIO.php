@@ -95,13 +95,13 @@ trait InteractsWithIO
 
         $url = parse_url($request['url'], PHP_URL_PATH) ?: '/';
 
-        $memory = number_format(round(memory_get_usage()/1024/1204, 2), 2, '.', '');
+        $memory = number_format(round(memory_get_usage() /1024 /1204, 2), 2, '.', '');
 
         $duration = number_format(round($request['duration'], 2), 2, '.', '');
 
         ['method' => $method, 'statusCode' => $statusCode] = $request;
 
-        $dots = str_repeat('.', max($terminalWidth - strlen($method.$url.$duration.$memory ) - 19, 0));
+        $dots = str_repeat('.', max($terminalWidth - strlen($method.$url.$duration.$memory) - 19, 0));
 
         if (empty($dots) && ! $this->output->isVerbose()) {
             $url = substr($url, 0, $terminalWidth - strlen($method.$duration) - 15 - 3).'...';
