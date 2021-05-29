@@ -3,9 +3,11 @@
 namespace Laravel\Octane\Commands\Concerns;
 
 use InvalidArgumentException;
+use Laravel\Octane\Contracts\FileWatcher;
+use Laravel\Octane\Exceptions\FileWatcherException;
 use Laravel\Octane\Exceptions\ServerShutdownException;
+use Laravel\Octane\FileWatchers\ChokidarFileWatcher;
 use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\Process;
 
 trait InteractsWithServers
 {
@@ -25,30 +27,26 @@ trait InteractsWithServers
 
         $this->writeServerRunningMessage();
 
-        $watcher = $this->startServerWatcher();
-
         try {
+            $watcher = $this->createFileWatcher();
+
             while ($server->isRunning()) {
                 $this->writeServerOutput($server);
 
-                if ($watcher->isRunning() &&
-                    $watcher->getIncrementalOutput()) {
+                if ($watcher->hasChanges()) {
                     $this->info('Application change detected. Restarting workers…');
 
                     $inspector->reloadServer();
-                } elseif ($watcher->isTerminated()) {
-                    $this->error(
-                        'Watcher process has terminated. Please ensure Node and chokidar are installed.'.PHP_EOL.
-                        $watcher->getErrorOutput()
-                    );
-
-                    return 1;
                 }
 
                 usleep(500 * 1000);
             }
 
             $this->writeServerOutput($server);
+        } catch (FileWatcherException $e) {
+            $this->error($e->getMessage());
+
+            return 1;
         } catch (ServerShutdownException) {
             return 1;
         } finally {
@@ -59,18 +57,18 @@ trait InteractsWithServers
     }
 
     /**
-     * Start the watcher process for the server.
+     * Create the file watcher instance for the server.
      *
-     * @return \Symfony\Component\Process\Process|object
+     * @return FileWatcher
+     * @throws FileWatcherException
      */
-    protected function startServerWatcher()
+    protected function createFileWatcher(): FileWatcher
     {
         if (! $this->option('watch')) {
-            return new class
-            {
-                public function __call($method, $parameters)
+            return new class implements FileWatcher {
+                public function hasChanges(): bool
                 {
-                    return null;
+                    return false;
                 }
             };
         }
@@ -81,11 +79,21 @@ trait InteractsWithServers
             );
         }
 
-        return tap(new Process([
-            (new ExecutableFinder)->find('node'),
-            'file-watcher.js',
-            json_encode(collect(config('octane.watch'))->map(fn ($path) => base_path($path))),
-        ], realpath(__DIR__.'/../../../bin'), null, null, null))->start();
+        $paths = collect($paths)
+            ->map(fn ($path) => base_path($path))
+            ->all();
+
+        if ($executable = (new ExecutableFinder)->find('node')) {
+            return new ChokidarFileWatcher($executable, $paths);
+        }
+
+        // TODO: Add support for inotify
+
+        throw new FileWatcherException(
+            'File watcher could not be initialized.'.PHP_EOL.
+            'Please make sure you have enabled support for at least of one the available file watchers: '.
+            'https://laravel.com/docs/8.x/octane#watching-for-file-changes'
+        );
     }
 
     /**
