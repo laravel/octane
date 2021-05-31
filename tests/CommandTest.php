@@ -75,10 +75,10 @@ EOF, $output->fetch());
         ]);
 
         $this->assertEquals(<<<'EOF'
-  200    GET /welcome ..........23.43 mb 10.00 ms
-  404    POST / ..............26.43 mb 1234.00 ms
-  500    POST /foofoofoofoofoofo... 23.46 mb 4567854.00 ms
-  
+  200    GET /welcome .......... 23.43 mb 10.00 ms
+  404    POST / .............. 26.43 mb 1234.00 ms
+  500    POST /foofoofoofoofoofo... 28.43 mb 4567854.00 ms
+
 EOF, $output->fetch());
     }
 
