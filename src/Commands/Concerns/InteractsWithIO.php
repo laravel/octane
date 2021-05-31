@@ -94,12 +94,12 @@ trait InteractsWithIO
         $terminalWidth = $this->getTerminalWidth();
 
         $url = parse_url($request['url'], PHP_URL_PATH) ?: '/';
-
         $duration = number_format(round($request['duration'], 2), 2, '.', '');
+        $memory = number_format(round($request['memory'] ?? memory_get_usage() / 1024 / 1204, 2), 2, '.', '');
 
         ['method' => $method, 'statusCode' => $statusCode] = $request;
 
-        $dots = str_repeat('.', max($terminalWidth - strlen($method.$url.$duration) - 16, 0));
+        $dots = str_repeat('.', max($terminalWidth - strlen($method.$url.$duration.$memory) - 19, 0));
 
         if (empty($dots) && ! $this->output->isVerbose()) {
             $url = substr($url, 0, $terminalWidth - strlen($method.$duration) - 15 - 3).'...';
@@ -108,7 +108,7 @@ trait InteractsWithIO
         }
 
         $this->output->writeln(sprintf(
-           '  <fg=%s;options=bold>%s </>   <fg=cyan;options=bold>%s</> <options=bold>%s</><fg=#6C7280> %s%s ms</>',
+           '  <fg=%s;options=bold>%s </>   <fg=cyan;options=bold>%s</> <options=bold>%s</><fg=#6C7280> %s%s mb %s ms</>',
             match (true) {
                 $statusCode >= 500 => 'red',
                 $statusCode >= 400 => 'yellow',
@@ -120,6 +120,7 @@ trait InteractsWithIO
            $method,
            $url,
            $dots,
+           $memory,
            $duration,
         ), $this->parseVerbosity($verbosity));
     }
