@@ -78,7 +78,7 @@ EOF, $output->fetch());
   200    GET /welcome ..........23.43 mb 10.00 ms
   404    POST / ..............26.43 mb 1234.00 ms
   500    POST /foofoofoofoofoofo... 23.46 mb 4567854.00 ms
-
+  
 EOF, $output->fetch());
     }
 

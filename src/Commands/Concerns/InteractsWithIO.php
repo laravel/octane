@@ -94,10 +94,8 @@ trait InteractsWithIO
         $terminalWidth = $this->getTerminalWidth();
 
         $url = parse_url($request['url'], PHP_URL_PATH) ?: '/';
-
-        $memory = number_format(round($request['memory'] ?? memory_get_usage() / 1024 / 1204, 2), 2, '.', '');
-
         $duration = number_format(round($request['duration'], 2), 2, '.', '');
+        $memory = number_format(round($request['memory'] ?? memory_get_usage() / 1024 / 1204, 2), 2, '.', '');
 
         ['method' => $method, 'statusCode' => $statusCode] = $request;
 
