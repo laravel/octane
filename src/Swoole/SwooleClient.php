@@ -194,7 +194,8 @@ class SwooleClient implements Client, ServesStaticFiles
                 $cookie->getPath(),
                 $cookie->getDomain(),
                 $cookie->isSecure(),
-                $cookie->isHttpOnly()
+                $cookie->isHttpOnly(),
+                $cookie->getSameSite()
             );
         }
     }
