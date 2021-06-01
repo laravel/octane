@@ -19,6 +19,10 @@ use Throwable;
 
 class SwooleClient implements Client, ServesStaticFiles
 {
+    const STATUS_CODE_REASONS = [
+        419 => 'Page Expired',
+    ];
+
     public function __construct(protected int $chunkSize = 1048576)
     {
     }
@@ -41,7 +45,7 @@ class SwooleClient implements Client, ServesStaticFiles
     }
 
     /**
-     * Detemrine if the request can be served as a static file.
+     * Determine if the request can be served as a static file.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Laravel\Octane\RequestContext  $context
@@ -176,7 +180,11 @@ class SwooleClient implements Client, ServesStaticFiles
             }
         }
 
-        $swooleResponse->status($response->getStatusCode());
+        if (! is_null($reason = $this->getReasonFromStatusCode($response->getStatusCode()))) {
+            $swooleResponse->status($response->getStatusCode(), $reason);
+        } else {
+            $swooleResponse->status($response->getStatusCode());
+        }
 
         foreach ($response->headers->getCookies() as $cookie) {
             $swooleResponse->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
@@ -186,7 +194,8 @@ class SwooleClient implements Client, ServesStaticFiles
                 $cookie->getPath(),
                 $cookie->getDomain(),
                 $cookie->isSecure(),
-                $cookie->isHttpOnly()
+                $cookie->isHttpOnly(),
+                $cookie->getSameSite()
             );
         }
     }
@@ -264,5 +273,20 @@ class SwooleClient implements Client, ServesStaticFiles
         $context->swooleResponse->end(
             Octane::formatExceptionForClient($e, $app->make('config')->get('app.debug'))
         );
+    }
+
+    /**
+     * Get the HTTP reason clause for non-standard status codes.
+     *
+     * @param  int  $code
+     * @return string|null
+     */
+    protected function getReasonFromStatusCode(int $code): ?string
+    {
+        if (array_key_exists($code, self::STATUS_CODE_REASONS)) {
+            return self::STATUS_CODE_REASONS[$code];
+        }
+
+        return null;
     }
 }

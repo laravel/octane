@@ -21,6 +21,7 @@ class Stream
             'type' => 'request',
             'method' => $method,
             'url' => $url,
+            'memory' => memory_get_usage(),
             'statusCode' => $statusCode,
             'duration' => $duration,
         ])."\n");

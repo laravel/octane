@@ -54,6 +54,7 @@ EOF, $output->fetch());
             'method' => 'GET',
             'url' => 'http://127.0.0.1/welcome',
             'statusCode' => '200',
+            'memory' => 17393560,
             'duration' => 10,
         ]);
 
@@ -61,6 +62,7 @@ EOF, $output->fetch());
             'method' => 'POST',
             'url' => 'http://127.0.0.1:8080',
             'statusCode' => '404',
+            'memory' => 20393560,
             'duration' => 1234,
         ]);
 
@@ -68,13 +70,14 @@ EOF, $output->fetch());
             'method' => 'POST',
             'url' => 'http://127.0.0.1:8080/'.str_repeat('foo', 100),
             'statusCode' => 500,
+            'memory' => 30393560,
             'duration' => 4567854,
         ]);
 
         $this->assertEquals(<<<'EOF'
-  200    GET /welcome .................. 10.00 ms
-  404    POST / ...................... 1234.00 ms
-  500    POST /foofoofoofoofoofo... 4567854.00 ms
+  200    GET /welcome ......... 14.11 mb 10.00 ms
+  404    POST / ............. 16.54 mb 1234.00 ms
+  500    POST /foofoofo... 24.65 mb 4567854.00 ms
 
 EOF, $output->fetch());
     }
