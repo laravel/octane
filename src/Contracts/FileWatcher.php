@@ -5,7 +5,7 @@ namespace Laravel\Octane\Contracts;
 interface FileWatcher
 {
     /**
-     * Determine if there are any file changes occurred
+     * Determine if any file changes occurred.
      *
      * @return bool
      */

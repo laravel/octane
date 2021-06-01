@@ -65,7 +65,8 @@ trait InteractsWithServers
     protected function createFileWatcher(): FileWatcher
     {
         if (! $this->option('watch')) {
-            return new class implements FileWatcher {
+            return new class implements FileWatcher
+            {
                 public function hasChanges(): bool
                 {
                     return false;

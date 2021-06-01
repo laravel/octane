@@ -18,7 +18,7 @@ class ChokidarFileWatcher implements FileWatcher
     }
 
     /**
-     * Determine if there are any file changes occurred
+     * Determine if any file changes occurred.
      *
      * @return bool
      * @throws FileWatcherException
