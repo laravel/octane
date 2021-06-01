@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.2...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.3...1.x)
+
+
+## [v1.0.3 (2021-06-01)](https://github.com/laravel/octane/compare/v1.0.2...v1.0.3)
+
+### Changed
+- Display memory usage ([#297](https://github.com/laravel/octane/pull/297), [#304](https://github.com/laravel/octane/pull/304))
+
+### Fixed 
+- Fixes issue related to changing non-standard HTTP status codes to 200 OK ([#294](https://github.com/laravel/octane/pull/294))
+- Give new application instance to database session handler ([#302](https://github.com/laravel/octane/pull/302))
+- Adds SameSite attribute for cookies ([#299](https://github.com/laravel/octane/pull/299))
 
 
 ## [v1.0.2 (2021-05-25)](https://github.com/laravel/octane/compare/v1.0.1...v1.0.2)
