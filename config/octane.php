@@ -83,7 +83,7 @@ return [
             ...Octane::prepareApplicationForNextOperation(),
             //
         ],
-        
+
         TaskTerminated::class => [
             //
         ],
@@ -92,7 +92,7 @@ return [
             ...Octane::prepareApplicationForNextOperation(),
             //
         ],
-        
+
         TickTerminated::class => [
             //
         ],
