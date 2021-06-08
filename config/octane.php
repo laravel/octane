@@ -5,7 +5,9 @@ use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
 use Laravel\Octane\Events\RequestTerminated;
 use Laravel\Octane\Events\TaskReceived;
+use Laravel\Octane\Events\TaskTerminated;
 use Laravel\Octane\Events\TickReceived;
+use Laravel\Octane\Events\TickTerminated;
 use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
@@ -82,8 +84,16 @@ return [
             //
         ],
 
+        TaskTerminated::class => [
+            //
+        ],
+
         TickReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
+            //
+        ],
+
+        TickTerminated::class => [
             //
         ],
 
