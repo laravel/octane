@@ -12,8 +12,6 @@ class FlushTemporaryContainerInstances
      */
     public function handle($event): void
     {
-        $event->sandbox->flush();
-
         if (method_exists($event->app, 'resetScope')) {
             $event->app->resetScope();
         }
