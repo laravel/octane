@@ -111,8 +111,6 @@ class Worker implements WorkerContract
         } catch (Throwable $e) {
             $this->handleWorkerError($e, $sandbox, $request, $context, $responded);
         } finally {
-            $sandbox->flush();
-
             $this->app->make('view.engine.resolver')->forget('blade');
             $this->app->make('view.engine.resolver')->forget('php');
 
