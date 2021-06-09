@@ -180,7 +180,7 @@ class Worker implements WorkerContract
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
         } finally {
             $sandbox->flush();
-            
+
             unset($sandbox);
 
             CurrentApplication::set($this->app);
