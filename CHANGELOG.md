@@ -2,6 +2,8 @@
 
 ## [Unreleased](https://github.com/laravel/octane/compare/v1.0.4...1.x)
 
+### Fixed
+- Uploaded files moving ([#317](https://github.com/laravel/octane/pull/317))
 
 ## [v1.0.4 (2021-06-08)](https://github.com/laravel/octane/compare/v1.0.3...v1.0.4)
 
