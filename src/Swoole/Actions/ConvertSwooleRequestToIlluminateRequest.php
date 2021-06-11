@@ -11,11 +11,12 @@ class ConvertSwooleRequestToIlluminateRequest
     /**
      * Convert the given Swoole request into an Illuminate request.
      *
-     * @param  \Swoole\Http\Request  $swooleRequest
-     * @param  string  $phpSapi
+     * @param  \Swoole\Http\Request $swooleRequest
+     * @param  string               $phpSapi
+     * @param  string               $appRequestClass
      * @return \Illuminate\Http\Request
      */
-    public function __invoke($swooleRequest, string $phpSapi): Request
+    public function __invoke($swooleRequest, string $appRequestClass, string $phpSapi): Request
     {
         $serverVariables = $this->prepareServerVariables(
             $swooleRequest->server ?? [],
@@ -39,8 +40,9 @@ class ConvertSwooleRequestToIlluminateRequest
 
             $request->request = new ParameterBag($data);
         }
+        /** @var \Illuminate\Http\Request|string $appRequestClass */
 
-        return Request::createFromBase($request);
+        return $appRequestClass::createFromBase($request);
     }
 
     /**

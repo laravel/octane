@@ -35,9 +35,12 @@ class SwooleClient implements Client, ServesStaticFiles
      */
     public function marshalRequest(RequestContext $context): array
     {
+        $requestClass = $context->octaneConfig['request_class'] ?? \Illuminate\Http\Request::class;
+
         return [
             (new Actions\ConvertSwooleRequestToIlluminateRequest)(
                 $context->swooleRequest,
+                $requestClass,
                 PHP_SAPI
             ),
             $context,

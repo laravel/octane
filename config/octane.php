@@ -52,6 +52,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | HTTP request class
+    |--------------------------------------------------------------------------
+    |
+    | You could set your own class for every incoming HTTP request created by
+    | swoole server.
+    |
+    */
+
+    'request_class' => env('OCTANE_REQUEST_CLASS', \Illuminate\Http\Request::class),
+
+    /*
+    |--------------------------------------------------------------------------
     | Octane Listeners
     |--------------------------------------------------------------------------
     |
