@@ -8,7 +8,6 @@ use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
 use Laravel\Octane\Swoole\WorkerState;
-use Laravel\Octane\Worker;
 use Swoole\Http\Server;
 use Swoole\Timer;
 
