@@ -182,6 +182,10 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                         'duration' => $this->calculateElapsedTime($debug['elapsed']),
                     ]);
                 }
+
+                if ($debug['level'] === 'info' && $debug['logger'] === 'server') {
+                    return $this->info(trim($debug['msg']));
+                }
             });
 
         Str::of($server->getIncrementalErrorOutput())
