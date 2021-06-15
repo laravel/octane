@@ -60,7 +60,7 @@ trait InteractsWithIO
      */
     public function raw($string)
     {
-        if (! Str::contains($string, $this->ignoreMessages)) {
+        if (! Str::startsWith($string, $this->ignoreMessages)) {
             $this->output instanceof OutputStyle
                 ? fwrite(STDERR, $string."\n")
                 : $this->output->writeln($string);
