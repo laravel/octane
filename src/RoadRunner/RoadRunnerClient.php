@@ -12,7 +12,6 @@ use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 

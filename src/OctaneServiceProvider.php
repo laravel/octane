@@ -112,6 +112,7 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\EnforceRequestScheme::class);
         $this->app->singleton(Listeners\EnsureRequestServerPortMatchesScheme::class);
         $this->app->singleton(Listeners\EnsureUploadedFilesAreValid::class);
+        $this->app->singleton(Listeners\EnsureUploadedFilesCanBeMoved::class);
         $this->app->singleton(Listeners\FlushAuthenticationState::class);
         $this->app->singleton(Listeners\FlushQueuedCookies::class);
         $this->app->singleton(Listeners\FlushSessionState::class);

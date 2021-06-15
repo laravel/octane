@@ -12,9 +12,12 @@ class FlushTemporaryContainerInstances
      */
     public function handle($event): void
     {
+        if (method_exists($event->app, 'resetScope')) {
+            $event->app->resetScope();
+        }
+
         foreach ($event->sandbox->make('config')->get('octane.flush', []) as $binding) {
             $event->app->forgetInstance($binding);
-            $event->sandbox->forgetInstance($binding);
         }
     }
 }

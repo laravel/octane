@@ -151,6 +151,8 @@ class Worker implements WorkerContract
 
             return TaskExceptionResult::from($e);
         } finally {
+            $sandbox->flush();
+
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.
@@ -177,6 +179,8 @@ class Worker implements WorkerContract
         } catch (Throwable $e) {
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
         } finally {
+            $sandbox->flush();
+
             unset($sandbox);
 
             CurrentApplication::set($this->app);

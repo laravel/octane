@@ -1,6 +1,14 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.4...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.5...master)
+
+
+## [v1.0.5 (2021-06-15)](https://github.com/laravel/octane/compare/v1.0.4...v1.0.5)
+
+### Fixed
+- Reset application scope to flush scoped instances ([#313](https://github.com/laravel/octane/pull/313))
+- Fix Swoole breaks when log is a valid JSON ([#316](https://github.com/laravel/octane/pull/316))
+- Fix Symfony uploaded file moving ([#317](https://github.com/laravel/octane/pull/317))
 
 
 ## [v1.0.4 (2021-06-08)](https://github.com/laravel/octane/compare/v1.0.3...v1.0.4)
