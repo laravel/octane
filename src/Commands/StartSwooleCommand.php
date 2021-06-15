@@ -179,20 +179,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             ->each(function ($group) {
                 is_array($stream = json_decode($output = $group->first(), true)) && isset($stream['type'])
                     ? $this->handleStream($stream)
-                    : $this->error($output);
-
-                if (($count = $group->count()) > 1) {
-                    $this->newLine();
-
-                    $count--;
-
-                    $this->line(sprintf('  <fg=red;options=bold>↑</>   %s %s',
-                        $count,
-                        $count > 1
-                            ? 'similar errors were reported.'
-                            : 'similar error was reported.'
-                    ));
-                }
+                    : $this->raw($output);
             });
     }
 
