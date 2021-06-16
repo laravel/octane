@@ -29,6 +29,21 @@ trait InteractsWithIO
     ];
 
     /**
+     * Write a string as raw output.
+     *
+     * @param  string  $string
+     * @return void
+     */
+    public function raw($string)
+    {
+        if (! Str::startsWith($string, $this->ignoreMessages)) {
+            $this->output instanceof OutputStyle
+                ? fwrite(STDERR, $string."\n")
+                : $this->output->writeln($string);
+        }
+    }
+
+    /**
      * Write a string as information output.
      *
      * @param  string  $string
@@ -50,21 +65,6 @@ trait InteractsWithIO
     public function error($string, $verbosity = null)
     {
         $this->label($string, $verbosity, 'ERROR', 'red', 'white');
-    }
-
-    /**
-     * Write a string as raw output.
-     *
-     * @param  string  $string
-     * @return void
-     */
-    public function raw($string)
-    {
-        if (! Str::startsWith($string, $this->ignoreMessages)) {
-            $this->output instanceof OutputStyle
-                ? fwrite(STDERR, $string."\n")
-                : $this->output->writeln($string);
-        }
     }
 
     /**
