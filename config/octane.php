@@ -136,20 +136,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | RoadRunner middleware option
-    |--------------------------------------------------------------------------
-    |
-    | While using Roadrunner, you may change the http middleware setting.
-    | From https://roadrunner.dev/docs/intro-config:
-    | Middlewares for the http plugin, order is important. Allowed values: "headers", "static", "gzip"
-    | Multiple values have to be coma separated
-    |
-    */
-
-    'http_middleware' => 'static',
-
-    /*
-    |--------------------------------------------------------------------------
     | Octane Cache Table
     |--------------------------------------------------------------------------
     |
