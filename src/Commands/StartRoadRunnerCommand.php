@@ -143,7 +143,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
-     * Get roadrunner http.middleware option
+     * Get roadrunner http.middleware option.
      *
      * @return string
      */
