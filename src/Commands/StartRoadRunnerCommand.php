@@ -83,7 +83,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'rpc.listen=tcp://'.$this->option('host').':'.$this->rpcPort(),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir=public',
-            '-o', 'http.middleware=static',
+            '-o', 'http.middleware='.config('octane.swoole.http_middleware', 'static'),
             '-o', 'logs.mode=production',
             '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
             '-o', 'logs.output=stdout',
