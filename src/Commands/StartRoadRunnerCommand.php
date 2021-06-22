@@ -83,8 +83,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'rpc.listen=tcp://'.$this->option('host').':'.$this->rpcPort(),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir=public',
-            '-o', 'http.middleware=static',
-            '-o', app()->environment('local') ? 'logs.mode=production' : 'logs.mode=none',
+            '-o', 'http.middleware='.config('octane.swoole.http_middleware', 'static'),
+            '-o', 'logs.mode=production',
             '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
@@ -170,6 +170,10 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
                 if (is_array($stream = json_decode($debug['msg'], true))) {
                     return $this->handleStream($stream);
+                }
+
+                if ($debug['logger'] == 'server') {
+                    return $this->raw($debug['msg']);
                 }
 
                 if ($debug['level'] == 'debug' && isset($debug['remote'])) {

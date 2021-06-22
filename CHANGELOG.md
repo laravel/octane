@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.5...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.6...master)
+
+
+## [v1.0.6 (2021-06-22)](https://github.com/laravel/octane/compare/v1.0.5...v1.0.6)
+
+### Changed
+- Set roadrunner `http.middleware` as an option ([#327](https://github.com/laravel/octane/pull/327))
+
+### Fixed
+- Prints server logs to "stderr" ([#326](https://github.com/laravel/octane/pull/326), [28cf5ee](https://github.com/laravel/octane/commit/28cf5ee6c98d6c4708179fbbba2f1c71125d4efa))
 
 
 ## [v1.0.5 (2021-06-15)](https://github.com/laravel/octane/compare/v1.0.4...v1.0.5)
