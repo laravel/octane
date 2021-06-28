@@ -22,6 +22,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     public $signature = 'octane:roadrunner
                     {--host=127.0.0.1 : The IP address the server should bind to}
+                    {--config-path= : The config path for roadrunner .rr.yaml file}
                     {--port=8000 : The port the server should be available on}
                     {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
@@ -69,13 +70,11 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
         $this->writeServerStateFile($serverStateFile);
 
-        touch(base_path('.rr.yaml'));
-
         $this->forgetEnvironmentVariables();
 
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
-            '-c', base_path('.rr.yaml'),
+            '-c', $this->configPath(),
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' ./vendor/bin/roadrunner-worker',
             '-o', 'http.pool.num_workers='.$this->workerCount(),
@@ -118,6 +117,20 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             'maxRequests' => $this->option('max-requests'),
             'octaneConfig' => config('octane'),
         ]);
+    }
+
+    /**
+     * Provide road runner config file path.
+     *
+     * @return string
+     */
+    protected function configPath()
+    {
+        if (!$this->option('config-path')) {
+            touch(base_path('.rr.yaml'));
+            return base_path('.rr.yaml');
+        }
+        return $this->option('config-path');
     }
 
     /**
