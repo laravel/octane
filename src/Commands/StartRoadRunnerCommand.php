@@ -126,7 +126,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function configPath()
     {
-        if (!$this->option('config-path')) {
+        if (! $this->option('config-path')) {
             touch(base_path('.rr.yaml'));
             return base_path('.rr.yaml');
         }
