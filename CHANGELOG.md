@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.6...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.7...master)
+
+
+## [v1.0.7 (2021-06-29)](https://github.com/laravel/octane/compare/v1.0.6...v1.0.7)
+
+### Fixed
+- Fix config key for roadrunner `http.middlware` ([#333](https://github.com/laravel/octane/pull/333))
 
 
 ## [v1.0.6 (2021-06-22)](https://github.com/laravel/octane/compare/v1.0.5...v1.0.6)
