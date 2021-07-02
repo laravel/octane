@@ -126,13 +126,33 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function configPath()
     {
-        if (! $this->option('config-path')) {
+        $path =  $this->option('config-path');
+        if (! $path) {
             touch(base_path('.rr.yaml'));
             return base_path('.rr.yaml');
         }
-        return $this->option('config-path');
+
+        if (! $this->isAbsolutePath($path)) {
+            return base_path($path);
+        }
+        return $path;
     }
 
+    /**
+     * Check if path is absolute
+     * Example:
+     * '.rr.yaml' returns false
+     * '~/.rr.yaml' returns false
+     * '/.rr.yaml' returns true
+     * './.rr.yaml' returns false
+     *
+     * @return bool
+     */
+    protected function isAbsolutePath($path)
+    {
+        return $path[0] === DIRECTORY_SEPARATOR
+            || preg_match('~\A[A-Z]:(?![^/\\\\])~i', $path) > 0;
+    }
     /**
      * Get the number of workers that should be started.
      *
