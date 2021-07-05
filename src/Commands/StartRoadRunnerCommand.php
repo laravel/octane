@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
@@ -22,11 +23,11 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     public $signature = 'octane:roadrunner
                     {--host=127.0.0.1 : The IP address the server should bind to}
-                    {--config-path= : The config path for roadrunner .rr.yaml file}
                     {--port=8000 : The port the server should be available on}
                     {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
+                    {--config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}';
 
     /**
@@ -120,40 +121,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
-     * Provide road runner config file path.
-     *
-     * @return string
-     */
-    protected function configPath()
-    {
-        $path =  $this->option('config-path');
-        if (! $path) {
-            touch(base_path('.rr.yaml'));
-            return base_path('.rr.yaml');
-        }
-
-        if (! $this->isAbsolutePath($path)) {
-            return base_path($path);
-        }
-        return $path;
-    }
-
-    /**
-     * Check if path is absolute
-     * Example:
-     * '.rr.yaml' returns false
-     * '~/.rr.yaml' returns false
-     * '/.rr.yaml' returns true
-     * './.rr.yaml' returns false
-     *
-     * @return bool
-     */
-    protected function isAbsolutePath($path)
-    {
-        return $path[0] === DIRECTORY_SEPARATOR
-            || preg_match('~\A[A-Z]:(?![^/\\\\])~i', $path) > 0;
-    }
-    /**
      * Get the number of workers that should be started.
      *
      * @return int
@@ -163,6 +130,28 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         return $this->option('workers') == 'auto'
                             ? 0
                             : $this->option('workers');
+    }
+
+    /**
+     * Get the path to the RoadRunner configuration file.
+     *
+     * @return string
+     */
+    protected function configPath()
+    {
+        $path = $this->option('config');
+
+        if (! $path) {
+            touch(base_path('.rr.yaml'));
+
+            return base_path('.rr.yaml');
+        }
+
+        if ($path && ! realpath($path)) {
+            throw new InvalidArgumentException('Unable to locate specified configuration file.');
+        }
+
+        return realpath($path);
     }
 
     /**

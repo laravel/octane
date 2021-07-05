@@ -15,13 +15,13 @@ class StartCommand extends Command implements SignalableCommandInterface
      */
     public $signature = 'octane:start
                     {--server= : The server that should be used to serve the application}
-                    {--config-path= : The full config path for roadrunner .rr.yaml file. Default .rr.yaml in app dir}
                     {--host=127.0.0.1 : The IP address the server should bind to}
                     {--port=8000 : The port the server should be available on}
                     {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
+                    {--config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}';
 
     /**
@@ -74,10 +74,10 @@ class StartCommand extends Command implements SignalableCommandInterface
         return $this->call('octane:roadrunner', [
             '--host' => $this->option('host'),
             '--port' => $this->option('port'),
-            '--config-path' => $this->option('config-path'),
             '--rpc-port' => $this->option('rpc-port'),
             '--workers' => $this->option('workers'),
             '--max-requests' => $this->option('max-requests'),
+            '--config' => $this->option('config'),
             '--watch' => $this->option('watch'),
         ]);
     }
