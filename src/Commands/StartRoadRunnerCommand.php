@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
@@ -26,6 +27,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
+                    {--config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}';
 
     /**
@@ -69,13 +71,11 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
         $this->writeServerStateFile($serverStateFile);
 
-        touch(base_path('.rr.yaml'));
-
         $this->forgetEnvironmentVariables();
 
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
-            '-c', base_path('.rr.yaml'),
+            '-c', $this->configPath(),
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' ./vendor/bin/roadrunner-worker',
             '-o', 'http.pool.num_workers='.$this->workerCount(),
@@ -130,6 +130,28 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         return $this->option('workers') == 'auto'
                             ? 0
                             : $this->option('workers');
+    }
+
+    /**
+     * Get the path to the RoadRunner configuration file.
+     *
+     * @return string
+     */
+    protected function configPath()
+    {
+        $path = $this->option('config');
+
+        if (! $path) {
+            touch(base_path('.rr.yaml'));
+
+            return base_path('.rr.yaml');
+        }
+
+        if ($path && ! realpath($path)) {
+            throw new InvalidArgumentException('Unable to locate specified configuration file.');
+        }
+
+        return realpath($path);
     }
 
     /**
