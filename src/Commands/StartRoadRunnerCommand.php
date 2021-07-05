@@ -27,7 +27,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
-                    {--config= : The path to the RoadRunner .rr.yaml file}
+                    {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}';
 
     /**
@@ -139,7 +139,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function configPath()
     {
-        $path = $this->option('config');
+        $path = $this->option('rr-config');
 
         if (! $path) {
             touch(base_path('.rr.yaml'));
