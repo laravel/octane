@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.7...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.8...1.x)
+
+
+## [v1.0.8 (2021-07-06)](https://github.com/laravel/octane/compare/v1.0.7...v1.0.8)
+
+### Added
+- Add `--rr-config` flag to `octane:start` command ([#335](https://github.com/laravel/octane/pull/335), [00aa3b0](https://github.com/laravel/octane/commit/00aa3b0b53a5e7f62e1ac6f19992af80199fb5f6))
+
+### Changed
+- Flush any log context after each operation ([#337](https://github.com/laravel/octane/pull/337))
 
 
 ## [v1.0.7 (2021-06-29)](https://github.com/laravel/octane/compare/v1.0.6...v1.0.7)
