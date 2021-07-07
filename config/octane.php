@@ -186,7 +186,7 @@ return [
             // 'ssl_key_file' => '/etc/swoole/ssl/private/sail-selfsigned.key',
         ],
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | File Watching
