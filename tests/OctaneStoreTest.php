@@ -2,10 +2,10 @@
 
 namespace Laravel\Octane\Tests;
 
-use stdClass;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Octane\Cache\OctaneStore;
+use stdClass;
 
 class OctaneStoreTest extends TestCase
 {
