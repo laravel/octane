@@ -31,7 +31,7 @@ class OctaneStore implements Store
      */
     public function get($key)
     {
-        $record = $this->table[$key] ?? null;
+        $record = $this->table->$key ?? null;
 
         if (! $this->recordIsNullOrExpired($record)) {
             return unserialize($record['value']);
@@ -79,7 +79,7 @@ class OctaneStore implements Store
      */
     public function put($key, $value, $seconds)
     {
-        $this->table[$key] = [
+        $this->table->$key = [
             'value' => serialize($value),
             'expiration' => Carbon::now()->getTimestamp() + $seconds,
         ];
@@ -112,7 +112,7 @@ class OctaneStore implements Store
      */
     public function increment($key, $value = 1)
     {
-        $record = $this->table[$key] ?? null;
+        $record = $this->table->$key ?? null;
 
         if ($this->recordIsNullOrExpired($record)) {
             return tap($value, fn ($value) => $this->put($key, $value, static::ONE_YEAR));
@@ -216,7 +216,7 @@ class OctaneStore implements Store
      */
     public function forget($key)
     {
-        unset($this->table[$key]);
+        unset($this->table->$key);
 
         return true;
     }
