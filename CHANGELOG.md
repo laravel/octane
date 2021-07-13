@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.8...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.9...1.x)
+
+
+## [v1.0.9 (2021-07-13)](https://github.com/laravel/octane/compare/v1.0.8...v1.0.9)
+
+### Changed
+- Expose the flag to turn on `SWOOLE_SSL` ([#342](https://github.com/laravel/octane/pull/342), [86731cb](https://github.com/laravel/octane/commit/86731cb1a73200a98dff844a3b7e7b77bd07ff44))
 
 
 ## [v1.0.8 (2021-07-06)](https://github.com/laravel/octane/compare/v1.0.7...v1.0.8)
