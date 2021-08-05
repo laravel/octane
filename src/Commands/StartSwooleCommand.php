@@ -66,6 +66,12 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             return 1;
         }
 
+        if (config('octane.swoole.ssl', false) === true && ! defined('SWOOLE_SSL')) {
+            $this->error('You must configure with `--enable-openssl` to support ssl connection when compiling Swoole.');
+
+            return 1;
+        }
+
         $this->writeServerStateFile($serverStateFile, $extension);
 
         $this->forgetEnvironmentVariables();
