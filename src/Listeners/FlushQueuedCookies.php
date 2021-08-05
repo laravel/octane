@@ -12,6 +12,10 @@ class FlushQueuedCookies
      */
     public function handle($event): void
     {
+        if (! $event->sandbox->resolved('cookie')) {
+            return;
+        }
+
         $event->sandbox->make('cookie')->flushQueuedCookies();
     }
 }
