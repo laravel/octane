@@ -7,20 +7,20 @@ class FlushAuthenticationState
     /**
      * Handle the event.
      *
-     * @param  mixed  $event
+     * @param mixed $event
      * @return void
      */
     public function handle($event): void
     {
-        if (! $event->sandbox->resolved('auth') || ! $event->sandbox->resolved('auth.driver')) {
-            return;
+        if ($event->sandbox->resolved('auth.driver')) {
+            $event->sandbox->forgetInstance('auth.driver');
         }
 
-        $event->sandbox->forgetInstance('auth.driver');
-
-        with($event->sandbox->make('auth'), function ($auth) use ($event) {
-            $auth->setApplication($event->sandbox);
-            $auth->forgetGuards();
-        });
+        if ($event->sandbox->resolved('auth')) {
+            with($event->sandbox->make('auth'), function ($auth) use ($event) {
+                $auth->setApplication($event->sandbox);
+                $auth->forgetGuards();
+            });
+        }
     }
 }
