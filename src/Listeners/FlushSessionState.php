@@ -12,6 +12,10 @@ class FlushSessionState
      */
     public function handle($event): void
     {
+        if (! $event->sandbox->resolved('session')) {
+            return;
+        }
+
         $driver = $event->sandbox->make('session')->driver();
 
         $driver->flush();

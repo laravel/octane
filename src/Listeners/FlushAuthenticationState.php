@@ -12,11 +12,15 @@ class FlushAuthenticationState
      */
     public function handle($event): void
     {
-        $event->sandbox->forgetInstance('auth.driver');
+        if ($event->sandbox->resolved('auth.driver')) {
+            $event->sandbox->forgetInstance('auth.driver');
+        }
 
-        with($event->sandbox->make('auth'), function ($auth) use ($event) {
-            $auth->setApplication($event->sandbox);
-            $auth->forgetGuards();
-        });
+        if ($event->sandbox->resolved('auth')) {
+            with($event->sandbox->make('auth'), function ($auth) use ($event) {
+                $auth->setApplication($event->sandbox);
+                $auth->forgetGuards();
+            });
+        }
     }
 }

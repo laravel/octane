@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.9...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.10...master)
+
+
+## [v1.0.10 (2021-08-05)](https://github.com/laravel/octane/compare/v1.0.9...v1.0.10)
+
+### Changed
+- Resolve components when needed ([#355](https://github.com/laravel/octane/pull/355))
+
+### Fixed
+- Undefined array key "swoole" ([#351](https://github.com/laravel/octane/pull/351))
+- Avoids usage of SWOOLE_SSL when openssl is not configured on swoole ([#357](https://github.com/laravel/octane/pull/357))
 
 
 ## [v1.0.9 (2021-08-03)](https://github.com/laravel/octane/compare/v1.0.8...v1.0.9)

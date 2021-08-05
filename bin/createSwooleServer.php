@@ -7,7 +7,9 @@ try {
         $serverState['host'] ?? '127.0.0.1',
         $serverState['port'] ?? '8080',
         SWOOLE_PROCESS,
-        SWOOLE_SOCK_TCP | ((bool) $config['swoole']['ssl'] ?? 0) * SWOOLE_SSL,
+        ($config['swoole']['ssl'] ?? false)
+            ? SWOOLE_SOCK_TCP | SWOOLE_SSL
+            : SWOOLE_SOCK_TCP,
     );
 } catch (Throwable $e) {
     Laravel\Octane\Stream::shutdown($e);
