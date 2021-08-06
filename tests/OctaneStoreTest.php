@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Tests;
 
-use ArrayObject;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Octane\Cache\OctaneStore;
@@ -11,9 +10,9 @@ class OctaneStoreTest extends TestCase
 {
     public function test_can_retrieve_items_from_store()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
-        $table['foo'] = ['value' => serialize('bar'), 'expiration' => time() + 100];
+        $table->set('foo', ['value' => serialize('bar'), 'expiration' => time() + 100]);
 
         $store = new OctaneStore($table);
 
@@ -22,7 +21,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_missing_items_return_null()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -31,18 +30,18 @@ class OctaneStoreTest extends TestCase
 
     public function test_expired_items_return_null()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
-        $table['foo'] = ['value' => serialize('bar'), 'expiration' => time() - 100];
+        $table->set('foo', ['value' => serialize('bar'), 'expiration' => time() - 100]);
 
         $this->assertNull($store->get('foo'));
     }
 
     public function test_get_method_can_resolve_pending_interval()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -53,10 +52,10 @@ class OctaneStoreTest extends TestCase
 
     public function test_many_method_can_return_many_values()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
-        $table['foo'] = ['value' => serialize('bar'), 'expiration' => time() + 100];
-        $table['bar'] = ['value' => serialize('baz'), 'expiration' => time() + 100];
+        $table->set('foo', ['value' => serialize('bar'), 'expiration' => time() + 100]);
+        $table->set('bar', ['value' => serialize('baz'), 'expiration' => time() + 100]);
 
         $store = new OctaneStore($table);
 
@@ -65,7 +64,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_put_stores_value_in_table()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -76,7 +75,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_put_many_stores_value_in_table()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -88,7 +87,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_increment_and_decrement_operations()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -104,7 +103,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_forever_stores_value_in_table()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -115,7 +114,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_intervals_can_be_refreshed()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -135,7 +134,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_can_forget_cache_items()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
@@ -152,7 +151,7 @@ class OctaneStoreTest extends TestCase
 
     public function test_intervals_are_not_flushed()
     {
-        $table = new ArrayObject;
+        $table = $this->createSwooleTable();
 
         $store = new OctaneStore($table);
 
