@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Tests;
 
-use ArrayObject;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Octane\Cache\OctaneStore;
