@@ -9,11 +9,15 @@ class GiveNewApplicationInstanceToAuthorizationGate
     /**
      * Handle the event.
      *
-     * @param  mixed  $event
+     * @param mixed $event
      * @return void
      */
     public function handle($event): void
     {
+        if (! $event->sandbox->resolved(Gate::class)) {
+            return;
+        }
+
         $event->sandbox->make(Gate::class)->setContainer($event->sandbox);
     }
 }
