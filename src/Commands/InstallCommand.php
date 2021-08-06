@@ -102,7 +102,7 @@ class InstallCommand extends Command
     }
 
     /**
-     * Install the RoadRunner dependencies.
+     * Install the Swoole dependencies.
      *
      * @return bool
      */
