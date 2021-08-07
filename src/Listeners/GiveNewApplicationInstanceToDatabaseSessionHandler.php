@@ -17,7 +17,7 @@ class GiveNewApplicationInstanceToDatabaseSessionHandler
         if (! $event->sandbox->resolved('session')) {
             return;
         }
-        
+
         $handler = $event->sandbox->make('session')->driver()->getHandler();
 
         if (! $handler instanceof DatabaseSessionHandler ||
