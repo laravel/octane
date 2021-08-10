@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.10...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.11...1.x)
+
+
+## [v1.0.11 (2021-08-10)](https://github.com/laravel/octane/compare/v1.0.10...v1.0.11)
+
+### Changed
+- Resolve components when needed ([#360](https://github.com/laravel/octane/pull/360))
+
+### Fixed
+- Fix the bug of `Swoole\Table` using array access ([#359](https://github.com/laravel/octane/pull/359))
 
 
 ## [v1.0.10 (2021-08-05)](https://github.com/laravel/octane/compare/v1.0.9...v1.0.10)
