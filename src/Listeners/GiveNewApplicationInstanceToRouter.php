@@ -12,6 +12,10 @@ class GiveNewApplicationInstanceToRouter
      */
     public function handle($event): void
     {
+        if (! $event->sandbox->resolved('router')) {
+            return;
+        }
+
         $event->sandbox->make('router')->setContainer($event->sandbox);
     }
 }

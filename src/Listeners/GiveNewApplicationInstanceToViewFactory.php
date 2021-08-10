@@ -12,6 +12,10 @@ class GiveNewApplicationInstanceToViewFactory
      */
     public function handle($event): void
     {
+        if (! $event->sandbox->resolved('view')) {
+            return;
+        }
+
         with($event->sandbox->make('view'), function ($view) use ($event) {
             $view->setContainer($event->sandbox);
 

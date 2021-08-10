@@ -10,6 +10,7 @@ use Laravel\Octane\Testing\Fakes\FakeClient;
 use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Swoole\Table;
 
 class TestCase extends BaseTestCase
 {
@@ -38,6 +39,20 @@ class TestCase extends BaseTestCase
         $factory->warm($app, Octane::defaultServicesToWarm());
 
         return $app;
+    }
+
+    protected function createSwooleTable()
+    {
+        $config = $this->config();
+
+        $cacheTable = new Table($config['cache']['rows'] ?? 1000);
+
+        $cacheTable->column('value', Table::TYPE_STRING, $config['cache']['bytes'] ?? 10000);
+        $cacheTable->column('expiration', Table::TYPE_INT);
+
+        $cacheTable->create();
+
+        return $cacheTable;
     }
 
     protected function appFactory()
