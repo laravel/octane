@@ -17,6 +17,7 @@
         "php": "^8.0",
         "laravel/framework": "^8.37",
         "laminas/laminas-diactoros": "^2.5",
+        "laravel/serializable-closure": "^1.0",
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {

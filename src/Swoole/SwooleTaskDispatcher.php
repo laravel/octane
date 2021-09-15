@@ -3,11 +3,11 @@
 namespace Laravel\Octane\Swoole;
 
 use Closure;
-use Illuminate\Queue\SerializableClosure;
 use InvalidArgumentException;
 use Laravel\Octane\Contracts\DispatchesTasks;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Exceptions\TaskTimeoutException;
+use Laravel\SerializableClosure\SerializableClosure;
 use Swoole\Http\Server;
 
 class SwooleTaskDispatcher implements DispatchesTasks
