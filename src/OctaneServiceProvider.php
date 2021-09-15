@@ -191,7 +191,7 @@ class OctaneServiceProvider extends ServiceProvider
                 )), 200);
             } catch (DecryptException) {
                 return new Response('', 403);
-            } catch (TaskException | DdException) {
+            } catch (TaskException|DdException) {
                 return new Response('', 500);
             } catch (TaskTimeoutException) {
                 return new Response('', 504);

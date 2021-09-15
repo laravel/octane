@@ -25,8 +25,8 @@ class WorkerExceptionInspector extends Inspector
     /**
      * Get the worker exception trace.
      *
-     * @param   \Throwable  $throwable
-     * @return  array
+     * @param  \Throwable  $throwable
+     * @return array
      */
     public function getTrace($throwable)
     {
