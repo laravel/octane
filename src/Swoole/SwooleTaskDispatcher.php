@@ -34,7 +34,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
             return [$key => $task instanceof Closure
                             ? new SerializableClosure($task)
                             : $task, ];
-        })->all(), $waitMilliseconds);
+        })->all(), $waitMilliseconds / 1000);
 
         if ($results === false) {
             throw TaskTimeoutException::after($waitMilliseconds);
