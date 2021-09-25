@@ -123,10 +123,8 @@ class OnWorkerStart
             'opcache_reset',
         ];
 
-        foreach ($functions as $function)
-        {
-            if (function_exists($function))
-            {
+        foreach ($functions as $function) {
+            if (function_exists($function)) {
                 $function();
             }
         }
