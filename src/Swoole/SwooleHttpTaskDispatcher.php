@@ -5,12 +5,12 @@ namespace Laravel\Octane\Swoole;
 use Closure;
 use Exception;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Queue\SerializableClosure;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Laravel\Octane\Contracts\DispatchesTasks;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Exceptions\TaskTimeoutException;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class SwooleHttpTaskDispatcher implements DispatchesTasks
 {
