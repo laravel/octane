@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.11...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.12...master)
+
+
+## [v1.0.12 (2021-09-28)](https://github.com/laravel/octane/compare/v1.0.11...v1.0.12)
+
+### Fixed
+- Fix timeout value passed to taskWaitMulti ([#380](https://github.com/laravel/octane/pull/380))
 
 
 ## [v1.0.11 (2021-08-10)](https://github.com/laravel/octane/compare/v1.0.10...v1.0.11)

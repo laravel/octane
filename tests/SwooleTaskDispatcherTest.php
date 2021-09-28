@@ -40,6 +40,7 @@ class SwooleTaskDispatcherTest extends TestCase
 
         $this->instance(Server::class, Mockery::mock(Server::class, function ($mock) {
             $mock->shouldReceive('taskWaitMulti')
+                ->with(\Mockery::any(), 2)
                 ->once()
                 ->andReturn(false);
         }));

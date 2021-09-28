@@ -46,7 +46,7 @@ trait MarshalsPsr7RequestsAndResponses
      * Convert the given HttpFoundation response into a PSR-7 response.
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @return  \Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     protected function toPsr7Response(Response $response): ResponseInterface
     {

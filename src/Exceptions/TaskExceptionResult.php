@@ -16,7 +16,7 @@ class TaskExceptionResult
     /**
      * Creates a new task exception result from the given throwable.
      *
-     * @param  \Throwable $throwable
+     * @param  \Throwable  $throwable
      * @return \Laravel\Octane\Exceptions\TaskExceptionResult
      */
     public static function from($throwable)
