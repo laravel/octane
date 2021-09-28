@@ -37,7 +37,7 @@ class OnWorkerStart
 
         $this->dispatchServerTickTaskEverySecond($server);
         $this->streamRequestsToConsole($server);
-        $this->clearCache();
+        $this->clearOpcodeCache();
 
         if ($this->shouldSetProcessName) {
             $isTaskWorker = $workerId >= $server->setting['worker_num'];
@@ -112,18 +112,13 @@ class OnWorkerStart
     }
 
     /**
-     * Clear the cache of APCu and Opcache.
+     * Clear the APCu and Opcache caches.
      *
      * @return void
      */
-    protected function clearCache()
+    protected function clearOpcodeCache()
     {
-        static $functions = [
-            'apcu_clear_cache',
-            'opcache_reset',
-        ];
-
-        foreach ($functions as $function) {
+        foreach (['apcu_clear_cache', 'opcache_reset'] as $function) {
             if (function_exists($function)) {
                 $function();
             }
