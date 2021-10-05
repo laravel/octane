@@ -47,7 +47,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
                 if ($results[$i] instanceof TaskExceptionResult) {
                     throw $results[$i]->getOriginal();
                 }
-                
+
                 $tasks[$key] = $results[$i]->result;
             } else {
                 $tasks[$key] = false;
