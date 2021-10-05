@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.12...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.13...1.x)
+
+
+## [v1.0.13 (2021-10-05)](https://github.com/laravel/octane/compare/v1.0.12...v1.0.13)
+
+### Changed
+- Uses `laravel/serializable-closure` ([#378](https://github.com/laravel/octane/pull/378))
+
+### Fixed
+- Add clear the cache of APCu and Opcache ([#385](https://github.com/laravel/octane/pull/385), [9ff568b](https://github.com/laravel/octane/commit/9ff568bdd3929ec7ee4670a957b761c40118a833))
+- Add FlushDatabaseQueryLog for cleaning up database query log ([#394](https://github.com/laravel/octane/pull/394))
+- Fix issue where timed out tasks were not taken into account ([#396](https://github.com/laravel/octane/pull/396))
 
 
 ## [v1.0.12 (2021-09-28)](https://github.com/laravel/octane/compare/v1.0.11...v1.0.12)
