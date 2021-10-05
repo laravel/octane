@@ -3,11 +3,11 @@
 namespace Laravel\Octane\Swoole;
 
 use Closure;
-use Illuminate\Queue\SerializableClosure;
 use InvalidArgumentException;
 use Laravel\Octane\Contracts\DispatchesTasks;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Exceptions\TaskTimeoutException;
+use Laravel\SerializableClosure\SerializableClosure;
 use Swoole\Http\Server;
 
 class SwooleTaskDispatcher implements DispatchesTasks
@@ -43,11 +43,15 @@ class SwooleTaskDispatcher implements DispatchesTasks
         $i = 0;
 
         foreach ($tasks as $key => $task) {
-            if ($results[$i] instanceof TaskExceptionResult) {
-                throw $results[$i]->getOriginal();
-            }
+            if (isset($results[$i])) {
+                if ($results[$i] instanceof TaskExceptionResult) {
+                    throw $results[$i]->getOriginal();
+                }
 
-            $tasks[$key] = isset($results[$i]) ? $results[$i]->result : false;
+                $tasks[$key] = $results[$i]->result;
+            } else {
+                $tasks[$key] = false;
+            }
 
             $i++;
         }

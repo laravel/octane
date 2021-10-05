@@ -4,8 +4,8 @@ namespace Laravel\Octane\Cache;
 
 use Closure;
 use Illuminate\Contracts\Cache\Store;
-use Illuminate\Queue\SerializableClosure;
 use Illuminate\Support\Carbon;
+use Laravel\SerializableClosure\SerializableClosure;
 use Throwable;
 
 class OctaneStore implements Store
