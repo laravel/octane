@@ -216,5 +216,21 @@ return [
     */
 
     'max_execution_time' => 30,
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Swoole Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The following setting allows you to modify Swoole's configuration.
+    |
+    */
+
+    'swoole' => [
+        'options' => [
+            // 'package_max_length' => 20 * 1024 * 1024,
+        ],
+    ],
+
 
 ];
