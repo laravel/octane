@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.13...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.14...master)
+
+
+## [v1.0.14 (2021-10-12)](https://github.com/laravel/octane/compare/v1.0.13...v1.0.14)
+
+### Fixed
+- Add Livewire listener ([#400](https://github.com/laravel/octane/pull/400))
 
 
 ## [v1.0.13 (2021-10-05)](https://github.com/laravel/octane/compare/v1.0.12...v1.0.13)
