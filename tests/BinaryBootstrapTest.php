@@ -17,7 +17,17 @@ class BinaryBootstrapTest extends TestCase
 
         $process->mustRun();
 
-        $this->assertSame($basePath, $process->getOutput());
+        $output = $process->getOutput();
+
+        if (\PHP_VERSION_ID >= 80100) {
+            $output = array_filter(explode("\n", $output), function ($output) {
+                return ! empty($output) && ! str_starts_with($output, 'Deprecated:');
+            });
+
+            $output = implode('', $output);
+        }
+
+        $this->assertSame($basePath, $output);
     }
 
     /**
