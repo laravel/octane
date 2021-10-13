@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.14...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.15...1.x)
+
+
+## [v1.0.15 (2021-10-13)](https://github.com/laravel/octane/compare/v1.0.14...v1.0.15)
+
+### Added
+- Partial PHP 8.1 support ([#402](https://github.com/laravel/octane/pull/402))
 
 
 ## [v1.0.14 (2021-10-12)](https://github.com/laravel/octane/compare/v1.0.13...v1.0.14)
