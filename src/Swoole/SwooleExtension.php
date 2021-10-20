@@ -13,7 +13,7 @@ class SwooleExtension
      */
     public function isInstalled(): bool
     {
-        return extension_loaded('swoole');
+        return extension_loaded('swoole') || extension_loaded('openswoole');
     }
 
     /**
