@@ -3,6 +3,12 @@
 ## [Unreleased](https://github.com/laravel/octane/compare/v1.0.15...1.x)
 
 
+## [v1.0.16 (2021-10-26)](https://github.com/laravel/octane/compare/v1.0.15...v1.0.16)
+
+### Changed
+- Allow openswoole ([#407](https://github.com/laravel/octane/pull/407))
+
+
 ## [v1.0.15 (2021-10-13)](https://github.com/laravel/octane/compare/v1.0.14...v1.0.15)
 
 ### Added
