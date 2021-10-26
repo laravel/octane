@@ -1,6 +1,18 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.14...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.15...master)
+
+
+## [v1.0.16 (2021-10-26)](https://github.com/laravel/octane/compare/v1.0.15...v1.0.16)
+
+### Changed
+- Allow openswoole ([#407](https://github.com/laravel/octane/pull/407))
+
+
+## [v1.0.15 (2021-10-13)](https://github.com/laravel/octane/compare/v1.0.14...v1.0.15)
+
+### Added
+- Partial PHP 8.1 support ([#402](https://github.com/laravel/octane/pull/402))
 
 
 ## [v1.0.14 (2021-10-12)](https://github.com/laravel/octane/compare/v1.0.13...v1.0.14)
