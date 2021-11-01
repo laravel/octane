@@ -226,7 +226,9 @@ trait InteractsWithIO
      */
     public function handleStream($stream, $verbosity = null)
     {
-        match ($stream['type']) {
+        $type = (isset($stream['type'])) ? $stream['type'] : null;
+
+        match ($type) {
             'request' => $this->requestInfo($stream, $verbosity),
             'throwable' => $this->throwableInfo($stream, $verbosity),
             'shutdown' => $this->shutdownInfo($stream, $verbosity),
