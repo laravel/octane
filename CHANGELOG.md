@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.15...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.17...1.x)
+
+
+## [v1.0.17 (2021-11-02)](https://github.com/laravel/octane/compare/v1.0.16...v1.0.17)
+
+### Fixed
+- Fix undefined array key "type" on empty array dump ([#413](https://github.com/laravel/octane/pull/413))
 
 
 ## [v1.0.16 (2021-10-26)](https://github.com/laravel/octane/compare/v1.0.15...v1.0.16)
