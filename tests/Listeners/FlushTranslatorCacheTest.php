@@ -2,10 +2,9 @@
 
 namespace Laravel\Octane\Listeners;
 
-use Illuminate\Translation\Translator;
+use Illuminate\Http\Request;
 use Laravel\Octane\Tests\TestCase;
 use Mockery;
-use Illuminate\Http\Request;
 
 class FlushTranslatorCacheTest extends TestCase
 {
