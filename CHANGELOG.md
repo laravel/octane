@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.17...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.18...1.x)
+
+
+## [v1.0.18 (2021-11-09)](https://github.com/laravel/octane/compare/v1.0.17...v1.0.18)
+
+### Fixed
+- Fixes memory leak on Translator implementation ([#416](https://github.com/laravel/octane/pull/416))
 
 
 ## [v1.0.17 (2021-11-02)](https://github.com/laravel/octane/compare/v1.0.16...v1.0.17)
