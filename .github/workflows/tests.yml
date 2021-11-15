@@ -7,7 +7,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  swoole:
+  tests:
     runs-on: ubuntu-20.04
 
     strategy:
