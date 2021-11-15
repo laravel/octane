@@ -1,4 +1,4 @@
-name: tests
+name: tests using open-swoole
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, swoole
+          extensions: dom, curl, libxml, mbstring, zip, open-swoole
           tools: composer:v2
           coverage: none
 
