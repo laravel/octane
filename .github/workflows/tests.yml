@@ -1,4 +1,4 @@
-name: tests / swoole
+name: tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  tests:
+  tests / swoole:
     runs-on: ubuntu-20.04
 
     strategy:
@@ -38,3 +38,33 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
         continue-on-error: ${{ matrix.php > 8 }}
+  tests / openswoole:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.0, 8.1]
+        laravel: [^8.35]
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, openswoole
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require laravel/framework:"^8.35" --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --verbose
