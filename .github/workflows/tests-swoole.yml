@@ -1,4 +1,4 @@
-name: tests using swoole
+name: tests / swoole
 
 on:
   push:
@@ -37,3 +37,4 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
+        continue-on-error: ${{ matrix.php > 8 }}
