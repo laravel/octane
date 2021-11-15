@@ -7,7 +7,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  tests / swoole:
+  swoole:
     runs-on: ubuntu-20.04
 
     strategy:
@@ -38,7 +38,8 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
         continue-on-error: ${{ matrix.php > 8 }}
-  tests / openswoole:
+
+  openswoole:
     runs-on: ubuntu-20.04
 
     strategy:
