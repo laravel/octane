@@ -15,8 +15,9 @@ jobs:
       matrix:
         php: [8.0, 8.1]
         laravel: [^8.35]
+        driver: [swoole, openswoole]
 
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
 
     steps:
       - name: Checkout code
@@ -26,7 +27,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, swoole
+          extensions: dom, curl, libxml, mbstring, zip, ${{ matrix.driver }}
           tools: composer:v2
           coverage: none
 
@@ -37,3 +38,4 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
+        continue-on-error: ${{ matrix.php > 8 && matrix.driver == 'swoole' }}

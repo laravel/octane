@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.18...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.19...master)
+
+
+## [v1.0.19 (2021-11-16)](https://github.com/laravel/octane/compare/v1.0.18...v1.0.19)
+
+### Fixed
+- Fixes server shutting down on concurrently when exceptions are reported at root level of the task ([#419](https://github.com/laravel/octane/pull/419))
 
 
 ## [v1.0.18 (2021-11-09)](https://github.com/laravel/octane/compare/v1.0.17...v1.0.18)

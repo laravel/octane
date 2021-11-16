@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane;
 
+use Laravel\SerializableClosure\Support\ClosureStream;
 use Throwable;
 
 class Stream
@@ -35,7 +36,7 @@ class Stream
      */
     public static function throwable(Throwable $throwable)
     {
-        $fallbackTrace = str_starts_with($throwable->getFile(), 'closure://')
+        $fallbackTrace = str_starts_with($throwable->getFile(), ClosureStream::STREAM_PROTO.'://')
             ? collect($throwable->getTrace())->whereNotNull('file')->first()
             : null;
 
