@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-use Illuminate\Foundation\Application;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 use Laminas\Diactoros\UploadedFileFactory;
