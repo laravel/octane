@@ -49,7 +49,7 @@ return [
     */
 
     'roadrunner' => [
-        'http_middleware' => 'static'
+        'http_middleware' => 'static',
     ],
 
     /*
@@ -60,7 +60,7 @@ return [
 
     'swoole' => [
         'ssl' => false,
-        'options' => []
+        'options' => [],
     ],
 
     /*
