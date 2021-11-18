@@ -39,6 +39,32 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | RoadRunner Defaults
+    |--------------------------------------------------------------------------
+    | RoadRunner HTTP server uses default Golang middleware model which allows
+    | you to extend it using custom or community-driven middleware.
+    |
+    | The basic package includes: "static", "gzip", "headers"
+    |
+    */
+
+    'roadrunner' => [
+        'http_middleware' => 'static'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Swoole Defaults
+    |--------------------------------------------------------------------------
+    */
+
+    'swoole' => [
+        'ssl' => false,
+        'options' => []
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Force HTTPS
     |--------------------------------------------------------------------------
     |
