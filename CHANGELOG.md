@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.19...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.20...1.x)
+
+
+## [v1.0.20 (2021-11-23)](https://github.com/laravel/octane/compare/v1.0.19...v1.0.20)
+
+### Fixed
+- Fix FileNotFound error ([#421](https://github.com/laravel/octane/pull/421))
 
 
 ## [v1.0.19 (2021-11-16)](https://github.com/laravel/octane/compare/v1.0.18...v1.0.19)
