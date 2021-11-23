@@ -14,7 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.0, 8.1]
-        laravel: [^8.35]
+        laravel: [^8.35, ^9.0]
         driver: [swoole, openswoole]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
