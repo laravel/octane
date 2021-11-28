@@ -182,7 +182,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function writeServerOutput($server)
     {
-        Str::of($server->getIncrementalOutput())
+        [$output, $errorOutput] = $this->getServerOutput($server);
+
+        Str::of($output)
             ->explode("\n")
             ->filter()
             ->each(function ($output) {
@@ -210,7 +212,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                 }
             });
 
-        Str::of($server->getIncrementalErrorOutput())
+        Str::of($errorOutput)
             ->explode("\n")
             ->filter()
             ->each(function ($output) {
