@@ -107,7 +107,7 @@ trait InteractsWithServers
     }
 
     /**
-     * Gets the given server output, and flushes it.
+     * Retrieve the given server output and flush it.
      *
      * @return array
      */
