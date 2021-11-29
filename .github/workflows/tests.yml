@@ -38,4 +38,3 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
-        continue-on-error: ${{ matrix.php > 8 && matrix.driver == 'swoole' }}
