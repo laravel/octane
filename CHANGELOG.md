@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.20...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.0.21...1.x)
+
+
+## [v1.0.21 (2021-11-30)](https://github.com/laravel/octane/compare/v1.0.20...v1.0.21)
+
+### Changed
+- Updates `octane:install` command when Swoole extension is missing ([#427](https://github.com/laravel/octane/pull/427))
+
+### Fixed
+- Fixes Octane's process output not being flushed ([#428](https://github.com/laravel/octane/pull/428))
 
 
 ## [v1.0.20 (2021-11-23)](https://github.com/laravel/octane/compare/v1.0.19...v1.0.20)
