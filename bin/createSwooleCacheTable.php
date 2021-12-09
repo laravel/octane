@@ -3,6 +3,8 @@
 use Laravel\Octane\Tables\TableFactory;
 use Swoole\Table;
 
+require_once __DIR__.'/../src/Tables/TableFactory.php';
+
 if ($serverState['octaneConfig']['cache'] ?? false) {
     $cacheTable = TableFactory::make(
         $serverState['octaneConfig']['cache']['rows'] ?? 1000

@@ -3,6 +3,8 @@
 use Laravel\Octane\Tables\TableFactory;
 use Swoole\Table;
 
+require_once __DIR__.'/../src/Tables/TableFactory.php';
+
 $tables = [];
 
 foreach ($serverState['octaneConfig']['tables'] ?? [] as $name => $columns) {
