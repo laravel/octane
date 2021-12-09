@@ -6,11 +6,12 @@ use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneServiceProvider;
-use Laravel\Octane\Table;
+use Laravel\Octane\Tables\TableFactory;
 use Laravel\Octane\Testing\Fakes\FakeClient;
 use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Swoole\Table;
 
 class TestCase extends BaseTestCase
 {
@@ -45,7 +46,7 @@ class TestCase extends BaseTestCase
     {
         $config = $this->config();
 
-        $cacheTable = new Table($config['cache']['rows'] ?? 1000);
+        $cacheTable = TableFactory::make($config['cache']['rows'] ?? 1000);
 
         $cacheTable->column('value', Table::TYPE_STRING, $config['cache']['bytes'] ?? 10000);
         $cacheTable->column('expiration', Table::TYPE_INT);

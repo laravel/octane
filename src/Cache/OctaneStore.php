@@ -22,7 +22,7 @@ class OctaneStore implements Store
     /**
      * Create a new Octane store.
      *
-     * @param  \Laravel\Octane\Table  $table
+     * @param  \Swoole\Table  $table
      * @return void
      */
     public function __construct(protected $table)

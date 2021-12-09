@@ -3,7 +3,10 @@
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\Exceptions\ValueTooLargeForColumnException;
-use Laravel\Octane\Table;
+use Laravel\Octane\Tables\OpenSwooleTable;
+use Laravel\Octane\Tables\SwooleTable;
+use Laravel\Octane\Tables\TableFactory;
+use Swoole\Table;
 
 class TableTest extends TestCase
 {
@@ -16,7 +19,11 @@ class TableTest extends TestCase
 
         $table = require __DIR__.'/../bin/createSwooleCacheTable.php';
 
-        $this->assertInstanceOf(Table::class, $table);
+        if (extension_loaded('openswoole')) {
+            return $this->assertInstanceOf(OpenSwooleTable::class, $table);
+        }
+
+        return $this->assertInstanceOf(SwooleTable::class, $table);
     }
 
     public function test_it_gets_used_while_creating_an_table()
@@ -31,7 +38,16 @@ class TableTest extends TestCase
         $tables = require __DIR__.'/../bin/createSwooleTables.php';
 
         $this->assertCount(1, $tables);
-        $this->assertInstanceOf(Table::class, $tables['example']);
+
+        if (extension_loaded('openswoole')) {
+            return $this->assertInstanceOf(OpenSwooleTable::class, $tables['example']);
+        }
+
+        if (extension_loaded('openswoole')) {
+            return $this->assertInstanceOf(OpenSwooleTable::class, $table);
+        }
+
+        return $this->assertInstanceOf(SwooleTable::class, $table);
     }
 
     public function test_it_gets_used_while_creating_an_timer_table()
@@ -40,7 +56,11 @@ class TableTest extends TestCase
 
         $table = require __DIR__.'/../bin/createSwooleTimerTable.php';
 
-        $this->assertInstanceOf(Table::class, $table);
+        if (extension_loaded('openswoole')) {
+            return $this->assertInstanceOf(OpenSwooleTable::class, $table);
+        }
+
+        return $this->assertInstanceOf(SwooleTable::class, $table);
     }
 
     /**
@@ -128,7 +148,7 @@ class TableTest extends TestCase
 
     protected function createSwooleTable()
     {
-        return tap(new Table(1000), function ($table) {
+        return tap(TableFactory::make(1000), function ($table) {
             $table->column('string', Table::TYPE_STRING, 10);
             $table->column('int', Table::TYPE_INT);
 

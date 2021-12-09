@@ -18,7 +18,7 @@ class Octane
      * Get a Swoole table instance.
      *
      * @param  string  $table
-     * @return \Laravel\Octane\Table
+     * @return \Swoole\Table
      */
     public function table(string $table): Table
     {
