@@ -1,6 +1,6 @@
 <?php
 
-use Swoole\Table;
+use Laravel\Octane\Table;
 
 $tables = [];
 

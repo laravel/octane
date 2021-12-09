@@ -6,11 +6,11 @@ use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneServiceProvider;
+use Laravel\Octane\Table;
 use Laravel\Octane\Testing\Fakes\FakeClient;
 use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use Swoole\Table;
 
 class TestCase extends BaseTestCase
 {

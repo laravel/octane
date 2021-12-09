@@ -1,6 +1,6 @@
 <?php
 
-use Swoole\Table;
+use Laravel\Octane\Table;
 
 if (($serverState['octaneConfig']['max_execution_time'] ?? 0) > 0) {
     $timerTable = new Table(250);

@@ -1,6 +1,6 @@
 <?php
 
-use Swoole\Table;
+use Laravel\Octane\Table;
 
 if ($serverState['octaneConfig']['cache'] ?? false) {
     $cacheTable = new Table($serverState['octaneConfig']['cache']['rows'] ?? 1000);

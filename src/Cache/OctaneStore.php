@@ -19,6 +19,12 @@ class OctaneStore implements Store
      */
     protected $intervals = [];
 
+    /**
+     * Create a new Octane store.
+     *
+     * @param  \Laravel\Octane\Table  $table
+     * @return void
+     */
     public function __construct(protected $table)
     {
     }

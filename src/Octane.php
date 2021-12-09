@@ -5,7 +5,6 @@ namespace Laravel\Octane;
 use Exception;
 use Laravel\Octane\Swoole\WorkerState;
 use Swoole\Http\Server;
-use Swoole\Table;
 use Throwable;
 
 class Octane
@@ -19,7 +18,7 @@ class Octane
      * Get a Swoole table instance.
      *
      * @param  string  $table
-     * @return \Swoole\Table
+     * @return \Laravel\Octane\Table
      */
     public function table(string $table): Table
     {
