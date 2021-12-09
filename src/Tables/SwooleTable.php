@@ -2,12 +2,12 @@
 
 namespace Laravel\Octane\Tables;
 
-use Illuminate\Support\Arr;
-use Laravel\Octane\Exceptions\ValueTooLargeForColumnException;
 use Swoole\Table;
 
 class SwooleTable extends Table
 {
+    use Concerns\EnsuresColumnSizes;
+
     /**
      * The table columns.
      *
@@ -43,29 +43,5 @@ class SwooleTable extends Table
             ->each($this->ensureColumnsSize());
 
         parent::set($key, $values);
-    }
-
-    /**
-     * Gets a closure that validates columns sizes.
-     *
-     * @return void
-     */
-    protected function ensureColumnsSize()
-    {
-        return function ($value, $column) {
-            if (! Arr::has($this->columns, $column)) {
-                return;
-            }
-
-            [$type, $size] = $this->columns[$column];
-
-            if ($type == static::TYPE_STRING && strlen($value) > $size) {
-                throw new ValueTooLargeForColumnException(sprintf(
-                    'Value [%s...] is too large for [%s] column.',
-                    substr($value, 0, 20),
-                    $column,
-                ));
-            }
-        };
     }
 }

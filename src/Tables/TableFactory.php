@@ -11,14 +11,23 @@ class TableFactory
      */
     public static function make($size)
     {
-        if (extension_loaded('openswoole')) {
-            require_once __DIR__.'/OpenSwooleTable.php';
+        static::ensureDependenciesAreLoaded();
 
-            return new OpenSwooleTable($size);
-        }
+        return extension_loaded('openswoole')
+            ? new OpenSwooleTable($size)
+            : new SwooleTable($size);
+    }
 
-        require_once __DIR__.'/SwooleTable.php';
+    /**
+     * Because those tables may be required without composer
+     * we ensure the table's dependencies are loaded.
+     */
+    protected static function ensureDependenciesAreLoaded()
+    {
+        require_once __DIR__.'/Concerns/EnsuresColumnSizes.php';
 
-        return new SwooleTable($size);
+        extension_loaded('openswoole')
+            ? require_once __DIR__.'/OpenSwooleTable.php'
+            : require_once __DIR__.'/SwooleTable.php';
     }
 }
