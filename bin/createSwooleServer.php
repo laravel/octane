@@ -1,5 +1,7 @@
 <?php
 
+use Swoole\Coroutine;
+
 $config = $serverState['octaneConfig'];
 
 try {
@@ -11,6 +13,7 @@ try {
             ? SWOOLE_SOCK_TCP | SWOOLE_SSL
             : SWOOLE_SOCK_TCP,
     );
+    Coroutine::set(['hook_flags' => $config['swoole']['hooks'] ?? []]);
 } catch (Throwable $e) {
     Laravel\Octane\Stream::shutdown($e);
 
