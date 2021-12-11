@@ -13,7 +13,7 @@ try {
             ? SWOOLE_SOCK_TCP | SWOOLE_SSL
             : SWOOLE_SOCK_TCP,
     );
-    Coroutine::set(['hook_flags' => $config['swoole']['hooks'] ?? []]);
+    Coroutine::set(['hook_flags' => $config['swoole']['hooks'] ?? 0]);
 } catch (Throwable $e) {
     Laravel\Octane\Stream::shutdown($e);
 
