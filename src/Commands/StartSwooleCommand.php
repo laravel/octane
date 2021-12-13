@@ -25,7 +25,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
-                    {--watch : Automatically reload the server when the application is modified}';
+                    {--watch : Automatically reload the server when the application is modified}
+                    {--raw-server-output : Only use raw format for server output}';
 
     /**
      * The command's description.
@@ -172,22 +173,34 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     {
         [$output, $errorOutput] = $this->getServerOutput($server);
 
+        $onlyRawOutput = $this->option('raw-server-output');
+
         Str::of($output)
             ->explode("\n")
             ->filter()
-            ->each(fn ($output) => is_array($stream = json_decode($output, true))
-                ? $this->handleStream($stream)
-                : $this->info($output)
+            ->each(fn ($output) => $onlyRawOutput
+                ? $this->raw($output)
+                : (
+                    is_array($stream = json_decode($output, true))
+                    ? $this->handleStream($stream)
+                    : $this->info($output)
+                )
             );
 
         Str::of($errorOutput)
             ->explode("\n")
             ->filter()
             ->groupBy(fn ($output) => $output)
-            ->each(function ($group) {
-                is_array($stream = json_decode($output = $group->first(), true)) && isset($stream['type'])
-                    ? $this->handleStream($stream)
-                    : $this->raw($output);
+            ->each(function ($group) use ($onlyRawOutput) {
+                $output = $group->first();
+
+                $onlyRawOutput
+                    ? $this->raw($output)
+                    : (
+                        is_array($stream = json_decode($output, true)) && isset($stream['type'])
+                        ? $this->handleStream($stream)
+                        : $this->raw($output)
+                    );
             });
     }
 
