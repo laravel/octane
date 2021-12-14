@@ -23,7 +23,7 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--raw-server-output : Only use raw format for server output}';
+                    {--log-format=default : Server log format, One of: default|raw}';
 
     /**
      * The command's description.
@@ -62,7 +62,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--task-workers' => $this->option('task-workers'),
             '--max-requests' => $this->option('max-requests'),
             '--watch' => $this->option('watch'),
-            '--raw-server-output' => $this->option('raw-server-output'),
+            '--log-format' => $this->option('log-format'),
         ]);
     }
 
@@ -81,6 +81,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--max-requests' => $this->option('max-requests'),
             '--rr-config' => $this->option('rr-config'),
             '--watch' => $this->option('watch'),
+            '--log-format' => $this->option('log-format'),
         ]);
     }
 

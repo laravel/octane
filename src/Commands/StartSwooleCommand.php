@@ -26,7 +26,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--raw-server-output : Only use raw format for server output}';
+                    {--log-format=default : Server log format, One of: default|raw}';
 
     /**
      * The command's description.
@@ -173,34 +173,32 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     {
         [$output, $errorOutput] = $this->getServerOutput($server);
 
-        $onlyRawOutput = $this->option('raw-server-output');
+        $allowValues = ['raw'];
+        $logFormat = in_array($logFormat = $this->option('log-format'), $allowValues) ? $logFormat : null;
 
         Str::of($output)
             ->explode("\n")
             ->filter()
-            ->each(fn ($output) => $onlyRawOutput
-                ? $this->raw($output)
-                : (
-                    is_array($stream = json_decode($output, true))
+            ->each(fn ($output) => match ($logFormat) {
+                'raw' => $this->raw($output),
+                default => is_array($stream = json_decode($output, true))
                     ? $this->handleStream($stream)
                     : $this->info($output)
-                )
-            );
+            });
 
         Str::of($errorOutput)
             ->explode("\n")
             ->filter()
             ->groupBy(fn ($output) => $output)
-            ->each(function ($group) use ($onlyRawOutput) {
+            ->each(function ($group) use ($logFormat) {
                 $output = $group->first();
 
-                $onlyRawOutput
-                    ? $this->raw($output)
-                    : (
-                        is_array($stream = json_decode($output, true)) && isset($stream['type'])
+                return match ($logFormat) {
+                    'raw' => $this->raw($output),
+                    default => is_array($stream = json_decode($output, true)) && isset($stream['type'])
                         ? $this->handleStream($stream)
                         : $this->raw($output)
-                    );
+                };
             });
     }
 

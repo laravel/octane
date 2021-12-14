@@ -28,7 +28,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
-                    {--watch : Automatically reload the server when the application is modified}';
+                    {--watch : Automatically reload the server when the application is modified}
+                    {--log-format=default : Server log format, One of: default|raw}';
 
     /**
      * The command's description.
@@ -184,16 +185,25 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     {
         [$output, $errorOutput] = $this->getServerOutput($server);
 
+        $allowValues = ['raw'];
+        $logFormat = in_array($logFormat = $this->option('log-format'), $allowValues) ? $logFormat : null;
+
         Str::of($output)
             ->explode("\n")
             ->filter()
-            ->each(function ($output) {
+            ->each(function ($output) use ($logFormat) {
                 if (! is_array($debug = json_decode($output, true))) {
-                    return $this->info($output);
+                    return match ($logFormat) {
+                        'raw' => $this->raw($output),
+                        default => $this->info($output)
+                    };
                 }
 
                 if (is_array($stream = json_decode($debug['msg'], true))) {
-                    return $this->handleStream($stream);
+                    return match ($logFormat) {
+                        'raw' => $this->raw($output),
+                        default => $this->handleStream($stream)
+                    };
                 }
 
                 if ($debug['logger'] == 'server') {
@@ -203,19 +213,26 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                 if ($debug['level'] == 'debug' && isset($debug['remote'])) {
                     [$statusCode, $method, $url] = explode(' ', $debug['msg']);
 
-                    return $this->requestInfo([
-                        'method' => $method,
-                        'url' => $url,
-                        'statusCode' => $statusCode,
-                        'duration' => $this->calculateElapsedTime($debug['elapsed']),
-                    ]);
+                    return match ($logFormat) {
+                        'raw' => $this->raw($output),
+                        default => $this->requestInfo([
+                            'method' => $method,
+                            'url' => $url,
+                            'statusCode' => $statusCode,
+                            'duration' => $this->calculateElapsedTime($debug['elapsed']),
+                        ])
+                    };
                 }
             });
 
         Str::of($errorOutput)
             ->explode("\n")
             ->filter()
-            ->each(function ($output) {
+            ->each(function ($output) use ($logFormat) {
+                if ($logFormat === 'raw') {
+                    return $this->raw($output);
+                }
+
                 if (! Str::contains($output, ['DEBUG', 'INFO', 'WARN'])) {
                     $this->error($output);
                 }
