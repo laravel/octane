@@ -23,7 +23,9 @@ trait InteractsWithServers
             sleep(1);
         }
 
-        $this->writeServerRunningMessage();
+        if (is_null($this->logFormat())) {
+            $this->writeServerRunningMessage();
+        }
 
         $watcher = $this->startServerWatcher();
 

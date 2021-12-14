@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Commands\Concerns;
 
-use Illuminate\Console\OutputStyle;
 use Illuminate\Support\Str;
 use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\ServerShutdownException;
@@ -29,17 +28,15 @@ trait InteractsWithIO
     ];
 
     /**
-     * Write a string as raw output.
+     * Gets the log format, if any.
      *
-     * @param  string  $string
-     * @return void
+     * @return string|null
      */
-    public function raw($string)
+    public function logFormat()
     {
-        if (! Str::startsWith($string, $this->ignoreMessages)) {
-            $this->output instanceof OutputStyle
-                ? fwrite(STDERR, $string."\n")
-                : $this->output->writeln($string);
+        if ($this->hasOption('log-format')
+            && in_array($logFormat = $this->option('log-format'), ['json'])) {
+            return $logFormat;
         }
     }
 
@@ -91,12 +88,20 @@ trait InteractsWithIO
      */
     public function label($string, $verbosity, $level, $background, $foreground)
     {
-        if (! empty($string) && ! Str::startsWith($string, $this->ignoreMessages)) {
-            $this->output->writeln([
+        if (empty($string) || Str::startsWith($string, $this->ignoreMessages)) {
+            return;
+        }
+
+        match ($this->logFormat()) {
+            'json' => $this->output->writeln(json_encode([
+                'type' => strtolower($level),
+                'message' => $string,
+            ])),
+            default => $this->output->writeln([
                 '',
                 "  <bg=$background;fg=$foreground;options=bold> $level </> $string",
-            ], $this->parseVerbosity($verbosity));
-        }
+            ], $this->parseVerbosity($verbosity)),
+        };
     }
 
     /**
@@ -114,7 +119,7 @@ trait InteractsWithIO
         $duration = number_format(round($request['duration'], 2), 2, '.', '');
 
         $memory = isset($request['memory'])
-            ? (number_format($request['memory'] / 1024 / 1204, 2, '.', '').' mb ')
+            ? number_format($request['memory'] / 1024 / 1204, 2, '.', '')
             : '';
 
         ['method' => $method, 'statusCode' => $statusCode] = $request;
@@ -127,22 +132,31 @@ trait InteractsWithIO
             $dots .= ' ';
         }
 
-        $this->output->writeln(sprintf(
-           '  <fg=%s;options=bold>%s </>   <fg=cyan;options=bold>%s</> <options=bold>%s</><fg=#6C7280> %s%s%s ms</>',
-            match (true) {
-                $statusCode >= 500 => 'red',
-                $statusCode >= 400 => 'yellow',
-                $statusCode >= 300 => 'cyan',
-                $statusCode >= 100 => 'green',
-                default => 'white',
-            },
-           $statusCode,
-           $method,
-           $url,
-           $dots,
-           $memory,
-           $duration,
-        ), $this->parseVerbosity($verbosity));
+        match ($this->logFormat()) {
+            'json' => $this->output->writeln(json_encode([
+                'statusCode' => $statusCode,
+                'method' => $method,
+                'url' => $url,
+                'memory' => $memory,
+                'duration' => $duration,
+            ])),
+            default => $this->output->writeln(sprintf(
+               '  <fg=%s;options=bold>%s </>   <fg=cyan;options=bold>%s</> <options=bold>%s</><fg=#6C7280> %s%s%s ms</>',
+                match (true) {
+                    $statusCode >= 500 => 'red',
+                    $statusCode >= 400 => 'yellow',
+                    $statusCode >= 300 => 'cyan',
+                    $statusCode >= 100 => 'green',
+                    default => 'white',
+                },
+               $statusCode,
+               $method,
+               $url,
+               $dots,
+               empty($memory) ? $memory : ($memory.' mb '),
+               $duration,
+            ), $this->parseVerbosity($verbosity)),
+        };
     }
 
     /**
@@ -167,6 +181,17 @@ trait InteractsWithIO
      */
     public function throwableInfo($throwable, $verbosity = null)
     {
+        if ($this->logFormat() === 'json') {
+            return $this->output->writeln(json_encode([
+                'code' => $throwable['code'],
+                'message' => $throwable['message'],
+                'file' =>  $throwable['file'],
+                'line' => $throwable['line'],
+                'class' => $throwable['class'],
+                'trace' => $throwable['trace'],
+            ]));
+        }
+
         if ($throwable['class'] == DdException::class) {
             return $this->ddInfo($throwable, $verbosity);
         }
