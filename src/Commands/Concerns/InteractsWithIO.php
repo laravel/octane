@@ -3,7 +3,6 @@
 namespace Laravel\Octane\Commands\Concerns;
 
 use Illuminate\Support\Str;
-use Laravel\Octane\Commands\Command;
 use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Exceptions\WorkerException;
