@@ -170,7 +170,9 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      */
     protected function writeServerOutput($server)
     {
-        Str::of($server->getIncrementalOutput())
+        [$output, $errorOutput] = $this->getServerOutput($server);
+
+        Str::of($output)
             ->explode("\n")
             ->filter()
             ->each(fn ($output) => is_array($stream = json_decode($output, true))
@@ -178,7 +180,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                 : $this->info($output)
             );
 
-        Str::of($server->getIncrementalErrorOutput())
+        Str::of($errorOutput)
             ->explode("\n")
             ->filter()
             ->groupBy(fn ($output) => $output)

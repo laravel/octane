@@ -109,9 +109,7 @@ class InstallCommand extends Command
     public function installSwooleServer()
     {
         if (! resolve(SwooleExtension::class)->isInstalled()) {
-            $this->error('The Swoole extension is missing.');
-
-            return false;
+            $this->warn('The Swoole extension is missing.');
         }
 
         return true;

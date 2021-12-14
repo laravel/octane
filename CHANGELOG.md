@@ -1,6 +1,21 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.20...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.1.0...master)
+
+
+## [v1.1.0 (2021-12-14)](https://github.com/laravel/octane/compare/v1.0.21...v1.1.0)
+
+### Changed
+- Validates Swoole Tables string column types ([#434](https://github.com/laravel/octane/pull/434))
+
+
+## [v1.0.21 (2021-11-30)](https://github.com/laravel/octane/compare/v1.0.20...v1.0.21)
+
+### Changed
+- Updates `octane:install` command when Swoole extension is missing ([#427](https://github.com/laravel/octane/pull/427))
+
+### Fixed
+- Fixes Octane's process output not being flushed ([#428](https://github.com/laravel/octane/pull/428))
 
 
 ## [v1.0.20 (2021-11-23)](https://github.com/laravel/octane/compare/v1.0.19...v1.0.20)

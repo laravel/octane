@@ -146,6 +146,10 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
+        if (extension_loaded('openswoole')) {
+            $this->markTestSkipped('This test is not compatible with Open Swoole');
+        }
+
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
@@ -164,6 +168,10 @@ class SwooleClientTest extends TestCase
     public function test_respond_method_send_streamed_response_to_swoole()
     {
         $client = new SwooleClient;
+
+        if (extension_loaded('openswoole')) {
+            $this->markTestSkipped('This test is not compatible with Open Swoole');
+        }
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
@@ -186,6 +194,10 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
+        if (extension_loaded('openswoole')) {
+            $this->markTestSkipped('This test is not compatible with Open Swoole');
+        }
+
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(419, 'Page Expired');
@@ -205,6 +217,10 @@ class SwooleClientTest extends TestCase
     {
         $client = new SwooleClient;
 
+        if (extension_loaded('openswoole')) {
+            $this->markTestSkipped('This test is not compatible with Open Swoole');
+        }
+
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
         $app = $this->createApplication();
@@ -222,6 +238,10 @@ class SwooleClientTest extends TestCase
     public function test_error_method_sends_detailed_error_response_to_swoole_in_debug_mode()
     {
         $client = new SwooleClient;
+
+        if (extension_loaded('openswoole')) {
+            $this->markTestSkipped('This test is not compatible with Open Swoole');
+        }
 
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
