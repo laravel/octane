@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.21...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.1.0...1.x)
+
+
+## [v1.1.0 (2021-12-14)](https://github.com/laravel/octane/compare/v1.0.21...v1.1.0)
+
+### Changed
+- Validates Swoole Tables string column types ([#434](https://github.com/laravel/octane/pull/434))
 
 
 ## [v1.0.21 (2021-11-30)](https://github.com/laravel/octane/compare/v1.0.20...v1.0.21)
