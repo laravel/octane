@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands\Concerns;
 
 use Illuminate\Support\Str;
+use Laravel\Octane\Commands\Command;
 use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Exceptions\WorkerException;
@@ -119,7 +120,7 @@ trait InteractsWithIO
         $duration = number_format(round($request['duration'], 2), 2, '.', '');
 
         $memory = isset($request['memory'])
-            ? number_format($request['memory'] / 1024 / 1204, 2, '.', '')
+            ? (number_format($request['memory'] / 1024 / 1204, 2, '.', '').' mb ')
             : '';
 
         ['method' => $method, 'statusCode' => $statusCode] = $request;
@@ -153,7 +154,7 @@ trait InteractsWithIO
                $method,
                $url,
                $dots,
-               empty($memory) ? $memory : ($memory.' mb '),
+               $memory,
                $duration,
             ), $this->parseVerbosity($verbosity)),
         };
