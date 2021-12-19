@@ -21,13 +21,13 @@ class SwooleTable extends Table
      * @param  string  $name
      * @param  int  $type
      * @param  int  $size
-     * @return void
+     * @return bool
      */
-    public function column($name, $type, $size = 0)
+    public function column(string $name, int $type, int $size = 0): bool
     {
         $this->columns[$name] = [$type, $size];
 
-        parent::column($name, $type, $size);
+        return parent::column($name, $type, $size);
     }
 
     /**
@@ -35,13 +35,13 @@ class SwooleTable extends Table
      *
      * @param  string  $key
      * @param  array  $values
-     * @return void
+     * @return bool
      */
-    public function set($key, array $values)
+    public function set(string $key, array $values): bool
     {
         collect($values)
             ->each($this->ensureColumnsSize());
 
-        parent::set($key, $values);
+        return parent::set($key, $values);
     }
 }
