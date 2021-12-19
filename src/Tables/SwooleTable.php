@@ -4,7 +4,7 @@ namespace Laravel\Octane\Tables;
 
 use Swoole\Table;
 
-if (PHP_VERSION_ID > 80000 && SWOOLE_VERSION_ID >= 40840) {
+if (PHP_VERSION_ID > 80000 && SWOOLE_VERSION_ID >= 40804) {
     class SwooleTable extends Table
     {
         use Concerns\EnsuresColumnSizes;
