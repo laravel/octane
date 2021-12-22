@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.1.0...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.1.1...master)
+
+
+## [v1.1.1 (2021-12-22)](https://github.com/laravel/octane/compare/v1.1.0...v1.1.1)
+
+### Changed
+- Adds support for RoadRunner v2.6.x ([#449](https://github.com/laravel/octane/pull/449))
+
+### Fixed
+- Fixes call `terminate()` on null when worker is not booted ([#445](https://github.com/laravel/octane/pull/445))
 
 
 ## [v1.1.0 (2021-12-14)](https://github.com/laravel/octane/compare/v1.0.21...v1.1.0)

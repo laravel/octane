@@ -200,14 +200,22 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     return $this->raw($debug['msg']);
                 }
 
-                if ($debug['level'] == 'debug' && isset($debug['remote'])) {
-                    [$statusCode, $method, $url] = explode(' ', $debug['msg']);
+                if ($debug['level'] == 'info'
+                    && isset($debug['remote_address'])
+                    && isset($debug['msg'])
+                    && $debug['msg'] == 'http log') {
+                    [
+                        'elapsed' => $elapsed,
+                        'method' => $method,
+                        'status' => $statusCode,
+                        'URI' => $url,
+                    ] = $debug;
 
                     return $this->requestInfo([
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => $this->calculateElapsedTime($debug['elapsed']),
+                        'duration' => $this->calculateElapsedTime($elapsed),
                     ]);
                 }
             });

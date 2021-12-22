@@ -58,4 +58,6 @@ while ($psr7Request = $psr7Client->waitRequest()) {
     $worker->handle($request, $context);
 }
 
-$worker->terminate();
+if (! is_null($worker)) {
+    $worker->terminate();
+}
