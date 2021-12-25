@@ -31,6 +31,10 @@ jobs:
           tools: composer:v2
           coverage: none
 
+      - name: Show extension info
+        run: |
+          php --ri ${{ matrix.driver }}
+
       - name: Install dependencies
         run: |
           composer require laravel/framework:"^8.35" --no-update
