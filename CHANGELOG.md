@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.1.1...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.1.2...1.x)
+
+
+## [v1.1.2 (2022-01-04)](https://github.com/laravel/octane/compare/v1.1.1...v1.1.2)
+
+## Fixed
+* Fix type declaration error of Swoole table ([#452](https://github.com/laravel/octane/pull/452))
 
 
 ## [v1.1.1 (2021-12-22)](https://github.com/laravel/octane/compare/v1.1.0...v1.1.1)
