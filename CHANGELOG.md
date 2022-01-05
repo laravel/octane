@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.1.2...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.1.3...1.x)
+
+
+## [v1.1.3 (2022-01-05)](https://github.com/laravel/octane/compare/v1.1.2...v1.1.3)
+
+## Fixed
+* Log level used in non-local environments ([#456](https://github.com/laravel/octane/pull/456))
 
 
 ## [v1.1.2 (2022-01-04)](https://github.com/laravel/octane/compare/v1.1.1...v1.1.2)
