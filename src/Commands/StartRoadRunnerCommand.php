@@ -85,7 +85,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'http.static.dir='.base_path('public'),
             '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
             '-o', 'logs.mode=production',
-            '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
+            '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warn',
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             'serve',
