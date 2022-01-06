@@ -16,6 +16,7 @@ class FilesystemManagerStateTest extends TestCase
         ]);
 
         $filesystemManagerApplication = new ReflectionProperty($app['filesystem'], 'app');
+        $filesystemManagerApplication->setAccessible(true);
 
         $app['router']->get('/first', function (Application $app) use ($filesystemManagerApplication) {
             return spl_object_hash($filesystemManagerApplication->getValue($app['filesystem']));
