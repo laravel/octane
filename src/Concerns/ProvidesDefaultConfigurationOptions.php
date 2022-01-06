@@ -36,6 +36,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToBroadcastManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToDatabaseManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToDatabaseSessionHandler::class,
+            \Laravel\Octane\Listeners\GiveNewApplicationInstanceToFilesystemManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToHttpKernel::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToMailManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToNotificationChannelManager::class,
