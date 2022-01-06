@@ -15,7 +15,7 @@ class FilesystemManagerStateTest extends TestCase
             Request::create('/first', 'GET'),
         ]);
 
-        $filesystemManagerApplication = new ReflectionProperty(app('filesystem'), 'app');
+        $filesystemManagerApplication = new ReflectionProperty($app['filesystem'], 'app');
         $filesystemManagerApplication->setAccessible(true);
 
         $app['router']->get('/first', function (Application $app) use ($filesystemManagerApplication) {
