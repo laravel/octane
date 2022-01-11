@@ -85,7 +85,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'http.static.dir='.base_path('public'),
             '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
             '-o', 'logs.mode=production',
-            '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warning',
+            '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warn',
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             'serve',
@@ -182,7 +182,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function writeServerOutput($server)
     {
-        Str::of($server->getIncrementalOutput())
+        [$output, $errorOutput] = $this->getServerOutput($server);
+
+        Str::of($output)
             ->explode("\n")
             ->filter()
             ->each(function ($output) {
@@ -198,19 +200,27 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     return $this->raw($debug['msg']);
                 }
 
-                if ($debug['level'] == 'debug' && isset($debug['remote'])) {
-                    [$statusCode, $method, $url] = explode(' ', $debug['msg']);
+                if ($debug['level'] == 'info'
+                    && isset($debug['remote_address'])
+                    && isset($debug['msg'])
+                    && $debug['msg'] == 'http log') {
+                    [
+                        'elapsed' => $elapsed,
+                        'method' => $method,
+                        'status' => $statusCode,
+                        'URI' => $url,
+                    ] = $debug;
 
                     return $this->requestInfo([
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => $this->calculateElapsedTime($debug['elapsed']),
+                        'duration' => $this->calculateElapsedTime($elapsed),
                     ]);
                 }
             });
 
-        Str::of($server->getIncrementalErrorOutput())
+        Str::of($errorOutput)
             ->explode("\n")
             ->filter()
             ->each(function ($output) {

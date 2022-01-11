@@ -24,8 +24,10 @@ trait InteractsWithIO
         'scan command',
         'stop signal received, grace timeout is: ',
         'exit forced',
+        'worker allocated',
         'worker constructed',
         'worker destructed',
+        '[INFO] RoadRunner server started; version:',
     ];
 
     /**

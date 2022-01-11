@@ -1,6 +1,48 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.0.19...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.1.3...1.x)
+
+
+## [v1.1.3 (2022-01-05)](https://github.com/laravel/octane/compare/v1.1.2...v1.1.3)
+
+## Fixed
+* Log level used in non-local environments ([#456](https://github.com/laravel/octane/pull/456))
+
+
+## [v1.1.2 (2022-01-04)](https://github.com/laravel/octane/compare/v1.1.1...v1.1.2)
+
+## Fixed
+* Fix type declaration error of Swoole table ([#452](https://github.com/laravel/octane/pull/452))
+
+
+## [v1.1.1 (2021-12-22)](https://github.com/laravel/octane/compare/v1.1.0...v1.1.1)
+
+### Changed
+- Adds support for RoadRunner v2.6.x ([#449](https://github.com/laravel/octane/pull/449))
+
+### Fixed
+- Fixes call `terminate()` on null when worker is not booted ([#445](https://github.com/laravel/octane/pull/445))
+
+
+## [v1.1.0 (2021-12-14)](https://github.com/laravel/octane/compare/v1.0.21...v1.1.0)
+
+### Changed
+- Validates Swoole Tables string column types ([#434](https://github.com/laravel/octane/pull/434))
+
+
+## [v1.0.21 (2021-11-30)](https://github.com/laravel/octane/compare/v1.0.20...v1.0.21)
+
+### Changed
+- Updates `octane:install` command when Swoole extension is missing ([#427](https://github.com/laravel/octane/pull/427))
+
+### Fixed
+- Fixes Octane's process output not being flushed ([#428](https://github.com/laravel/octane/pull/428))
+
+
+## [v1.0.20 (2021-11-23)](https://github.com/laravel/octane/compare/v1.0.19...v1.0.20)
+
+### Fixed
+- Fix FileNotFound error ([#421](https://github.com/laravel/octane/pull/421))
 
 
 ## [v1.0.19 (2021-11-16)](https://github.com/laravel/octane/compare/v1.0.18...v1.0.19)
