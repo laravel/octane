@@ -13,8 +13,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.0, 8.1]
-        laravel: [^8.35, ^9.0]
+        php: ['8.0', 8.1]
+        laravel: [8, 9]
         driver: [swoole, openswoole]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
@@ -37,7 +37,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require laravel/framework:"^8.35" --no-update
+          composer require "laravel/framework:^${{ matrix.laravel }}" --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
