@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.1.3...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.0...1.x)
+
+
+## [v1.2.0 (2022-01-12)](https://github.com/laravel/octane/compare/v1.1.3...v1.2.0)
+
+### Changed
+- Laravel 9 support ([#461](https://github.com/laravel/octane/pull/461))
+- Give the current App instance to FilesystemManager ([#458](https://github.com/laravel/octane/pull/458))
+
+### Fixed
+- Flush monolog state between requests ([#460](https://github.com/laravel/octane/pull/460))
 
 
 ## [v1.1.3 (2022-01-05)](https://github.com/laravel/octane/compare/v1.1.2...v1.1.3)
