@@ -4,6 +4,7 @@ namespace Laravel\Octane\Swoole;
 
 class WorkerState
 {
+    public $server;
     public $workerId;
     public $workerPid;
     public $worker;
