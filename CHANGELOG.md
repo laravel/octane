@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.0...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.1...1.x)
+
+
+## [v1.2.1 (2022-01-25)](https://github.com/laravel/octane/compare/v1.2.0...v1.2.1)
+
+### Changed
+- Allow users to access $server with in Controller ([#464](https://github.com/laravel/octane/pull/464))
+- Flushes Str cache between requests ([#468](https://github.com/laravel/octane/pull/468))
+
+### Fixed
+- Fix byte conversion ([#465](https://github.com/laravel/octane/pull/465))
 
 
 ## [v1.2.0 (2022-01-12)](https://github.com/laravel/octane/compare/v1.1.3...v1.2.0)
