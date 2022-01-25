@@ -31,6 +31,7 @@ class OnWorkerStart
      */
     public function __invoke($server, int $workerId)
     {
+        $this->workerState->server = $server;
         $this->workerState->workerId = $workerId;
         $this->workerState->workerPid = posix_getpid();
         $this->workerState->worker = $this->bootWorker($server);

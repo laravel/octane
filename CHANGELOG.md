@@ -1,6 +1,38 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.1.1...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.1...master)
+
+
+## [v1.2.1 (2022-01-25)](https://github.com/laravel/octane/compare/v1.2.0...v1.2.1)
+
+### Changed
+- Allow users to access $server with in Controller ([#464](https://github.com/laravel/octane/pull/464))
+- Flushes Str cache between requests ([#468](https://github.com/laravel/octane/pull/468))
+
+### Fixed
+- Fix byte conversion ([#465](https://github.com/laravel/octane/pull/465))
+
+
+## [v1.2.0 (2022-01-12)](https://github.com/laravel/octane/compare/v1.1.3...v1.2.0)
+
+### Changed
+- Laravel 9 support ([#461](https://github.com/laravel/octane/pull/461))
+- Give the current App instance to FilesystemManager ([#458](https://github.com/laravel/octane/pull/458))
+
+### Fixed
+- Flush monolog state between requests ([#460](https://github.com/laravel/octane/pull/460))
+
+
+## [v1.1.3 (2022-01-05)](https://github.com/laravel/octane/compare/v1.1.2...v1.1.3)
+
+## Fixed
+* Log level used in non-local environments ([#456](https://github.com/laravel/octane/pull/456))
+
+
+## [v1.1.2 (2022-01-04)](https://github.com/laravel/octane/compare/v1.1.1...v1.1.2)
+
+## Fixed
+* Fix type declaration error of Swoole table ([#452](https://github.com/laravel/octane/pull/452))
 
 
 ## [v1.1.1 (2021-12-22)](https://github.com/laravel/octane/compare/v1.1.0...v1.1.1)

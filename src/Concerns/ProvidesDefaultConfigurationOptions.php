@@ -36,6 +36,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToBroadcastManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToDatabaseManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToDatabaseSessionHandler::class,
+            \Laravel\Octane\Listeners\GiveNewApplicationInstanceToFilesystemManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToHttpKernel::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToMailManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToNotificationChannelManager::class,
@@ -48,6 +49,8 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\FlushDatabaseQueryLog::class,
             \Laravel\Octane\Listeners\FlushLogContext::class,
             \Laravel\Octane\Listeners\FlushArrayCache::class,
+            \Laravel\Octane\Listeners\FlushMonologState::class,
+            \Laravel\Octane\Listeners\FlushStrCache::class,
             \Laravel\Octane\Listeners\FlushTranslatorCache::class,
 
             // First-Party Packages...
