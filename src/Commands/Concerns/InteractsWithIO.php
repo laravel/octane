@@ -116,7 +116,7 @@ trait InteractsWithIO
         $duration = number_format(round($request['duration'], 2), 2, '.', '');
 
         $memory = isset($request['memory'])
-            ? (number_format($request['memory'] / 1024 / 1204, 2, '.', '').' mb ')
+            ? (number_format($request['memory'] / 1024 / 1024, 2, '.', '').' mb ')
             : '';
 
         ['method' => $method, 'statusCode' => $statusCode] = $request;
