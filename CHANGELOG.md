@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/laravel/octane/compare/v1.2.1...1.x)
 
+### Changed
+
+- Removes temporary files, which was created during uploading _(should be enabled manually)_
+
 ## [v1.2.1](https://github.com/laravel/octane/compare/v1.2.1...v1.2.1) - 2022-02-08
 
 ### Changed

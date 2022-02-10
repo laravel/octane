@@ -78,7 +78,7 @@ return [
         ],
 
         RequestTerminated::class => [
-            //
+            // \Laravel\Octane\Listeners\CleanupUploadedFiles::class,
         ],
 
         TaskReceived::class => [
