@@ -3,7 +3,6 @@
 namespace Laravel\Octane\Listeners;
 
 use Illuminate\Support\Str;
-use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Tests\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
