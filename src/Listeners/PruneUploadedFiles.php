@@ -15,16 +15,15 @@ class PruneUploadedFiles
     public function handle($event): void
     {
         foreach ($event->request->files->all() as $file) {
-            if ($file instanceof SplFileInfo) {
-                if (! is_string($path = $file->getRealPath())) {
-                    continue;
-                }
+            if (! $file instanceof SplFileInfo ||
+                ! is_string($path = $file->getRealPath())) {
+                continue;
+            }
 
-                clearstatcache(true, $path);
+            clearstatcache(true, $path);
 
-                if (is_file($path)) {
-                    unlink($path);
-                }
+            if (is_file($path)) {
+                unlink($path);
             }
         }
     }
