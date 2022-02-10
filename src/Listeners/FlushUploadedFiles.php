@@ -4,7 +4,7 @@ namespace Laravel\Octane\Listeners;
 
 use SplFileInfo;
 
-class PruneUploadedFiles
+class FlushUploadedFiles
 {
     /**
      * Handle the event.
