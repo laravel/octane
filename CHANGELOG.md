@@ -4,7 +4,7 @@
 
 ### Added
 
-- Listener for removing temporary files, which was created during uploading _(should be enabled manually)_ ([#477](https://github.com/laravel/octane/pull/477))
+- Listener for removing temporary files which were created during uploading _(must be enabled manually for existing applications)_ ([#477](https://github.com/laravel/octane/pull/477))
 
 ## [v1.2.1](https://github.com/laravel/octane/compare/v1.2.1...v1.2.1) - 2022-02-08
 

@@ -3,14 +3,15 @@
 namespace Laravel\Octane\Listeners;
 
 use Illuminate\Support\Str;
+use Laravel\Octane\Listeners\PruneUploadedFiles;
 use Laravel\Octane\Tests\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @covers \Laravel\Octane\Listeners\CleanupUploadedFiles
+ * @covers \Laravel\Octane\Listeners\PruneUploadedFiles
  */
-class CleanupUploadedFilesTest extends TestCase
+class PruneUploadedFilesTest extends TestCase
 {
     public function test_files_removed()
     {
@@ -36,7 +37,7 @@ class CleanupUploadedFilesTest extends TestCase
             $event = new \stdClass();
             $event->request = $request;
 
-            (new CleanupUploadedFiles)->handle($event);
+            (new PruneUploadedFiles)->handle($event);
 
             $this->assertFileDoesNotExist($file1path);
             $this->assertFileDoesNotExist($file2path);
