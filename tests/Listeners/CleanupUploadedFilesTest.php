@@ -4,8 +4,8 @@ namespace Laravel\Octane\Listeners;
 
 use Illuminate\Support\Str;
 use Laravel\Octane\Tests\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @covers \Laravel\Octane\Listeners\CleanupUploadedFiles
@@ -27,7 +27,7 @@ class CleanupUploadedFilesTest extends TestCase
                 new UploadedFile($file3path, Str::random()),
             ]);
 
-            $this->assertTrue(\rename($file3path, $file3newPath = $file3path . Str::random()));
+            $this->assertTrue(\rename($file3path, $file3newPath = $file3path.Str::random()));
 
             $this->assertFileExists($file1path);
             $this->assertFileExists($file2path);
