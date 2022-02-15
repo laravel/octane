@@ -1,10 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.1...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.2...1.x)
 
 ### Added
 
-- Listener for removing temporary files which were created during uploading _(must be enabled manually for existing applications)_ ([#477](https://github.com/laravel/octane/pull/477))
+- Listener for removing temporary files which were created during uploading *(must be enabled manually for existing applications)* ([#477](https://github.com/laravel/octane/pull/477))
+
+## [v1.2.2](https://github.com/laravel/octane/compare/v1.2.1...v1.2.2) - 2022-02-15
+
+### Changed
+
+- Listener for removing temporary files, which was created during uploading by @tarampampam in https://github.com/laravel/octane/pull/477
+- Fix passing null to cookie for domain by @driesvints in https://github.com/laravel/octane/pull/478
 
 ## [v1.2.1](https://github.com/laravel/octane/compare/v1.2.1...v1.2.1) - 2022-02-08
 
