@@ -2,10 +2,6 @@
 
 ## [Unreleased](https://github.com/laravel/octane/compare/v1.2.3...1.x)
 
-### Added
-
-- Listener for removing temporary files which were created during uploading *(must be enabled manually for existing applications)* ([#477](https://github.com/laravel/octane/pull/477))
-
 ## [v1.2.3](https://github.com/laravel/octane/compare/v1.2.2...v1.2.3) - 2022-02-21
 
 ### Fixed
