@@ -25,6 +25,7 @@ trait InteractsWithIO
         'stop signal received, grace timeout is: ',
         'exit forced',
         'worker allocated',
+        'worker is allocated',
         'worker constructed',
         'worker destructed',
         '[INFO] RoadRunner server started; version:',
