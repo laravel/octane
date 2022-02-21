@@ -1,10 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.2...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.3...1.x)
 
 ### Added
 
 - Listener for removing temporary files which were created during uploading *(must be enabled manually for existing applications)* ([#477](https://github.com/laravel/octane/pull/477))
+
+## [v1.2.3](https://github.com/laravel/octane/compare/v1.2.2...v1.2.3) - 2022-02-21
+
+### Fixed
+
+- Mission `version` configuration option on RoadRunner  ([#482](https://github.com/laravel/octane/pull/482))
 
 ## [v1.2.2](https://github.com/laravel/octane/compare/v1.2.1...v1.2.2) - 2022-02-15
 
