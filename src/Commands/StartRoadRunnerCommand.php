@@ -76,6 +76,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-c', $this->configPath(),
+            '-o', 'version=2.7',
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path('vendor/bin/roadrunner-worker'),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
