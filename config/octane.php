@@ -218,4 +218,27 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Specifying The Worker Count
+    |--------------------------------------------------------------------------
+    |
+    | By default, Octane will start an application request worker for each CPU
+    | core provided by your machine. These workers will then be used to serve
+    | incoming HTTP requests as they enter your application.
+    |
+    */
+    'workers' => 'auto',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Specifying The Worker Task
+    |--------------------------------------------------------------------------
+    |
+    | If you are using the Swoole application server, you may also specify
+    | how many "task workers" you wish to start:
+    |
+    */
+
+    'task-workers' => 'auto',
 ];

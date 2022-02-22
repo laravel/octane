@@ -144,9 +144,13 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      */
     protected function workerCount(SwooleExtension $extension)
     {
-        return $this->option('workers') === 'auto'
-                    ? $extension->cpuCount()
-                    : $this->option('workers');
+        $option = $this->option('workers') === 'config'
+            ? config('octane.workers')
+            : $this->option('workers');
+
+        return $option === 'auto'
+            ? $extension->cpuCount()
+            : $option;
     }
 
     /**
@@ -157,9 +161,13 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      */
     protected function taskWorkerCount(SwooleExtension $extension)
     {
-        return $this->option('task-workers') === 'auto'
-                    ? $extension->cpuCount()
-                    : $this->option('task-workers');
+        $option = $this->option('task-workers') === 'config'
+            ? config('octane.task-workers')
+            : $this->option('task-workers');
+
+        return $option === 'auto'
+            ? $extension->cpuCount()
+            : $option;
     }
 
     /**

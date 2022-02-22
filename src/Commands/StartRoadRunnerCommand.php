@@ -128,9 +128,13 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function workerCount()
     {
-        return $this->option('workers') == 'auto'
-                            ? 0
-                            : $this->option('workers');
+        $option = $this->option('workers') === 'config'
+            ? config('octane.workers')
+            : $this->option('workers');
+
+        return $option === 'auto'
+            ? 0
+            : $option;
     }
 
     /**
