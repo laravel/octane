@@ -23,7 +23,7 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Necessary to successfully watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}';
 
     /**
      * The command's description.
