@@ -1,7 +1,7 @@
 const chokidar = require('chokidar');
 
 const paths = JSON.parse(process.argv[2]);
-const poll = process.argv[3] ? true : false
+const poll = process.argv[3] ? true : false;
 
 const watcher = chokidar.watch(paths, {
     ignoreInitial: true,
