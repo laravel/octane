@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.3...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.4...1.x)
+
+## [v1.2.4](https://github.com/laravel/octane/compare/v1.2.3...v1.2.4) - 2022-03-08
+
+### Fixed
+
+- Fixes `--watch` files over a network by @nunomaduro in https://github.com/laravel/octane/pull/488
 
 ## [v1.2.3](https://github.com/laravel/octane/compare/v1.2.2...v1.2.3) - 2022-02-21
 
