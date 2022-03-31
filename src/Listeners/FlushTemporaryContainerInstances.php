@@ -15,7 +15,7 @@ class FlushTemporaryContainerInstances
         if (method_exists($event->app, 'resetScope')) {
             $event->app->resetScope();
         }
-        
+
         if (method_exists($event->app, 'forgetScopedInstances')) {
             $event->app->forgetScopedInstances();
         }
