@@ -78,7 +78,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         $this->forgetEnvironmentVariables();
 
         $server = tap(new Process([
-            (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
+            (new PhpExecutableFinder)->find(), config('octane.swoole.command', 'swoole-server'), $serverStateFile->path(),
         ], realpath(__DIR__.'/../../bin'), [
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
