@@ -41,7 +41,7 @@ class ServerProcessInspector
             'masterProcessId' => $masterProcessId,
         ] = $this->serverStateFile->read();
 
-        $this->dispatcher->signal($masterProcessId, SIGUSR1);
+        $this->dispatcher->signal((int) $masterProcessId, SIGUSR1);
     }
 
     /**
@@ -59,7 +59,7 @@ class ServerProcessInspector
         $workerProcessIds = $this->exec->run('pgrep -P '.$managerProcessId);
 
         foreach ([$masterProcessId, $managerProcessId, ...$workerProcessIds] as $processId) {
-            $this->dispatcher->signal($processId, SIGKILL);
+            $this->dispatcher->signal((int) $processId, SIGKILL);
         }
 
         return true;
