@@ -1,6 +1,13 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.6...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.7...1.x)
+
+## [v1.2.7](https://github.com/laravel/octane/compare/v1.2.6...v1.2.7) - 2022-04-11
+
+### Fixed
+
+- Make the bin files used by Swoole and Roadrunner config options by @jedjones-uk in https://github.com/laravel/octane/pull/502
+- Force the processId to int by @sy-records in https://github.com/laravel/octane/pull/507
 
 ## [v1.2.6](https://github.com/laravel/octane/compare/v1.2.5...v1.2.6) - 2022-03-31
 
