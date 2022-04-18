@@ -77,7 +77,7 @@ $server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerS
 
 require_once __DIR__.'/WorkerState.php';
 
-$workerState = new WorkerState;
+$workerState = new ($serverState['octaneConfig']['worker_state_class'] ?? WorkerState::class);
 
 $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 $workerState->timerTable = $timerTable;
