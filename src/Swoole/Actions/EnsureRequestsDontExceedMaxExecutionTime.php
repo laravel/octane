@@ -3,13 +3,16 @@
 namespace Laravel\Octane\Swoole\Actions;
 
 use Laravel\Octane\Swoole\SwooleExtension;
+use Swoole\Http\Response;
+use Swoole\Http\Server;
 
 class EnsureRequestsDontExceedMaxExecutionTime
 {
     public function __construct(
         protected SwooleExtension $extension,
         protected $timerTable,
-        protected $maxExecutionTime
+        protected $maxExecutionTime,
+        protected ?Server $server = null
     ) {
     }
 
@@ -25,6 +28,12 @@ class EnsureRequestsDontExceedMaxExecutionTime
                 $this->timerTable->del($workerId);
 
                 $this->extension->dispatchProcessSignal($row['worker_pid'], SIGKILL);
+
+                if ($this->server instanceof Server && isset($row['fd'])) {
+                    $response = Response::create($this->server, $row['fd']);
+                    $response->status(408);
+                    $response->end();
+                }
             }
         }
     }

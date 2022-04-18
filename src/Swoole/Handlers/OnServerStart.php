@@ -43,9 +43,9 @@ class OnServerStart
         }
 
         if ($this->maxExecutionTime > 0) {
-            $server->tick(1000, function () {
+            $server->tick(1000, function () use ($server) {
                 (new EnsureRequestsDontExceedMaxExecutionTime(
-                    $this->extension, $this->timerTable, $this->maxExecutionTime
+                    $this->extension, $this->timerTable, $this->maxExecutionTime, $server
                 ))();
             });
         }
