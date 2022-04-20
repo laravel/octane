@@ -107,6 +107,7 @@ $server->on('request', function ($request, $response) use ($server, $workerState
         $workerState->timerTable->set($workerState->workerId, [
             'worker_pid' => $workerState->workerPid,
             'time' => time(),
+            'fd' => $request->fd,
         ]);
     }
 
