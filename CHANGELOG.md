@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.7...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.8...1.x)
+
+## [v1.2.8](https://github.com/laravel/octane/compare/v1.2.7...v1.2.8) - 2022-04-20
+
+### Fixed
+
+- Fix max_execution_time config doesn't work by @sy-records in https://github.com/laravel/octane/pull/510
 
 ## [v1.2.7](https://github.com/laravel/octane/compare/v1.2.6...v1.2.7) - 2022-04-11
 
