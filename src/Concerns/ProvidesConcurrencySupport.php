@@ -8,6 +8,7 @@ use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
 use Swoole\Http\Server;
+use Laravel\Octane\Swoole\Concurrent;
 
 trait ProvidesConcurrencySupport
 {
@@ -26,6 +27,18 @@ trait ProvidesConcurrencySupport
     public function concurrently(array $tasks, int $waitMilliseconds = 3000)
     {
         return $this->tasks()->resolve($tasks, $waitMilliseconds);
+    }
+
+    /**
+     * Use coroutines to process logic in parallel
+     *
+     * @param int $limit
+     *
+     * @return Laravel\Octane\Swoole\Concurrent
+     */
+    public function concurrent(int $limit)
+    {
+        return new Concurrent($limit);
     }
 
     /**
