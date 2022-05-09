@@ -16,6 +16,10 @@ class FlushLogContext
             return;
         }
 
+        if (method_exists($event->sandbox['log'], 'flushSharedContext')) {
+            $event->sandbox['log']->flushSharedContext();
+        }
+
         if (method_exists($event->sandbox['log']->driver(), 'withoutContext')) {
             $event->sandbox['log']->withoutContext();
         }
