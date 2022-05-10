@@ -218,4 +218,17 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Swoole Event Callbacks.
+    |--------------------------------------------------------------------------
+    |
+    | The following settings are custom swoole event callback processing.
+    | Note that this will override registered event callback.
+    |
+    */
+
+    'callbacks' => [
+        //
+    ],
 ];

@@ -2,6 +2,7 @@
 <?php
 
 use Laravel\Octane\RequestContext;
+use Laravel\Octane\Swoole\Handlers\ExtendEvent;
 use Laravel\Octane\Swoole\Handlers\OnManagerStart;
 use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
@@ -160,5 +161,20 @@ $server->on('workerstop', function () use ($workerState) {
 
     $workerState->worker->terminate();
 });
+
+/*
+|--------------------------------------------------------------------------
+| Extended Swoole Event.
+|--------------------------------------------------------------------------
+|
+| Extended swoole event function. This will overwrite the previously
+| registered swoole event.
+|
+*/
+
+(fn (Server $server) => $bootstrap($serverState) && (new ExtendEvent(
+        $bootstrap($serverState), $serverState, $workerState
+    ))($server)
+)($server);
 
 $server->start();
