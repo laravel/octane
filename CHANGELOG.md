@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.8...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.9...1.x)
+
+## [v1.2.9](https://github.com/laravel/octane/compare/v1.2.8...v1.2.9) - 2022-05-10
+
+### Changed
+
+- Flush shared log context by @timacdonald in https://github.com/laravel/octane/pull/513
 
 ## [v1.2.8](https://github.com/laravel/octane/compare/v1.2.7...v1.2.8) - 2022-04-20
 
