@@ -76,6 +76,7 @@ trait ProvidesDefaultConfigurationOptions
             'cookie',
             'db',
             'db.factory',
+            'db.transactions',
             'encrypter',
             'files',
             'hash',
