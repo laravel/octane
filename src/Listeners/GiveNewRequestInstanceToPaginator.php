@@ -14,6 +14,6 @@ class GiveNewRequestInstanceToPaginator
      */
     public function handle($event): void
     {
-        PaginationState::resolveUsing($event->app);
+        PaginationState::resolveUsing($event->sandbox);
     }
 }
