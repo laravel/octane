@@ -112,6 +112,12 @@ $server->on('request', function ($request, $response) use ($server, $workerState
         ]);
     }
 
+    if ($workerState->worker == null) {
+        $response->status(502);
+
+        return;
+    }
+
     $workerState->worker->handle(...$workerState->client->marshalRequest(new RequestContext([
         'swooleRequest' => $request,
         'swooleResponse' => $response,
