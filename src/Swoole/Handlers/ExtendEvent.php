@@ -33,6 +33,7 @@ class ExtendEvent
      *
      * @param  Server  $server
      * @return void
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -71,6 +72,7 @@ class ExtendEvent
      *
      * @param  Server  $server
      * @param  array  $events
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
