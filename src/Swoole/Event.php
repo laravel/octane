@@ -106,6 +106,6 @@ class Event
 
     public static function isSwooleEvent($event): bool
     {
-        return !in_array($event, [self::ON_BEFORE_START]);
+        return ! in_array($event, [self::ON_BEFORE_START]);
     }
 }

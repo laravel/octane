@@ -31,7 +31,7 @@ class ExtendEvent
     /**
      * Extended Swoole Event.
      *
-     * @param Server $server
+     * @param  Server  $server
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -51,7 +51,7 @@ class ExtendEvent
     /**
      * Get a new Laravel application instance.
      *
-     * @param Server $server
+     * @param  Server  $server
      * @return Application
      */
     protected function getApplication(Server $server): Application
@@ -69,15 +69,15 @@ class ExtendEvent
      * Register for swoole events.
      * This will overwrite the previously registered swoole event.
      *
-     * @param Server $server
-     * @param array  $events
+     * @param  Server  $server
+     * @param  array  $events
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     protected function registerSwooleEvents(Server $server, array $events): void
     {
         foreach ($events as $event => $callback) {
-            if (!Event::isSwooleEvent($event)) {
+            if (! Event::isSwooleEvent($event)) {
                 continue;
             }
 
