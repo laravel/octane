@@ -63,6 +63,7 @@ class ExtendEvent
             WorkerState::class  => $this->workerState,
         ];
         $appFactory = new ApplicationFactory($this->basePath);
+
         return $appFactory->createApplication($initialInstances);
     }
 
