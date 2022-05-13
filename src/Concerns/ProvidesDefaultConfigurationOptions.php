@@ -19,7 +19,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\EnforceRequestScheme::class,
             \Laravel\Octane\Listeners\EnsureRequestServerPortMatchesScheme::class,
             \Laravel\Octane\Listeners\GiveNewRequestInstanceToApplication::class,
-            // \Laravel\Octane\Listeners\GiveNewRequestInstanceToPaginator::class,
+            \Laravel\Octane\Listeners\GiveNewRequestInstanceToPaginator::class,
         ];
     }
 
