@@ -11,7 +11,7 @@ class ConcurrentTest extends TestCase
     public function test_concurrent()
     {
         run(function() {
-            $concurrent = new Concurrent($limit = 10, 1);
+            $concurrent = new Concurrent($limit = 10);
             $this->assertSame($limit, $concurrent->getLimit());
             $this->assertTrue($concurrent->isEmpty());
             $this->assertFalse($concurrent->isFull());
@@ -41,7 +41,7 @@ class ConcurrentTest extends TestCase
     public function test_exception()
     {
         run(function() {
-            $concurrent = new Concurrent(10, 1);
+            $concurrent = new Concurrent(10);
             $count = 0;
 
             for ($i = 0; $i < 15; ++$i) {
