@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.9...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.10...1.x)
+
+## [v1.2.10](https://github.com/laravel/octane/compare/v1.2.9...v1.2.10) - 2022-05-13
+
+### Changed
+
+- Revert PaginationState to resolve using new instance of the app by @farmani in https://github.com/laravel/octane/pull/519
+
+### Fixed
+
+- Warm transaction manager by @taylorotwell in https://github.com/laravel/octane/commit/752d02dc5973a11bf55f332eee0d9e5566442519
 
 ## [v1.2.9](https://github.com/laravel/octane/compare/v1.2.8...v1.2.9) - 2022-05-10
 
