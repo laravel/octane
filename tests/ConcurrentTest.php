@@ -4,7 +4,7 @@ namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\Swoole\Concurrent;
 use Swoole\Coroutine;
-use function Coroutine\run;
+use function Swoole\Coroutine\run;
 
 class ConcurrentTest extends TestCase
 {
