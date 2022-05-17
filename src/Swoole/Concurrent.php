@@ -42,12 +42,12 @@ class Concurrent
 
     public function length(): int
     {
-        return $this->channel->getLength();
+        return $this->channel->length();
     }
 
     public function getLength(): int
     {
-        return $this->channel->getLength();
+        return $this->length();
     }
 
     public function getRunningCoroutineCount(): int
