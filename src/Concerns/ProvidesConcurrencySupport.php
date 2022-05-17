@@ -53,7 +53,7 @@ trait ProvidesConcurrencySupport
      *
      * @return \Laravel\Octane\Swoole\Concurrent
      */
-    public function concurrent(int $limit = 0)
+    public function concurrent(int $limit = null)
     {
         return new Concurrent($limit);
     }
