@@ -22,7 +22,7 @@ class Concurrent
      */
     protected $limit;
 
-    public function __construct(int $limit)
+    public function __construct(int $limit = null)
     {
         $this->limit = $limit;
         $this->channel = new Channel($limit);
