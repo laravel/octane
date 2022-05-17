@@ -2,12 +2,13 @@
 
 namespace Laravel\Octane\Concerns;
 
-use Laravel\Octane\Contracts\DispatchesTasks;
-use Laravel\Octane\SequentialTaskDispatcher;
-use Laravel\Octane\Swoole\ServerStateFile;
-use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
-use Laravel\Octane\Swoole\SwooleTaskDispatcher;
 use Swoole\Http\Server;
+use Laravel\Octane\Swoole\Concurrent;
+use Laravel\Octane\Swoole\ServerStateFile;
+use Laravel\Octane\SequentialTaskDispatcher;
+use Laravel\Octane\Contracts\DispatchesTasks;
+use Laravel\Octane\Swoole\SwooleTaskDispatcher;
+use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
 
 trait ProvidesConcurrencySupport
 {
@@ -45,5 +46,15 @@ trait ProvidesConcurrencySupport
             ))(app(ServerStateFile::class)->read()),
             default => new SequentialTaskDispatcher,
         };
+    }
+
+    /**
+     * Get the concurrent dispatcher.
+     *
+     * @return \Laravel\Octane\Swoole\Concurrent
+     */
+    public function concurrent(int $limit = 0)
+    {
+        return new Concurrent($limit);
     }
 }
