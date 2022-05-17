@@ -4,13 +4,12 @@ namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\Swoole\Concurrent;
 use Swoole\Coroutine;
-use function Swoole\Coroutine\run;
 
 class ConcurrentTest extends TestCase
 {
     public function test_concurrent()
     {
-        run(function() {
+        Coroutine::create(function() {
             $concurrent = new Concurrent($limit = 10);
             $this->assertSame($limit, $concurrent->getLimit());
             $this->assertTrue($concurrent->isEmpty());
@@ -40,7 +39,7 @@ class ConcurrentTest extends TestCase
 
     public function test_exception()
     {
-        run(function() {
+        Coroutine::create(function() {
             $concurrent = new Concurrent(10);
             $count = 0;
 
