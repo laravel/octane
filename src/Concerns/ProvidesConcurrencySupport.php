@@ -2,13 +2,13 @@
 
 namespace Laravel\Octane\Concerns;
 
-use Swoole\Http\Server;
+use Laravel\Octane\Contracts\DispatchesTasks;
 use Laravel\Octane\Swoole\Concurrent;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\SequentialTaskDispatcher;
-use Laravel\Octane\Contracts\DispatchesTasks;
-use Laravel\Octane\Swoole\SwooleTaskDispatcher;
 use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
+use Laravel\Octane\Swoole\SwooleTaskDispatcher;
+use Swoole\Http\Server;
 
 trait ProvidesConcurrencySupport
 {

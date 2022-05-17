@@ -9,17 +9,17 @@ class ConcurrentTest extends TestCase
 {
     public function test_concurrent()
     {
-        Coroutine::create(function() {
+        Coroutine::create(function () {
             $concurrent = new Concurrent($limit = 10);
             $this->assertSame($limit, $concurrent->getLimit());
             $this->assertTrue($concurrent->isEmpty());
             $this->assertFalse($concurrent->isFull());
 
             $count = 0;
-            for ($i = 0; $i < 15; ++$i) {
+            for ($i = 0; $i < 15; $i++) {
                 $concurrent->create(function () use (&$count) {
                     Coroutine::sleep(0.1);
-                    ++$count;
+                    $count++;
                 });
             }
 
@@ -39,14 +39,14 @@ class ConcurrentTest extends TestCase
 
     public function test_exception()
     {
-        Coroutine::create(function() {
+        Coroutine::create(function () {
             $concurrent = new Concurrent(10);
             $count = 0;
 
-            for ($i = 0; $i < 15; ++$i) {
+            for ($i = 0; $i < 15; $i++) {
                 $concurrent->create(function () use (&$count) {
                     Coroutine::sleep(0.1);
-                    ++$count;
+                    $count++;
                     throw new \Exception('ddd');
                 });
             }
