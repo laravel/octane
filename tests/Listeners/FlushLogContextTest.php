@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Listeners;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Laravel\Octane\Tests\TestCase;
@@ -12,6 +13,10 @@ class FlushLogContextTest extends TestCase
 {
     public function test_shared_context_is_flushed()
     {
+        if (version_compare(Application::VERSION, '9.0.0', '<')) {
+            $this->markTestSkipped('Shared context is only supported in Laravel 9+');
+        }
+
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/', 'GET'),
         ]);
