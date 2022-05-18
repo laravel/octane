@@ -4,10 +4,7 @@ namespace Laravel\Octane\Listeners;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Log\Logger;
 use Laravel\Octane\Tests\TestCase;
-use Mockery;
-use Monolog;
 
 class FlushLogContextTest extends TestCase
 {
