@@ -51,6 +51,7 @@ class ServerProcessInspector
             $this->findRoadRunnerBinary(),
             'reset',
             '-o', "rpc.listen=tcp://$host:$rpcPort",
+            '-s',
         ], base_path()))->start()->waitUntil(function ($type, $buffer) {
             if ($type === Process::ERR) {
                 throw new RuntimeException('Cannot reload RoadRunner: '.$buffer);
