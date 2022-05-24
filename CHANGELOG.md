@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.10...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.11...1.x)
+
+## [v1.2.11](https://github.com/laravel/octane/compare/v1.2.10...v1.2.11) - 2022-05-20
+
+### Changed
+
+- add silent option to RoadRunner reset to remove info output which leads to non error by @ResuBaka in https://github.com/laravel/octane/pull/525
 
 ## [v1.2.10](https://github.com/laravel/octane/compare/v1.2.9...v1.2.10) - 2022-05-13
 
