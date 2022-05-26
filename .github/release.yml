@@ -6,9 +6,6 @@ changelog:
   categories:
     - title: Added
       labels:
-        - feature
-    - title: Changed
-      labels:
         - enhancement
     - title: Deprecated
       labels:
@@ -22,3 +19,6 @@ changelog:
     - title: Security
       labels:
         - security
+    - title: Changed
+      labels:
+        - "*"
