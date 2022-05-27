@@ -28,6 +28,7 @@ trait InteractsWithIO
         'worker is allocated',
         'worker constructed',
         'worker destructed',
+        'worker destroyed',
         '[INFO] RoadRunner server started; version:',
     ];
 
