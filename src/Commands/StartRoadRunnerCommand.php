@@ -24,7 +24,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     public $signature = 'octane:roadrunner
                     {--host=127.0.0.1 : The IP address the server should bind to}
                     {--port=8000 : The port the server should be available on}
-                    {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
@@ -82,7 +81,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
-            '-o', 'rpc.listen=tcp://'.$this->option('host').':'.$this->rpcPort(),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir='.base_path('public'),
             '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
@@ -164,16 +162,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     protected function maxExecutionTime()
     {
         return config('octane.max_execution_time', '30').'s';
-    }
-
-    /**
-     * Get the RPC port the server should be available on.
-     *
-     * @return int
-     */
-    protected function rpcPort()
-    {
-        return $this->option('rpc-port') ?: $this->option('port') - 1999;
     }
 
     /**
