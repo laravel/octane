@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.11...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.12...1.x)
+
+## [v1.2.12](https://github.com/laravel/octane/compare/v1.2.11...v1.2.12) - 2022-05-31
+
+### Changed
+
+- Removes non-needed message by @nunomaduro in https://github.com/laravel/octane/pull/532
 
 ## [v1.2.11](https://github.com/laravel/octane/compare/v1.2.10...v1.2.11) - 2022-05-20
 
