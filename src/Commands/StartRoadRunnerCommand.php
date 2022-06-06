@@ -29,7 +29,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Use file system polling while watching in order to watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--relay-dsn=pipes : Worker relay DSN, can be: "pipes", TCP (eg.: tcp://127.0.0.1:6006), or socket (eg.: unix:///var/run/rr-relay.sock)}';
 
     /**
      * The command's description.
@@ -80,6 +81,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'version=2.7',
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
+            '-o', 'server.relay='.$this->option('relay-dsn'),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'rpc.listen=tcp://'.$this->option('host').':'.$this->rpcPort(),
@@ -95,6 +97,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
             'LARAVEL_OCTANE' => 1,
+            'RR_SERVER_RELAY_DSN' => $this->option('relay-dsn'),
         ]))->start();
 
         $serverStateFile->writeProcessId($server->getPid());

@@ -23,7 +23,8 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Use file system polling while watching in order to watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--relay-dsn=pipes : Worker relay DSN, can be: "pipes", TCP (eg.: tcp://127.0.0.1:6006), or socket (eg.: unix:///var/run/rr-relay.sock)}';
 
     /**
      * The command's description.
