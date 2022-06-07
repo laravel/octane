@@ -9,6 +9,9 @@ changelog:
     - title: Added
       labels:
         - enhancement
+    - title: Changed
+      labels:
+        - "*"
     - title: Deprecated
       labels:
         - deprecated
@@ -21,6 +24,3 @@ changelog:
     - title: Security
       labels:
         - security
-    - title: Changed
-      labels:
-        - "*"
