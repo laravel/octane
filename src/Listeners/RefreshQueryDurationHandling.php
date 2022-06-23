@@ -19,7 +19,7 @@ class RefreshQueryDurationHandling
         foreach ($event->sandbox->make('db')->getConnections() as $connection) {
             $connection->resetTotalQueryDuration();
 
-            $connection->restoreAlreadyRunQueryDurationHandlers();
+            $connection->allowQueryDurationHandlersToRunAgain();
         }
     }
 }
