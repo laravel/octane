@@ -47,6 +47,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToViewFactory::class,
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
             \Laravel\Octane\Listeners\FlushDatabaseQueryLog::class,
+            \Laravel\Octane\Listeners\RefreshQueryDurationHandling::class,
             \Laravel\Octane\Listeners\FlushLogContext::class,
             \Laravel\Octane\Listeners\FlushArrayCache::class,
             \Laravel\Octane\Listeners\FlushMonologState::class,
