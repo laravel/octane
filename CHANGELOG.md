@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.12...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.13...1.x)
+
+## [v1.2.13](https://github.com/laravel/octane/compare/v1.2.12...v1.2.13) - 2022-06-23
+
+### Changed
+
+- Refresh query duration handling by @timacdonald in https://github.com/laravel/octane/pull/541
 
 ## [v1.2.12](https://github.com/laravel/octane/compare/v1.2.11...v1.2.12) - 2022-05-31
 
