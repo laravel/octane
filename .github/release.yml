@@ -8,10 +8,9 @@ changelog:
   categories:
     - title: Added
       labels:
-        - feature
+        - enhancement
     - title: Changed
       labels:
-        - enhancement
         - "*"
     - title: Deprecated
       labels:
