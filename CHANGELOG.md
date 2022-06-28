@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.13...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.14...1.x)
+
+## [v1.2.14](https://github.com/laravel/octane/compare/v1.2.13...v1.2.14) - 2022-06-27
+
+### Fixed
+
+- Moved opcache clearing to before bootWorker by @LauJosefsen in https://github.com/laravel/octane/pull/547
 
 ## [v1.2.13](https://github.com/laravel/octane/compare/v1.2.12...v1.2.13) - 2022-06-23
 
