@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.14...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.15...1.x)
+
+## [v1.2.15](https://github.com/laravel/octane/compare/v1.2.14...v1.2.15) - 2022-07-05
+
+### Changed
+
+- Added status codes (RFC6585 & RFC7725) by @vostlertsd in https://github.com/laravel/octane/pull/550
 
 ## [v1.2.14](https://github.com/laravel/octane/compare/v1.2.13...v1.2.14) - 2022-06-27
 
