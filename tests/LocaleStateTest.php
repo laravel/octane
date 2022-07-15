@@ -2,9 +2,9 @@
 
 namespace Laravel\Octane\Tests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class LocaleStateTest extends TestCase
 {
