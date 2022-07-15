@@ -2,6 +2,8 @@
 
 namespace Laravel\Octane\Listeners;
 
+use Carbon\Laravel\ServiceProvider as CarbonServiceProvider;
+
 class FlushLocaleState
 {
     /**
@@ -18,5 +20,7 @@ class FlushLocaleState
             $translator->setLocale($config->get('app.locale'));
             $translator->setFallback($config->get('app.fallback_locale'));
         });
+
+        (new CarbonServiceProvider($event->app))->updateLocale();
     }
 }
