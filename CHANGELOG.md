@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.15...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.2.16...1.x)
+
+## [v1.2.16](https://github.com/laravel/octane/compare/v1.2.15...v1.2.16) - 2022-07-15
+
+### Fixed
+
+- Fixes sharing "Carbon" state shared between requests  by @nunomaduro in https://github.com/laravel/octane/pull/552
 
 ## [v1.2.15](https://github.com/laravel/octane/compare/v1.2.14...v1.2.15) - 2022-07-05
 
