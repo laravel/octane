@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Commands;
 
+use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Laravel\Octane\RoadRunner\ServerProcessInspector;
@@ -72,6 +73,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
         $this->writeServerStateFile($serverStateFile);
 
+        $vendorDir = Env::get('COMPOSER_VENDOR_DIR', base_path('vendor'));
+
         $this->forgetEnvironmentVariables();
 
         $server = tap(new Process(array_filter([
@@ -79,7 +82,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-c', $this->configPath(),
             '-o', 'version=2.7',
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
-            '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
+            '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.$this->workerBinary($vendorDir),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'rpc.listen=tcp://'.$this->option('host').':'.$this->rpcPort(),
@@ -95,6 +98,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
             'LARAVEL_OCTANE' => 1,
+            'COMPOSER_VENDOR_DIR' => $vendorDir,
         ]))->start();
 
         $serverStateFile->writeProcessId($server->getPid());
@@ -261,5 +265,22 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $this->callSilent('octane:stop', [
             '--server' => 'roadrunner',
         ]);
+    }
+
+    /**
+     * Get the roadrunner-worker binary.
+     *
+     * @param  string  $vendorDir
+     * @return string
+     */
+    protected function workerBinary(string $vendorDir)
+    {
+        $command = config('octane.roadrunner.command');
+
+        if (! empty($command)) {
+            return base_path($command);
+        }
+
+        return $vendorDir.'/bin/roadrunner-worker';
     }
 }

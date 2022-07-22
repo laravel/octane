@@ -44,7 +44,9 @@ if (! function_exists('dd')) {
 |
 */
 
-if (! is_file($autoload_file = $basePath.'/vendor/autoload.php')) {
+$vendorPath = getenv('COMPOSER_VENDOR_DIR') ?: $basePath.'/vendor';
+
+if (! is_file($autoload_file = $vendorPath.'/autoload.php')) {
     fwrite(STDERR, "Composer autoload file was not found. Did you install the project's dependencies?".PHP_EOL);
 
     exit(10);

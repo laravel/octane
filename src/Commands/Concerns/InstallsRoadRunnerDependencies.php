@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Commands\Concerns;
 
+use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 use RuntimeException;
@@ -163,7 +164,7 @@ trait InstallsRoadRunnerDependencies
     {
         tap(new Process(array_filter([
             (new PhpExecutableFinder)->find(),
-            './vendor/bin/rr',
+            Env::get('COMPOSER_VENDOR_DIR', base_path('vendor')).'/bin/rr',
             'get-binary',
             '-n',
             '--ansi',
