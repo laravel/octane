@@ -5,6 +5,8 @@ namespace Laravel\Octane;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelRay\RayServiceProvider;
 
 class CurrentApplication
 {
@@ -23,5 +25,23 @@ class CurrentApplication
 
         Facade::clearResolvedInstances();
         Facade::setFacadeApplication($app);
+
+        (function () use ($app) {
+            /** @var ServiceProvider $provider */
+            foreach ($this->serviceProviders as $provider) {
+                // Skip providers already handled specifically in Octane
+                if ($provider instanceof OctaneServiceProvider ||
+                    $provider instanceof RayServiceProvider
+                ) {
+                    continue;
+                }
+
+                (function () use ($app) {
+                    $this->app = $app;
+                })->call($provider);
+
+                $this->bootProvider($provider);
+            }
+        })->call($app);
     }
 }
