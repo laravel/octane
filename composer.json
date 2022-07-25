@@ -26,7 +26,7 @@
         "nunomaduro/collision": "^5.10|^6.0",
         "orchestra/testbench": "^6.16|^7.0",
         "phpunit/phpunit": "^9.3",
-        "spiral/roadrunner": "^2.0"
+        "spiral/roadrunner": "^2.8.2"
     },
     "bin": [
         "bin/roadrunner-worker",

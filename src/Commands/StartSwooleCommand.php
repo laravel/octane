@@ -25,7 +25,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
-                    {--watch : Automatically reload the server when the application is modified}';
+                    {--watch : Automatically reload the server when the application is modified}
+                    {--poll : Use file system polling while watching in order to watch files over a network}';
 
     /**
      * The command's description.
@@ -77,7 +78,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         $this->forgetEnvironmentVariables();
 
         $server = tap(new Process([
-            (new PhpExecutableFinder)->find(), 'swoole-server', $serverStateFile->path(),
+            (new PhpExecutableFinder)->find(), config('octane.swoole.command', 'swoole-server'), $serverStateFile->path(),
         ], realpath(__DIR__.'/../../bin'), [
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),

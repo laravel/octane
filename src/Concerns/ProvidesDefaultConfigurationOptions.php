@@ -19,7 +19,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\EnforceRequestScheme::class,
             \Laravel\Octane\Listeners\EnsureRequestServerPortMatchesScheme::class,
             \Laravel\Octane\Listeners\GiveNewRequestInstanceToApplication::class,
-            // \Laravel\Octane\Listeners\GiveNewRequestInstanceToPaginator::class,
+            \Laravel\Octane\Listeners\GiveNewRequestInstanceToPaginator::class,
         ];
     }
 
@@ -47,6 +47,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToViewFactory::class,
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
             \Laravel\Octane\Listeners\FlushDatabaseQueryLog::class,
+            \Laravel\Octane\Listeners\RefreshQueryDurationHandling::class,
             \Laravel\Octane\Listeners\FlushLogContext::class,
             \Laravel\Octane\Listeners\FlushArrayCache::class,
             \Laravel\Octane\Listeners\FlushMonologState::class,
@@ -76,6 +77,7 @@ trait ProvidesDefaultConfigurationOptions
             'cookie',
             'db',
             'db.factory',
+            'db.transactions',
             'encrypter',
             'files',
             'hash',

@@ -28,7 +28,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
-                    {--watch : Automatically reload the server when the application is modified}';
+                    {--watch : Automatically reload the server when the application is modified}
+                    {--poll : Use file system polling while watching in order to watch files over a network}';
 
     /**
      * The command's description.
@@ -76,8 +77,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-c', $this->configPath(),
+            '-o', 'version=2.7',
             '-o', 'http.address='.$this->option('host').':'.$this->option('port'),
-            '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path('vendor/bin/roadrunner-worker'),
+            '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'rpc.listen=tcp://'.$this->option('host').':'.$this->rpcPort(),

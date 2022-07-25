@@ -21,7 +21,7 @@ trait InstallsRoadRunnerDependencies
      *
      * @var string
      */
-    protected $requiredVersion = '2.6.6';
+    protected $requiredVersion = '2.8.2';
 
     /**
      * Determine if RoadRunner is installed.
@@ -44,13 +44,13 @@ trait InstallsRoadRunnerDependencies
             return true;
         }
 
-        if (! $this->confirm('Octane requires "spiral/roadrunner:^2.0". Do you wish to install it as a dependency?')) {
+        if (! $this->confirm('Octane requires "spiral/roadrunner:^2.8.2". Do you wish to install it as a dependency?')) {
             $this->error('Octane requires "spiral/roadrunner".');
 
             return false;
         }
 
-        $command = $this->findComposer().' require spiral/roadrunner:^2.0 --with-all-dependencies';
+        $command = $this->findComposer().' require spiral/roadrunner:^2.8.2 --with-all-dependencies';
 
         $process = Process::fromShellCommandline($command, null, null, null, null);
 

@@ -22,7 +22,8 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
-                    {--watch : Automatically reload the server when the application is modified}';
+                    {--watch : Automatically reload the server when the application is modified}
+                    {--poll : Use file system polling while watching in order to watch files over a network}';
 
     /**
      * The command's description.
@@ -61,6 +62,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--task-workers' => $this->option('task-workers'),
             '--max-requests' => $this->option('max-requests'),
             '--watch' => $this->option('watch'),
+            '--poll' => $this->option('poll'),
         ]);
     }
 
@@ -79,6 +81,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--max-requests' => $this->option('max-requests'),
             '--rr-config' => $this->option('rr-config'),
             '--watch' => $this->option('watch'),
+            '--poll' => $this->option('poll'),
         ]);
     }
 
