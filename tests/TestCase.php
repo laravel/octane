@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Tests;
 
+use Carbon\Laravel\ServiceProvider as CarbonServiceProvider;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
@@ -21,6 +22,7 @@ class TestCase extends BaseTestCase
 
         $appFactory->shouldReceive('createApplication')->andReturn($app = $this->createApplication());
 
+        $app->register(new CarbonServiceProvider($app));
         $app->register(new OctaneServiceProvider($app));
 
         $worker = new FakeWorker($appFactory, $roadRunnerClient = new FakeClient($requests));
