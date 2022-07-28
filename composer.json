@@ -18,7 +18,7 @@
         "laravel/framework": "^8.81|^9.0",
         "laminas/laminas-diactoros": "^2.5",
         "laravel/serializable-closure": "^1.0",
-        "nesbot/carbon": "dev-master as 2.53.1",
+        "nesbot/carbon": "^2.60",
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "repositories": [
