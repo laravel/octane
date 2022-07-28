@@ -21,12 +21,6 @@
         "nesbot/carbon": "^2.60",
         "symfony/psr-http-message-bridge": "^2.0"
     },
-    "repositories": [
-        {
-            "type": "github",
-            "url": "https://github.com/briannesbitt/Carbon"
-        }
-    ],
     "require-dev": {
         "guzzlehttp/guzzle": "^7.2",
         "mockery/mockery": "^1.4",
