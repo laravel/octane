@@ -145,7 +145,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
         if (! $path) {
             $path = base_path('.rr.yaml');
-            
+
             touch($path);
         }
 
