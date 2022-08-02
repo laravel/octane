@@ -83,7 +83,7 @@ class OnWorkerStart
      */
     protected function dispatchServerTickTaskEverySecond($server)
     {
-        // ..
+        // ...
     }
 
     /**
