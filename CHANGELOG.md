@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.16...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.0...1.x)
+
+## [v1.3.0](https://github.com/laravel/octane/compare/v1.2.16...v1.3.0) - 2022-08-02
+
+### Added
+
+- Adds support for Swoole 5 by @nunomaduro in https://github.com/laravel/octane/pull/560
+
+### Fixed
+
+- Fix carbon locale when setting it via app locale setter by @nunomaduro in https://github.com/laravel/octane/pull/557
 
 ## [v1.2.16](https://github.com/laravel/octane/compare/v1.2.15...v1.2.16) - 2022-07-15
 
