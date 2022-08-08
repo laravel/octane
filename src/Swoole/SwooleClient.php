@@ -19,11 +19,6 @@ use Throwable;
 
 class SwooleClient implements Client, ServesStaticFiles
 {
-    const STATUS_CODE_REASONS = [
-        419 => 'Page Expired',
-        431 => 'Request Header Fields Too Large',                             // RFC6585
-        451 => 'Unavailable For Legal Reasons',                               // RFC7725
-    ];
 
     public function __construct(protected int $chunkSize = 1048576)
     {
@@ -285,8 +280,8 @@ class SwooleClient implements Client, ServesStaticFiles
      */
     protected function getReasonFromStatusCode(int $code): ?string
     {
-        if (array_key_exists($code, self::STATUS_CODE_REASONS)) {
-            return self::STATUS_CODE_REASONS[$code];
+        if (array_key_exists($code, config('octane.status_code_reasons'))) {
+            return config('octane.status_code_reasons')[$code];
         }
 
         return null;

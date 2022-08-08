@@ -218,4 +218,21 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Status Code Reasons for Octane Swoole
+    |--------------------------------------------------------------------------
+    |
+    | If you use non-standard HTTP status codes in your response, Octane gonna 
+    | return "200 OK" in responded status code. The following setting allows you
+    | to set non-standard HTTP status codes.
+    |
+    */
+
+    'status_code_reasons' => [
+        419 => 'Page Expired',
+        431 => 'Request Header Fields Too Large',                // RFC6585
+        451 => 'Unavailable For Legal Reasons',                  // RFC7725
+    ],
+
 ];
