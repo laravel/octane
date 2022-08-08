@@ -19,7 +19,6 @@ use Throwable;
 
 class SwooleClient implements Client, ServesStaticFiles
 {
-
     public function __construct(protected int $chunkSize = 1048576)
     {
     }
