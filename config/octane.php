@@ -222,10 +222,9 @@ return [
     |--------------------------------------------------------------------------
     | Status Code Reasons for Octane Swoole
     |--------------------------------------------------------------------------
-    |
-    | If you use non-standard HTTP status codes in your response, Octane gonna
-    | return "200 OK" in responded status code. The following setting allows you
-    | to set non-standard HTTP status codes.
+    | The following setting allows you to set non-standard HTTP status codes
+    | for Octane. Octane gonna return "200 OK" in responded status if you
+    | use a "non-standard HTTP status codes" in your response header. 
     |
     */
 
