@@ -224,7 +224,7 @@ return [
     |--------------------------------------------------------------------------
     | The following setting allows you to set non-standard HTTP status codes
     | for Octane. Octane gonna return "200 OK" in responded status if you
-    | use a "non-standard HTTP status codes" in your response header. 
+    | use a "non-standard HTTP status codes" in your response header.
     |
     */
 
