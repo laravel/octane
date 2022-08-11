@@ -95,7 +95,7 @@ class OnWorkerStart
     protected function streamRequestsToConsole($server)
     {
         $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox) {
-            if (! $sandbox->environment('local', 'testing')) {
+            if ($server->setting['log_level'] > SWOOLE_LOG_INFO) {
                 return;
             }
 
