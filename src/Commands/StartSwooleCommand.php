@@ -22,6 +22,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     public $signature = 'octane:swoole
                     {--host=127.0.0.1 : The IP address the server should bind to}
                     {--port=8000 : The port the server should be available on}
+                    {--dispatch-mode=auto : The mode of dispatching connections to the worker processes [1-9]}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
@@ -124,17 +125,42 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         return [
             'enable_coroutine' => false,
             'daemonize' => false,
+            'dispatch_mode' => $this->dispatchMode(),
             'log_file' => storage_path('logs/swoole_http.log'),
             'log_level' => app()->environment('local') ? SWOOLE_LOG_INFO : SWOOLE_LOG_ERROR,
             'max_request' => $this->option('max-requests'),
             'package_max_length' => 10 * 1024 * 1024,
             'reactor_num' => $this->workerCount($extension),
-            'send_yield' => true,
+            'send_yield' => $this->sendYeild(),
             'socket_buffer_size' => 10 * 1024 * 1024,
             'task_max_request' => $this->option('max-requests'),
             'task_worker_num' => $this->taskWorkerCount($extension),
             'worker_num' => $this->workerCount($extension),
         ];
+    }
+
+    /**
+     * Get the mode of dispatching connections to the worker processes.
+     *
+     * @return int
+     */
+    protected function dispatchMode()
+    {
+        return $this->option('dispatch-mode') === 'auto'
+                    ? 2
+                    : $this->option('dispatch-mode');
+    }
+
+    /**
+     * Get the mode of dispatching connections to the worker processes.
+     *
+     * @return bool
+     */
+    protected function sendYeild()
+    {
+        return $this->option('dispatch-mode') === 'auto'
+                    ? true
+                    : in_array($this->option('dispatch-mode'), [2, 4]);
     }
 
     /**

@@ -18,6 +18,7 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--host=127.0.0.1 : The IP address the server should bind to}
                     {--port=8000 : The port the server should be available on}
                     {--rpc-port= : The RPC port the server should be available on}
+                    {--dispatch-mode=auto : The mode of dispatching connections to the worker processes [1-9]}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
@@ -58,6 +59,7 @@ class StartCommand extends Command implements SignalableCommandInterface
         return $this->call('octane:swoole', [
             '--host' => $this->option('host'),
             '--port' => $this->option('port'),
+            '--dispatch-mode' => $this->option('dispatch-mode'),
             '--workers' => $this->option('workers'),
             '--task-workers' => $this->option('task-workers'),
             '--max-requests' => $this->option('max-requests'),
