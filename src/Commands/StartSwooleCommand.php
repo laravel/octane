@@ -131,7 +131,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'max_request' => $this->option('max-requests'),
             'package_max_length' => 10 * 1024 * 1024,
             'reactor_num' => $this->workerCount($extension),
-            'send_yield' => $this->sendYeild(),
+            'send_yield' => $this->sendYield(),
             'socket_buffer_size' => 10 * 1024 * 1024,
             'task_max_request' => $this->option('max-requests'),
             'task_worker_num' => $this->taskWorkerCount($extension),
@@ -152,11 +152,11 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     }
 
     /**
-     * Get the mode of dispatching connections to the worker processes.
+     * Yield the current task and wait for I/O if the send buffer is full.
      *
      * @return bool
      */
-    protected function sendYeild()
+    protected function sendYield()
     {
         return $this->option('dispatch-mode') === 'auto'
                     ? true
