@@ -218,18 +218,4 @@ return [
 
     'max_execution_time' => 30,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Status Code Reasons for Octane Swoole
-    |--------------------------------------------------------------------------
-    | The following setting allows you to set non-standard HTTP status codes
-    | for Octane. Octane gonna return "200 OK" in responded status if you
-    | use a "non-standard HTTP status codes" in your response header.
-    |
-    */
-
-    'status_code_reasons' => [
-        419 => 'Page Expired',
-    ],
-
 ];
