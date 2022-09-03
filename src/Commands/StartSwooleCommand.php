@@ -79,7 +79,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
 
         $server = tap(new Process([
             (new PhpExecutableFinder)->find(),
-            config('octane.swoole.php_options', []),
+            ...config('octane.swoole.php_options', []),
             config('octane.swoole.command', 'swoole-server'),
             $serverStateFile->path(),
         ], realpath(__DIR__.'/../../bin'), [
