@@ -10,7 +10,8 @@ use Swoole\Table;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-interface Octane {
+interface Octane
+{
     /**
      * Concurrently resolve the given callbacks via background tasks, returning the results.
      *

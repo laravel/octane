@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane;
 
-use Laravel\Octane\Contracts\Octane as OctaneContract;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
@@ -14,6 +13,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Octane\Cache\OctaneArrayStore;
 use Laravel\Octane\Cache\OctaneStore;
 use Laravel\Octane\Contracts\DispatchesCoroutines;
+use Laravel\Octane\Contracts\Octane as OctaneContract;
 use Laravel\Octane\Events\TickReceived;
 use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\TaskException;
