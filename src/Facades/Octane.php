@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Laravel\Octane\Contracts\Octane as OctaneContract;
 
 /**
  * @method static \Laravel\Octane\Swoole\InvokeTickCallable tick(string $key, callable $callback, int $seconds = 1, bool $immediate = true)
@@ -18,6 +19,6 @@ class Octane extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'octane';
+        return OctaneContract::class;
     }
 }

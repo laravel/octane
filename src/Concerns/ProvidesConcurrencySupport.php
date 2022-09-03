@@ -23,7 +23,7 @@ trait ProvidesConcurrencySupport
      * @throws \Laravel\Octane\Exceptions\TaskException
      * @throws \Laravel\Octane\Exceptions\TaskTimeoutException
      */
-    public function concurrently(array $tasks, int $waitMilliseconds = 3000)
+    public function concurrently(array $tasks, int $waitMilliseconds = 3000): array
     {
         return $this->tasks()->resolve($tasks, $waitMilliseconds);
     }
@@ -33,7 +33,7 @@ trait ProvidesConcurrencySupport
      *
      * @return \Laravel\Octane\Contracts\DispatchesTasks
      */
-    public function tasks()
+    public function tasks(): DispatchesTasks
     {
         return match (true) {
             app()->bound(DispatchesTasks::class) => app(DispatchesTasks::class),

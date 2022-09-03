@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane;
 
+use Laravel\Octane\Contracts\Octane as OctaneContract;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class OctaneServiceProvider extends ServiceProvider
 
         $this->bindListeners();
 
-        $this->app->singleton('octane', Octane::class);
+        $this->app->singleton(OctaneContract::class, Octane::class);
 
         $this->app->bind(RoadRunnerServerProcessInspector::class, function ($app) {
             return new RoadRunnerServerProcessInspector(

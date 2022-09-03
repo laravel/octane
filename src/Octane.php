@@ -3,12 +3,13 @@
 namespace Laravel\Octane;
 
 use Exception;
+use Laravel\Octane\Contracts\Octane as OctaneContract;
 use Laravel\Octane\Swoole\WorkerState;
 use Swoole\Http\Server;
 use Swoole\Table;
 use Throwable;
 
-class Octane
+class Octane implements OctaneContract
 {
     use Concerns\ProvidesConcurrencySupport;
     use Concerns\ProvidesDefaultConfigurationOptions;
