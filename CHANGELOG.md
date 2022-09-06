@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.0...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.1...1.x)
+
+## [v1.3.1](https://github.com/laravel/octane/compare/v1.3.0...v1.3.1) - 2022-09-05
+
+### Changed
+
+- Add possibility to launch swoole server with additional php options by @AbdelAbouhassane in https://github.com/laravel/octane/pull/570
 
 ## [v1.3.0](https://github.com/laravel/octane/compare/v1.2.16...v1.3.0) - 2022-08-02
 
