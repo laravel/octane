@@ -19,7 +19,7 @@ use Throwable;
 
 class SwooleClient implements Client, ServesStaticFiles
 {
-    const STATUS_CODE_REASONS = [
+    public static $STATUS_CODE_REASONS = [
         419 => 'Page Expired',
         431 => 'Request Header Fields Too Large',                             // RFC6585
         451 => 'Unavailable For Legal Reasons',                               // RFC7725
