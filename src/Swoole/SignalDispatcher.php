@@ -2,6 +2,8 @@
 
 namespace Laravel\Octane\Swoole;
 
+use Illuminate\Support\Arr;
+
 class SignalDispatcher
 {
     public function __construct(protected SwooleExtension $extension)
@@ -22,23 +24,24 @@ class SignalDispatcher
     /**
      * Send a SIGTERM signal to the given process.
      *
-     * @param array $processIds
+     * @param  int|array  $processId
      * @param  int  $wait
-     *
      * @return bool
      */
-    public function terminate(array $processIds, int $wait = 0): bool
+    public function terminate(int|array $processId, int $wait = 0): bool
     {
-        foreach($processIds as $processId) {
+        $processId = Arr::wrap($processId);
+
+        foreach ($processId as $processId) {
             $this->extension->dispatchProcessSignal($processId, SIGTERM);
         }
 
         if ($wait) {
             $start = time();
-            $runningProcesses = $processIds;
+            $runningProcesses = $processId;
 
             do {
-                foreach ($processIds as $processId) {
+                foreach ($processId as $processId) {
                     if (! $this->canCommunicateWith($processId)) {
                         $runningProcesses = array_diff($runningProcesses, [$processId]);
                     } else {
