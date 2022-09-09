@@ -22,23 +22,34 @@ class SignalDispatcher
     /**
      * Send a SIGTERM signal to the given process.
      *
-     * @param  int  $processId
+     * @param array $processIds
      * @param  int  $wait
+     *
      * @return bool
      */
-    public function terminate(int $processId, int $wait = 0): bool
+    public function terminate(array $processIds, int $wait = 0): bool
     {
-        $this->extension->dispatchProcessSignal($processId, SIGTERM);
+        foreach($processIds as $processId) {
+            $this->extension->dispatchProcessSignal($processId, SIGTERM);
+        }
 
         if ($wait) {
             $start = time();
 
             do {
-                if (! $this->canCommunicateWith($processId)) {
-                    return true;
+                $allTerminated = true;
+
+                foreach ($processIds as $processId) {
+                    if ($this->canCommunicateWith($processId)) {
+                        $allTerminated = false;
+
+                        $this->extension->dispatchProcessSignal($processId, SIGTERM);
+                    }
                 }
 
-                $this->extension->dispatchProcessSignal($processId, SIGTERM);
+                if ($allTerminated) {
+                    return true;
+                }
 
                 sleep(1);
             } while (time() < $start + $wait);
