@@ -59,8 +59,8 @@ class ServerProcessInspector
 
         $workerProcessIds = $this->exec->run('pgrep -P '.$managerProcessId);
 
-        $this->dispatcher->terminate($workerProcessIds, $this->terminateWait);
-        $this->dispatcher->terminate([$managerProcessId, $masterProcessId]);
+        $this->dispatcher->terminate(array_map('intval', $workerProcessIds), $this->terminateWait);
+        $this->dispatcher->terminate([(int) $managerProcessId, (int) $masterProcessId]);
 
         return true;
     }

@@ -30,18 +30,18 @@ class SignalDispatcher
      */
     public function terminate(int|array $processId, int $wait = 0): bool
     {
-        $processId = Arr::wrap($processId);
+        $processIds = Arr::wrap($processId);
 
-        foreach ($processId as $processId) {
+        foreach ($processIds as $processId) {
             $this->extension->dispatchProcessSignal($processId, SIGTERM);
         }
 
         if ($wait) {
             $start = time();
-            $runningProcesses = $processId;
+            $runningProcesses = $processIds;
 
             do {
-                foreach ($processId as $processId) {
+                foreach ($processIds as $processId) {
                     if (! $this->canCommunicateWith($processId)) {
                         $runningProcesses = array_diff($runningProcesses, [$processId]);
                     } else {
