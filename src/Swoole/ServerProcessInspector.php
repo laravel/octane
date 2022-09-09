@@ -10,6 +10,7 @@ class ServerProcessInspector
         protected SignalDispatcher $dispatcher,
         protected ServerStateFile $serverStateFile,
         protected Exec $exec,
+        protected int $terminateWait,
     ) {
     }
 
@@ -58,8 +59,12 @@ class ServerProcessInspector
 
         $workerProcessIds = $this->exec->run('pgrep -P '.$managerProcessId);
 
-        foreach ([$masterProcessId, $managerProcessId, ...$workerProcessIds] as $processId) {
-            $this->dispatcher->signal((int) $processId, SIGKILL);
+        foreach ($workerProcessIds as $processId) {
+            $this->dispatcher->signal((int)$processId, SIGTERM);
+        }
+
+        foreach ([$managerProcessId, $masterProcessId] as $processId) {
+            $this->dispatcher->terminate((int)$processId, $this->terminateWait);
         }
 
         return true;

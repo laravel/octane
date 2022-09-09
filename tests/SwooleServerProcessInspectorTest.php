@@ -16,6 +16,7 @@ class SwooleServerProcessInspectorTest extends TestCase
             $dispatcher = Mockery::mock(SignalDispatcher::class),
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
             Mockery::mock(Exec::class),
+            30
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(2)->andReturn(true);
@@ -33,6 +34,7 @@ class SwooleServerProcessInspectorTest extends TestCase
             $dispatcher = Mockery::mock(SignalDispatcher::class),
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
             Mockery::mock(Exec::class),
+            30
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(2)->andReturn(false);
@@ -50,6 +52,7 @@ class SwooleServerProcessInspectorTest extends TestCase
             $dispatcher = Mockery::mock(SignalDispatcher::class),
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
             Mockery::mock(Exec::class),
+            30
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(1)->andReturn(true);
@@ -67,6 +70,7 @@ class SwooleServerProcessInspectorTest extends TestCase
             $dispatcher = Mockery::mock(SignalDispatcher::class),
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
             Mockery::mock(Exec::class),
+            30
         );
 
         $dispatcher->shouldReceive('canCommunicateWith')->with(1)->andReturn(false);
@@ -84,6 +88,7 @@ class SwooleServerProcessInspectorTest extends TestCase
             $dispatcher = Mockery::mock(SignalDispatcher::class),
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
             $exec = Mockery::mock(Exec::class),
+            30
         );
 
         $processIdFile->writeProcessIds(3, 2);
@@ -91,8 +96,8 @@ class SwooleServerProcessInspectorTest extends TestCase
 
         collect([2, 3, 4, 5])->each(
             fn ($processId) => $dispatcher
-                ->shouldReceive('signal')
-                ->with($processId, SIGKILL)
+                ->shouldReceive('terminate')
+                ->with($processId, 30)
                 ->once(),
         );
 

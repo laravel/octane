@@ -61,6 +61,7 @@ class OctaneServiceProvider extends ServiceProvider
                 $app->make(SignalDispatcher::class),
                 $app->make(SwooleServerStateFile::class),
                 $app->make(Exec::class),
+                $app['config']->get('octane.max_execution_time', 30)
             );
         });
 
