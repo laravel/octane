@@ -25,8 +25,15 @@ class SwooleClient implements Client, ServesStaticFiles
         451 => 'Unavailable For Legal Reasons',                               // RFC7725
     ];
 
+    private static array $CUSTOM_STATUS_CODE = [];
+
     public function __construct(protected int $chunkSize = 1048576)
     {
+    }
+
+    public static function addCustomStatusCode(int $status, string $reason)
+    {
+        self::$CUSTOM_STATUS_CODE[$status] = $reason;
     }
 
     /**
@@ -287,6 +294,10 @@ class SwooleClient implements Client, ServesStaticFiles
     {
         if (array_key_exists($code, self::STATUS_CODE_REASONS)) {
             return self::STATUS_CODE_REASONS[$code];
+        }
+
+        if (array_key_exists($code, self::$CUSTOM_STATUS_CODE)) {
+            return self::$CUSTOM_STATUS_CODE[$code];
         }
 
         return null;
