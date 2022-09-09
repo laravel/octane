@@ -97,12 +97,14 @@ class SwooleServerProcessInspectorTest extends TestCase
         // Workers
         $dispatcher
             ->shouldReceive('terminate')
-            ->with([4, 5], 30);
+            ->with([4, 5], 30)
+            ->once();
 
         // Master/Manager
         $dispatcher
             ->shouldReceive('terminate')
-            ->with([2, 3]);
+            ->with([2, 3])
+            ->once();
 
         $this->assertTrue($inspector->stopServer());
 
