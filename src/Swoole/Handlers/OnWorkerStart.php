@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Swoole\Handlers;
 
 use Laravel\Octane\ApplicationFactory;
+use Laravel\Octane\EmergencyWorker;
 use Laravel\Octane\Stream;
 use Laravel\Octane\Swoole\SwooleClient;
 use Laravel\Octane\Swoole\SwooleExtension;
@@ -55,7 +56,7 @@ class OnWorkerStart
      * Boot the Octane worker and application.
      *
      * @param  \Swoole\Http\Server  $server
-     * @return \Laravel\Octane\Worker
+     * @return \Laravel\Octane\Contracts\Worker
      */
     protected function bootWorker($server)
     {
@@ -69,9 +70,13 @@ class OnWorkerStart
                 WorkerState::class => $this->workerState,
             ]);
         } catch (Throwable $e) {
-            Stream::shutdown($e);
-
-            $server->shutdown();
+            if ($this->serverState['dontShutdownOnError']) {
+                Stream::throwable($e);
+                return new EmergencyWorker(new SwooleClient(), $e);
+            } else {
+                Stream::shutdown($e);
+                $server->shutdown();
+            }
         }
     }
 

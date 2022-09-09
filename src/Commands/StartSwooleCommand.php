@@ -26,7 +26,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Use file system polling while watching in order to watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--dont-shutdown-on-error : Don\'t shutdown the server when the worker throws exception}';
 
     /**
      * The command's description.
@@ -113,6 +114,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'storagePath' => storage_path(),
             'defaultServerOptions' => $this->defaultServerOptions($extension),
             'octaneConfig' => config('octane'),
+            'dontShutdownOnError' => $this->option('dont-shutdown-on-error')
         ]);
     }
 
