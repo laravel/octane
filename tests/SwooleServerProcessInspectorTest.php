@@ -94,12 +94,15 @@ class SwooleServerProcessInspectorTest extends TestCase
         $processIdFile->writeProcessIds(3, 2);
         $exec->shouldReceive('run')->once()->with('pgrep -P 2')->andReturn([4, 5]);
 
-        collect([2, 3, 4, 5])->each(
-            fn ($processId) => $dispatcher
-                ->shouldReceive('terminate')
-                ->with($processId, 30)
-                ->once(),
-        );
+        // Workers
+        $dispatcher
+            ->shouldReceive('terminate')
+            ->with([4, 5], 30);
+
+        // Master/Manager
+        $dispatcher
+            ->shouldReceive('terminate')
+            ->with([2, 3]);
 
         $this->assertTrue($inspector->stopServer());
 
