@@ -35,24 +35,23 @@ class SignalDispatcher
 
         if ($wait) {
             $start = time();
+            $runningProcesses = $processIds;
 
             do {
-                $allTerminated = true;
-
                 foreach ($processIds as $processId) {
-                    if ($this->canCommunicateWith($processId)) {
-                        $allTerminated = false;
-
+                    if (! $this->canCommunicateWith($processId)) {
+                        $runningProcesses = array_diff($runningProcesses, [$processId]);
+                    } else {
                         $this->extension->dispatchProcessSignal($processId, SIGTERM);
                     }
                 }
 
-                if ($allTerminated) {
+                if (! $runningProcesses) {
                     return true;
                 }
 
                 sleep(1);
-            } while (time() < $start + $wait);
+            } while (time() < $start + $wait && $runningProcesses);
         }
 
         return false;
