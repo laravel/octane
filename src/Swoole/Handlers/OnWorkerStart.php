@@ -72,6 +72,7 @@ class OnWorkerStart
         } catch (Throwable $e) {
             if ($this->serverState['dontShutdownOnError']) {
                 Stream::throwable($e);
+
                 return new EmergencyWorker(new SwooleClient(), $e);
             } else {
                 Stream::shutdown($e);

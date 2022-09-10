@@ -114,7 +114,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'storagePath' => storage_path(),
             'defaultServerOptions' => $this->defaultServerOptions($extension),
             'octaneConfig' => config('octane'),
-            'dontShutdownOnError' => $this->option('dont-shutdown-on-error')
+            'dontShutdownOnError' => $this->option('dont-shutdown-on-error'),
         ]);
     }
 
