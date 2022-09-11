@@ -1,5 +1,5 @@
 {
-    "name": "technosun/octane",
+    "name": "laravel/octane",
     "description": "Supercharge your Laravel application's performance.",
     "keywords": ["laravel", "octane", "roadrunner", "swoole"],
     "license": "MIT",
