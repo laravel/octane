@@ -92,8 +92,10 @@ class Worker implements WorkerContract
             $response = $gateway->handle($request);
 
             $output = ob_get_contents();
-
-            ob_end_clean();
+            
+            if ($output) {
+                ob_end_clean();
+            }
 
             // Here we will actually hand the incoming request to the Laravel application so
             // it can generate a response. We'll send this response back to the client so
