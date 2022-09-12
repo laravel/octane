@@ -93,9 +93,9 @@ class Worker implements WorkerContract
 
             $output = ob_get_contents();
 
-           if($output) {
-               ob_end_clean();
-           }
+            if($output) {
+                ob_end_clean();
+            }
           
 
             // Here we will actually hand the incoming request to the Laravel application so
