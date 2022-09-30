@@ -49,6 +49,38 @@ class RequestStateTest extends TestCase
         $this->assertEquals('Abigail', $client->responses[1]->original['name']);
         $this->assertNotEquals($client->responses[0]->original['container'], $client->responses[1]->original['container']);
     }
+
+    public function test_request_routes_flush_controller_state()
+    {
+        [$app, $worker, $client] = $this->createOctaneContext([
+            Request::create('/users', 'GET'),
+            Request::create('/users', 'GET'),
+        ]);
+
+        $app['router']->get('/users', UserControllerStub::class);
+
+        $worker->run();
+
+        $this->assertEquals(1, $client->responses[0]->original);
+        $this->assertEquals(1, $client->responses[1]->original);
+
+        $worker->run();
+
+        $this->assertEquals(1, $client->responses[0]->original);
+        $this->assertEquals(1, $client->responses[1]->original);
+    }
+}
+
+class UserControllerStub
+{
+    protected $count;
+
+    public function __invoke()
+    {
+        $this->count++;
+
+        return $this->count;
+    }
 }
 
 class RequestStateTestFormRequest extends FormRequest
