@@ -29,10 +29,12 @@ class EnsureRequestsDontExceedMaxExecutionTime
 
                 $this->extension->dispatchProcessSignal($row['worker_pid'], SIGKILL);
 
-                if ($this->server instanceof Server) {
+                if ($this->server instanceof Server && extension_loaded('swoole')) {
                     $response = Response::create($this->server, $row['fd']);
-                    $response->status(408);
-                    $response->end();
+                    if ($response) {
+                        $response->status(408);
+                        $response->end();
+                    }
                 }
             }
         }
