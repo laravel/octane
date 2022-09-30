@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "laravel/framework": "^8.x-dev|^9.x-dev",
+        "laravel/framework": "^8.83.25|^9.33",
         "laminas/laminas-diactoros": "^2.5",
         "laravel/serializable-closure": "^1.0",
         "nesbot/carbon": "^2.60",
