@@ -69,17 +69,46 @@ class RequestStateTest extends TestCase
         $this->assertEquals(1, $client->responses[0]->original);
         $this->assertEquals(1, $client->responses[1]->original);
     }
+
+    public function test_request_routes_controller_does_not_leak()
+    {
+        UserControllerStub::$destroyedCount = 0;
+
+        [$app, $worker, $client] = $this->createOctaneContext([
+            Request::create('/users', 'GET'),
+            Request::create('/users', 'GET'),
+        ]);
+
+        $app['router']->get('/users', UserControllerStub::class);
+
+        $worker->run();
+
+        gc_collect_cycles();
+        $this->assertEquals(2, UserControllerStub::$destroyedCount);
+
+        $worker->run();
+
+        gc_collect_cycles();
+        $this->assertEquals(4, UserControllerStub::$destroyedCount);
+    }
 }
 
 class UserControllerStub
 {
-    protected $count;
+    protected $invokedCount = 0;
+
+    public static $destroyedCount = 0;
 
     public function __invoke()
     {
-        $this->count++;
+        $this->invokedCount++;
 
-        return $this->count;
+        return $this->invokedCount;
+    }
+
+    public function __destruct()
+    {
+        static::$destroyedCount++;
     }
 }
 
