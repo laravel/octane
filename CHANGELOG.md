@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.1...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.2...1.x)
+
+## [v1.3.2](https://github.com/laravel/octane/compare/v1.3.1...v1.3.2) - 2022-09-30
+
+### Fixed
+
+- Flushes controller on route by @nunomaduro in https://github.com/laravel/octane/pull/589
 
 ## [v1.3.1](https://github.com/laravel/octane/compare/v1.3.0...v1.3.1) - 2022-09-05
 
