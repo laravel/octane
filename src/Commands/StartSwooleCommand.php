@@ -137,6 +137,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'task_max_request' => $this->option('max-requests'),
             'task_worker_num' => $this->taskWorkerCount($extension),
             'worker_num' => $this->workerCount($extension),
+            'document_root' => public_path(),
+            'enable_static_handler' => true,
         ];
     }
 
