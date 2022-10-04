@@ -63,16 +63,16 @@ class RequestStateTest extends TestCase
         $worker->run();
 
         $this->assertEquals(1, $client->responses[0]->original['invokedCount']);
-        $this->assertEquals(1, $client->responses[0]->original['controllerMiddlewareInvokedCount']);
+        $this->assertEquals(1, $client->responses[0]->original['middlewareInvokedCount']);
         $this->assertEquals(1, $client->responses[1]->original['invokedCount']);
-        $this->assertEquals(1, $client->responses[1]->original['controllerMiddlewareInvokedCount']);
+        $this->assertEquals(1, $client->responses[1]->original['middlewareInvokedCount']);
 
         $worker->run();
 
         $this->assertEquals(1, $client->responses[0]->original['invokedCount']);
-        $this->assertEquals(1, $client->responses[0]->original['controllerMiddlewareInvokedCount']);
+        $this->assertEquals(1, $client->responses[0]->original['middlewareInvokedCount']);
         $this->assertEquals(1, $client->responses[1]->original['invokedCount']);
-        $this->assertEquals(1, $client->responses[1]->original['controllerMiddlewareInvokedCount']);
+        $this->assertEquals(1, $client->responses[1]->original['middlewareInvokedCount']);
     }
 
     public function test_request_routes_controller_does_not_leak()
@@ -101,7 +101,7 @@ class RequestStateTest extends TestCase
 
 class UserControllerStub extends Controller
 {
-    protected $controllerMiddlewareInvokedCount = 0;
+    protected $middlewareInvokedCount = 0;
 
     protected $invokedCount = 0;
 
@@ -110,7 +110,7 @@ class UserControllerStub extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->controllerMiddlewareInvokedCount++;
+            $this->middlewareInvokedCount++;
 
             return $next($request);
         });
@@ -121,7 +121,7 @@ class UserControllerStub extends Controller
         $this->invokedCount++;
 
         return [
-            'controllerMiddlewareInvokedCount' => $this->controllerMiddlewareInvokedCount,
+            'middlewareInvokedCount' => $this->middlewareInvokedCount,
             'invokedCount' => $this->invokedCount,
         ];
     }
