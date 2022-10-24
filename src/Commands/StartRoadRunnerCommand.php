@@ -30,7 +30,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
-                    {--log-level= : Suppress messages under this log level}';
+                    {--log-level= : Log messages at or above the specified log level}';
 
     /**
      * The command's description.
@@ -88,7 +88,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'http.static.dir='.base_path('public'),
             '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
             '-o', 'logs.mode=production',
-            '-o', 'logs.level='.$this->logLevel(),
+            '-o', 'logs.level='.$this->option('log-level') ?: (app()->environment('local') ? 'debug' : 'warn'),
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             'serve',
@@ -175,17 +175,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     protected function rpcPort()
     {
         return $this->option('rpc-port') ?: $this->option('port') - 1999;
-    }
-
-    /**
-     * Suppress messages under this log level.
-     *
-     * @return string
-     */
-    protected function logLevel()
-    {
-        return $this->option('log-level') ?:
-            (app()->environment('local') ? 'debug' : 'warn');
     }
 
     /**
