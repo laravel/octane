@@ -29,7 +29,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Use file system polling while watching in order to watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--log-level= : Log messages at or above the specified log level}';
 
     /**
      * The command's description.
@@ -87,7 +88,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'http.static.dir='.base_path('public'),
             '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
             '-o', 'logs.mode=production',
-            '-o', app()->environment('local') ? 'logs.level=debug' : 'logs.level=warn',
+            '-o', 'logs.level='.$this->option('log-level') ?: (app()->environment('local') ? 'debug' : 'warn'),
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             'serve',
