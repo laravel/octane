@@ -1,6 +1,8 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.3...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.4...1.x)
+
+## [v1.3.4](https://github.com/laravel/octane/compare/v1.3.3...v1.3.4) - 2022-10-24
 
 ## [v1.3.3](https://github.com/laravel/octane/compare/v1.3.2...v1.3.3) - 2022-10-03
 
