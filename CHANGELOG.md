@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.4...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.5...1.x)
+
+## [v1.3.5](https://github.com/laravel/octane/compare/v1.3.4...v1.3.5) - 2022-10-26
+
+### Fixed
+
+- Revert "[1.x] Made Roadrunner log level configurable" by @driesvints in https://github.com/laravel/octane/pull/603
 
 ## [v1.3.4](https://github.com/laravel/octane/compare/v1.3.3...v1.3.4) - 2022-10-24
 
