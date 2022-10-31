@@ -142,7 +142,7 @@ trait InteractsWithServers
     }
 
     /**
-     * Get the HTTP server port
+     * Get the HTTP server port.
      *
      * @return int
      */
