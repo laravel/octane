@@ -121,6 +121,16 @@ trait InteractsWithServers
     }
 
     /**
+     * Get the Octane HTTP server port.
+     *
+     * @return string
+     */
+    protected function getPort()
+    {
+        return $this->option('port') ?? config('octane.port') ?? '8000';
+    }
+
+    /**
      * Returns the list of signals to subscribe.
      *
      * @return array
@@ -139,15 +149,5 @@ trait InteractsWithServers
     public function handleSignal(int $signal): void
     {
         $this->stopServer();
-    }
-
-    /**
-     * Get the HTTP server port.
-     *
-     * @return int
-     */
-    protected function getPort()
-    {
-        return $this->option('port') ?? env('SERVER_PORT') ?? '8000';
     }
 }
