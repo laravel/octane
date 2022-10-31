@@ -127,7 +127,7 @@ trait InteractsWithServers
      */
     protected function getPort()
     {
-        return $this->option('port') ?? config('octane.port') ?? '8000';
+        return $this->option('port') ?? config('octane.port') ?? $_ENV['OCTANE_PORT'] ?? '8000';
     }
 
     /**
