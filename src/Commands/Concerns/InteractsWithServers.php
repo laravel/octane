@@ -100,7 +100,7 @@ trait InteractsWithServers
 
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
+            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->getPort().' </>',
             '',
             '  <fg=yellow>Press Ctrl+C to stop the server</>',
             '',
@@ -139,5 +139,15 @@ trait InteractsWithServers
     public function handleSignal(int $signal): void
     {
         $this->stopServer();
+    }
+
+    /**
+     * Get the HTTP server port
+     *
+     * @return int
+     */
+    protected function getPort()
+    {
+        return $this->option('port') ?? env('SERVER_PORT') ?? '8000';
     }
 }
