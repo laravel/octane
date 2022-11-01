@@ -5,6 +5,7 @@ namespace Laravel\Octane\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class RequestStateTest extends TestCase
 {
@@ -61,17 +62,22 @@ class RequestStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertEquals(1, $client->responses[0]->original);
-        $this->assertEquals(1, $client->responses[1]->original);
+        $this->assertEquals(1, $client->responses[0]->original['invokedCount']);
+        $this->assertEquals(1, $client->responses[0]->original['middlewareInvokedCount']);
+        $this->assertEquals(1, $client->responses[1]->original['invokedCount']);
+        $this->assertEquals(1, $client->responses[1]->original['middlewareInvokedCount']);
 
         $worker->run();
 
-        $this->assertEquals(1, $client->responses[0]->original);
-        $this->assertEquals(1, $client->responses[1]->original);
+        $this->assertEquals(1, $client->responses[0]->original['invokedCount']);
+        $this->assertEquals(1, $client->responses[0]->original['middlewareInvokedCount']);
+        $this->assertEquals(1, $client->responses[1]->original['invokedCount']);
+        $this->assertEquals(1, $client->responses[1]->original['middlewareInvokedCount']);
     }
 
     public function test_request_routes_controller_does_not_leak()
     {
+        gc_collect_cycles();
         UserControllerStub::$destroyedCount = 0;
 
         [$app, $worker, $client] = $this->createOctaneContext([
@@ -93,17 +99,31 @@ class RequestStateTest extends TestCase
     }
 }
 
-class UserControllerStub
+class UserControllerStub extends Controller
 {
+    protected $middlewareInvokedCount = 0;
+
     protected $invokedCount = 0;
 
     public static $destroyedCount = 0;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->middlewareInvokedCount++;
+
+            return $next($request);
+        });
+    }
 
     public function __invoke()
     {
         $this->invokedCount++;
 
-        return $this->invokedCount;
+        return [
+            'middlewareInvokedCount' => $this->middlewareInvokedCount,
+            'invokedCount' => $this->invokedCount,
+        ];
     }
 
     public function __destruct()
