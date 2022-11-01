@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.5...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.6...1.x)
+
+## [v1.3.6](https://github.com/laravel/octane/compare/v1.3.5...v1.3.6) - 2022-11-01
+
+### Changed
+
+- Re-do: Configurable Roadrunner log level by @ejulen in https://github.com/laravel/octane/pull/604
+
+### Fixed
+
+- Read port for http server from environment if no port is passed  by @hendrikheil in https://github.com/laravel/octane/pull/605
 
 ## [v1.3.5](https://github.com/laravel/octane/compare/v1.3.4...v1.3.5) - 2022-10-26
 
