@@ -2,6 +2,9 @@ name: tests
 
 on:
   push:
+    branches:
+      - master
+      - '*.x'
   pull_request:
   schedule:
     - cron: '0 0 * * *'
@@ -13,9 +16,12 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ['8.0', 8.1]
+        php: ['8.0', 8.1, 8.2]
         laravel: [8, 9]
         driver: [swoole, openswoole]
+        exclude:
+          - php: 8.2
+            laravel: 8
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
 
