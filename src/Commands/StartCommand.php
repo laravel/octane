@@ -56,7 +56,7 @@ class StartCommand extends Command implements SignalableCommandInterface
     protected function startSwooleServer()
     {
         return $this->call('octane:swoole', [
-            '--host' => $this->option('host'),
+            '--host' => $this->getHost(),
             '--port' => $this->getPort(),
             '--workers' => $this->option('workers'),
             '--task-workers' => $this->option('task-workers'),
@@ -74,7 +74,7 @@ class StartCommand extends Command implements SignalableCommandInterface
     protected function startRoadRunnerServer()
     {
         return $this->call('octane:roadrunner', [
-            '--host' => $this->option('host'),
+            '--host' => $this->getHost(),
             '--port' => $this->getPort(),
             '--rpc-port' => $this->option('rpc-port'),
             '--workers' => $this->option('workers'),

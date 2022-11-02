@@ -114,7 +114,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     ) {
         $serverStateFile->writeState([
             'appName' => config('app.name', 'Laravel'),
-            'host' => $this->option('host'),
+            'host' => $this->getHost(),
             'port' => $this->getPort(),
             'rpcPort' => $this->rpcPort(),
             'workers' => $this->workerCount(),
