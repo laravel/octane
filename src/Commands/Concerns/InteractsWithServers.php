@@ -121,6 +121,16 @@ trait InteractsWithServers
     }
 
     /**
+     * Get the Octane HTTP server host IP to bind on.
+     *
+     * @return string
+     */
+    protected function getHost()
+    {
+        return $this->option('host') ?? config('octane.host') ?? $_ENV['OCTANE_HOST'] ?? '127.0.0.1';
+    }
+
+    /**
      * Get the Octane HTTP server port.
      *
      * @return string

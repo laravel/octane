@@ -104,7 +104,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     ) {
         $serverStateFile->writeState([
             'appName' => config('app.name', 'Laravel'),
-            'host' => $this->option('host'),
+            'host' => $this->getHost(),
             'port' => $this->getPort(),
             'workers' => $this->workerCount($extension),
             'taskWorkers' => $this->taskWorkerCount($extension),
