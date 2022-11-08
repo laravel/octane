@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.6...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.7...1.x)
+
+## [v1.3.7](https://github.com/laravel/octane/compare/v1.3.6...v1.3.7) - 2022-11-02
+
+### Changed
+
+- Make IP to bind the server to configurable via env by @xorinzor in https://github.com/laravel/octane/pull/607
 
 ## [v1.3.6](https://github.com/laravel/octane/compare/v1.3.5...v1.3.6) - 2022-11-01
 
