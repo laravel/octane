@@ -5,6 +5,7 @@ namespace Laravel\Octane;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
 use Laravel\Octane\Events\RequestTerminated;
@@ -50,5 +51,11 @@ class ApplicationGateway
         $this->sandbox->make(Kernel::class)->terminate($request, $response);
 
         $this->dispatchEvent($this->sandbox, new RequestTerminated($this->app, $this->sandbox, $request, $response));
+
+        $route = $request->route();
+
+        if ($route instanceof Route && method_exists($route, 'flushController')) {
+            $route->flushController();
+        }
     }
 }

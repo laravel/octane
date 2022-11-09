@@ -16,7 +16,7 @@ class StartCommand extends Command implements SignalableCommandInterface
     public $signature = 'octane:start
                     {--server= : The server that should be used to serve the application}
                     {--host=127.0.0.1 : The IP address the server should bind to}
-                    {--port=8000 : The port the server should be available on}
+                    {--port= : The port the server should be available on [default: "8000"]}
                     {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
@@ -56,8 +56,8 @@ class StartCommand extends Command implements SignalableCommandInterface
     protected function startSwooleServer()
     {
         return $this->call('octane:swoole', [
-            '--host' => $this->option('host'),
-            '--port' => $this->option('port'),
+            '--host' => $this->getHost(),
+            '--port' => $this->getPort(),
             '--workers' => $this->option('workers'),
             '--task-workers' => $this->option('task-workers'),
             '--max-requests' => $this->option('max-requests'),
@@ -74,8 +74,8 @@ class StartCommand extends Command implements SignalableCommandInterface
     protected function startRoadRunnerServer()
     {
         return $this->call('octane:roadrunner', [
-            '--host' => $this->option('host'),
-            '--port' => $this->option('port'),
+            '--host' => $this->getHost(),
+            '--port' => $this->getPort(),
             '--rpc-port' => $this->option('rpc-port'),
             '--workers' => $this->option('workers'),
             '--max-requests' => $this->option('max-requests'),

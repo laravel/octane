@@ -5,6 +5,7 @@ namespace Laravel\Octane\Swoole\Handlers;
 use Laravel\Octane\Swoole\Actions\EnsureRequestsDontExceedMaxExecutionTime;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Swoole\Timer;
 
 class OnServerStart
 {
@@ -37,13 +38,13 @@ class OnServerStart
         }
 
         if ($this->shouldTick) {
-            $server->tick(1000, function () use ($server) {
+            Timer::tick(1000, function () use ($server) {
                 $server->task('octane-tick');
             });
         }
 
         if ($this->maxExecutionTime > 0) {
-            $server->tick(1000, function () use ($server) {
+            Timer::tick(1000, function () use ($server) {
                 (new EnsureRequestsDontExceedMaxExecutionTime(
                     $this->extension, $this->timerTable, $this->maxExecutionTime, $server
                 ))();

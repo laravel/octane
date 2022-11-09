@@ -21,7 +21,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      */
     public $signature = 'octane:swoole
                     {--host=127.0.0.1 : The IP address the server should bind to}
-                    {--port=8000 : The port the server should be available on}
+                    {--port= : The port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
@@ -78,7 +78,10 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         $this->forgetEnvironmentVariables();
 
         $server = tap(new Process([
-            (new PhpExecutableFinder)->find(), config('octane.swoole.command', 'swoole-server'), $serverStateFile->path(),
+            (new PhpExecutableFinder)->find(),
+            ...config('octane.swoole.php_options', []),
+            config('octane.swoole.command', 'swoole-server'),
+            $serverStateFile->path(),
         ], realpath(__DIR__.'/../../bin'), [
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
@@ -101,8 +104,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     ) {
         $serverStateFile->writeState([
             'appName' => config('app.name', 'Laravel'),
-            'host' => $this->option('host'),
-            'port' => $this->option('port'),
+            'host' => $this->getHost(),
+            'port' => $this->getPort(),
             'workers' => $this->workerCount($extension),
             'taskWorkers' => $this->taskWorkerCount($extension),
             'maxRequests' => $this->option('max-requests'),

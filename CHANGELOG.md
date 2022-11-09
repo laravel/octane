@@ -1,6 +1,58 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.2.16...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.7...master)
+
+## [v1.3.7](https://github.com/laravel/octane/compare/v1.3.6...v1.3.7) - 2022-11-02
+
+### Changed
+
+- Make IP to bind the server to configurable via env by @xorinzor in https://github.com/laravel/octane/pull/607
+
+## [v1.3.6](https://github.com/laravel/octane/compare/v1.3.5...v1.3.6) - 2022-11-01
+
+### Changed
+
+- Re-do: Configurable Roadrunner log level by @ejulen in https://github.com/laravel/octane/pull/604
+
+### Fixed
+
+- Read port for http server from environment if no port is passed  by @hendrikheil in https://github.com/laravel/octane/pull/605
+
+## [v1.3.5](https://github.com/laravel/octane/compare/v1.3.4...v1.3.5) - 2022-10-26
+
+### Fixed
+
+- Revert "[1.x] Made Roadrunner log level configurable" by @driesvints in https://github.com/laravel/octane/pull/603
+
+## [v1.3.4](https://github.com/laravel/octane/compare/v1.3.3...v1.3.4) - 2022-10-24
+
+## [v1.3.3](https://github.com/laravel/octane/compare/v1.3.2...v1.3.3) - 2022-10-03
+
+### Fixed
+
+- Ignore `Response::create` failed by @sy-records in https://github.com/laravel/octane/pull/590
+
+## [v1.3.2](https://github.com/laravel/octane/compare/v1.3.1...v1.3.2) - 2022-09-30
+
+### Fixed
+
+- Flushes controller on route by @nunomaduro in https://github.com/laravel/octane/pull/589
+
+## [v1.3.1](https://github.com/laravel/octane/compare/v1.3.0...v1.3.1) - 2022-09-05
+
+### Changed
+
+- Add possibility to launch swoole server with additional php options by @AbdelAbouhassane in https://github.com/laravel/octane/pull/570
+
+## [v1.3.0](https://github.com/laravel/octane/compare/v1.2.16...v1.3.0) - 2022-08-02
+
+### Added
+
+- Adds support for Swoole 5 by @nunomaduro in https://github.com/laravel/octane/pull/560
+
+### Fixed
+
+- Fix carbon locale when setting it via app locale setter by @nunomaduro in https://github.com/laravel/octane/pull/557
 
 ## [v1.2.16](https://github.com/laravel/octane/compare/v1.2.15...v1.2.16) - 2022-07-15
 

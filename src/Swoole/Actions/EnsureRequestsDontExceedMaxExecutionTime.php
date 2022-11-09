@@ -31,8 +31,11 @@ class EnsureRequestsDontExceedMaxExecutionTime
 
                 if ($this->server instanceof Server) {
                     $response = Response::create($this->server, $row['fd']);
-                    $response->status(408);
-                    $response->end();
+
+                    if ($response) {
+                        $response->status(408);
+                        $response->end();
+                    }
                 }
             }
         }

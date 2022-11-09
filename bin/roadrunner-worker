@@ -28,7 +28,7 @@ $basePath = require __DIR__.'/bootstrap.php';
 */
 
 $roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Worker(
-    new RoadRunnerWorker(Relay::create('pipes')),
+    new RoadRunnerWorker(Relay::create($_ENV['LARAVEL_OCTANE_ROADRUNNER_RELAY'] ?? 'pipes')),
     new ServerRequestFactory,
     new StreamFactory,
     new UploadedFileFactory,

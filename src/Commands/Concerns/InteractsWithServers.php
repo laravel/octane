@@ -100,7 +100,7 @@ trait InteractsWithServers
 
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->option('port').' </>',
+            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->getPort().' </>',
             '',
             '  <fg=yellow>Press Ctrl+C to stop the server</>',
             '',
@@ -118,6 +118,26 @@ trait InteractsWithServers
             $server->getIncrementalOutput(),
             $server->getIncrementalErrorOutput(),
         ], fn () => $server->clearOutput()->clearErrorOutput());
+    }
+
+    /**
+     * Get the Octane HTTP server host IP to bind on.
+     *
+     * @return string
+     */
+    protected function getHost()
+    {
+        return $this->option('host') ?? config('octane.host') ?? $_ENV['OCTANE_HOST'] ?? '127.0.0.1';
+    }
+
+    /**
+     * Get the Octane HTTP server port.
+     *
+     * @return string
+     */
+    protected function getPort()
+    {
+        return $this->option('port') ?? config('octane.port') ?? $_ENV['OCTANE_PORT'] ?? '8000';
     }
 
     /**
