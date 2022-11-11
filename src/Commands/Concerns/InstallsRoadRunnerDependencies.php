@@ -171,7 +171,7 @@ trait InstallsRoadRunnerDependencies
             fn ($type, $buffer) => $this->output->write($buffer)
         );
 
-        chmod(base_path('rr'), 0755);
+        chmod(base_path('rr'), 755);
 
         $this->line('');
     }
