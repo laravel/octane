@@ -224,6 +224,8 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
         $app = $this->createApplication();
+        $app['config']['app.debug'] = false;
+
         $request = Request::create('/', 'GET');
         $context = new RequestContext(['swooleResponse' => $swooleResponse]);
 
