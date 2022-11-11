@@ -72,6 +72,7 @@ class RoadRunnerClientTest extends TestCase
         $client = new RoadRunnerClient($psr7Client);
 
         $app = $this->createApplication();
+        $app['config']['app.debug'] = false;
         $request = Request::create('/', 'GET');
         $context = new RequestContext;
 
