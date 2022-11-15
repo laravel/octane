@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.7...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.8...1.x)
+
+## [v1.3.8](https://github.com/laravel/octane/compare/v1.3.7...v1.3.8) - 2022-11-11
+
+### Fixed
+
+- Prefix rr binary permissions with 0 to specify it as an octal value by @Dylan-Buth in https://github.com/laravel/octane/pull/611
 
 ## [v1.3.7](https://github.com/laravel/octane/compare/v1.3.6...v1.3.7) - 2022-11-02
 
