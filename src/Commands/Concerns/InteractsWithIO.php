@@ -234,7 +234,7 @@ trait InteractsWithIO
             'request' => $this->requestInfo($stream, $verbosity),
             'throwable' => $this->throwableInfo($stream, $verbosity),
             'shutdown' => $this->shutdownInfo($stream, $verbosity),
-            default => $this->info(json_encode($stream, $verbosity))
+            default => $this->info(json_encode($stream), $verbosity)
         };
     }
 }
