@@ -43,6 +43,11 @@
             "Laravel\\Octane\\Tests\\": "tests"
         }
     },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php vendor/bin/testbench package:discover --ansi"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.x-dev"
