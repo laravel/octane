@@ -77,7 +77,7 @@ class StartCommand extends Command implements SignalableCommandInterface
         return $this->call('octane:roadrunner', [
             '--host' => $this->getHost(),
             '--port' => $this->getPort(),
-            '--rpc-host' => $this->option('rpc-host') ?: $this->getHost(),
+            '--rpc-host' => $this->option('rpc-host'),
             '--rpc-port' => $this->option('rpc-port'),
             '--workers' => $this->option('workers'),
             '--max-requests' => $this->option('max-requests'),
