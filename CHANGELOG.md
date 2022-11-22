@@ -1,6 +1,16 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.8...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.9...1.x)
+
+## [v1.3.9](https://github.com/laravel/octane/compare/v1.3.8...v1.3.9) - 2022-11-19
+
+### Changed
+
+- Add `--rpc-host` option for Roadrunner by @matthew-inamdar in https://github.com/laravel/octane/pull/619
+
+### Fixed
+
+- Resolve typo resulting in deprecation notice by @owenvoke in https://github.com/laravel/octane/pull/614
 
 ## [v1.3.8](https://github.com/laravel/octane/compare/v1.3.7...v1.3.8) - 2022-11-11
 
