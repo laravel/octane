@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.9...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.3.10...1.x)
+
+## [v1.3.10](https://github.com/laravel/octane/compare/v1.3.9...v1.3.10) - 2022-12-23
+
+### Changed
+
+- Adds support for Open Swoole `v22.x` by @nunomaduro in https://github.com/laravel/octane/pull/626
 
 ## [v1.3.9](https://github.com/laravel/octane/compare/v1.3.8...v1.3.9) - 2022-11-19
 
