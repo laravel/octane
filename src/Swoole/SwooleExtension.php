@@ -53,6 +53,14 @@ class SwooleExtension
      */
     public function cpuCount(): int
     {
-        return swoole_cpu_num();
+        if (function_exists('swoole_cpu_num')) {
+            return swoole_cpu_num();
+        }
+
+        if (class_exists(\OpenSwoole\Util::class) && method_exists(\OpenSwoole\Util::class, 'getCPUNum')) {
+            return \OpenSwoole\Util::getCPUNum();
+        }
+
+        return 1;
     }
 }
