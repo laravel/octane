@@ -53,10 +53,14 @@ class SwooleExtension
      */
     public function cpuCount(): int
     {
-        try {
+        if (function_exists('swoole_cpu_num')) {
             return swoole_cpu_num();
-        } catch (\Throwable $th) {
-            return extension_loaded('openswoole') ? \OpenSwoole\Util::getCPUNum() : 1;
         }
+
+        if (class_exists(\OpenSwoole\Util::class) && method_exists(\OpenSwoole\Util::class, 'getCPUNum')) {
+            return \OpenSwoole\Util::getCPUNum();
+        }
+
+        return 1;
     }
 }
