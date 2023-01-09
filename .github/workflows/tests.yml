@@ -20,6 +20,8 @@ jobs:
         laravel: [8, 9, 10]
         driver: [swoole, openswoole]
         exclude:
+          - php: 8.0
+            laravel: 10
           - php: 8.2
             laravel: 8
 
