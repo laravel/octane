@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.10...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.4.0...1.x)
+
+## [v1.4.0](https://github.com/laravel/octane/compare/v1.3.10...v1.4.0) - 2023-01-10
+
+### Added
+
+- Adds Laravel 10 support by @nunomaduro in https://github.com/laravel/octane/pull/629
 
 ## [v1.3.10](https://github.com/laravel/octane/compare/v1.3.9...v1.3.10) - 2022-12-23
 
