@@ -23,6 +23,7 @@ trait InteractsWithIO
     protected $ignoreMessages = [
         'destroy signal received',
         'scan command',
+        'sending stop request to the worker',
         'stop signal received, grace timeout is: ',
         'exit forced',
         'worker allocated',
