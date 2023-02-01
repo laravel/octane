@@ -21,6 +21,7 @@ trait InteractsWithIO
      * @var array
      */
     protected $ignoreMessages = [
+        'destroy signal received',
         'scan command',
         'stop signal received, grace timeout is: ',
         'exit forced',
