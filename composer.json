@@ -24,7 +24,7 @@
     "require-dev": {
         "guzzlehttp/guzzle": "^7.2",
         "mockery/mockery": "^1.4",
-        "nunomaduro/collision": "^5.10|^6.0",
+        "nunomaduro/collision": "^5.10|^6.0|^7.0",
         "orchestra/testbench": "^6.16|^7.0|^8.0",
         "phpunit/phpunit": "^9.3",
         "spiral/roadrunner": "^2.8.2"
