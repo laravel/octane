@@ -193,7 +193,7 @@ class SwooleClient implements Client, ServesStaticFiles
 
             $swooleResponse->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
                 $cookie->getName(),
-                !$shouldDelete ? $cookie->getValue() : 'deleted',
+                $shouldDelete ? 'deleted' : $cookie->getValue(),
                 $cookie->getExpiresTime(),
                 $cookie->getPath(),
                 $cookie->getDomain() ?? '',
