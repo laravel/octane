@@ -189,9 +189,11 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         foreach ($response->headers->getCookies() as $cookie) {
+            $shouldDelete = (string) $cookie->getValue() === '';
+
             $swooleResponse->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
                 $cookie->getName(),
-                $cookie->getValue(),
+                $shouldDelete ? 'deleted' : $cookie->getValue(),
                 $cookie->getExpiresTime(),
                 $cookie->getPath(),
                 $cookie->getDomain() ?? '',
