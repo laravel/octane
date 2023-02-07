@@ -1,6 +1,18 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.4.0...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.4.1...1.x)
+
+## [v1.4.1](https://github.com/laravel/octane/compare/v1.4.0...v1.4.1) - 2023-02-03
+
+### Changed
+
+- Removes internal messages from output by @nunomaduro in https://github.com/laravel/octane/pull/639
+- Only displays source when there is source by @nunomaduro in https://github.com/laravel/octane/pull/640
+- Adds support for Collision `v7.x` by @nunomaduro in https://github.com/laravel/octane/pull/643
+
+### Fixed
+
+- Fix unsetting a cookie value when using Swoole by @oprypkhantc in https://github.com/laravel/octane/pull/642
 
 ## [v1.4.0](https://github.com/laravel/octane/compare/v1.3.10...v1.4.0) - 2023-01-10
 
