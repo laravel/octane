@@ -56,9 +56,15 @@ $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnS
     $serverState['octaneConfig']['tick'] ?? true
 ))($server));
 
-$server->on('managerstart', fn () => $bootstrap($serverState) && (new OnManagerStart(
-    new SwooleExtension, $serverState['appName']
-))());
+$server->on('managerstart', function () use ($serverState) {
+    // Don't bootstrap entire application before server / worker start. Otherwise, files can't be gracefully reloaded... #632
+    require_once __DIR__.'/../src/Swoole/Handlers/OnManagerStart.php';
+    require_once __DIR__.'/../src/Swoole/SwooleExtension.php';
+
+    (new OnManagerStart(
+         new SwooleExtension, $serverState['appName']
+    ))();
+});
 
 /*
 |--------------------------------------------------------------------------
