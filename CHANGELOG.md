@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.4.1...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.4.2...1.x)
+
+## [v1.4.2](https://github.com/laravel/octane/compare/v1.4.1...v1.4.2) - 2023-02-07
+
+### Fixed
+
+- Allow graceful reload after installing packages by @taylorotwell in https://github.com/laravel/octane/pull/644
 
 ## [v1.4.1](https://github.com/laravel/octane/compare/v1.4.0...v1.4.1) - 2023-02-03
 
