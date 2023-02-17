@@ -2,8 +2,8 @@
 
 namespace Laravel\Octane;
 
-use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Illuminate\Foundation\Bootstrap\RegisterProviders;
 use Illuminate\Foundation\Bootstrap\SetRequestForConsole;
 use ReflectionObject;
