@@ -55,7 +55,7 @@ class OnWorkerStart
      * Boot the Octane worker and application.
      *
      * @param  \Swoole\Http\Server  $server
-     * @return \Laravel\Octane\Worker
+     * @return \Laravel\Octane\Worker|null
      */
     protected function bootWorker($server)
     {
