@@ -218,4 +218,17 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Maximum Timer Table Size
+    |--------------------------------------------------------------------------
+    |
+    | When using Swoole and max_execution_time is configured,
+    | it needs to be set according to the actual situation.
+    | The maximum number of rows a Table can store is positively related
+    | to this configuration item, but not identical.
+    |
+    */
+
+    'max_timer_table_size' => 250,
 ];
