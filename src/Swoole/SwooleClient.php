@@ -138,10 +138,13 @@ class SwooleClient implements Client, ServesStaticFiles
         $swooleResponse = $context->swooleResponse;
 
         $publicPath = $context->publicPath;
-        $staticHeaders = $context->octaneConfig['static_file_headers'] ?: [];
 
-        foreach ($staticHeaders as $name => $value) {
-            $swooleResponse->header($name, $value);
+        if (isset($context->octaneConfig) && ! empty($context->octaneConfig['static_file_headers'])) {
+            $staticHeaders = $context->octaneConfig['static_file_headers'];
+
+            foreach ($staticHeaders as $name => $value) {
+                $swooleResponse->header($name, $value);
+            }
         }
 
         $swooleResponse->status(200);
