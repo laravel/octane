@@ -137,6 +137,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Static file headers
+    |--------------------------------------------------------------------------
+    |
+    | While using Swoole, you may serve static files from the public directory.
+    | You may set the HTTP headers that should be returned along with those
+    | files here.
+    |
+    */
+
+    'static_file_headers' => [
+        // 'Cache-Control' => 'max-age=604800, must-revalidate, immutable, public',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Octane Cache Table
     |--------------------------------------------------------------------------
     |

@@ -65,6 +65,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [],
         ]);
 
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
@@ -78,6 +79,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
@@ -91,6 +93,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
@@ -106,9 +109,34 @@ class SwooleClientTest extends TestCase
         $context = new RequestContext([
             'swooleResponse' => $swooleResponse = Mockery::mock('stdClass'),
             'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [],
         ]);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
+
+        $client->serveStaticFile($request, $context);
+    }
+
+    public function test_static_file_headers_can_be_sent()
+    {
+        $client = new SwooleClient;
+
+        $request = Request::create('/foo.txt', 'GET');
+
+        $context = new RequestContext([
+            'swooleResponse' => $swooleResponse = Mockery::mock('stdClass'),
+            'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [
+                'static_file_headers' => [
+                    'X-Test-Header' => 'Valid',
+                ],
+            ],
+        ]);
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('X-Test-Header', 'Valid');
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
@@ -123,6 +151,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
@@ -136,6 +165,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
