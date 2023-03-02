@@ -130,7 +130,9 @@ class SwooleClientTest extends TestCase
             'publicPath' => __DIR__.'/public',
             'octaneConfig' => [
                 'static_file_headers' => [
-                    'X-Test-Header' => 'Valid',
+                    'foo.txt' => [
+                        'X-Test-Header' => 'Valid',
+                    ],
                 ],
             ],
         ]);
