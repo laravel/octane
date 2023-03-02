@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.4.2...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.4.3...1.x)
+
+## [v1.4.3](https://github.com/laravel/octane/compare/v1.4.2...v1.4.3) - 2023-03-01
+
+- Fix timer table set failed by @sy-records in https://github.com/laravel/octane/pull/650
 
 ## [v1.4.2](https://github.com/laravel/octane/compare/v1.4.1...v1.4.2) - 2023-02-07
 
