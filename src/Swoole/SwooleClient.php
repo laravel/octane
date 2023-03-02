@@ -138,6 +138,11 @@ class SwooleClient implements Client, ServesStaticFiles
         $swooleResponse = $context->swooleResponse;
 
         $publicPath = $context->publicPath;
+        $staticHeaders = $context->octaneConfig['static_file_headers'] ?: [];
+
+        foreach ($staticHeaders as $name => $value) {
+            $swooleResponse->header($name, $value);
+        }
 
         $swooleResponse->status(200);
         $swooleResponse->header('Content-Type', MimeType::get(pathinfo($request->path(), PATHINFO_EXTENSION)));
