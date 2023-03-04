@@ -171,7 +171,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     /**
      * Get the RPC IP address the server should be available on.
      *
-     * @return int
+     * @return string
      */
     protected function rpcHost()
     {
