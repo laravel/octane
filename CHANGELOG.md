@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.4.3...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.0...1.x)
+
+## [v1.5.0](https://github.com/laravel/octane/compare/v1.4.3...v1.5.0) - 2023-03-04
+
+- Add support for custom HTTP headers on static files by @Starfox64 in https://github.com/laravel/octane/pull/653
+- Fix return value error and Remove useless code by @sy-records in https://github.com/laravel/octane/pull/655
 
 ## [v1.4.3](https://github.com/laravel/octane/compare/v1.4.2...v1.4.3) - 2023-03-01
 
