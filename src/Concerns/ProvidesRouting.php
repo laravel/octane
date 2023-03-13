@@ -52,4 +52,14 @@ trait ProvidesRouting
     {
         return call_user_func($this->routes[$method.$uri], $request);
     }
+
+    /**
+     * Get the registered Octane routes.
+     *
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
+    }
 }
