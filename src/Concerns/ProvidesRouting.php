@@ -41,14 +41,6 @@ trait ProvidesRouting
     }
 
     /**
-     * @return array
-     */
-    public function getRoutes(): array
-    {
-        return $this->routes;
-    }
-
-    /**
      * Invoke the route for the given method and URI.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -59,5 +51,15 @@ trait ProvidesRouting
     public function invokeRoute(Request $request, string $method, string $uri): Response
     {
         return call_user_func($this->routes[$method.$uri], $request);
+    }
+
+    /**
+     * Get the registered Octane routes.
+     *
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
     }
 }
