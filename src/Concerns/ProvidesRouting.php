@@ -41,6 +41,14 @@ trait ProvidesRouting
     }
 
     /**
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
+    }
+
+    /**
      * Invoke the route for the given method and URI.
      *
      * @param  \Illuminate\Http\Request  $request
