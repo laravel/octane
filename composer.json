@@ -34,6 +34,20 @@
         "phpunit/phpunit": "^9.3",
         "spiral/roadrunner": "^2.8.2"
     },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "laravel/framework",
+                "version": "v10.4.0",
+                "source": {
+                    "url": "git@github.com:vaawebdev/laravel-framework.git",
+                    "type": "git",
+                    "reference": "7fd5748"
+                }
+            }
+        }
+    ],
     "bin": [
         "bin/roadrunner-worker",
         "bin/swoole-server"
