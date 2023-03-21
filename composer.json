@@ -41,9 +41,9 @@
                 "name": "laravel/framework",
                 "version": "v10.4.0",
                 "source": {
-                    "url": "git@github.com:vaawebdev/laravel-framework.git",
+                    "url": "https://github.com/vaawebdev/laravel-framework.git",
                     "type": "git",
-                    "reference": "7fd5748"
+                    "reference": "7fd57481ca291eed2b53c1ed50869e60e89d47f0"
                 }
             }
         }
