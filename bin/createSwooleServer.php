@@ -5,8 +5,8 @@ $config = $serverState['octaneConfig'];
 try {
     $server = new Swoole\Http\Server(
         $serverState['host'] ?? '127.0.0.1',
-        $serverState['port'] ?? '8080',
-        SWOOLE_PROCESS,
+        $serverState['port'] ?? 8080,
+        $serverState['mode'] ?? SWOOLE_PROCESS,
         ($config['swoole']['ssl'] ?? false)
             ? SWOOLE_SOCK_TCP | SWOOLE_SSL
             : SWOOLE_SOCK_TCP,
