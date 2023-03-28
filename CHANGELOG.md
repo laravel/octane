@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.0...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.1...1.x)
+
+## [v1.5.1](https://github.com/laravel/octane/compare/v1.5.0...v1.5.1) - 2023-03-27
+
+- Add method to fix octane route caching.  by @CharlesBilbo in https://github.com/laravel/octane/pull/659
+- Support setting swoole server mode by @sy-records in https://github.com/laravel/octane/pull/666
+- Give new app instance to cache manager by @smortexa in https://github.com/laravel/octane/pull/667
 
 ## [v1.5.0](https://github.com/laravel/octane/compare/v1.4.3...v1.5.0) - 2023-03-04
 
