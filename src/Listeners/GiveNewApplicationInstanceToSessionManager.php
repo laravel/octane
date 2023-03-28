@@ -17,8 +17,8 @@ class GiveNewApplicationInstanceToSessionManager
         }
 
         with($event->sandbox->make('session'), function ($manager) use ($event) {
-            if (method_exists($manager, 'setApplication')) {
-                $manager->setApplication($event->sandbox);
+            if (method_exists($manager, 'setContainer')) {
+                $manager->setContainer($event->sandbox);
             }
         });
     }
