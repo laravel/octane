@@ -34,6 +34,16 @@ trait InstallsRoadRunnerDependencies
     }
 
     /**
+     * Determine if OS is Windows.
+     *
+     * @return bool
+     */
+    protected function isWindowsOs()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+    }
+
+    /**
      * Ensure the RoadRunner package is installed into the project.
      *
      * @return bool
@@ -110,6 +120,10 @@ trait InstallsRoadRunnerDependencies
             copy(__DIR__.'/../stubs/rr.yaml', base_path('.rr.yaml'));
         }
 
+        if ($this->isWindowsOs()) {
+            return base_path('rr.exe');
+        }
+
         return base_path('rr');
     }
 
@@ -171,7 +185,9 @@ trait InstallsRoadRunnerDependencies
             fn ($type, $buffer) => $this->output->write($buffer)
         );
 
-        chmod(base_path('rr'), 0755);
+        if (! $this->isWindowsOs()) {
+            chmod(base_path('rr'), 0755);
+        }
 
         $this->line('');
     }
