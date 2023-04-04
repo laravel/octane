@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.1...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.2...1.x)
+
+## [v1.5.2](https://github.com/laravel/octane/compare/v1.5.1...v1.5.2) - 2023-04-04
+
+- Give new container instance to session manager by @smortexa in https://github.com/laravel/octane/pull/669
+- Use getHost() by @chu121su12 in https://github.com/laravel/octane/pull/671
 
 ## [v1.5.1](https://github.com/laravel/octane/compare/v1.5.0...v1.5.1) - 2023-03-27
 
