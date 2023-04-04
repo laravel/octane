@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.2...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.3...1.x)
+
+## [v1.5.3](https://github.com/laravel/octane/compare/v1.5.2...v1.5.3) - 2023-04-04
+
+- Reverts #669 by @nunomaduro in https://github.com/laravel/octane/pull/676
 
 ## [v1.5.2](https://github.com/laravel/octane/compare/v1.5.1...v1.5.2) - 2023-04-04
 
