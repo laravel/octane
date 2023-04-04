@@ -42,7 +42,6 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToNotificationChannelManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToPipelineHub::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToCacheManager::class,
-            \Laravel\Octane\Listeners\GiveNewApplicationInstanceToSessionManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToQueueManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToRouter::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToValidationFactory::class,
