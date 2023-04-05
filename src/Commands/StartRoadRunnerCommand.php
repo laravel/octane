@@ -92,6 +92,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'logs.level='.($this->option('log-level') ?: (app()->environment('local') ? 'debug' : 'warn')),
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
+            '-o', 'http.pool.debug='.($this->option('watch') ? 'true' : 'false'),
             'serve',
         ]), base_path(), [
             'APP_ENV' => app()->environment(),
@@ -273,5 +274,19 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $this->callSilent('octane:stop', [
             '--server' => 'roadrunner',
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function startServerWatcher()
+    {
+        return new class
+        {
+            public function __call($method, $parameters)
+            {
+                return null;
+            }
+        };
     }
 }
