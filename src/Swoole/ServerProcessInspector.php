@@ -2,9 +2,10 @@
 
 namespace Laravel\Octane\Swoole;
 
+use Laravel\Octane\Contracts\ServerProcessInspector as ServerProcessInspectorContract;
 use Laravel\Octane\Exec;
 
-class ServerProcessInspector
+class ServerProcessInspector implements ServerProcessInspectorContract
 {
     public function __construct(
         protected SignalDispatcher $dispatcher,
