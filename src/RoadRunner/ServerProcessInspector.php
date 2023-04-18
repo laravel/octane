@@ -2,13 +2,14 @@
 
 namespace Laravel\Octane\RoadRunner;
 
+use Laravel\Octane\Contracts\ServerProcessInspector as ServerProcessInspectorContract;
 use Laravel\Octane\PosixExtension;
 use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
 use Laravel\Octane\SymfonyProcessFactory;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-class ServerProcessInspector implements \Laravel\Octane\Contracts\ServerProcessInspector
+class ServerProcessInspector implements ServerProcessInspectorContract
 {
     use FindsRoadRunnerBinary;
 
