@@ -8,7 +8,7 @@ use Laravel\Octane\SymfonyProcessFactory;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-class ServerProcessInspector
+class ServerProcessInspector implements \Laravel\Octane\Contracts\ServerProcessInspector
 {
     use FindsRoadRunnerBinary;
 

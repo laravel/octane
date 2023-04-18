@@ -13,7 +13,7 @@ trait InteractsWithServers
      * Run the given server process.
      *
      * @param  \Symfony\Component\Process\Process  $server
-     * @param  \Laravel\Octane\Swoole\ServerProcessInspector|\Laravel\Octane\RoadRunner\ServerProcessInspector  $inspector
+     * @param  \Laravel\Octane\Contracts\ServerProcessInspector  $inspector
      * @param  string  $type
      * @return int
      */
