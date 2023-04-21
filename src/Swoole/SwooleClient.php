@@ -171,8 +171,8 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * Send the headers from the Illuminate response to the Swoole response.
      *
-     * @param   \Symfony\Component\HttpFoundation\Response  $response
-     * @param   \Swoole\Http\Response                       $swooleResponse
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Swoole\Http\Response $response
      *
      * @return void
      */
