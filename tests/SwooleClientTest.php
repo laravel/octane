@@ -188,13 +188,16 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
-        $swooleResponse->shouldReceive('cookie')->once()->with('new', 'value', 0, '/', '', false, true, 'lax');
-        $swooleResponse->shouldReceive('cookie')->once()->with('cleared', 'deleted', Mockery::type('int'), '/', '', false, true, 'lax');
         $swooleResponse->shouldReceive('write')->with('Hello World');
         $swooleResponse->shouldReceive('end')->once();
 
+        $swooleResponse->shouldReceive('header')->once()
+            ->with('Set-Cookie', Mockery::pattern('/new=value; expires=.*; Max-Age=3600; path=\/; httponly; samesite=lax/'));
+        $swooleResponse->shouldReceive('header')->once()
+            ->with('Set-Cookie', Mockery::pattern('/cleared=deleted; expires=.*; Max-Age=0; path=\/; httponly; samesite=lax/'));
+
         $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
-        $response->cookie('new', 'value');
+        $response->cookie('new', 'value', 60);
         $response->withoutCookie('cleared');
 
         $client->respond(new RequestContext([

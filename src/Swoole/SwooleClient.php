@@ -171,8 +171,9 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * Send the headers from the Illuminate response to the Swoole response.
      *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @param  \Swoole\Http\Response  $response
+     * @param   \Symfony\Component\HttpFoundation\Response  $response
+     * @param   \Swoole\Http\Response                       $swooleResponse
+     *
      * @return void
      */
     public function sendResponseHeaders(Response $response, SwooleResponse $swooleResponse): void
@@ -182,10 +183,6 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         $headers = $response->headers->allPreserveCase();
-
-        if (isset($headers['Set-Cookie'])) {
-            unset($headers['Set-Cookie']);
-        }
 
         foreach ($headers as $name => $values) {
             foreach ($values as $value) {
@@ -197,21 +194,6 @@ class SwooleClient implements Client, ServesStaticFiles
             $swooleResponse->status($response->getStatusCode(), $reason);
         } else {
             $swooleResponse->status($response->getStatusCode());
-        }
-
-        foreach ($response->headers->getCookies() as $cookie) {
-            $shouldDelete = (string) $cookie->getValue() === '';
-
-            $swooleResponse->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
-                $cookie->getName(),
-                $shouldDelete ? 'deleted' : $cookie->getValue(),
-                $cookie->getExpiresTime(),
-                $cookie->getPath(),
-                $cookie->getDomain() ?? '',
-                $cookie->isSecure(),
-                $cookie->isHttpOnly(),
-                $cookie->getSameSite() ?? '',
-            );
         }
     }
 
