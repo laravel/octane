@@ -158,8 +158,8 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * Send the response to the server.
      *
-     * @param  \Laravel\Octane\RequestContext  $context
-     * @param  \Laravel\Octane\OctaneResponse  $octaneResponse
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Swoole\Http\Response $response
      * @return void
      */
     public function respond(RequestContext $context, OctaneResponse $octaneResponse): void
