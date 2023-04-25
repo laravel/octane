@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.3...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.4...1.x)
+
+## [v1.5.4](https://github.com/laravel/octane/compare/v1.5.3...v1.5.4) - 2023-04-18
+
+- Add ServerProcessInspector interface by @yiming0 in https://github.com/laravel/octane/pull/679
 
 ## [v1.5.3](https://github.com/laravel/octane/compare/v1.5.2...v1.5.3) - 2023-04-04
 
