@@ -171,7 +171,9 @@ trait InstallsRoadRunnerDependencies
             fn ($type, $buffer) => $this->output->write($buffer)
         );
 
-        chmod(base_path('rr'), 0755);
+        $binaryName = preg_match('/windows/i', php_uname('s')) ? 'rr.exe' : 'rr';
+
+        chmod(base_path($binaryName), 0755);
 
         $this->line('');
     }
