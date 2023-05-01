@@ -161,15 +161,21 @@ trait InstallsRoadRunnerDependencies
      */
     protected function downloadRoadRunnerBinary()
     {
+        $installed = false;
+
         tap(new Process(array_filter([
             (new PhpExecutableFinder)->find(),
             './vendor/bin/rr',
             'get-binary',
             '-n',
             '--ansi',
-        ]), base_path(), null, null, null))->mustRun(
-            fn ($type, $buffer) => $this->output->write($buffer)
-        );
+        ]), base_path(), null, null, null))->mustRun(function (string $type, string $buffer) use (&$installed) {
+            if (! $installed) {
+                $this->output->write($buffer);
+
+                $installed = str_contains($buffer, 'has been installed into');
+            }
+        });
 
         chmod(base_path('rr'), 0755);
 

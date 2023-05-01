@@ -48,6 +48,7 @@ class InstallCommand extends Command
                 $this->callSilent('vendor:publish', ['--tag' => 'octane-config', '--force' => true]);
 
                 $this->info('Octane installed successfully.');
+                $this->newLine();
             }
         });
     }
