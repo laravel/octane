@@ -95,8 +95,6 @@ trait InstallsRoadRunnerDependencies
 
     /**
      * Ensure the RoadRunner binary is installed into the project.
-     *
-     * @return string
      */
     protected function ensureRoadRunnerBinaryIsInstalled(): string
     {

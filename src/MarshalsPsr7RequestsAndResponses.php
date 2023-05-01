@@ -33,9 +33,6 @@ trait MarshalsPsr7RequestsAndResponses
 
     /**
      * Convert the given PSR-7 request to an HttpFoundation request.
-     *
-     * @param  \Psr\Http\Message\ServerRequestInterface  $request
-     * @return \Illuminate\Http\Request
      */
     protected function toHttpFoundationRequest(ServerRequestInterface $request): Request
     {
@@ -44,9 +41,6 @@ trait MarshalsPsr7RequestsAndResponses
 
     /**
      * Convert the given HttpFoundation response into a PSR-7 response.
-     *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @return \Psr\Http\Message\ResponseInterface
      */
     protected function toPsr7Response(Response $response): ResponseInterface
     {
@@ -57,8 +51,6 @@ trait MarshalsPsr7RequestsAndResponses
      * Create the Symfony HttpFoundation factory.
      *
      * This instance can turn a PSR-7 request into an HttpFoundation request.
-     *
-     * @return \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface
      */
     protected function httpFoundationRequestFactory(): HttpFoundationFactoryInterface
     {
@@ -71,8 +63,6 @@ trait MarshalsPsr7RequestsAndResponses
      * Create the Symfony PSR-7 factory.
      *
      * This instance can turn an HTTP Foundation response into a PSR-7 response.
-     *
-     * @return \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface
      */
     protected function psr7ResponseFactory(): HttpMessageFactoryInterface
     {

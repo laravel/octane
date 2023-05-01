@@ -31,7 +31,7 @@
         "nunomaduro/collision": "^6.4.0|^7.5.2",
         "orchestra/testbench": "^8.5.1",
         "phpstan/phpstan": "^1.10.14",
-        "phpunit/phpunit": "^9.6.7",
+        "phpunit/phpunit": "^10.0.0",
         "spiral/roadrunner-http": "^3.0.1",
         "spiral/roadrunner-cli": "^2.5.0"
     },

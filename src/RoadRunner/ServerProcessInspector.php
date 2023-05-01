@@ -22,8 +22,6 @@ class ServerProcessInspector implements ServerProcessInspectorContract
 
     /**
      * Determine if the RoadRunner server process is running.
-     *
-     * @return bool
      */
     public function serverIsRunning(): bool
     {
@@ -36,8 +34,6 @@ class ServerProcessInspector implements ServerProcessInspectorContract
 
     /**
      * Reload the RoadRunner workers.
-     *
-     * @return void
      */
     public function reloadServer(): void
     {
@@ -64,8 +60,6 @@ class ServerProcessInspector implements ServerProcessInspectorContract
 
     /**
      * Stop the RoadRunner server.
-     *
-     * @return bool
      */
     public function stopServer(): bool
     {

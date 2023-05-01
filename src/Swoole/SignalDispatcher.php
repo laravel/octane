@@ -10,9 +10,6 @@ class SignalDispatcher
 
     /**
      * Determine if the given process ID can be communicated with.
-     *
-     * @param  int  $processId
-     * @return bool
      */
     public function canCommunicateWith(int $processId): bool
     {
@@ -21,10 +18,6 @@ class SignalDispatcher
 
     /**
      * Send a SIGTERM signal to the given process.
-     *
-     * @param  int  $processId
-     * @param  int  $wait
-     * @return bool
      */
     public function terminate(int $processId, int $wait = 0): bool
     {
@@ -49,10 +42,6 @@ class SignalDispatcher
 
     /**
      * Send a signal to the given process.
-     *
-     * @param  int  $processId
-     * @param  int  $signal
-     * @return bool
      */
     public function signal(int $processId, int $signal): bool
     {

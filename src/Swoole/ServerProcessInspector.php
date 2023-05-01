@@ -16,8 +16,6 @@ class ServerProcessInspector implements ServerProcessInspectorContract
 
     /**
      * Determine if the Swoole server process is running.
-     *
-     * @return bool
      */
     public function serverIsRunning(): bool
     {
@@ -33,8 +31,6 @@ class ServerProcessInspector implements ServerProcessInspectorContract
 
     /**
      * Reload the Swoole workers.
-     *
-     * @return void
      */
     public function reloadServer(): void
     {
@@ -47,8 +43,6 @@ class ServerProcessInspector implements ServerProcessInspectorContract
 
     /**
      * Stop the Swoole server.
-     *
-     * @return bool
      */
     public function stopServer(): bool
     {

@@ -11,7 +11,6 @@ class OctaneArrayStore extends ArrayStore
      * Register a cache key that should be refreshed at a given interval (in minutes).
      *
      * @param  string  $key
-     * @param  \Closure  $resolver
      * @param  int  $seconds
      * @return mixed
      */

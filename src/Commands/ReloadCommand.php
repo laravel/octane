@@ -84,7 +84,6 @@ class ReloadCommand extends Command
     /**
      * Inform the user that the server type is invalid.
      *
-     * @param  string  $server
      * @return int
      */
     protected function invalidServer(string $server)

@@ -792,9 +792,6 @@ class MimeType
 
     /**
      * Get the MIME type for a given extension.
-     *
-     * @param  string  $extension
-     * @return string
      */
     protected static function getMimeTypeFromExtension(string $extension): string
     {

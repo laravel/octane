@@ -17,9 +17,6 @@ class SwooleTaskDispatcher implements DispatchesTasks
      *
      * Results will be keyed by their given keys - if a task did not finish, the tasks value will be "false".
      *
-     * @param  array  $tasks
-     * @param  int  $waitMilliseconds
-     * @return array
      *
      * @throws \Laravel\Octane\Exceptions\TaskException
      * @throws \Laravel\Octane\Exceptions\TaskTimeoutException
@@ -61,9 +58,6 @@ class SwooleTaskDispatcher implements DispatchesTasks
 
     /**
      * Concurrently dispatch the given callbacks via background tasks.
-     *
-     * @param  array  $tasks
-     * @return void
      */
     public function dispatch(array $tasks): void
     {

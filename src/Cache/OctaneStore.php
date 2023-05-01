@@ -67,7 +67,6 @@ class OctaneStore implements Store
      *
      * Items not found in the cache will have a null value.
      *
-     * @param  array  $keys
      * @return array
      */
     public function many(array $keys)
@@ -94,7 +93,6 @@ class OctaneStore implements Store
     /**
      * Store multiple items in the cache for a given number of seconds.
      *
-     * @param  array  $values
      * @param  int  $seconds
      * @return bool
      */
@@ -155,7 +153,6 @@ class OctaneStore implements Store
      * Register a cache key that should be refreshed at a given interval (in minutes).
      *
      * @param  string  $key
-     * @param  \Closure  $resolver
      * @param  int  $seconds
      * @return void
      */
@@ -203,7 +200,6 @@ class OctaneStore implements Store
     /**
      * Determine if the given interval record should be refreshed.
      *
-     * @param  array  $interval
      * @return bool
      */
     protected function intervalShouldBeRefreshed(array $interval)
