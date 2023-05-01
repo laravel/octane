@@ -72,6 +72,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
         $this->ensureRoadRunnerBinaryMeetsRequirements($roadRunnerBinary);
 
+        $configVersion = $this->detectRoadrunnerConfigVersion($roadRunnerBinary);
+
         $this->writeServerStateFile($serverStateFile);
 
         $this->forgetEnvironmentVariables();
@@ -79,7 +81,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-c', $this->configPath(),
-            '-o', 'version=2.7',
+            '-o', 'version='.$configVersion,
             '-o', 'http.address='.$this->option('host').':'.$this->getPort(),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
@@ -102,6 +104,20 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $serverStateFile->writeProcessId($server->getPid());
 
         return $this->runServer($server, $inspector, 'roadrunner');
+    }
+
+    protected function detectRoadrunnerConfigVersion(string $roadRunnerBinary): string
+    {
+        $version = tap(new Process([$roadRunnerBinary, '--version'], base_path()))
+            ->run()
+            ->getOutput();
+
+        $version = explode(' ', $version)[2];
+
+        return match (true) {
+            version_compare($version, '2023.1.0', '>=') => '3',
+            default => '2.7',
+        };
     }
 
     /**

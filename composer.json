@@ -32,7 +32,8 @@
         "orchestra/testbench": "^6.16|^7.0|^8.0",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.3",
-        "spiral/roadrunner": "^2.8.2"
+        "spiral/roadrunner-http": "^2.0 || ^3.0",
+        "spiral/roadrunner-cli": "^2.0 || ^3.0"
     },
     "bin": [
         "bin/roadrunner-worker",
