@@ -19,7 +19,7 @@ trait InstallsRoadRunnerDependencies
     /**
      * The minimum required version of the RoadRunner binary.
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected $requiredVersions = ['2023.1.0', '2.8.2'];
 
