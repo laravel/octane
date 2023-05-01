@@ -65,6 +65,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [],
         ]);
 
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
@@ -78,6 +79,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
@@ -91,6 +93,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
@@ -106,9 +109,36 @@ class SwooleClientTest extends TestCase
         $context = new RequestContext([
             'swooleResponse' => $swooleResponse = Mockery::mock('stdClass'),
             'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [],
         ]);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
+
+        $client->serveStaticFile($request, $context);
+    }
+
+    public function test_static_file_headers_can_be_sent()
+    {
+        $client = new SwooleClient;
+
+        $request = Request::create('/foo.txt', 'GET');
+
+        $context = new RequestContext([
+            'swooleResponse' => $swooleResponse = Mockery::mock('stdClass'),
+            'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [
+                'static_file_headers' => [
+                    'foo.txt' => [
+                        'X-Test-Header' => 'Valid',
+                    ],
+                ],
+            ],
+        ]);
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('X-Test-Header', 'Valid');
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
@@ -123,6 +153,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
@@ -136,6 +167,7 @@ class SwooleClientTest extends TestCase
 
         $context = new RequestContext([
             'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
         ]);
 
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
@@ -156,12 +188,18 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('cookie')->once()->with('new', 'value', 0, '/', '', false, true, 'lax');
+        $swooleResponse->shouldReceive('cookie')->once()->with('cleared', 'deleted', Mockery::type('int'), '/', '', false, true, 'lax');
         $swooleResponse->shouldReceive('write')->with('Hello World');
         $swooleResponse->shouldReceive('end')->once();
 
+        $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+        $response->cookie('new', 'value');
+        $response->withoutCookie('cleared');
+
         $client->respond(new RequestContext([
             'swooleResponse' => $swooleResponse,
-        ]), new OctaneResponse(new Response('Hello World', 200, ['Content-Type' => 'text/html'])));
+        ]), new OctaneResponse($response));
     }
 
     /** @doesNotPerformAssertions @test */
@@ -224,6 +262,8 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
         $app = $this->createApplication();
+        $app['config']['app.debug'] = false;
+
         $request = Request::create('/', 'GET');
         $context = new RequestContext(['swooleResponse' => $swooleResponse]);
 

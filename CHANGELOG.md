@@ -1,6 +1,80 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.3.7...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.4...master)
+
+## [v1.5.4](https://github.com/laravel/octane/compare/v1.5.3...v1.5.4) - 2023-04-18
+
+- Add ServerProcessInspector interface by @yiming0 in https://github.com/laravel/octane/pull/679
+
+## [v1.5.3](https://github.com/laravel/octane/compare/v1.5.2...v1.5.3) - 2023-04-04
+
+- Reverts #669 by @nunomaduro in https://github.com/laravel/octane/pull/676
+
+## [v1.5.2](https://github.com/laravel/octane/compare/v1.5.1...v1.5.2) - 2023-04-04
+
+- Give new container instance to session manager by @smortexa in https://github.com/laravel/octane/pull/669
+- Use getHost() by @chu121su12 in https://github.com/laravel/octane/pull/671
+
+## [v1.5.1](https://github.com/laravel/octane/compare/v1.5.0...v1.5.1) - 2023-03-27
+
+- Add method to fix octane route caching.  by @CharlesBilbo in https://github.com/laravel/octane/pull/659
+- Support setting swoole server mode by @sy-records in https://github.com/laravel/octane/pull/666
+- Give new app instance to cache manager by @smortexa in https://github.com/laravel/octane/pull/667
+
+## [v1.5.0](https://github.com/laravel/octane/compare/v1.4.3...v1.5.0) - 2023-03-04
+
+- Add support for custom HTTP headers on static files by @Starfox64 in https://github.com/laravel/octane/pull/653
+- Fix return value error and Remove useless code by @sy-records in https://github.com/laravel/octane/pull/655
+
+## [v1.4.3](https://github.com/laravel/octane/compare/v1.4.2...v1.4.3) - 2023-03-01
+
+- Fix timer table set failed by @sy-records in https://github.com/laravel/octane/pull/650
+
+## [v1.4.2](https://github.com/laravel/octane/compare/v1.4.1...v1.4.2) - 2023-02-07
+
+### Fixed
+
+- Allow graceful reload after installing packages by @taylorotwell in https://github.com/laravel/octane/pull/644
+
+## [v1.4.1](https://github.com/laravel/octane/compare/v1.4.0...v1.4.1) - 2023-02-03
+
+### Changed
+
+- Removes internal messages from output by @nunomaduro in https://github.com/laravel/octane/pull/639
+- Only displays source when there is source by @nunomaduro in https://github.com/laravel/octane/pull/640
+- Adds support for Collision `v7.x` by @nunomaduro in https://github.com/laravel/octane/pull/643
+
+### Fixed
+
+- Fix unsetting a cookie value when using Swoole by @oprypkhantc in https://github.com/laravel/octane/pull/642
+
+## [v1.4.0](https://github.com/laravel/octane/compare/v1.3.10...v1.4.0) - 2023-01-10
+
+### Added
+
+- Adds Laravel 10 support by @nunomaduro in https://github.com/laravel/octane/pull/629
+
+## [v1.3.10](https://github.com/laravel/octane/compare/v1.3.9...v1.3.10) - 2022-12-23
+
+### Changed
+
+- Adds support for Open Swoole `v22.x` by @nunomaduro in https://github.com/laravel/octane/pull/626
+
+## [v1.3.9](https://github.com/laravel/octane/compare/v1.3.8...v1.3.9) - 2022-11-19
+
+### Changed
+
+- Add `--rpc-host` option for Roadrunner by @matthew-inamdar in https://github.com/laravel/octane/pull/619
+
+### Fixed
+
+- Resolve typo resulting in deprecation notice by @owenvoke in https://github.com/laravel/octane/pull/614
+
+## [v1.3.8](https://github.com/laravel/octane/compare/v1.3.7...v1.3.8) - 2022-11-11
+
+### Fixed
+
+- Prefix rr binary permissions with 0 to specify it as an octal value by @Dylan-Buth in https://github.com/laravel/octane/pull/611
 
 ## [v1.3.7](https://github.com/laravel/octane/compare/v1.3.6...v1.3.7) - 2022-11-02
 

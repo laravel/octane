@@ -23,13 +23,18 @@ class ApplicationFactory
      */
     public function createApplication(array $initialInstances = []): Application
     {
-        $path = $this->basePath.'/bootstrap/app.php';
+        $paths = [
+            $this->basePath.'/.laravel/app.php',
+            $this->basePath.'/bootstrap/app.php',
+        ];
 
-        if (! file_exists($path)) {
-            throw new RuntimeException("Application bootstrap file not found [{$path}].");
+        foreach ($paths as $path) {
+            if (file_exists($path)) {
+                return $this->warm($this->bootstrap(require $path, $initialInstances));
+            }
         }
 
-        return $this->warm($this->bootstrap(require $path, $initialInstances));
+        throw new RuntimeException("Application bootstrap file not found in 'bootstrap' or '.laravel' directory.");
     }
 
     /**

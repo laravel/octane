@@ -13,7 +13,7 @@ trait InteractsWithServers
      * Run the given server process.
      *
      * @param  \Symfony\Component\Process\Process  $server
-     * @param  \Laravel\Octane\Swoole\ServerProcessInspector|\Laravel\Octane\RoadRunner\ServerProcessInspector  $inspector
+     * @param  \Laravel\Octane\Contracts\ServerProcessInspector  $inspector
      * @param  string  $type
      * @return int
      */
@@ -100,7 +100,7 @@ trait InteractsWithServers
 
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>http://'.$this->option('host').':'.$this->getPort().' </>',
+            '  Local: <fg=white;options=bold>http://'.$this->getHost().':'.$this->getPort().' </>',
             '',
             '  <fg=yellow>Press Ctrl+C to stop the server</>',
             '',

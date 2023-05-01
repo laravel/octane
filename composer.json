@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "laravel/framework": "^8.83.26|^9.38.0",
+        "laravel/framework": "^8.83.26|^9.38.0|^10.0",
         "laminas/laminas-diactoros": "^2.5",
         "laravel/serializable-closure": "^1.0",
         "nesbot/carbon": "^2.60",
@@ -23,9 +23,14 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.2",
+        "inertiajs/inertia-laravel": "^0.6.9",
+        "laravel/scout": "^9.8",
+        "laravel/socialite": "^5.6",
+        "livewire/livewire": "^2.12",
         "mockery/mockery": "^1.4",
-        "nunomaduro/collision": "^5.10|^6.0",
-        "orchestra/testbench": "^6.16|^7.0",
+        "nunomaduro/collision": "^5.10|^6.0|^7.0",
+        "orchestra/testbench": "^6.16|^7.0|^8.0",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.3",
         "spiral/roadrunner": "^2.8.2"
     },
@@ -42,6 +47,11 @@
         "psr-4": {
             "Laravel\\Octane\\Tests\\": "tests"
         }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php vendor/bin/testbench package:discover --ansi"
+        ]
     },
     "extra": {
         "branch-alias": {

@@ -11,15 +11,17 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: true
       matrix:
         php: ['8.0', 8.1, 8.2]
-        laravel: [8, 9]
+        laravel: [8, 9, 10]
         driver: [swoole, openswoole]
         exclude:
+          - php: 8.0
+            laravel: 10
           - php: 8.2
             laravel: 8
 
@@ -27,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -44,7 +46,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:^${{ matrix.laravel }}" --no-update
+          composer require "laravel/framework:^${{ matrix.laravel }}" --dev --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
