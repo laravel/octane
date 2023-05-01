@@ -17,7 +17,7 @@ trait InstallsRoadRunnerDependencies
     use FindsRoadRunnerBinary;
 
     /**
-     * The minimum required version of the RoadRunner binary.
+     * The minimum required versions of the RoadRunner binary.
      *
      * @var array<int, string>
      */
