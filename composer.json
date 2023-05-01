@@ -32,13 +32,17 @@
         "orchestra/testbench": "^6.16|^7.0|^8.0",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.3",
-        "spiral/roadrunner-http": "^2.0 || ^3.0",
-        "spiral/roadrunner-cli": "^2.0 || ^3.0"
+        "spiral/roadrunner-http": "^3.0",
+        "spiral/roadrunner-cli": "^2.0"
     },
     "bin": [
         "bin/roadrunner-worker",
         "bin/swoole-server"
     ],
+    "conflict": {
+        "spiral/roadrunner-http": "<3.0",
+        "spiral/roadrunner": "<2023.1.0"
+    },
     "autoload": {
         "psr-4": {
             "Laravel\\Octane\\": "src"

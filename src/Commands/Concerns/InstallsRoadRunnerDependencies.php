@@ -17,11 +17,11 @@ trait InstallsRoadRunnerDependencies
     use FindsRoadRunnerBinary;
 
     /**
-     * The minimum required versions of the RoadRunner binary.
+     * The minimum required version of the RoadRunner binary.
      *
-     * @var array<int, string>
+     * @var string
      */
-    protected $requiredVersions = ['2023.1.0', '2.8.2'];
+    protected $requiredVersion = '2023.1.1';
 
     /**
      * Determine if RoadRunner is installed.
@@ -44,13 +44,13 @@ trait InstallsRoadRunnerDependencies
             return true;
         }
 
-        if (! $this->confirm('Octane requires "spiral/roadrunner-http:^2.0 || ^3.0" and "spiral/roadrunner-cli:^2.0 || ^3.0". Do you wish to install them as a dependencies?')) {
+        if (! $this->confirm('Octane requires "spiral/roadrunner-http:^3.0" and "spiral/roadrunner-cli:^2.0". Do you wish to install them as a dependencies?')) {
             $this->error('Octane requires "spiral/roadrunner-http" and "spiral/roadrunner-cli".');
 
             return false;
         }
 
-        $command = $this->findComposer().' require spiral/roadrunner-http spiral/roadrunner-cli --with-all-dependencies';
+        $command = $this->findComposer().' require spiral/roadrunner-http:^3.0 spiral/roadrunner-cli:^2.0 --with-all-dependencies';
 
         $process = Process::fromShellCommandline($command, null, null, null, null);
 
@@ -125,7 +125,7 @@ trait InstallsRoadRunnerDependencies
             ->run()
             ->getOutput();
 
-        if (! Str::startsWith($version, 'rr version ')) {
+        if (! Str::startsWith($version, 'rr version')) {
             return $this->warn(
                 'Unable to determine the current RoadRunner binary version. Please report this issue: https://github.com/laravel/octane/issues/new.'
             );
@@ -133,10 +133,8 @@ trait InstallsRoadRunnerDependencies
 
         $version = explode(' ', $version)[2];
 
-        foreach ($this->requiredVersions as $requiredVersion) {
-            if (version_compare($version, $requiredVersion, '>=')) {
-                return;
-            }
+        if (version_compare($version, $this->requiredVersion, '>=')) {
+            return;
         }
 
         $this->warn("Your RoadRunner binary version (<fg=red>$version</>) may be incompatible with Octane.");
