@@ -42,9 +42,6 @@ class Worker implements WorkerContract
 
     /**
      * Boot / initialize the Octane worker.
-     *
-     * @param  array  $initialInstances
-     * @return void
      */
     public function boot(array $initialInstances = []): void
     {
@@ -64,9 +61,7 @@ class Worker implements WorkerContract
     /**
      * Handle an incoming request and send the response to the client.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Laravel\Octane\RequestContext  $context
-     * @return void
      */
     public function handle(Request $request, RequestContext $context): void
     {
@@ -166,8 +161,6 @@ class Worker implements WorkerContract
 
     /**
      * Handle an incoming tick.
-     *
-     * @return void
      */
     public function handleTick(): void
     {
@@ -190,12 +183,7 @@ class Worker implements WorkerContract
     /**
      * Handle an uncaught exception from the worker.
      *
-     * @param  \Throwable  $e
-     * @param  \Illuminate\Foundation\Application  $app
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Laravel\Octane\RequestContext  $context
-     * @param  bool  $hasResponded
-     * @return void
      */
     protected function handleWorkerError(
         Throwable $e,
@@ -217,7 +205,6 @@ class Worker implements WorkerContract
      * @param  \Illuminate\Http\Request  $request
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  \Illuminate\Foundation\Application  $sandbox
-     * @return void
      */
     protected function invokeRequestHandledCallbacks($request, $response, $sandbox): void
     {
@@ -229,7 +216,6 @@ class Worker implements WorkerContract
     /**
      * Register a closure to be invoked when requests are handled.
      *
-     * @param  \Closure  $callback
      * @return $this
      */
     public function onRequestHandled(Closure $callback)
@@ -241,8 +227,6 @@ class Worker implements WorkerContract
 
     /**
      * Get the application instance being used by the worker.
-     *
-     * @return \Illuminate\Foundation\Application
      */
     public function application(): Application
     {
@@ -255,8 +239,6 @@ class Worker implements WorkerContract
 
     /**
      * Terminate the worker.
-     *
-     * @return void
      */
     public function terminate(): void
     {

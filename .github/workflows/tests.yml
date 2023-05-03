@@ -16,14 +16,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ['8.0', 8.1, 8.2]
-        laravel: [8, 9, 10]
+        php: [8.1, 8.2]
+        laravel: [10]
         driver: [swoole, openswoole]
-        exclude:
-          - php: 8.0
-            laravel: 10
-          - php: 8.2
-            laravel: 8
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
 
@@ -50,4 +45,4 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: vendor/bin/phpunit --verbose
+        run: vendor/bin/phpunit

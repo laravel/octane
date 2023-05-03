@@ -10,7 +10,6 @@ class EnsureUploadedFilesCanBeMoved
      * @link https://github.com/spiral/roadrunner-laravel/issues/43
      *
      * @param  mixed  $event
-     * @return void
      */
     public function handle($event): void
     {

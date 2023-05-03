@@ -17,9 +17,6 @@ class ApplicationFactory
 
     /**
      * Create a new application instance.
-     *
-     * @param  array  $initialInstances
-     * @return \Illuminate\Foundation\Application
      */
     public function createApplication(array $initialInstances = []): Application
     {
@@ -39,10 +36,6 @@ class ApplicationFactory
 
     /**
      * Bootstrap the given application.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @param  array  $initialInstances
-     * @return \Illuminate\Foundation\Application
      */
     public function bootstrap(Application $app, array $initialInstances = []): Application
     {
@@ -59,9 +52,6 @@ class ApplicationFactory
 
     /**
      * Get the application's HTTP kernel bootstrappers.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return array
      */
     protected function getBootstrappers(Application $app): array
     {
@@ -80,11 +70,6 @@ class ApplicationFactory
 
     /**
      * Inject a given bootstrapper before another bootstrapper.
-     *
-     * @param  string  $before
-     * @param  string  $inject
-     * @param  array  $bootstrappers
-     * @return array
      */
     protected function injectBootstrapperBefore(string $before, string $inject, array $bootstrappers): array
     {
@@ -99,10 +84,6 @@ class ApplicationFactory
 
     /**
      * Warm the application with pre-resolved, cached services that persist across requests.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @param  array  $services
-     * @return \Illuminate\Foundation\Application
      */
     public function warm(Application $app, array $services = []): Application
     {

@@ -48,7 +48,6 @@ class InvokeTickCallable
     /**
      * Indicate how often the listener should be invoked.
      *
-     * @param  int  $seconds
      * @return $this
      */
     public function seconds(int $seconds)

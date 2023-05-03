@@ -68,7 +68,6 @@ class StatusCommand extends Command
     /**
      * Inform the user that the server type is invalid.
      *
-     * @param  string  $server
      * @return bool
      */
     protected function invalidServer(string $server)

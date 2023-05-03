@@ -117,7 +117,7 @@ class TableTest extends TestCase
     /**
      * @dataProvider
      */
-    public function validStringValues()
+    public static function validStringValues()
     {
         return [
             [str_repeat('a', 10)],
@@ -133,7 +133,7 @@ class TableTest extends TestCase
     /**
      * @dataProvider
      */
-    public function tooLargeStringValues()
+    public static function tooLargeStringValues()
     {
         return [
             [str_repeat('a', 11)],

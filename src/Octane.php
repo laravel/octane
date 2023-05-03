@@ -17,9 +17,6 @@ class Octane
 
     /**
      * Get a Swoole table instance.
-     *
-     * @param  string  $table
-     * @return \Swoole\Table
      */
     public function table(string $table): Table
     {
@@ -38,10 +35,6 @@ class Octane
 
     /**
      * Format an exception to a string that should be returned to the client.
-     *
-     * @param  \Throwable  $e
-     * @param  bool  $debug
-     * @return string
      */
     public static function formatExceptionForClient(Throwable $e, bool $debug = false): string
     {

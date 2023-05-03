@@ -10,9 +10,6 @@ class CurrentApplication
 {
     /**
      * Set the current application in the container.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
      */
     public static function set(Application $app): void
     {

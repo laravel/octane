@@ -22,9 +22,6 @@ class ApplicationGateway
 
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request): Response
     {
@@ -41,10 +38,6 @@ class ApplicationGateway
 
     /**
      * "Shut down" the application after a request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @return void
      */
     public function terminate(Request $request, Response $response): void
     {

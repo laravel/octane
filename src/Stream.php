@@ -10,10 +10,6 @@ class Stream
     /**
      * Stream the given request information to stdout.
      *
-     * @param  string  $method
-     * @param  string  $url
-     * @param  int  $statusCode
-     * @param  float  $duration
      * @return void
      */
     public static function request(string $method, string $url, int $statusCode, float $duration)
@@ -31,7 +27,6 @@ class Stream
     /**
      * Stream the given throwable to stderr.
      *
-     * @param  \Throwable  $throwable
      * @return void
      */
     public static function throwable(Throwable $throwable)
@@ -54,7 +49,6 @@ class Stream
     /**
      * Stream the given shutdown throwable to stderr.
      *
-     * @param  \Throwable  $throwable
      * @return void
      */
     public static function shutdown(Throwable $throwable)
