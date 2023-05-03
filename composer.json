@@ -24,7 +24,7 @@
     "require-dev": {
         "guzzlehttp/guzzle": "^7.5.1",
         "inertiajs/inertia-laravel": "^0.6.9",
-        "laravel/scout": "^9.8.1",
+        "laravel/scout": "^10.1.1",
         "laravel/socialite": "^5.6.1",
         "livewire/livewire": "^2.12.3",
         "mockery/mockery": "^1.5.1",
@@ -40,7 +40,9 @@
         "bin/swoole-server"
     ],
     "conflict": {
-        "spiral/roadrunner": "<2023.1.0"
+        "spiral/roadrunner": "<2023.1.0",
+        "spiral/roadrunner-cli": "<2.5.0",
+        "spiral/roadrunner-http": "<3.0.1"
     },
     "autoload": {
         "psr-4": {
@@ -73,6 +75,6 @@
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
