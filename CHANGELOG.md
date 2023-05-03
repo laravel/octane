@@ -1,6 +1,6 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.4...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.4...master)
 
 ## [v1.5.4](https://github.com/laravel/octane/compare/v1.5.3...v1.5.4) - 2023-04-18
 
