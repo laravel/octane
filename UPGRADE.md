@@ -11,6 +11,16 @@ The following requirements have been updated:
 
 ### Updating Dependencies
 
-If you are using RoadRunner, replace `"spiral/roadrunner": "^2.8.2"` with `"spiral/roadrunner-http": "^3.0.1"` and `"spiral/roadrunner-cli": "^2.5.0"` in your application's composer.json file.
+You should update the following dependencies in your application's composer.json file:
 
-To complete the upgrade, you need to stop and re-start your Octane server.
+```diff
+-   "laravel/octane": "^1.5",
+-   "spiral/roadrunner": "^2.8.2",
++   "laravel/octane": "^2.0",
++   "spiral/roadrunner-http": "^3.0.1",
++   "spiral/roadrunner-cli": "^2.5.0",
+```
+
+### Stop And Re-Start Server
+
+Once you update your composer's dependencies, you will need to stop and re-start your Octane server.
