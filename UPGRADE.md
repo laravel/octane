@@ -15,10 +15,7 @@ You should update the following dependency in your application's composer.json f
 
 ```diff
 -   "laravel/octane": "^1.5",
--   "spiral/roadrunner": "^2.8.2",
 +   "laravel/octane": "^2.0",
-+   "spiral/roadrunner-http": "^3.0.1",
-+   "spiral/roadrunner-cli": "^2.5.0",
 ```
 
 If you are using RoadRunner, it is necessary for you to update the corresponding dependency in the `composer.json` file:
