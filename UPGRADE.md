@@ -26,4 +26,4 @@ If you are using RoadRunner, it is necessary for you to update the corresponding
 +   "spiral/roadrunner-cli": "^2.5.0",
 ```
 
-Once you update your composer's dependencies, you will need to stop and re-start your Octane server.
+Please keep in mind that you will be required to "stop" your Octane server prior to updating your dependencies in production. Once the updates have been completed, you may then proceed to re-start your server.
