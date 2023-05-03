@@ -260,12 +260,15 @@ class SwooleClient implements Client, ServesStaticFiles
             return;
         }
 
+        // if the content fits into one chunk -> perform no chunked encoding
         if ($length <= $this->chunkSize) {
-            $swooleResponse->write($content);
-        } else {
-            for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
-                $swooleResponse->write(substr($content, $offset, $this->chunkSize));
-            }
+            $swooleResponse->end($content);
+
+            return;
+        }
+
+        for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
+            $swooleResponse->write(substr($content, $offset, $this->chunkSize));
         }
 
         $swooleResponse->end();
