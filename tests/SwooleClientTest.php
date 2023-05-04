@@ -9,6 +9,7 @@ use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\SwooleClient;
 use Mockery;
+use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SwooleClientTest extends TestCase
@@ -279,5 +280,48 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldHaveReceived('header')->with('Status', '500 Internal Server Error');
         $swooleResponse->shouldHaveReceived('header')->with('Content-Type', 'text/plain');
         $swooleResponse->shouldHaveReceived('end')->with((string) $e);
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_send_not_chunked_response_to_swoole(): void
+    {
+        $client = new SwooleClient;
+
+        $swooleResponse = Mockery::mock(SwooleResponse::class);
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('write')->never();
+        $swooleResponse->shouldReceive('end')->once()->with('Hello World');
+
+        $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse($response));
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_send_chunked_response_to_swoole(): void
+    {
+        $client = new SwooleClient(6);
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('write')->once()->with('Hello ');
+        $swooleResponse->shouldReceive('write')->once()->with('World');
+        $swooleResponse->shouldReceive('end')->once();
+
+        $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse($response));
     }
 }
