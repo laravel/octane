@@ -9,11 +9,12 @@ use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\SwooleClient;
 use Mockery;
+use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SwooleClientTest extends TestCase
 {
-    public function test_marshal_request_method_marshals_proper_illuminate_request()
+    public function test_marshal_request_method_marshals_proper_illuminate_request(): void
     {
         $client = new SwooleClient;
 
@@ -57,7 +58,7 @@ class SwooleClientTest extends TestCase
         $this->assertSame($givenContext, $context);
     }
 
-    public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory()
+    public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory(): void
     {
         $client = new SwooleClient;
 
@@ -71,7 +72,7 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    public function test_cant_serve_static_files_if_file_is_outside_public_directory()
+    public function test_cant_serve_static_files_if_file_is_outside_public_directory(): void
     {
         $client = new SwooleClient;
 
@@ -85,7 +86,7 @@ class SwooleClientTest extends TestCase
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    public function test_cant_serve_static_files_if_file_has_forbidden_extension()
+    public function test_cant_serve_static_files_if_file_has_forbidden_extension(): void
     {
         $client = new SwooleClient;
 
@@ -100,7 +101,7 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_static_file_can_be_served()
+    public function test_static_file_can_be_served(): void
     {
         $client = new SwooleClient;
 
@@ -119,7 +120,8 @@ class SwooleClientTest extends TestCase
         $client->serveStaticFile($request, $context);
     }
 
-    public function test_static_file_headers_can_be_sent()
+    /** @doesNotPerformAssertions @test */
+    public function test_static_file_headers_can_be_sent(): void
     {
         $client = new SwooleClient;
 
@@ -147,7 +149,7 @@ class SwooleClientTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_can_serve_static_files_through_symlink()
+    public function test_can_serve_static_files_through_symlink(): void
     {
         $client = new SwooleClient;
 
@@ -161,7 +163,7 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    public function test_cant_serve_static_files_through_symlink_using_directory_traversal()
+    public function test_cant_serve_static_files_through_symlink_using_directory_traversal(): void
     {
         $client = new SwooleClient;
 
@@ -176,13 +178,11 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_respond_method_sends_response_to_swoole()
+    public function test_respond_method_sends_response_to_swoole(): void
     {
-        $client = new SwooleClient;
+        $this->createApplication();
 
-        if (extension_loaded('openswoole')) {
-            $this->markTestSkipped('This test is not compatible with Open Swoole');
-        }
+        $client = new SwooleClient;
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
@@ -205,13 +205,9 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_respond_method_send_streamed_response_to_swoole()
+    public function test_respond_method_send_streamed_response_to_swoole(): void
     {
         $client = new SwooleClient;
-
-        if (extension_loaded('openswoole')) {
-            $this->markTestSkipped('This test is not compatible with Open Swoole');
-        }
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
@@ -230,13 +226,9 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole()
+    public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole(): void
     {
         $client = new SwooleClient;
-
-        if (extension_loaded('openswoole')) {
-            $this->markTestSkipped('This test is not compatible with Open Swoole');
-        }
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
@@ -253,13 +245,9 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_error_method_sends_error_response_to_swoole()
+    public function test_error_method_sends_error_response_to_swoole(): void
     {
         $client = new SwooleClient;
-
-        if (extension_loaded('openswoole')) {
-            $this->markTestSkipped('This test is not compatible with Open Swoole');
-        }
 
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
@@ -277,13 +265,9 @@ class SwooleClientTest extends TestCase
     }
 
     /** @doesNotPerformAssertions @test */
-    public function test_error_method_sends_detailed_error_response_to_swoole_in_debug_mode()
+    public function test_error_method_sends_detailed_error_response_to_swoole_in_debug_mode(): void
     {
         $client = new SwooleClient;
-
-        if (extension_loaded('openswoole')) {
-            $this->markTestSkipped('This test is not compatible with Open Swoole');
-        }
 
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
@@ -298,5 +282,48 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldHaveReceived('header')->with('Status', '500 Internal Server Error');
         $swooleResponse->shouldHaveReceived('header')->with('Content-Type', 'text/plain');
         $swooleResponse->shouldHaveReceived('end')->with((string) $e);
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_send_not_chunked_response_to_swoole(): void
+    {
+        $client = new SwooleClient;
+
+        $swooleResponse = Mockery::mock(SwooleResponse::class);
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('write')->never();
+        $swooleResponse->shouldReceive('end')->once()->with('Hello World');
+
+        $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse($response));
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_send_chunked_response_to_swoole(): void
+    {
+        $client = new SwooleClient(6);
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('write')->once()->with('Hello ');
+        $swooleResponse->shouldReceive('write')->once()->with('World');
+        $swooleResponse->shouldReceive('end')->once();
+
+        $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse($response));
     }
 }
