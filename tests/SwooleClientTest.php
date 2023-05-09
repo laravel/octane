@@ -145,8 +145,6 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
         $client->serveStaticFile($request, $context);
-
-        $this->assertTrue(true);
     }
 
     public function test_can_serve_static_files_through_symlink(): void
