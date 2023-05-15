@@ -83,7 +83,7 @@ trait InteractsWithServers
 
         return tap(new Process([
             (new ExecutableFinder)->find('node'),
-            'file-watcher.js',
+            'file-watcher.cjs',
             json_encode(collect(config('octane.watch'))->map(fn ($path) => base_path($path))),
             $this->option('poll'),
         ], realpath(__DIR__.'/../../../bin'), null, null, null))->start();
