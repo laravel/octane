@@ -1,6 +1,14 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.4...master)
+## [Unreleased](https://github.com/laravel/octane/compare/v1.5.6...master)
+
+## [v1.5.6](https://github.com/laravel/octane/compare/v1.5.5...v1.5.6) - 2023-05-16
+
+- Support projects using type module by @timacdonald in https://github.com/laravel/octane/pull/696
+
+## [v1.5.5](https://github.com/laravel/octane/compare/v1.5.4...v1.5.5) - 2023-05-04
+
+- feat: enable http compression by sending data not with chunked encodi… by @DeepDiver1975 in https://github.com/laravel/octane/pull/691
 
 ## [v1.5.4](https://github.com/laravel/octane/compare/v1.5.3...v1.5.4) - 2023-04-18
 
