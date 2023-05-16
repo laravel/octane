@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-## Upgrading To 3.0 From 2.x
+## Upgrading To 2.0 From 1.x
 
 ### Minimum Versions
 
