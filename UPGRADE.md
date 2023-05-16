@@ -7,7 +7,7 @@
 The following requirements have been updated:
 
 - The minimum PHP version is now `v8.1.0`
-- The minimum Laravel version is now `v10.9.0`
+- The minimum Laravel version is now `v10.10.1`
 
 ### Updating Dependencies
 
