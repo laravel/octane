@@ -1,6 +1,13 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.6...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.0.0...2.x)
+
+## [v2.0.0](https://github.com/laravel/octane/compare/v1.5.6...v2.0.0) - 2023-05-16
+
+- Fix log level by @masterjus in https://github.com/laravel/octane/pull/451
+- Update InteractsWithServers.php by @ghostzero in https://github.com/laravel/octane/pull/520
+- Adds support for RoadRunner v3 and updates dependencies by @nunomaduro in https://github.com/laravel/octane/pull/690
+- Adds support for PSR-7 v2.x by @nunomaduro in https://github.com/laravel/octane/pull/694
 
 ## [v1.5.6](https://github.com/laravel/octane/compare/v1.5.5...v1.5.6) - 2023-05-16
 
