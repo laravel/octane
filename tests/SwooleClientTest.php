@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Tests;
 
+use Config;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -114,7 +115,7 @@ class SwooleClientTest extends TestCase
         ]);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain', true);
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
         $client->serveStaticFile($request, $context);
@@ -140,8 +141,8 @@ class SwooleClientTest extends TestCase
         ]);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('X-Test-Header', 'Valid');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldReceive('header')->once()->with('X-Test-Header', 'Valid', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain', true);
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
         $client->serveStaticFile($request, $context);
@@ -185,9 +186,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('cookie')->once()->with('new', 'value', 0, '/', '', false, true, 'lax');
         $swooleResponse->shouldReceive('cookie')->once()->with('cleared', 'deleted', Mockery::type('int'), '/', '', false, true, 'lax');
         $swooleResponse->shouldReceive('write')->with('Hello World');
@@ -210,9 +211,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->once()->with('Hello World');
         $swooleResponse->shouldReceive('end')->once();
 
@@ -231,9 +232,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(419, 'Page Expired');
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->with('Hello World');
         $swooleResponse->shouldReceive('end')->once();
 
@@ -257,8 +258,8 @@ class SwooleClientTest extends TestCase
 
         $client->error(new Exception('Something went wrong...'), $app, $request, $context);
 
-        $swooleResponse->shouldHaveReceived('header')->with('Status', '500 Internal Server Error');
-        $swooleResponse->shouldHaveReceived('header')->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldHaveReceived('header')->with('Status', '500 Internal Server Error', true);
+        $swooleResponse->shouldHaveReceived('header')->with('Content-Type', 'text/plain', true);
         $swooleResponse->shouldHaveReceived('end')->with('Internal server error.');
     }
 
@@ -277,8 +278,8 @@ class SwooleClientTest extends TestCase
 
         $client->error($e = new Exception('Something went wrong...'), $app, $request, $context);
 
-        $swooleResponse->shouldHaveReceived('header')->with('Status', '500 Internal Server Error');
-        $swooleResponse->shouldHaveReceived('header')->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldHaveReceived('header')->with('Status', '500 Internal Server Error', true);
+        $swooleResponse->shouldHaveReceived('header')->with('Content-Type', 'text/plain', true);
         $swooleResponse->shouldHaveReceived('end')->with((string) $e);
     }
 
@@ -290,9 +291,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock(SwooleResponse::class);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->never();
         $swooleResponse->shouldReceive('end')->once()->with('Hello World');
 
@@ -311,14 +312,33 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->once()->with('Hello ');
         $swooleResponse->shouldReceive('write')->once()->with('World');
         $swooleResponse->shouldReceive('end')->once();
 
         $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse($response));
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_preserves_header_formatting_if_configured(): void
+    {
+        $this->createApplication();
+
+        $client = new SwooleClient;
+
+        Config::set('octane.swoole.header_name_formatting', false);
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+        $swooleResponse->shouldReceive('header')->once()->with('X-Header', 'my-content', false);
+
+        $response = new Response('Hello World', 200, ['X-Header' => 'my-content']);
 
         $client->respond(new RequestContext([
             'swooleResponse' => $swooleResponse,
