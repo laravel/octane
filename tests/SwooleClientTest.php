@@ -115,7 +115,7 @@ class SwooleClientTest extends TestCase
         ]);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain', true);
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
         $client->serveStaticFile($request, $context);
@@ -141,8 +141,8 @@ class SwooleClientTest extends TestCase
         ]);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('X-Test-Header', 'Valid');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
+        $swooleResponse->shouldReceive('header')->once()->with('X-Test-Header', 'Valid', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain', true);
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
         $client->serveStaticFile($request, $context);
@@ -186,9 +186,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('cookie')->once()->with('new', 'value', 0, '/', '', false, true, 'lax');
         $swooleResponse->shouldReceive('cookie')->once()->with('cleared', 'deleted', Mockery::type('int'), '/', '', false, true, 'lax');
         $swooleResponse->shouldReceive('write')->with('Hello World');
@@ -211,9 +211,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->once()->with('Hello World');
         $swooleResponse->shouldReceive('end')->once();
 
@@ -232,9 +232,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(419, 'Page Expired');
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->with('Hello World');
         $swooleResponse->shouldReceive('end')->once();
 
@@ -291,9 +291,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock(SwooleResponse::class);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->never();
         $swooleResponse->shouldReceive('end')->once()->with('Hello World');
 
@@ -312,9 +312,9 @@ class SwooleClientTest extends TestCase
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private');
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html');
-        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'));
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->once()->with('Hello ');
         $swooleResponse->shouldReceive('write')->once()->with('World');
         $swooleResponse->shouldReceive('end')->once();
