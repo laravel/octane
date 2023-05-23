@@ -336,9 +336,14 @@ class SwooleClientTest extends TestCase
         Config::set('octane.swoole.header_name_formatting', false);
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
-        $swooleResponse->shouldReceive('header')->once()->with('X-Header', 'my-content', false);
 
-        $response = new Response('Hello World', 200, ['X-Header' => 'my-content']);
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', false);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', false);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), false);
+        $swooleResponse->shouldReceive('end')->once();
+
+        $response = new Response(null, 200, ['Content-Type' => 'text/html']);
 
         $client->respond(new RequestContext([
             'swooleResponse' => $swooleResponse,
