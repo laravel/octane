@@ -115,7 +115,7 @@ class SwooleClientTest extends TestCase
         ]);
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
         $client->serveStaticFile($request, $context);
@@ -142,7 +142,7 @@ class SwooleClientTest extends TestCase
 
         $swooleResponse->shouldReceive('status')->once()->with(200);
         $swooleResponse->shouldReceive('header')->once()->with('X-Test-Header', 'Valid', true);
-        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/plain');
         $swooleResponse->shouldReceive('sendfile')->once()->with(realpath(__DIR__.'/public/foo.txt'));
 
         $client->serveStaticFile($request, $context);
