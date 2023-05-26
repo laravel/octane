@@ -119,10 +119,12 @@ class SwooleClient implements Client, ServesStaticFiles
         $octaneConfig = $context->octaneConfig ?? [];
 
         if (! empty($octaneConfig['static_file_headers'])) {
+            $headerNameFormatting = config('octane.swoole.header_name_formatting', true);
+
             foreach ($octaneConfig['static_file_headers'] as $pattern => $headers) {
                 if ($request->is($pattern)) {
                     foreach ($headers as $name => $value) {
-                        $swooleResponse->header($name, $value);
+                        $swooleResponse->header($name, $value, $headerNameFormatting);
                     }
                 }
             }
@@ -159,9 +161,10 @@ class SwooleClient implements Client, ServesStaticFiles
             unset($headers['Set-Cookie']);
         }
 
+        $headerNameFormatting = config('octane.swoole.header_name_formatting', true);
         foreach ($headers as $name => $values) {
             foreach ($values as $value) {
-                $swooleResponse->header($name, $value);
+                $swooleResponse->header($name, $value, $headerNameFormatting);
             }
         }
 
