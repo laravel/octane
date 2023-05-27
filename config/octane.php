@@ -19,6 +19,7 @@ use Laravel\Octane\Listeners\FlushTemporaryContainerInstances;
 use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
+use Laravel\Octane\Listeners\StoreOriginalEloquentGlobalScopes;
 use Laravel\Octane\Octane;
 
 return [
@@ -66,6 +67,7 @@ return [
         WorkerStarting::class => [
             EnsureUploadedFilesAreValid::class,
             EnsureUploadedFilesCanBeMoved::class,
+            StoreOriginalEloquentGlobalScopes::class,
         ],
 
         RequestReceived::class => [

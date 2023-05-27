@@ -133,8 +133,10 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\PrepareLivewireForNextOperation::class);
         $this->app->singleton(Listeners\PrepareScoutForNextOperation::class);
         $this->app->singleton(Listeners\PrepareSocialiteForNextOperation::class);
+        $this->app->singleton(Listeners\RestoreOriginalEloquentGlobalScopes::class);
         $this->app->singleton(Listeners\ReportException::class);
         $this->app->singleton(Listeners\StopWorkerIfNecessary::class);
+        $this->app->singleton(Listeners\StoreOriginalEloquentGlobalScopes::class);
     }
 
     /**
