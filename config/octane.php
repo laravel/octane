@@ -171,6 +171,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | RoadRunner Options
+    |--------------------------------------------------------------------------
+    |
+    | While using RoadRunner, you may define additional options to set up RPC (host and port),
+    | HTTP middlewares and Cache key.
+    */
+
+    'roadrunner' => [
+        'rpc' => [
+            'host' => env('OCTANE_RPC_HOST', '127.0.0.1'),
+            'port' => env('OCTANE_RPC_PORT', 6001),
+        ],
+        'http_middleware' => 'gzip,static,http_metrics',
+        'cache' => [
+            'key' => 'local',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | File Watching
     |--------------------------------------------------------------------------
     |

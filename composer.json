@@ -33,7 +33,8 @@
         "phpstan/phpstan": "^1.10.15",
         "phpunit/phpunit": "^10.1.3",
         "spiral/roadrunner-http": "^3.0.1",
-        "spiral/roadrunner-cli": "^2.5.0"
+        "spiral/roadrunner-cli": "^2.5.0",
+        "spiral/roadrunner-kv": "^4.0.0"
     },
     "bin": [
         "bin/roadrunner-worker",

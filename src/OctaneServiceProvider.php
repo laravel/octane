@@ -18,6 +18,7 @@ use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\Exceptions\TaskTimeoutException;
 use Laravel\Octane\Facades\Octane as OctaneFacade;
+use Laravel\Octane\RoadRunner\RoadRunnerFactory;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
@@ -25,6 +26,8 @@ use Laravel\Octane\Swoole\ServerStateFile as SwooleServerStateFile;
 use Laravel\Octane\Swoole\SignalDispatcher;
 use Laravel\Octane\Swoole\SwooleCoroutineDispatcher;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
+use Spiral\Goridge\RPC\RPCInterface;
+use Spiral\RoadRunner\Http\PSR7Worker;
 
 class OctaneServiceProvider extends ServiceProvider
 {
@@ -142,8 +145,22 @@ class OctaneServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerCacheDriver()
+    protected function registerCacheDriver(): void
     {
+        if (class_exists(PSR7Worker::class) || $this->app['config']['server'] === 'roadrunner') {
+            if (! RoadRunnerFactory::ensureCacheSetup()) {
+                return;
+            }
+
+            $this->app->singleton(RPCInterface::class, fn () => RoadRunnerFactory::createRPC());
+
+            Cache::extend('octane', function () {
+                return Cache::repository(RoadRunnerFactory::createCacheStore($this->app->get(RPCInterface::class)));
+            });
+
+            return;
+        }
+
         if (empty($this->app['config']['octane.cache'])) {
             return;
         }

@@ -1,0 +1,59 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - master
+      - '*.x'
+  pull_request:
+
+jobs:
+  tests-rr:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1, 8.2]
+        laravel: [10]
+        rr: [2023.1.4]
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - RR ${{ matrix.rr }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Install laravel
+        run: |
+          composer create-project laravel/laravel laravel
+
+      - name: Setup laravel with local octane repository
+        working-directory: ./laravel
+        run: |
+          composer config repositories.octane path ../.
+          composer config minimum-stability dev
+          composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http spiral/roadrunner-kv
+
+      - name: Install RoadRunner Binary
+        working-directory: ./laravel
+        run: |
+          docker run --rm -v ${PWD}:/rootfs:rw --entrypoint "" spiralscout/roadrunner:${{ matrix.rr }} cp /usr/bin/rr /rootfs/rr
+
+      - name: Install basic Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --ansi
+
+      - name: Execute tests
+        run: vendor/bin/phpunit tests/Feature
+        env:
+          FEATURE_TEST: rr
+          LARAVEL_PATH: laravel

@@ -39,7 +39,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     {
         [
             'state' => [
-                'host' => $host,
+                'rpcHost' => $rpcHost,
                 'rpcPort' => $rpcPort,
             ],
         ] = $this->serverStateFile->read();
@@ -47,7 +47,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
         tap($this->processFactory->createProcess([
             $this->findRoadRunnerBinary(),
             'reset',
-            '-o', "rpc.listen=tcp://$host:$rpcPort",
+            '-o', "rpc.listen=tcp://$rpcHost:$rpcPort",
             '-s',
         ], base_path()))->start()->waitUntil(function ($type, $buffer) {
             if ($type === Process::ERR) {

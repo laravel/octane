@@ -12,6 +12,7 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-22.04
+    timeout-minutes: 5
 
     strategy:
       fail-fast: true

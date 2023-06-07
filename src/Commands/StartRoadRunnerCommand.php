@@ -24,9 +24,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     public $signature = 'octane:roadrunner
                     {--host=127.0.0.1 : The IP address the server should bind to}
                     {--port= : The port the server should be available on}
-                    {--rpc-host= : The RPC IP address the server should bind to}
-                    {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
+                    {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
@@ -82,10 +81,12 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
+            '-o', 'jobs.pool.num_workers='.$this->taskWorkerCount(),
             '-o', 'rpc.listen=tcp://'.$this->rpcHost().':'.$this->rpcPort(),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir='.base_path('public'),
-            '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
+            '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'gzip,static,http_metrics'),
+            '-o', 'kv.'.config('octane.roadrunner.cache.key', 'local').'.driver=memory',
             '-o', 'logs.mode=production',
             '-o', 'logs.level='.($this->option('log-level') ?: (app()->environment('local') ? 'debug' : 'warn')),
             '-o', 'logs.output=stdout',
@@ -114,6 +115,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             'appName' => config('app.name', 'Laravel'),
             'host' => $this->getHost(),
             'port' => $this->getPort(),
+            'rpcHost' => $this->rpcHost(),
             'rpcPort' => $this->rpcPort(),
             'workers' => $this->workerCount(),
             'maxRequests' => $this->option('max-requests'),
@@ -131,6 +133,18 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         return $this->option('workers') == 'auto'
                             ? 0
                             : $this->option('workers');
+    }
+
+    /**
+     * Get the number of task workers that should be started.
+     *
+     * @return int
+     */
+    protected function taskWorkerCount(): int
+    {
+        return $this->option('task-workers') == 'auto'
+                            ? 0
+                            : $this->option('task-workers');
     }
 
     /**
@@ -170,9 +184,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      *
      * @return string
      */
-    protected function rpcHost()
+    protected function rpcHost(): string
     {
-        return $this->option('rpc-host') ?: $this->getHost();
+        return config('octane.roadrunner.rpc.host', $this->getHost());
     }
 
     /**
@@ -180,9 +194,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      *
      * @return int
      */
-    protected function rpcPort()
+    protected function rpcPort(): int
     {
-        return $this->option('rpc-port') ?: $this->getPort() - 1999;
+        return config('octane.roadrunner.rpc.port', $this->getPort() - 1999);
     }
 
     /**
