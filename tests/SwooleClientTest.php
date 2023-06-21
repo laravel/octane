@@ -333,7 +333,7 @@ class SwooleClientTest extends TestCase
 
         $client = new SwooleClient;
 
-        Config::set('octane.swoole.header_name_formatting', false);
+        Config::set('octane.swoole.format_headers', false);
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
