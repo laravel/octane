@@ -3,7 +3,6 @@
 namespace Laravel\Octane;
 
 use Closure;
-use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;
