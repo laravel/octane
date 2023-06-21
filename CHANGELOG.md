@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.0.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.0.1...2.x)
+
+## [v2.0.1](https://github.com/laravel/octane/compare/v2.0.0...v2.0.1) - 2023-05-26
+
+- `--log-level` option in octane:start command by @glushkovds in https://github.com/laravel/octane/pull/701
 
 ## [v2.0.0](https://github.com/laravel/octane/compare/v1.5.6...v2.0.0) - 2023-05-16
 
