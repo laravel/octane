@@ -119,12 +119,12 @@ class SwooleClient implements Client, ServesStaticFiles
         $octaneConfig = $context->octaneConfig ?? [];
 
         if (! empty($octaneConfig['static_file_headers'])) {
-            $headerNameFormatting = config('octane.swoole.header_name_formatting', true);
+            $formatHeaders = config('octane.swoole.format_headers', true);
 
             foreach ($octaneConfig['static_file_headers'] as $pattern => $headers) {
                 if ($request->is($pattern)) {
                     foreach ($headers as $name => $value) {
-                        $swooleResponse->header($name, $value, $headerNameFormatting);
+                        $swooleResponse->header($name, $value, $formatHeaders);
                     }
                 }
             }
