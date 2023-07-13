@@ -10,6 +10,7 @@ use Laravel\Octane\RoadRunner\RoadRunnerClient;
 use Laravel\Octane\Stream;
 use Laravel\Octane\Worker;
 use Psr\Http\Message\ServerRequestInterface;
+use Spiral\Goridge\Exception\RelayException;
 use Spiral\Goridge\Relay;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Spiral\RoadRunner\Worker as RoadRunnerWorker;
@@ -36,28 +37,30 @@ $roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Worker(
 
 $worker = null;
 
-while ($psr7Request = $psr7Client->waitRequest()) {
-    try {
+try {
+    while ($psr7Request = $psr7Client->waitRequest()) {
         $worker = $worker ?: tap((new Worker(
             new ApplicationFactory($basePath), $roadRunnerClient
         )))->boot();
-    } catch (Throwable $e) {
-        Stream::shutdown($e);
 
-        exit(1);
+        if (! $psr7Request instanceof ServerRequestInterface) {
+            break;
+        }
+
+        [$request, $context] = $roadRunnerClient->marshalRequest(new RequestContext([
+            'psr7Request' => $psr7Request,
+        ]));
+
+        $worker->handle($request, $context);
+    }
+} catch (Throwable $e) {
+    if (! $e instanceof RelayException) {
+        $worker ? report($e) : Stream::shutdown($e);
     }
 
-    if (! $psr7Request instanceof ServerRequestInterface) {
-        break;
+    exit(1);
+} finally {
+    if (! is_null($worker)) {
+        $worker->terminate();
     }
-
-    [$request, $context] = $roadRunnerClient->marshalRequest(new RequestContext([
-        'psr7Request' => $psr7Request
-    ]));
-
-    $worker->handle($request, $context);
-}
-
-if (! is_null($worker)) {
-    $worker->terminate();
 }
