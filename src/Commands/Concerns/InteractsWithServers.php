@@ -154,5 +154,7 @@ trait InteractsWithServers
     public function handleSignal(int $signal): void
     {
         $this->stopServer();
+
+        exit(0);
     }
 }
