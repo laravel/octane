@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.0.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.0.3...2.x)
+
+## [v2.0.3](https://github.com/laravel/octane/compare/v2.0.2...v2.0.3) - 2023-07-20
+
+- Fixes "Incorrect header size" by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/719
+- Fix handleSignal deprecation warning by [@sy](https://github.com/sy)-records in https://github.com/laravel/octane/pull/722
 
 ## [v2.0.2](https://github.com/laravel/octane/compare/v2.0.1...v2.0.2) - 2023-06-21
 
