@@ -90,7 +90,7 @@ trait InstallsRoadRunnerDependencies
             $composerPath = (new ExecutableFinder())->find('composer');
         }
 
-        return '"'.$phpPath.'" '.$composerPath;
+        return '"'.$phpPath.'" "'.$composerPath.'"';
     }
 
     /**
