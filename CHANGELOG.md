@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.0.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.0.4...2.x)
+
+## [v2.0.4](https://github.com/laravel/octane/compare/v2.0.3...v2.0.4) - 2023-08-02
+
+### What's Changed
+
+- Update CHANGELOG.md by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/725
+- [2.x] Fixes installation when using Herd by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/726
+
+**Full Changelog**: https://github.com/laravel/octane/compare/v2.0.3...v2.0.4
 
 ## [v2.0.3](https://github.com/laravel/octane/compare/v2.0.2...v2.0.3) - 2023-07-20
 
