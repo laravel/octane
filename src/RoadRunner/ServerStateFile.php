@@ -12,8 +12,6 @@ class ServerStateFile
 
     /**
      * Read the server state from the server state file.
-     *
-     * @return array
      */
     public function read(): array
     {
@@ -29,9 +27,6 @@ class ServerStateFile
 
     /**
      * Write the given process ID to the server state file.
-     *
-     * @param  int  $masterProcessId
-     * @return void
      */
     public function writeProcessId(int $masterProcessId): void
     {
@@ -47,9 +42,6 @@ class ServerStateFile
 
     /**
      * Write the given state array to the server state file.
-     *
-     * @param  array  $newState
-     * @return void
      */
     public function writeState(array $newState): void
     {
@@ -65,8 +57,6 @@ class ServerStateFile
 
     /**
      * Delete the process ID file.
-     *
-     * @return bool
      */
     public function delete(): bool
     {
@@ -79,8 +69,6 @@ class ServerStateFile
 
     /**
      * Get the path to the process ID file.
-     *
-     * @return string
      */
     public function path(): string
     {

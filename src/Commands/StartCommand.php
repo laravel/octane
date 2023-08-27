@@ -24,7 +24,8 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Use file system polling while watching in order to watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--log-level= : Log messages at or above the specified log level}';
 
     /**
      * The command's description.
@@ -84,13 +85,13 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--rr-config' => $this->option('rr-config'),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
+            '--log-level' => $this->option('log-level'),
         ]);
     }
 
     /**
      * Inform the user that the server type is invalid.
      *
-     * @param  string  $server
      * @return int
      */
     protected function invalidServer(string $server)

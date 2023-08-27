@@ -17,11 +17,6 @@ class OpenSwooleTable extends Table
 
     /**
      * Set the data type and size of the columns.
-     *
-     * @param  string  $name
-     * @param  int  $type
-     * @param  int  $size
-     * @return bool
      */
     public function column(string $name, int $type, int $size = 0): bool
     {
@@ -32,10 +27,6 @@ class OpenSwooleTable extends Table
 
     /**
      * Update a row of the table.
-     *
-     * @param  string  $key
-     * @param  array  $values
-     * @return bool
      */
     public function set(string $key, array $values): bool
     {

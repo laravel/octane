@@ -3,13 +3,17 @@
 $config = $serverState['octaneConfig'];
 
 try {
+    $host = $serverState['host'] ?? '127.0.0.1';
+
+    $sock = filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? SWOOLE_SOCK_TCP : SWOOLE_SOCK_TCP6;
+
     $server = new Swoole\Http\Server(
-        $serverState['host'] ?? '127.0.0.1',
+        $host,
         $serverState['port'] ?? 8080,
         $serverState['mode'] ?? SWOOLE_PROCESS,
         ($config['swoole']['ssl'] ?? false)
-            ? SWOOLE_SOCK_TCP | SWOOLE_SSL
-            : SWOOLE_SOCK_TCP,
+            ? $sock | SWOOLE_SSL
+            : $sock,
     );
 } catch (Throwable $e) {
     Laravel\Octane\Stream::shutdown($e);

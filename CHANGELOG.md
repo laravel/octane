@@ -1,6 +1,34 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v1.5.6...1.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.0.5...2.x)
+
+## [v2.0.5](https://github.com/laravel/octane/compare/v2.0.4...v2.0.5) - 2023-08-08
+
+- Add IPv6 support for Swoole by [@xorinzor](https://github.com/xorinzor) in https://github.com/laravel/octane/pull/728
+
+## [v2.0.4](https://github.com/laravel/octane/compare/v2.0.3...v2.0.4) - 2023-08-02
+
+- [2.x] Fixes installation when using Herd by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/726
+
+## [v2.0.3](https://github.com/laravel/octane/compare/v2.0.2...v2.0.3) - 2023-07-20
+
+- Fixes "Incorrect header size" by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/719
+- Fix handleSignal deprecation warning by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/722
+
+## [v2.0.2](https://github.com/laravel/octane/compare/v2.0.1...v2.0.2) - 2023-06-21
+
+- Disable unintentional swoole header formatting by config value by [@NiroDeveloper](https://github.com/NiroDeveloper) in https://github.com/laravel/octane/pull/710
+
+## [v2.0.1](https://github.com/laravel/octane/compare/v2.0.0...v2.0.1) - 2023-05-26
+
+- `--log-level` option in octane:start command by @glushkovds in https://github.com/laravel/octane/pull/701
+
+## [v2.0.0](https://github.com/laravel/octane/compare/v1.5.6...v2.0.0) - 2023-05-16
+
+- Fix log level by @masterjus in https://github.com/laravel/octane/pull/451
+- Update InteractsWithServers.php by @ghostzero in https://github.com/laravel/octane/pull/520
+- Adds support for RoadRunner v3 and updates dependencies by @nunomaduro in https://github.com/laravel/octane/pull/690
+- Adds support for PSR-7 v2.x by @nunomaduro in https://github.com/laravel/octane/pull/694
 
 ## [v1.5.6](https://github.com/laravel/octane/compare/v1.5.5...v1.5.6) - 2023-05-16
 

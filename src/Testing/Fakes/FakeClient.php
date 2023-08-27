@@ -12,7 +12,9 @@ use Throwable;
 class FakeClient implements Client
 {
     public $index = 0;
+
     public $responses = [];
+
     public $errors = [];
 
     public function __construct(public array $requests)

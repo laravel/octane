@@ -50,8 +50,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     /**
      * Handle the command.
      *
-     * @param  \Laravel\Octane\RoadRunner\ServerProcessInspector  $inspector
-     * @param  \Laravel\Octane\RoadRunner\ServerStateFile  $serverStateFile
      * @return int
      */
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
@@ -79,7 +77,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-c', $this->configPath(),
-            '-o', 'version=2.7',
+            '-o', 'version=3',
             '-o', 'http.address='.$this->option('host').':'.$this->getPort(),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().' '.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
@@ -107,7 +105,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     /**
      * Write the RoadRunner server state file.
      *
-     * @param  \Laravel\Octane\RoadRunner\ServerStateFile  $serverStateFile
      * @return void
      */
     protected function writeServerStateFile(
@@ -246,9 +243,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
     /**
      * Calculate the elapsed time for a request.
-     *
-     * @param  string  $elapsed
-     * @return float
      */
     protected function calculateElapsedTime(string $elapsed): float
     {

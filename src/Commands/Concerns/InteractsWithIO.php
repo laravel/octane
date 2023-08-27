@@ -58,7 +58,7 @@ trait InteractsWithIO
      */
     public function info($string, $verbosity = null)
     {
-        $this->label($string, $verbosity, 'INFO', 'cyan', 'black');
+        $this->label($string, $verbosity, 'INFO', 'blue', 'white');
     }
 
     /**

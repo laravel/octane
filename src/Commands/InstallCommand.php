@@ -48,6 +48,7 @@ class InstallCommand extends Command
                 $this->callSilent('vendor:publish', ['--tag' => 'octane-config', '--force' => true]);
 
                 $this->info('Octane installed successfully.');
+                $this->newLine();
             }
         });
     }
@@ -118,7 +119,6 @@ class InstallCommand extends Command
     /**
      * Inform the user that the server type is invalid.
      *
-     * @param  string  $server
      * @return bool
      */
     protected function invalidServer(string $server)

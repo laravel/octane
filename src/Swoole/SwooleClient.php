@@ -31,9 +31,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Marshal the given request context into an Illuminate request.
-     *
-     * @param  \Laravel\Octane\RequestContext  $context
-     * @return array
      */
     public function marshalRequest(RequestContext $context): array
     {
@@ -48,10 +45,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Determine if the request can be served as a static file.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Laravel\Octane\RequestContext  $context
-     * @return bool
      */
     public function canServeRequestAsStaticFile(Request $request, RequestContext $context): bool
     {
@@ -76,11 +69,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Determine if the request is for a valid static file within a symlink.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $publicPath
-     * @param  string  $pathToFile
-     * @return bool
      */
     private function isValidFileWithinSymlink(Request $request, string $publicPath, string $pathToFile): bool
     {
@@ -92,8 +80,6 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * If the given public file is within a symlinked directory, return the path after the symlink.
      *
-     * @param  string  $publicPath
-     * @param  string  $path
      * @return string|bool
      */
     private function pathAfterSymlink(string $publicPath, string $path)
@@ -113,10 +99,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Determine if the given file is servable.
-     *
-     * @param  string  $publicPath
-     * @param  string  $pathToFile
-     * @return bool
      */
     protected function fileIsServable(string $publicPath, string $pathToFile): bool
     {
@@ -128,10 +110,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Serve the static file that was requested.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Laravel\Octane\RequestContext  $context
-     * @return void
      */
     public function serveStaticFile(Request $request, RequestContext $context): void
     {
@@ -141,10 +119,12 @@ class SwooleClient implements Client, ServesStaticFiles
         $octaneConfig = $context->octaneConfig ?? [];
 
         if (! empty($octaneConfig['static_file_headers'])) {
+            $formatHeaders = config('octane.swoole.format_headers', true);
+
             foreach ($octaneConfig['static_file_headers'] as $pattern => $headers) {
                 if ($request->is($pattern)) {
                     foreach ($headers as $name => $value) {
-                        $swooleResponse->header($name, $value);
+                        $swooleResponse->header($name, $value, $formatHeaders);
                     }
                 }
             }
@@ -157,10 +137,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Send the response to the server.
-     *
-     * @param  \Laravel\Octane\RequestContext  $context
-     * @param  \Laravel\Octane\OctaneResponse  $octaneResponse
-     * @return void
      */
     public function respond(RequestContext $context, OctaneResponse $octaneResponse): void
     {
@@ -171,9 +147,7 @@ class SwooleClient implements Client, ServesStaticFiles
     /**
      * Send the headers from the Illuminate response to the Swoole response.
      *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  \Swoole\Http\Response  $response
-     * @return void
      */
     public function sendResponseHeaders(Response $response, SwooleResponse $swooleResponse): void
     {
@@ -187,9 +161,11 @@ class SwooleClient implements Client, ServesStaticFiles
             unset($headers['Set-Cookie']);
         }
 
+        $formatHeaders = config('octane.swoole.format_headers', true);
+
         foreach ($headers as $name => $values) {
             foreach ($values as $value) {
-                $swooleResponse->header($name, $value);
+                $swooleResponse->header($name, $value, $formatHeaders);
             }
         }
 
@@ -220,7 +196,6 @@ class SwooleClient implements Client, ServesStaticFiles
      *
      * @param  \Laravel\Octane\OctaneResponse  $response
      * @param  \Swoole\Http\Response  $response
-     * @return void
      */
     protected function sendResponseContent(OctaneResponse $octaneResponse, SwooleResponse $swooleResponse): void
     {
@@ -275,12 +250,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Send an error message to the server.
-     *
-     * @param  \Throwable  $e
-     * @param  \Illuminate\Foundation\Application  $app
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Laravel\Octane\RequestContext  $context
-     * @return void
      */
     public function error(Throwable $e, Application $app, Request $request, RequestContext $context): void
     {
@@ -294,9 +263,6 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * Get the HTTP reason clause for non-standard status codes.
-     *
-     * @param  int  $code
-     * @return string|null
      */
     protected function getReasonFromStatusCode(int $code): ?string
     {

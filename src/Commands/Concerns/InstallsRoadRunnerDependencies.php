@@ -21,7 +21,7 @@ trait InstallsRoadRunnerDependencies
      *
      * @var string
      */
-    protected $requiredVersion = '2.8.2';
+    protected $requiredVersion = '2023.1.1';
 
     /**
      * Determine if RoadRunner is installed.
@@ -44,13 +44,13 @@ trait InstallsRoadRunnerDependencies
             return true;
         }
 
-        if (! $this->confirm('Octane requires "spiral/roadrunner:^2.8.2". Do you wish to install it as a dependency?')) {
-            $this->error('Octane requires "spiral/roadrunner".');
+        if (! $this->confirm('Octane requires "spiral/roadrunner-http:^3.0.1" and "spiral/roadrunner-cli:^2.5.0". Do you wish to install them as a dependencies?')) {
+            $this->error('Octane requires "spiral/roadrunner-http" and "spiral/roadrunner-cli".');
 
             return false;
         }
 
-        $command = $this->findComposer().' require spiral/roadrunner:^2.8.2 --with-all-dependencies';
+        $command = $this->findComposer().' require spiral/roadrunner-http:^3.0.1 spiral/roadrunner-cli:^2.5.0 --with-all-dependencies';
 
         $process = Process::fromShellCommandline($command, null, null, null, null);
 
@@ -90,13 +90,11 @@ trait InstallsRoadRunnerDependencies
             $composerPath = (new ExecutableFinder())->find('composer');
         }
 
-        return '"'.$phpPath.'" '.$composerPath;
+        return '"'.$phpPath.'" "'.$composerPath.'"';
     }
 
     /**
      * Ensure the RoadRunner binary is installed into the project.
-     *
-     * @return string
      */
     protected function ensureRoadRunnerBinaryIsInstalled(): string
     {
@@ -125,7 +123,7 @@ trait InstallsRoadRunnerDependencies
             ->run()
             ->getOutput();
 
-        if (! Str::startsWith($version, 'rr version 2.')) {
+        if (! Str::startsWith($version, 'rr version')) {
             return $this->warn(
                 'Unable to determine the current RoadRunner binary version. Please report this issue: https://github.com/laravel/octane/issues/new.'
             );
@@ -133,24 +131,26 @@ trait InstallsRoadRunnerDependencies
 
         $version = explode(' ', $version)[2];
 
-        if (version_compare($version, $this->requiredVersion, '<')) {
-            $this->warn("Your RoadRunner binary version (<fg=red>$version</>) may be incompatible with Octane.");
+        if (version_compare($version, $this->requiredVersion, '>=')) {
+            return;
+        }
 
-            if ($this->confirm('Should Octane download the latest RoadRunner binary version for your operating system?', true)) {
-                rename($roadRunnerBinary, "$roadRunnerBinary.backup");
+        $this->warn("Your RoadRunner binary version (<fg=red>$version</>) may be incompatible with Octane.");
 
-                try {
-                    $this->downloadRoadRunnerBinary();
-                } catch (Throwable $e) {
-                    report($e);
+        if ($this->confirm('Should Octane download the latest RoadRunner binary version for your operating system?', true)) {
+            rename($roadRunnerBinary, "$roadRunnerBinary.backup");
 
-                    rename("$roadRunnerBinary.backup", $roadRunnerBinary);
+            try {
+                $this->downloadRoadRunnerBinary();
+            } catch (Throwable $e) {
+                report($e);
 
-                    return $this->warn('Unable to download RoadRunner binary. The HTTP request exception has been logged.');
-                }
+                rename("$roadRunnerBinary.backup", $roadRunnerBinary);
 
-                unlink("$roadRunnerBinary.backup");
+                return $this->warn('Unable to download RoadRunner binary. The HTTP request exception has been logged.');
             }
+
+            unlink("$roadRunnerBinary.backup");
         }
     }
 
@@ -161,15 +161,21 @@ trait InstallsRoadRunnerDependencies
      */
     protected function downloadRoadRunnerBinary()
     {
+        $installed = false;
+
         tap(new Process(array_filter([
             (new PhpExecutableFinder)->find(),
             './vendor/bin/rr',
             'get-binary',
             '-n',
             '--ansi',
-        ]), base_path(), null, null, null))->mustRun(
-            fn ($type, $buffer) => $this->output->write($buffer)
-        );
+        ]), base_path(), null, null, null))->mustRun(function (string $type, string $buffer) use (&$installed) {
+            if (! $installed) {
+                $this->output->write($buffer);
+
+                $installed = str_contains($buffer, 'has been installed into');
+            }
+        });
 
         chmod(base_path('rr'), 0755);
 

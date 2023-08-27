@@ -16,8 +16,6 @@ trait ProvidesConcurrencySupport
      *
      * Results will be keyed by their given keys - if a task did not finish, the tasks value will be "false".
      *
-     * @param  array  $tasks
-     * @param  int  $waitMilliseconds
      * @return array
      *
      * @throws \Laravel\Octane\Exceptions\TaskException

@@ -6,8 +6,6 @@ trait ProvidesDefaultConfigurationOptions
 {
     /**
      * Get the listeners that will prepare the Laravel application for a new request.
-     *
-     * @return array
      */
     public static function prepareApplicationForNextRequest(): array
     {
@@ -25,8 +23,6 @@ trait ProvidesDefaultConfigurationOptions
 
     /**
      * Get the listeners that will prepare the Laravel application for a new operation.
-     *
-     * @return array
      */
     public static function prepareApplicationForNextOperation(): array
     {
@@ -66,8 +62,6 @@ trait ProvidesDefaultConfigurationOptions
 
     /**
      * Get the container bindings / services that should be pre-resolved by default.
-     *
-     * @return array
      */
     public static function defaultServicesToWarm(): array
     {

@@ -8,7 +8,7 @@ use Laravel\Octane\Cache\OctaneStore;
 
 class OctaneStoreTest extends TestCase
 {
-    public function test_can_retrieve_items_from_store()
+    public function test_can_retrieve_items_from_store(): void
     {
         $table = $this->createSwooleTable();
 
