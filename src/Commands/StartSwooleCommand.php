@@ -101,6 +101,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'appName' => config('app.name', 'Laravel'),
             'host' => $this->getHost(),
             'port' => $this->getPort(),
+            'mode' => $this->getMode(),
             'workers' => $this->workerCount($extension),
             'taskWorkers' => $this->taskWorkerCount($extension),
             'maxRequests' => $this->option('max-requests'),
@@ -132,6 +133,16 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'task_worker_num' => $this->taskWorkerCount($extension),
             'worker_num' => $this->workerCount($extension),
         ];
+    }
+
+    /**
+     * Get the HTTP server mode.
+     *
+     * @return int
+     */
+    protected function getMode()
+    {
+        return $this->option('mode') ?? config('octane.swoole.mode') ?? $_ENV['SWOOLE_SERVER_MODE'] ?? SWOOLE_PROCESS;
     }
 
     /**
