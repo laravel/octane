@@ -142,7 +142,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      */
     protected function getMode()
     {
-        return $this->option('mode') ?? config('octane.swoole.mode') ?? $_ENV['SWOOLE_SERVER_MODE'] ?? SWOOLE_PROCESS;
+        return (int) ($this->option('mode') ?? config('octane.swoole.mode') ?? $_ENV['SWOOLE_SERVER_MODE'] ?? SWOOLE_PROCESS);
     }
 
     /**
