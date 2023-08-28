@@ -10,7 +10,7 @@ try {
     $server = new Swoole\Http\Server(
         $host,
         $serverState['port'] ?? 8080,
-        $serverState['mode'] ?? SWOOLE_PROCESS,
+        $config['swoole']['mode'] ?? SWOOLE_PROCESS,
         ($config['swoole']['ssl'] ?? false)
             ? $sock | SWOOLE_SSL
             : $sock,
