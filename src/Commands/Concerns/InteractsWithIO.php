@@ -22,6 +22,7 @@ trait InteractsWithIO
      */
     protected $ignoreMessages = [
         'destroy signal received',
+        'req-resp mode',
         'scan command',
         'sending stop request to the worker',
         'stop signal received, grace timeout is: ',
@@ -32,6 +33,7 @@ trait InteractsWithIO
         'worker destructed',
         'worker destroyed',
         '[INFO] RoadRunner server started; version:',
+        '[INFO] sdnotify: not notified',
     ];
 
     /**
