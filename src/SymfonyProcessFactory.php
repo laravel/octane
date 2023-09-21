@@ -9,6 +9,8 @@ class SymfonyProcessFactory
     /**
      * Create a new Symfony process instance.
      *
+     * @param  string  $cwd
+     * @param  array  $env
      * @param  mixed|null  $input
      * @return \Symfony\Component\Process\Process
      */

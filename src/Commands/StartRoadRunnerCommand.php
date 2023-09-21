@@ -13,8 +13,8 @@ use Symfony\Component\Process\Process;
 class StartRoadRunnerCommand extends Command implements SignalableCommandInterface
 {
     use Concerns\InstallsRoadRunnerDependencies,
-        Concerns\InteractsWithEnvironmentVariables,
-        Concerns\InteractsWithServers;
+        Concerns\InteractsWithServers,
+        Concerns\InteractsWithEnvironmentVariables;
 
     /**
      * The command's signature.

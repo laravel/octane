@@ -9,6 +9,8 @@ trait FindsRoadRunnerBinary
 {
     /**
      * Find the RoadRunner binary used by the application.
+     *
+     * @return string
      */
     protected function findRoadRunnerBinary(): ?string
     {
