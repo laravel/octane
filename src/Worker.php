@@ -59,8 +59,6 @@ class Worker implements WorkerContract
 
     /**
      * Handle an incoming request and send the response to the client.
-     *
-     * @param  \Laravel\Octane\RequestContext  $context
      */
     public function handle(Request $request, RequestContext $context): void
     {
@@ -181,8 +179,6 @@ class Worker implements WorkerContract
 
     /**
      * Handle an uncaught exception from the worker.
-     *
-     * @param  \Laravel\Octane\RequestContext  $context
      */
     protected function handleWorkerError(
         Throwable $e,
