@@ -12,7 +12,7 @@ use Symfony\Component\Process\Process;
 
 class StartSwooleCommand extends Command implements SignalableCommandInterface
 {
-    use Concerns\InteractsWithServers, Concerns\InteractsWithEnvironmentVariables;
+    use Concerns\InteractsWithEnvironmentVariables, Concerns\InteractsWithServers;
 
     /**
      * The command's signature.
