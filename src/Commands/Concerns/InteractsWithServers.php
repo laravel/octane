@@ -82,11 +82,25 @@ trait InteractsWithServers
         }
 
         return tap(new Process([
-            (new ExecutableFinder)->find('node'),
+            (new ExecutableFinder)->find($this->determineJavaScriptRuntime()),
             'file-watcher.cjs',
             json_encode(collect(config('octane.watch'))->map(fn ($path) => base_path($path))),
             $this->option('poll'),
         ], realpath(__DIR__.'/../../../bin'), null, null, null))->start();
+    }
+
+    /**
+     * Determine which JavaScript runtime to use.
+     *
+     * @return string
+     */
+    protected function determineJavaScriptRuntime()
+    {
+        if ($this->option('bun')) {
+            return 'bun';
+        }
+
+        return 'node';
     }
 
     /**

@@ -26,7 +26,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Use file system polling while watching in order to watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--bun : Use Bun instead of Node to watch for changes}';
 
     /**
      * The command's description.

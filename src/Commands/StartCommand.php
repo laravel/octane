@@ -25,6 +25,7 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--bun : Use Bun instead of Node to watch for changes}
                     {--log-level= : Log messages at or above the specified log level}';
 
     /**
@@ -65,6 +66,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--max-requests' => $this->option('max-requests'),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
+            '--bun' => $this->option('bun'),
         ]);
     }
 
@@ -85,6 +87,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--rr-config' => $this->option('rr-config'),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
+            '--bun' => $this->option('bun'),
             '--log-level' => $this->option('log-level'),
         ]);
     }
