@@ -100,7 +100,7 @@ trait InteractsWithServers
 
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>http://'.$this->getHost().':'.$this->getPort().' </>',
+            '  Local: <fg=white;options=bold>'.($this->option('https') ? 'https://' : 'http://').$this->getHost().':'.$this->getPort().' </>',
             '',
             '  <fg=yellow>Press Ctrl+C to stop the server</>',
             '',

@@ -1,0 +1,38 @@
+{
+	{$CADDY_GLOBAL_OPTIONS}
+
+	frankenphp {
+		worker vendor/laravel/octane/bin/frankenphp-worker.php {$WORKER_COUNT}
+	}
+}
+
+{$SERVER_NAME} {
+	log {
+		# Redact the authorization query parameter that can be set by Mercure
+		format filter {
+			wrap console
+			fields {
+				uri query {
+					replace authorization REDACTED
+				}
+			}
+		}
+	}
+
+	route {
+		encode zstd gzip
+
+		# Mercure config is injected here
+		{$CADDY_SERVER_EXTRA_DIRECTIVES}
+
+		# If the requested file does not exist, pass to the worker script
+		@indexFiles file {
+			try_files public/{path} vendor/laravel/octane/bin/frankenphp-worker.php
+			split_path .php
+		}
+		rewrite @indexFiles {http.matchers.file.relative}
+		@phpFiles path *.php
+		php @phpFiles
+		file_server @indexFiles
+	}
+}

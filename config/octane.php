@@ -32,7 +32,7 @@ return [
     | when starting, restarting, or stopping your server via the CLI. You
     | are free to change this to the supported server of your choosing.
     |
-    | Supported: "roadrunner", "swoole"
+    | Supported: "roadrunner", "swoole", "frankenphp"
     |
     */
 
@@ -50,6 +50,29 @@ return [
     */
 
     'https' => env('OCTANE_HTTPS', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mercure hub
+    |--------------------------------------------------------------------------
+    |
+    | This option configures the Mercure hub (events broadcasting) that is included in FrankenPHP.
+    | The defaults are good enough for most applications.
+    | "publisher_jwt" configures the key and algorithm to use for verifying JWTs provided by publishers.
+    | "subscriber_jwt" configures the key and algorithm to use for verifying JWTs provided by subscribers.
+    | Set "anonymous" to false to disable anonymous subscribing.
+    | Set "subscriptions" to false to disable the subscription API.
+    | Set "mercure" to false to entirely disable the Mercure hub.
+    |
+    | More information about Mercure can be found on https://mercure.rocks.
+    */
+
+    'mercure' => [
+        'publisher_jwt' => env('MERCURE_SUBSCRIBER_JWT_KEY', '!ChangeThisMercureHubJWTSecretKey!'),
+        'subscriber_jwt' => env('MERCURE_SUBSCRIBER_JWT_KEY', '!ChangeThisMercureHubJWTSecretKey!'),
+        'anonymous' => true,
+        'subscriptions' => true,
+    ],
 
     /*
     |--------------------------------------------------------------------------

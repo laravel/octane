@@ -23,6 +23,8 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
+                    {--frankenphp-config= : The path to the FrankenPHP Caddyfile file}
+                    {--https : Enable HTTPS, HTTP/2 and HTTP/3, automatically generate and renew certificates}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
                     {--log-level= : Log messages at or above the specified log level}';
@@ -46,6 +48,7 @@ class StartCommand extends Command implements SignalableCommandInterface
         return match ($server) {
             'swoole' => $this->startSwooleServer(),
             'roadrunner' => $this->startRoadRunnerServer(),
+            'frankenphp' => $this->startFrankenPhpServer(),
             default => $this->invalidServer($server),
         };
     }
@@ -86,6 +89,24 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
             '--log-level' => $this->option('log-level'),
+        ]);
+    }
+
+    /**
+     * Start the FrankenPHP server for Octane.
+     *
+     * @return int
+     */
+    protected function startFrankenPhpServer()
+    {
+        return $this->call('octane:frankenphp', [
+            '--host' => $this->getHost(),
+            '--port' => $this->getPort(),
+            '--workers' => $this->option('workers'),
+            '--max-requests' => $this->option('max-requests'),
+            '--https' => $this->option('https'),
+            '--watch' => $this->option('watch'),
+            '--poll' => $this->option('poll'),
         ]);
     }
 
