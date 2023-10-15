@@ -15,7 +15,7 @@ class StartCommand extends Command implements SignalableCommandInterface
      */
     public $signature = 'octane:start
                     {--server= : The server that should be used to serve the application}
-                    {--host=127.0.0.1 : The IP address the server should bind to}
+                    {--host= : The IP address the server should bind to}
                     {--port= : The port the server should be available on [default: "8000"]}
                     {--rpc-host= : The RPC IP address the server should bind to}
                     {--rpc-port= : The RPC port the server should be available on}
