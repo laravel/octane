@@ -20,7 +20,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      * @var string
      */
     public $signature = 'octane:swoole
-                    {--host=127.0.0.1 : The IP address the server should bind to}
+                    {--host= : The IP address the server should bind to}
                     {--port= : The port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}

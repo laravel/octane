@@ -22,7 +22,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      * @var string
      */
     public $signature = 'octane:roadrunner
-                    {--host=127.0.0.1 : The IP address the server should bind to}
+                    {--host= : The IP address the server should bind to}
                     {--port= : The port the server should be available on}
                     {--rpc-host= : The RPC IP address the server should bind to}
                     {--rpc-port= : The RPC port the server should be available on}
