@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.1.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.1.1...2.x)
+
+## [v2.1.1](https://github.com/laravel/octane/compare/v2.1.0...v2.1.1) - 2023-10-18
+
+- Fix swoole host only configurable via --host parameter + incorrect default port by [@xorinzor](https://github.com/xorinzor) in https://github.com/laravel/octane/pull/762
 
 ## [v2.1.0](https://github.com/laravel/octane/compare/v2.0.6...v2.1.0) - 2023-10-06
 
