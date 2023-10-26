@@ -26,9 +26,9 @@ try {
         $nbRequests < ($_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS']) &&
         frankenphp_handle_request(function () use (&$worker, $basePath, $frankenPhpClient) {
             $worker = $worker ?: tap(
-                (new Worker(
+                new Worker(
                     new ApplicationFactory($basePath), $frankenPhpClient
-                ))
+                )
             )->boot();
 
             [$request, $context] = $frankenPhpClient->marshalRequest(new RequestContext());
