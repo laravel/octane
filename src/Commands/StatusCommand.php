@@ -68,7 +68,7 @@ class StatusCommand extends Command
     }
 
     /**
-     * Check if the FrankenPHPO server is running.
+     * Check if the FrankenPHP server is running.
      *
      * @return bool
      */
