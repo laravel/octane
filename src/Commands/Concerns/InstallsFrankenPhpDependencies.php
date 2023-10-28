@@ -36,15 +36,11 @@ trait InstallsFrankenPhpDependencies
     protected function downloadFrankenPhpBinary()
     {
         $arch = php_uname('m');
-
-        $assetName = null;
-        if (PHP_OS_FAMILY === 'Linux') {
-            if ($arch !== 'x86_64') {
-                $assetName = 'frankenphp-linux-x86_64';
-            }
-        } elseif (PHP_OS_FAMILY === 'Darwin') {
-            $assetName = "frankenphp-mac-$arch";
-        }
+        $assetName = match (true) {
+            PHP_OS_FAMILY === 'Linux' && $arch === 'x86_64' => 'frankenphp-linux-x86_64',
+            PHP_OS_FAMILY === 'Darwin' => "frankenphp-mac-$arch",
+            default => null,
+        };
 
         if ($assetName === null) {
             $this->error('FrankenPHP binaries are currently only available for Linux (x86_64) and macOS. Use the Docker images or compile FrankenPHP yourself.');
