@@ -207,7 +207,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             ! isset($mercure['demo']) &&
             ($this->option('log-level') === 'debug' || app()->environment('local'))
         ) {
-            $config .= "\n    demo";
+            $config .= "\n\t\t\tdemo";
         }
 
         return "$config\n}";
