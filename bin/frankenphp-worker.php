@@ -22,19 +22,20 @@ $frankenPhpClient = new FrankenPhpClient();
 $worker = null;
 $nbRequests = 0;
 try {
+    $handleRequest = static function () use (&$worker, $basePath, $frankenPhpClient) {
+        $worker ??= tap(
+            new Worker(
+                new ApplicationFactory($basePath), $frankenPhpClient
+            )
+        )->boot();
+
+        [$request, $context] = $frankenPhpClient->marshalRequest(new RequestContext());
+
+        $worker->handle($request, $context);
+    };
     while (
         $nbRequests < ($_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS']) &&
-        frankenphp_handle_request(function () use (&$worker, $basePath, $frankenPhpClient) {
-            $worker = $worker ?: tap(
-                new Worker(
-                    new ApplicationFactory($basePath), $frankenPhpClient
-                )
-            )->boot();
-
-            [$request, $context] = $frankenPhpClient->marshalRequest(new RequestContext());
-
-            $worker->handle($request, $context);
-        })
+        frankenphp_handle_request($handleRequest)
     ) {
         $nbRequests++;
     }
