@@ -210,6 +210,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             $config .= "\n\t\t\tdemo";
         }
 
-        return "$config\n}";
+        return "$config\n\t\t}";
     }
 }
