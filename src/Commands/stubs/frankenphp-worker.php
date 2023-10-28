@@ -27,6 +27,7 @@ $frankenPhpClient = new FrankenPhpClient();
 
 $worker = null;
 $nbRequests = 0;
+$maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'];
 try {
     $handleRequest = static function () use (&$worker, $basePath, $frankenPhpClient) {
         $worker ??= tap(
@@ -40,7 +41,7 @@ try {
         $worker->handle($request, $context);
     };
     while (
-        $nbRequests < ($_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS']) &&
+        $nbRequests < $maxRequests &&
         frankenphp_handle_request($handleRequest)
     ) {
         $nbRequests++;
