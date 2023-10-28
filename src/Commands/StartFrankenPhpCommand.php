@@ -200,7 +200,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                 continue;
             }
 
-            $config .= "\n    $key $value";
+            $config .= "\n\t\t\t$key $value";
         }
 
         if (
