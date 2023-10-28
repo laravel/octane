@@ -23,6 +23,7 @@ trait InstallsFrankenPhpDependencies
             $this->downloadFrankenPhpBinary();
 
             copy(__DIR__.'/../stubs/Caddyfile', base_path('Caddyfile'));
+            copy(__DIR__.'/../stubs/frankenphp-worker.php', base_path('public/frankenphp-worker.php'));
         }
 
         return base_path('frankenphp');

@@ -2,7 +2,7 @@
 	{$CADDY_GLOBAL_OPTIONS}
 
 	frankenphp {
-		worker vendor/laravel/octane/bin/frankenphp-worker.php {$WORKER_COUNT}
+		worker public/frankenphp-worker.php {$WORKER_COUNT}
 	}
 }
 
@@ -20,19 +20,11 @@
 	}
 
 	route {
-		encode zstd gzip
-
 		# Mercure config is injected here
 		{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-		# If the requested file does not exist, pass to the worker script
-		@indexFiles file {
-			try_files public/{path} vendor/laravel/octane/bin/frankenphp-worker.php
-			split_path .php
+        root * public/
+		php_server {
+		    index frankenphp-worker.php
 		}
-		rewrite @indexFiles {http.matchers.file.relative}
-		@phpFiles path *.php
-		php @phpFiles
-		file_server @indexFiles
-	}
 }

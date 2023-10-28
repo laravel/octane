@@ -126,7 +126,7 @@ class InstallCommand extends Command
     public function installFrankenPhpServer()
     {
         if (File::exists(base_path('.gitignore'))) {
-            collect(['frankenphp', 'Caddyfile'])
+            collect(['frankenphp', 'Caddyfile', 'frankenphp-worker.php'])
                 ->each(function ($file) {
                     $contents = File::get(base_path('.gitignore'));
                     if (! Str::contains($contents, $file.PHP_EOL)) {
