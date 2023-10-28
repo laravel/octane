@@ -5,7 +5,6 @@ use Laravel\Octane\FrankenPhp\FrankenPhpClient;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Worker;
 
-
 if ((! ($_SERVER['FRANKENPHP_WORKER'] ?? false)) || ! function_exists('frankenphp_handle_request')) {
     echo 'You need FrankenPHP in worker mode to use this script.';
 

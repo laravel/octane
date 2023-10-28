@@ -73,6 +73,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         ], base_path(), [
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
+            'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
             'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
             'WORKER_COUNT' => $this->workerCount() ?: '',

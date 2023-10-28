@@ -2,7 +2,7 @@
 	{$CADDY_GLOBAL_OPTIONS}
 
 	frankenphp {
-		worker public/frankenphp-worker.php {$WORKER_COUNT}
+		worker {$APP_PUBLIC_PATH}/frankenphp-worker.php {$WORKER_COUNT}
 	}
 }
 
@@ -23,8 +23,9 @@
 		# Mercure config is injected here
 		{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-        root * public/
+		root * {$APP_PUBLIC_PATH}
 		php_server {
-		    index frankenphp-worker.php
+			index frankenphp-worker.php
 		}
+	}
 }
