@@ -125,17 +125,18 @@ class InstallCommand extends Command
      */
     public function installFrankenPhpServer()
     {
-        if (File::exists(base_path('.gitignore'))) {
-            collect(['frankenphp', 'Caddyfile', 'frankenphp-worker.php'])
-                ->each(function ($file) {
-                    $contents = File::get(base_path('.gitignore'));
-                    if (! Str::contains($contents, $file.PHP_EOL)) {
-                        File::append(
-                            base_path('.gitignore'),
-                            $file.PHP_EOL
-                        );
-                    }
-                });
+        $gitIgnorePath = base_path('.gitignore');
+
+        if (File::exists($gitIgnorePath)) {
+            $contents = File::get($gitIgnorePath);
+
+            $filesToAppend = collect(['frankenphp', 'Caddyfile', 'frankenphp-worker.php'])
+                ->filter(fn ($file) => !str_contains($contents, $file . PHP_EOL))
+                ->implode(PHP_EOL);
+
+            if ($filesToAppend !== '') {
+                File::append($gitIgnorePath, PHP_EOL . $filesToAppend . PHP_EOL);
+            }
         }
 
         return $this->ensureFrankenPhpBinaryIsInstalled();
