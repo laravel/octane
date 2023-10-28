@@ -96,7 +96,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function workerCount()
     {
-        return $this->option('workers') == 'auto'
+        return $this->option('workers') === 'auto'
             ? 0
             : $this->option('workers');
     }
