@@ -10,4 +10,3 @@ parameters:
     - "#Unsafe usage of new static\\(\\)#"
     - "#\\(void\\) is used.#"
     - "#Function Swoole\\\\Coroutine\\\\run not found.#"
-    - "#Function frankenphp_handle_request not found.#"
