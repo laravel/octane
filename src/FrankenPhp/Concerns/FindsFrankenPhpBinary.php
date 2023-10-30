@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\FrankenPhp\Concerns;
 
-use Illuminate\Support\Str;
 use Symfony\Component\Process\ExecutableFinder;
 
 trait FindsFrankenPhpBinary
