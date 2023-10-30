@@ -12,16 +12,6 @@ trait FindsFrankenPhpBinary
      */
     protected function findFrankenPhpBinary(): ?string
     {
-        if (file_exists($basePath = base_path('frankenphp'))) {
-            return $basePath;
-        }
-
-        if (! is_null($frankenPhpBinary = (new ExecutableFinder)->find('frankenphp', null, [base_path()]))) {
-            if (! Str::contains($frankenPhpBinary, 'vendor/bin/frankenphp')) {
-                return $frankenPhpBinary;
-            }
-        }
-
-        return null;
+        return (new ExecutableFinder())->find('frankenphp', null, [base_path()]);
     }
 }
