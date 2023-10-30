@@ -20,10 +20,13 @@
 	}
 
 	route {
+		root * {$APP_PUBLIC_PATH}
+		encode zstd gzip
+
 		# Mercure config is injected here
 		{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-		root * {$APP_PUBLIC_PATH}
+
 		php_server {
 			index frankenphp-worker.php
 		}
