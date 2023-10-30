@@ -131,11 +131,11 @@ class InstallCommand extends Command
             $contents = File::get($gitIgnorePath);
 
             $filesToAppend = collect(['frankenphp', 'Caddyfile', 'frankenphp-worker.php'])
-                ->filter(fn ($file) => !str_contains($contents, $file . PHP_EOL))
+                ->filter(fn ($file) => ! str_contains($contents, $file.PHP_EOL))
                 ->implode(PHP_EOL);
 
             if ($filesToAppend !== '') {
-                File::append($gitIgnorePath, PHP_EOL . $filesToAppend . PHP_EOL);
+                File::append($gitIgnorePath, PHP_EOL.$filesToAppend.PHP_EOL);
             }
         }
 
