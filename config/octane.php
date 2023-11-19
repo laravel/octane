@@ -68,7 +68,7 @@ return [
     */
 
     'mercure' => [
-        'publisher_jwt' => env('MERCURE_SUBSCRIBER_JWT_KEY', '!ChangeThisMercureHubJWTSecretKey!'),
+        'publisher_jwt' => env('MERCURE_PUBLISHER_JWT_KEY', '!ChangeThisMercureHubJWTSecretKey!'),
         'subscriber_jwt' => env('MERCURE_SUBSCRIBER_JWT_KEY', '!ChangeThisMercureHubJWTSecretKey!'),
         'anonymous' => true,
         'subscriptions' => true,
