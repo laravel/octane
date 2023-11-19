@@ -78,7 +78,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
             'WORKER_COUNT' => $this->workerCount() ?: '',
             'MAX_REQUESTS' => $this->option('max-requests'),
-            'CADDY_GLOBAL_OPTIONS' => $this->option('log-level') === 'debug' || app()->environment('local') ? 'debug' : '',
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->getMercureConfig(),
         ]));
         $process->setPty($this->input->isInteractive());

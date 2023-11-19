@@ -35,6 +35,6 @@ class FrankenPhpClient implements Client
      */
     public function error(Throwable $e, Application $app, Request $request, RequestContext $context): void
     {
-        error_log($e->getMessage());
+        error_log($e->getMessage(), 4);
     }
 }
