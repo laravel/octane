@@ -11,6 +11,8 @@ if ((! ($_SERVER['FRANKENPHP_WORKER'] ?? false)) || ! function_exists('frankenph
     exit(1);
 }
 
+ignore_user_abort(true);
+
 $basePath = require __DIR__.'/../vendor/laravel/octane/bin/bootstrap.php';
 
 /*
