@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.1.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.1.2...2.x)
+
+## [v2.1.2](https://github.com/laravel/octane/compare/v2.1.1...v2.1.2) - 2023-11-27
+
+* PHP 8.3 by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/octane/pull/753
+* Fix missing http code 425 reason. by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/768
 
 ## [v2.1.1](https://github.com/laravel/octane/compare/v2.1.0...v2.1.1) - 2023-10-18
 
