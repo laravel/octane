@@ -41,8 +41,8 @@
     ],
     "conflict": {
         "spiral/roadrunner": "<2023.1.0",
-        "spiral/roadrunner-cli": "<2.5.0",
-        "spiral/roadrunner-http": "<3.0.1"
+        "spiral/roadrunner-cli": "<2.6.0",
+        "spiral/roadrunner-http": "<3.3.0"
     },
     "autoload": {
         "psr-4": {
