@@ -80,7 +80,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'MAX_REQUESTS' => $this->option('max-requests'),
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->getMercureConfig(),
         ]));
-        $interactive = $this->input->isInteractive();
+        $interactive = $this->input->isInteractive() && Process::isTtySupported();
         $process->setTty($interactive);
         $process->setPty($interactive);
 
