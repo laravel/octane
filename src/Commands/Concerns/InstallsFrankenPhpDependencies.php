@@ -49,10 +49,9 @@ trait InstallsFrankenPhpDependencies
             return false;
         }
 
-        // TODO: use https://api.github.com/repos/dunglas/frankenphp/releases/latest when a stable version will be available
         $assets = Http::accept('application/vnd.github+json')
             ->withHeaders(['X-GitHub-Api-Version' => '2022-11-28'])
-            ->get('https://api.github.com/repos/dunglas/frankenphp/releases', ['per_page' => 1])[0]['assets'];
+            ->get('https://api.github.com/repos/dunglas/frankenphp/releases/latest')['assets'];
 
         foreach ($assets as $asset) {
             if ($asset['name'] !== $assetName) {
