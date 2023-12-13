@@ -6,7 +6,7 @@ use Laravel\Octane\RequestContext;
 use Laravel\Octane\Worker;
 
 if ((! ($_SERVER['FRANKENPHP_WORKER'] ?? false)) || ! function_exists('frankenphp_handle_request')) {
-    echo 'You need FrankenPHP in worker mode to use this script.';
+    echo 'FrankenPHP must be in worker mode to use this script.';
 
     exit(1);
 }
@@ -21,15 +21,17 @@ $basePath = require __DIR__.'/../vendor/laravel/octane/bin/bootstrap.php';
 |--------------------------------------------------------------------------
 |
 | Next we will start the Octane worker, which is a long running process to
-| handle incoming requests to the application.
+| handle incoming requests to the application. This worker will be used
+| by FrankenPHP to serve an entire Laravel application at high speed.
 |
 */
 
 $frankenPhpClient = new FrankenPhpClient();
 
 $worker = null;
-$nbRequests = 0;
+$requestCount = 0;
 $maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'];
+
 try {
     $handleRequest = static function () use (&$worker, $basePath, $frankenPhpClient) {
         $worker ??= tap(
@@ -43,10 +45,10 @@ try {
         $worker->handle($request, $context);
     };
     while (
-        $nbRequests < $maxRequests &&
+        $requestCount < $maxRequests &&
         frankenphp_handle_request($handleRequest)
     ) {
-        $nbRequests++;
+        $requestCount++;
     }
 } finally {
     $worker?->terminate();
