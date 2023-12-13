@@ -114,10 +114,14 @@ trait InteractsWithServers
      */
     protected function getServerOutput($server)
     {
-        return tap([
+        $output = [
             $server->getIncrementalOutput(),
             $server->getIncrementalErrorOutput(),
-        ], fn () => $server->clearOutput()->clearErrorOutput());
+        ];
+
+        $server->clearOutput()->clearErrorOutput();
+
+        return $output;
     }
 
     /**
