@@ -4,13 +4,15 @@
 	frankenphp {
 		worker {$APP_PUBLIC_PATH}/frankenphp-worker.php {$WORKER_COUNT}
 	}
+}
 
+{$SERVER_NAME} {
 	log {
-		level {$LOG_LEVEL:INFO}
+		level {$LOG_LEVEL}
 
 		# Redact the authorization query parameter that can be set by Mercure...
 		format filter {
-			wrap console
+			wrap {$LOGGER}
 			fields {
 				uri query {
 					replace authorization REDACTED
@@ -18,10 +20,6 @@
 			}
 		}
 	}
-}
-
-{$SERVER_NAME} {
-	log
 
 	route {
 		root * {$APP_PUBLIC_PATH}
