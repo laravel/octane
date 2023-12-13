@@ -21,6 +21,8 @@
 }
 
 {$SERVER_NAME} {
+	log
+
 	route {
 		root * {$APP_PUBLIC_PATH}
 		encode zstd gzip
