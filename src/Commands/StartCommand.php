@@ -104,9 +104,11 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--port' => $this->getPort(),
             '--workers' => $this->option('workers'),
             '--max-requests' => $this->option('max-requests'),
+            '--frankenphp-config' => $this->option('frankenphp-config'),
             '--https' => $this->option('https'),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
+            '--log-level' => $this->option('log-level'),
         ]);
     }
 

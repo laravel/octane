@@ -4,10 +4,10 @@
 	frankenphp {
 		worker {$APP_PUBLIC_PATH}/frankenphp-worker.php {$WORKER_COUNT}
 	}
-}
 
-{$SERVER_NAME} {
 	log {
+		level {$LOG_LEVEL:INFO}
+
 		# Redact the authorization query parameter that can be set by Mercure...
 		format filter {
 			wrap console
@@ -18,7 +18,9 @@
 			}
 		}
 	}
+}
 
+{$SERVER_NAME} {
 	route {
 		root * {$APP_PUBLIC_PATH}
 		encode zstd gzip

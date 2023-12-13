@@ -75,6 +75,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_BASE_PATH' => base_path(),
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
+            'LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'ERROR'),
             'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
             'WORKER_COUNT' => $this->workerCount() ?: '',
             'MAX_REQUESTS' => $this->option('max-requests'),
