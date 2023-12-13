@@ -9,7 +9,6 @@ use Symfony\Component\Process\Process;
 class ServerProcessInspector implements ServerProcessInspectorContract
 {
     private const ADMIN_URL = 'http://localhost:2019';
-
     private const FRANKENPHP_CONFIG_URL = self::ADMIN_URL.'/config/apps/frankenphp';
 
     public function __construct(
