@@ -53,29 +53,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Mercure hub
-    |--------------------------------------------------------------------------
-    |
-    | This option configures the Mercure hub (events broadcasting) that is included in FrankenPHP.
-    | The defaults are good enough for most applications.
-    | "publisher_jwt" configures the key and algorithm to use for verifying JWTs provided by publishers.
-    | "subscriber_jwt" configures the key and algorithm to use for verifying JWTs provided by subscribers.
-    | Set "anonymous" to false to disable anonymous subscribing.
-    | Set "subscriptions" to false to disable the subscription API.
-    | Set "mercure" to false to entirely disable the Mercure hub.
-    |
-    | More information about Mercure can be found on https://mercure.rocks.
-    */
-
-    'mercure' => [
-        'publisher_jwt' => env('MERCURE_PUBLISHER_JWT_KEY', '!ChangeThisMercureHubJWTSecretKey!'),
-        'subscriber_jwt' => env('MERCURE_SUBSCRIBER_JWT_KEY', '!ChangeThisMercureHubJWTSecretKey!'),
-        'anonymous' => true,
-        'subscriptions' => true,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Octane Listeners
     |--------------------------------------------------------------------------
     |
@@ -160,7 +137,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Octane Cache Table
+    | Octane Swoole Tables
+    |--------------------------------------------------------------------------
+    |
+    | While using Swoole, you may define additional tables as required by the
+    | application. These tables can be used to store data that needs to be
+    | quickly accessed by other workers on the particular Swoole server.
+    |
+    */
+
+    'tables' => [
+        'example:1000' => [
+            'name' => 'string:1000',
+            'votes' => 'int',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Octane Swoole Cache Table
     |--------------------------------------------------------------------------
     |
     | While using Swoole, you may leverage the Octane cache, which is powered
@@ -176,20 +171,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Octane Swoole Tables
+    | FrankenPHP Mercure Hub
     |--------------------------------------------------------------------------
     |
-    | While using Swoole, you may define additional tables as required by the
-    | application. These tables can be used to store data that needs to be
-    | quickly accessed by other workers on the particular Swoole server.
+    | This option configures the Mercure hub (event broadcasting) that ships
+    | with FrankenPHP. The defaults provided here should be sufficient on
+    | most applications. However, you are free to tweak them as needed.
+    |
+    | See: https://mercure.rocks
     |
     */
 
-    'tables' => [
-        'example:1000' => [
-            'name' => 'string:1000',
-            'votes' => 'int',
-        ],
+    'mercure' => [
+        'publisher_jwt' => env('MERCURE_PUBLISHER_JWT_KEY', 'your-publisher-key'),
+        'subscriber_jwt' => env('MERCURE_SUBSCRIBER_JWT_KEY', 'your-subscriber-key'),
+        'anonymous' => true, // Enable anonymous subscriptions...
+        'subscriptions' => true, // Enable subscription API
     ],
 
     /*
