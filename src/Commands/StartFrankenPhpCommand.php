@@ -65,6 +65,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $this->forgetEnvironmentVariables();
 
         $host = $this->option('host');
+        $interactive = $this->input->isInteractive() && Process::isTtySupported();
 
         $process = tap(new Process([
             $frankenphpBinary,
@@ -76,13 +77,13 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
             'LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'ERROR'),
+            'LOGGER' => $interactive ? 'console' : 'json',
             'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
             'WORKER_COUNT' => $this->workerCount() ?: '',
             'MAX_REQUESTS' => $this->option('max-requests'),
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
         ]));
 
-        $interactive = $this->input->isInteractive() && Process::isTtySupported();
         $process->setTty($interactive);
         $process->setPty($interactive);
 
@@ -187,25 +188,13 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function writeServerOutput($server)
     {
-        if ($server->isTty()) {
-            return;
+        if (!$server->isTty()) {
+            if ($output = trim($server->getIncrementalErrorOutput())) {
+                $this->raw($output);
+            }
+
+            $server->clearErrorOutput();
         }
-
-        [$output, $errorOutput] = $this->getServerOutput($server);
-
-        Str::of($output)
-            ->explode("\n")
-            ->filter()
-            ->each(function ($output) {
-                $this->raw($output);
-            });
-
-        Str::of($errorOutput)
-            ->explode("\n")
-            ->filter()
-            ->each(function ($output) {
-                $this->raw($output);
-            });
     }
 
     /**
