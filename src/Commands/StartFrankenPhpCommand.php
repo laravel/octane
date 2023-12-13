@@ -26,7 +26,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--frankenphp-config= : The path to the FrankenPHP Caddyfile file}
-                    {--https : Enable HTTPS, HTTP/2 and HTTP/3, automatically generate and renew certificates}
+                    {--https : Enable HTTPS, HTTP/2, and HTTP/3, automatically generate and renew certificates}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
                     {--log-level= : Log messages at or above the specified log level}';
@@ -78,8 +78,9 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
             'WORKER_COUNT' => $this->workerCount() ?: '',
             'MAX_REQUESTS' => $this->option('max-requests'),
-            'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->getMercureConfig(),
+            'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
         ]));
+
         $interactive = $this->input->isInteractive() && Process::isTtySupported();
         $process->setTty($interactive);
         $process->setPty($interactive);
@@ -92,18 +93,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
-     * Get the number of workers that should be started.
-     *
-     * @return int
-     */
-    protected function workerCount()
-    {
-        return $this->option('workers') === 'auto'
-            ? 0
-            : $this->option('workers');
-    }
-
-    /**
      * Get the path to the FrankenPHP configuration file.
      *
      * @return string
@@ -113,10 +102,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $path = $this->option('frankenphp-config');
 
         if (! $path) {
-            $basePath = base_path('Caddyfile');
-            touch($basePath);
-
-            return $basePath;
+            return tap(base_path('Caddyfile'), fn ($path) => touch($path));
         }
 
         if ($path && ! realpath($path)) {
@@ -124,6 +110,42 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         }
 
         return realpath($path);
+    }
+
+    /**
+     * Generate the Mercure configuration snippet to include in the Caddyfile.
+     *
+     * @return string
+     */
+    protected function buildMercureConfig()
+    {
+        if (! $mercure = (config('octane')['mercure'] ?? false)) {
+            return '';
+        }
+
+        $config = 'mercure {';
+
+        foreach ($mercure as $key => $value) {
+            if ($value === false) {
+                continue;
+            }
+
+            if ($value === true) {
+                $config .= "\n\t\t\t$key";
+
+                continue;
+            }
+
+            $config .= "\n\t\t\t$key $value";
+        }
+
+        if (! isset($mercure['demo']) &&
+            ($this->option('log-level') === 'debug' || app()->environment('local'))
+        ) {
+            $config .= "\n\t\t\tdemo";
+        }
+
+        return "$config\n\t\t}";
     }
 
     /**
@@ -142,6 +164,18 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'maxRequests' => $this->option('max-requests'),
             'octaneConfig' => config('octane'),
         ]);
+    }
+
+    /**
+     * Get the number of workers that should be started.
+     *
+     * @return int
+     */
+    protected function workerCount()
+    {
+        return $this->option('workers') === 'auto'
+            ? 0
+            : $this->option('workers');
     }
 
     /**
@@ -183,40 +217,5 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $this->callSilent('octane:stop', [
             '--server' => 'frankenphp',
         ]);
-    }
-
-    /**
-     * Generate the Mercure configuration snippet to include in the Caddyfile.
-     *
-     * @return string
-     */
-    private function getMercureConfig()
-    {
-        if (! $mercure = (config('octane')['mercure'] ?? false)) {
-            return '';
-        }
-
-        $config = 'mercure {';
-        foreach ($mercure as $key => $value) {
-            if ($value === false) {
-                continue;
-            }
-            if ($value === true) {
-                $config .= "\n\t\t\t$key";
-
-                continue;
-            }
-
-            $config .= "\n\t\t\t$key $value";
-        }
-
-        if (
-            ! isset($mercure['demo']) &&
-            ($this->option('log-level') === 'debug' || app()->environment('local'))
-        ) {
-            $config .= "\n\t\t\tdemo";
-        }
-
-        return "$config\n\t\t}";
     }
 }
