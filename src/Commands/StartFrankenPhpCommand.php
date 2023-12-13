@@ -188,7 +188,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function writeServerOutput($server)
     {
-        if (!$server->isTty()) {
+        if (! $server->isTty()) {
             if ($output = trim($server->getIncrementalErrorOutput())) {
                 $this->raw($output);
             }
