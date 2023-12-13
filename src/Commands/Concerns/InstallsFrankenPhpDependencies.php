@@ -37,6 +37,7 @@ trait InstallsFrankenPhpDependencies
     protected function downloadFrankenPhpBinary()
     {
         $arch = php_uname('m');
+
         $assetName = match (true) {
             PHP_OS_FAMILY === 'Linux' && $arch === 'x86_64' => 'frankenphp-linux-x86_64',
             PHP_OS_FAMILY === 'Darwin' => "frankenphp-mac-$arch",
@@ -44,7 +45,7 @@ trait InstallsFrankenPhpDependencies
         };
 
         if ($assetName === null) {
-            $this->error('FrankenPHP binaries are currently only available for Linux (x86_64) and macOS. Use the Docker images or compile FrankenPHP yourself.');
+            $this->error('FrankenPHP binaries are currently only available for Linux (x86_64) and macOS. Other systems should use the Docker images or compile FrankenPHP manually.');
 
             return false;
         }
@@ -61,7 +62,8 @@ trait InstallsFrankenPhpDependencies
             $path = base_path('frankenphp');
 
             $progressBar = null;
-            (new Client())->get(
+
+            (new Client)->get(
                 $asset['browser_download_url'],
                 [
                     'sink' => $path,
@@ -81,12 +83,15 @@ trait InstallsFrankenPhpDependencies
                     },
                 ]
             );
+
             chmod($path, 0755);
 
             $progressBar->finish();
 
+            $this->newLine();
+
             if (PHP_OS_FAMILY === 'Darwin') {
-                $this->warn("Run `xattr -d com.apple.quarantine $path` to release FrankenPHP from Apple's quarantine before starting the server.");
+                $this->warn("You may need to run `xattr -d com.apple.quarantine $path` to release FrankenPHP from Apple's quarantine before starting the server.");
             }
 
             return $path;
