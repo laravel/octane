@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Commands;
 
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Laravel\Octane\FrankenPhp\ServerProcessInspector;
 use Laravel\Octane\FrankenPhp\ServerStateFile;
