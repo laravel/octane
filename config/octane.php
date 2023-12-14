@@ -171,26 +171,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | FrankenPHP Mercure Hub
-    |--------------------------------------------------------------------------
-    |
-    | This option configures the Mercure hub (event broadcasting) that ships
-    | with FrankenPHP. The defaults provided here should be sufficient on
-    | most applications. However, you are free to tweak them as needed.
-    |
-    | See: https://mercure.rocks
-    |
-    */
-
-    'mercure' => [
-        'publisher_jwt' => env('MERCURE_PUBLISHER_JWT_KEY', 'your-publisher-key'),
-        'subscriber_jwt' => env('MERCURE_SUBSCRIBER_JWT_KEY', 'your-subscriber-key'),
-        'anonymous' => true, // Enable anonymous subscriptions...
-        'subscriptions' => true, // Enable subscription API
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | File Watching
     |--------------------------------------------------------------------------
     |
