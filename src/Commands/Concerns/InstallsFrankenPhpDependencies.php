@@ -5,10 +5,19 @@ namespace Laravel\Octane\Commands\Concerns;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Laravel\Octane\FrankenPhp\Concerns\FindsFrankenPhpBinary;
+use Symfony\Component\Process\Process;
+use Throwable;
 
 trait InstallsFrankenPhpDependencies
 {
     use FindsFrankenPhpBinary;
+
+    /**
+     * The minimum required version of the FrankenPHP binary.
+     *
+     * @var string
+     */
+    protected $requiredFrankenPhpVersion = '1.0.1';
 
     /**
      * Ensure the FrankenPHP binary is installed into the project.
@@ -100,5 +109,48 @@ trait InstallsFrankenPhpDependencies
         $this->error('FrankenPHP asset not found.');
 
         return $path;
+    }
+
+    /**
+     * Ensure the FrankenPHP binary installed in your project meets Octane requirements.
+     *
+     * @param  string  $frakenPhpBinary
+     * @return void
+     */
+    protected function ensureFrankenPhpBinaryMeetsRequirements($frakenPhpBinary)
+    {
+        $version = tap(new Process([$frakenPhpBinary, '--version'], base_path()))
+            ->run()
+            ->getOutput();
+
+        $version = explode(' ', $version)[1] ?? null;
+
+        if ($version === null) {
+            return $this->warn(
+                'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.',
+            );
+        }
+
+        if (version_compare($version, $this->requiredFrankenPhpVersion, '>=')) {
+            return;
+        }
+
+        $this->warn("Your FrankenPHP binary version (<fg=red>$version</>) may be incompatible with Octane.");
+
+        if ($this->confirm('Should Octane download the latest FrankenPHP binary version for your operating system?', true)) {
+            rename($frakenPhpBinary, "$frakenPhpBinary.backup");
+
+            try {
+                $this->downloadFrankenPhpBinary();
+            } catch (Throwable $e) {
+                report($e);
+
+                rename("$frakenPhpBinary.backup", $frakenPhpBinary);
+
+                return $this->warn('Unable to download FrankenPHP binary. The HTTP request exception has been logged.');
+            }
+
+            unlink("$frakenPhpBinary.backup");
+        }
     }
 }

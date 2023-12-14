@@ -60,6 +60,8 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             return 1;
         }
 
+        $this->ensureFrankenPhpBinaryMeetsRequirements($frankenphpBinary);
+
         $this->writeServerStateFile($serverStateFile);
 
         $this->forgetEnvironmentVariables();
