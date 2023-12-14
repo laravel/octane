@@ -24,7 +24,7 @@ trait InstallsFrankenPhpDependencies
      *
      * @return void
      */
-    public function ensureFrankenPhpCaddyfileAndWorker()
+    public function ensureFrankenPhpCaddyfileAndWorkerAreInstalled()
     {
         if (! file_exists(base_path('Caddyfile'))) {
             copy(__DIR__.'/../stubs/Caddyfile', base_path('Caddyfile'));

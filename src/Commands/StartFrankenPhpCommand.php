@@ -52,7 +52,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
     {
-        $this->ensureFrankenPhpCaddyfileAndWorker();
+        $this->ensureFrankenPhpCaddyfileAndWorkerAreInstalled();
 
         $frankenphpBinary = $this->ensureFrankenPhpBinaryIsInstalled();
 
