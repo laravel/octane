@@ -99,10 +99,6 @@ trait InstallsFrankenPhpDependencies
 
             $this->newLine();
 
-            if (PHP_OS_FAMILY === 'Darwin') {
-                $this->warn("You may need to run `xattr -d com.apple.quarantine $path` to release FrankenPHP from Apple's quarantine before starting the server.");
-            }
-
             return $path;
         }
 
