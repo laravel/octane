@@ -2,8 +2,8 @@
 
 namespace Laravel\Octane\Commands;
 
-use InvalidArgumentException;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Laravel\Octane\FrankenPhp\ServerProcessInspector;
 use Laravel\Octane\FrankenPhp\ServerStateFile;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
