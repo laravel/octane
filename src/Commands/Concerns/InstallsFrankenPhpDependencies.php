@@ -17,7 +17,7 @@ trait InstallsFrankenPhpDependencies
      *
      * @var string
      */
-    protected $requiredFrankenPhpVersion = '1.0.1';
+    protected $requiredFrankenPhpVersion = '1.0.0';
 
     /**
      * Ensure the FrankenPHP binary is installed into the project.
