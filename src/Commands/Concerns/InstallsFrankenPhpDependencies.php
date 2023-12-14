@@ -20,6 +20,22 @@ trait InstallsFrankenPhpDependencies
     protected $requiredFrankenPhpVersion = '1.0.0';
 
     /**
+     * Ensure the FrankenPHP's Caddyfile and worker script are installed.
+     *
+     * @return void
+     */
+    public function ensureFrankenPhpCaddyfileAndWorker()
+    {
+        if (! file_exists(base_path('Caddyfile'))) {
+            copy(__DIR__.'/../stubs/Caddyfile', base_path('Caddyfile'));
+        }
+
+        if (! file_exists(public_path('frankenphp-worker.php'))) {
+            copy(__DIR__.'/../stubs/frankenphp-worker.php', public_path('frankenphp-worker.php'));
+        }
+    }
+
+    /**
      * Ensure the FrankenPHP binary is installed into the project.
      *
      * @return string
@@ -32,9 +48,6 @@ trait InstallsFrankenPhpDependencies
 
         if ($this->confirm('Unable to locate FrankenPHP binary. Should Octane download the binary for your operating system?', true)) {
             $this->downloadFrankenPhpBinary();
-
-            copy(__DIR__.'/../stubs/Caddyfile', base_path('Caddyfile'));
-            copy(__DIR__.'/../stubs/frankenphp-worker.php', public_path('frankenphp-worker.php'));
         }
 
         return base_path('frankenphp');

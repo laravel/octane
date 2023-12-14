@@ -139,6 +139,8 @@ class InstallCommand extends Command
             }
         }
 
+        $this->ensureFrankenPhpCaddyfileAndWorker();
+
         return $this->ensureFrankenPhpBinaryIsInstalled();
     }
 
