@@ -21,8 +21,10 @@ trait InstallsFrankenPhpDependencies
 
     /**
      * Ensure the FrankenPHP binary is installed into the project.
+     *
+     * @return string
      */
-    protected function ensureFrankenPhpBinaryIsInstalled(): string
+    protected function ensureFrankenPhpBinaryIsInstalled()
     {
         if (! is_null($frankenphpBinary = $this->findFrankenPhpBinary())) {
             return $frankenphpBinary;
