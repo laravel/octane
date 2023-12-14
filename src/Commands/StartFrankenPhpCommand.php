@@ -75,7 +75,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_BASE_PATH' => base_path(),
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
-            'LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'ERROR'),
+            'LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'LOGGER' => 'json',
             'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
             'WORKER_COUNT' => $this->workerCount() ?: '',
@@ -192,6 +192,10 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             ->each(function ($output) {
                 if (! is_array($debug = json_decode($output, true))) {
                     return $this->info($output);
+                }
+
+                if ($debug['level'] !== 'info') {
+                    return $this->error($debug['msg']);
                 }
 
                 if ($debug['level'] == 'info'

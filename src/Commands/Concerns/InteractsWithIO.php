@@ -35,6 +35,7 @@ trait InteractsWithIO
         'worker destroyed',
         '[INFO] RoadRunner server started; version:',
         '[INFO] sdnotify: not notified',
+        'exiting; byeee!!',
     ];
 
     /**

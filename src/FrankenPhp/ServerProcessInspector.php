@@ -3,6 +3,7 @@
 namespace Laravel\Octane\FrankenPhp;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\ConnectionException;
 use Laravel\Octane\Contracts\ServerProcessInspector as ServerProcessInspectorContract;
 use Symfony\Component\Process\Process;
 
@@ -33,9 +34,13 @@ class ServerProcessInspector implements ServerProcessInspectorContract
      */
     public function reloadServer(): void
     {
-        Http::withBody(Http::get(self::FRANKENPHP_CONFIG_URL)->body(), 'application/json')
-            ->withHeaders(['Cache-Control' => 'must-revalidate'])
-            ->patch(self::FRANKENPHP_CONFIG_URL);
+        try {
+            Http::withBody(Http::get(self::FRANKENPHP_CONFIG_URL)->body(), 'application/json')
+                ->withHeaders(['Cache-Control' => 'must-revalidate'])
+                ->patch(self::FRANKENPHP_CONFIG_URL);
+        } catch (ConnectionException $_) {
+            //
+        }
     }
 
     /**
@@ -45,7 +50,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     {
         try {
             return Http::post(self::ADMIN_URL.'/stop')->successful();
-        } catch (\Throwable) {
+        } catch (ConnectionException $_) {
             return false;
         }
     }
