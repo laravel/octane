@@ -24,7 +24,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     {
         try {
             return Http::get(self::FRANKENPHP_CONFIG_URL)->successful();
-        } catch (\Throwable) {
+        } catch (ConnectionException $_) {
             return false;
         }
     }
