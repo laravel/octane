@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use InvalidArgumentException;
+use Illuminate\Support\Str;
 use Laravel\Octane\FrankenPhp\ServerProcessInspector;
 use Laravel\Octane\FrankenPhp\ServerStateFile;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
@@ -64,7 +65,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $this->forgetEnvironmentVariables();
 
         $host = $this->option('host');
-        $interactive = $this->input->isInteractive() && Process::isTtySupported();
 
         $process = tap(new Process([
             $frankenphpBinary,
@@ -76,15 +76,12 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
             'LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'ERROR'),
-            'LOGGER' => $interactive ? 'console' : 'json',
+            'LOGGER' => 'json',
             'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
             'WORKER_COUNT' => $this->workerCount() ?: '',
             'MAX_REQUESTS' => $this->option('max-requests'),
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
         ]));
-
-        $process->setTty($interactive);
-        $process->setPty($interactive);
 
         $server = $process->start();
 
@@ -187,13 +184,37 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function writeServerOutput($server)
     {
-        if (! $server->isTty()) {
-            if ($output = trim($server->getIncrementalErrorOutput())) {
-                $this->raw($output);
-            }
+        [$_, $errorOutput] = $this->getServerOutput($server);
 
-            $server->clearErrorOutput();
-        }
+        Str::of($errorOutput)
+            ->explode("\n")
+            ->filter()
+            ->each(function ($output) {
+                if (! is_array($debug = json_decode($output, true))) {
+                    return $this->info($output);
+                }
+
+                if ($debug['level'] == 'info'
+                    && isset($debug['request'])
+                    && $debug['msg'] == 'handled request') {
+                    [
+                        'duration' => $duration,
+                        'request' => [
+                            'method' => $method,
+                            'uri' => $url,
+                        ],
+                        'status' => $statusCode,
+                        'request' => $request,
+                    ] = $debug;
+
+                    return $this->requestInfo([
+                        'method' => $method,
+                        'url' => $url,
+                        'statusCode' => $statusCode,
+                        'duration' => (float) $duration * 1000,
+                    ]);
+                }
+            });
     }
 
     /**
