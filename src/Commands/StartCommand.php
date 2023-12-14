@@ -23,7 +23,7 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
-                    {--frankenphp-config= : The path to the FrankenPHP Caddyfile file}
+                    {--caddyfile= : The path to the FrankenPHP Caddyfile file}
                     {--https : Enable HTTPS, HTTP/2, and HTTP/3, automatically generate and renew certificates [FrankenPHP only]}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
@@ -104,7 +104,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--port' => $this->getPort(),
             '--workers' => $this->option('workers'),
             '--max-requests' => $this->option('max-requests'),
-            '--frankenphp-config' => $this->option('frankenphp-config'),
+            '--caddyfile' => $this->option('caddyfile'),
             '--https' => $this->option('https'),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),

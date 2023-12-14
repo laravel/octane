@@ -25,7 +25,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                     {--port= : The port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
-                    {--frankenphp-config= : The path to the FrankenPHP Caddyfile file}
+                    {--caddyfile= : The path to the FrankenPHP Caddyfile file}
                     {--https : Enable HTTPS, HTTP/2, and HTTP/3, automatically generate and renew certificates}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
@@ -101,7 +101,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function configPath()
     {
-        $path = $this->option('frankenphp-config');
+        $path = $this->option('caddyfile');
 
         if (! $path) {
             return tap(base_path('Caddyfile'), fn ($path) => touch($path));
