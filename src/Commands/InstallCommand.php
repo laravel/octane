@@ -125,6 +125,10 @@ class InstallCommand extends Command
      */
     public function installFrankenPhpServer()
     {
+        if (! $this->confirm("FrankenPHP's Octane integration is in beta and should used with caution in production. Do you wish to continue?")) {
+            return false;
+        }
+
         $gitIgnorePath = base_path('.gitignore');
 
         if (File::exists($gitIgnorePath)) {
