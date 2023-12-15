@@ -5,8 +5,11 @@ namespace Laravel\Octane\FrankenPhp;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;
+use Laravel\Octane\Octane;
+use Laravel\Octane\Stream;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class FrankenPhpClient implements Client
@@ -35,6 +38,17 @@ class FrankenPhpClient implements Client
      */
     public function error(Throwable $e, Application $app, Request $request, RequestContext $context): void
     {
-        error_log($e->getMessage(), 4);
+        $response = new Response(
+            Octane::formatExceptionForClient($e, $app->make('config')->get('app.debug')),
+            500,
+            [
+                'Status' => '500 Internal Server Error',
+                'Content-Type' => 'text/plain',
+            ],
+        );
+
+        $response->send();
+
+        Stream::throwable($e);
     }
 }

@@ -48,13 +48,20 @@ try {
 
             $worker->handle($request, $context);
         } catch (Throwable $e) {
-            $response = new Response('', 500, []);
-
-            $response->send();
-
             if ($worker) {
                 report($e);
             }
+
+            $response = new Response(
+                'Internal Server Error',
+                500,
+                [
+                    'Status' => '500 Internal Server Error',
+                    'Content-Type' => 'text/plain',
+                ],
+            );
+
+            $response->send();
 
             Stream::shutdown($e);
         }
