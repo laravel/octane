@@ -210,9 +210,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                 return $this->handleStream($stream);
             }
 
-            if ($debug['level'] == 'info'
-                && isset($debug['request'])
-                && $debug['msg'] == 'handled request') {
+            if ($debug['msg'] == 'handled request') {
                 [
                     'duration' => $duration,
                     'request' => [
