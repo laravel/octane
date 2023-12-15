@@ -13,7 +13,9 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 {
     use Concerns\InstallsFrankenPhpDependencies,
         Concerns\InteractsWithEnvironmentVariables,
-        Concerns\InteractsWithServers;
+        Concerns\InteractsWithServers {
+            Concerns\InteractsWithServers::writeServerRunningMessage as baseWriteServerRunningMessage;
+        }
 
     /**
      * The command's signature.
@@ -190,16 +192,18 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     {
         [$_, $errorOutput] = $this->getServerOutput($server);
 
-        Str::of($errorOutput)
+        $errorOutput = Str::of($errorOutput)
             ->explode("\n")
             ->filter()
-            ->each(function ($output) {
+            ->values();
+
+        if ($this->option('log-level') !== null) {
+            return $errorOutput->each(fn ($output) => $this->raw($output));
+        }
+
+        $errorOutput->each(function ($output) {
                 if (! is_array($debug = json_decode($output, true))) {
                     return $this->info($output);
-                }
-
-                if ($debug['level'] !== 'info') {
-                    return $this->error($debug['msg']);
                 }
 
                 if ($debug['level'] == 'info'
@@ -222,7 +226,25 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                         'duration' => (float) $duration * 1000,
                     ]);
                 }
+
+                if ($debug['level'] === 'warn') {
+                    return $this->warn($debug['msg']);
+                }
+
+                if ($debug['level'] !== 'info') {
+                    return $this->error($debug['msg']);
+                }
             });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function writeServerRunningMessage()
+    {
+        if ($this->option('log-level') === null) {
+            $this->baseWriteServerRunningMessage();
+        }
     }
 
     /**
