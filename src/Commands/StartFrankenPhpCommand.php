@@ -111,7 +111,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             throw new InvalidArgumentException('Unable to locate specified configuration file.');
         }
 
-        return realpath($path);
+        return $path;
     }
 
     /**
