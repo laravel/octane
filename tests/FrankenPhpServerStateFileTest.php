@@ -4,7 +4,7 @@ namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\FrankenPhp\ServerStateFile;
 
-final class FrankenPhpServerStateFileTest extends TestCase
+class FrankenPhpServerStateFileTest extends TestCase
 {
     public function test_server_state_file_can_be_managed()
     {
