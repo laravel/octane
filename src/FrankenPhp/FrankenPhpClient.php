@@ -48,7 +48,5 @@ class FrankenPhpClient implements Client
         );
 
         $response->send();
-
-        Stream::throwable($e);
     }
 }
