@@ -4,6 +4,8 @@ use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\FrankenPhp\FrankenPhpClient;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Worker;
+use Laravel\Octane\Stream;
+use Throwable;
 
 if ((! ($_SERVER['FRANKENPHP_WORKER'] ?? false)) || ! function_exists('frankenphp_handle_request')) {
     echo 'FrankenPHP must be in worker mode to use this script.';
@@ -44,12 +46,14 @@ try {
 
         $worker->handle($request, $context);
     };
-    while (
-        $requestCount < $maxRequests &&
-        frankenphp_handle_request($handleRequest)
-    ) {
+
+    while ($requestCount < $maxRequests && frankenphp_handle_request($handleRequest)) {
         $requestCount++;
     }
+} catch (Throwable $e) {
+    $worker ? report($e) : Stream::shutdown($e);
+
+    exit(1);
 } finally {
     $worker?->terminate();
 }

@@ -53,7 +53,7 @@ class Stream
      */
     public static function shutdown(Throwable $throwable)
     {
-        fwrite(STDERR, json_encode([
+        Octane::writeError(json_encode([
             'type' => 'shutdown',
             'class' => $throwable::class,
             'code' => $throwable->getCode(),
@@ -61,6 +61,6 @@ class Stream
             'line' => $throwable->getLine(),
             'message' => $throwable->getMessage(),
             'trace' => array_slice($throwable->getTrace(), 0, 2),
-        ])."\n");
+        ]));
     }
 }
