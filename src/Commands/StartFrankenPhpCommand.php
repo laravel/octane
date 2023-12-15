@@ -54,7 +54,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
     {
-        $this->ensureFrankenPhpCaddyfileAndWorkerAreInstalled();
+        $this->ensureFrankenPhpWorkerIsInstalled();
 
         $frankenphpBinary = $this->ensureFrankenPhpBinaryIsInstalled();
 
@@ -103,13 +103,11 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function configPath()
     {
-        $path = $this->option('caddyfile');
+        $path = $this->option('caddyfile') ?: __DIR__.'/stubs/Caddyfile';
+
+        $path = realpath($path);
 
         if (! $path) {
-            return tap(base_path('Caddyfile'), fn ($path) => touch($path));
-        }
-
-        if ($path && ! realpath($path)) {
             throw new InvalidArgumentException('Unable to locate specified configuration file.');
         }
 
