@@ -209,6 +209,10 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             }
 
             if ($debug['msg'] == 'handled request') {
+                if (! $this->laravel->isLocal()) {
+                    return;
+                }
+
                 [
                     'duration' => $duration,
                     'request' => [
