@@ -81,11 +81,11 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_BASE_PATH' => base_path(),
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
-            'LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
-            'LOGGER' => 'json',
-            'SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
-            'WORKER_COUNT' => $this->workerCount() ?: '',
             'MAX_REQUESTS' => $this->option('max-requests'),
+            'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
+            'CADDY_SERVER_LOGGER' => 'json',
+            'CADDY_SERVER_SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
+            'CADDY_SERVER_WORKER_COUNT' => $this->workerCount() ?: '',
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
         ]));
 
@@ -202,39 +202,43 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         }
 
         $errorOutput->each(function ($output) {
-                if (! is_array($debug = json_decode($output, true))) {
-                    return $this->info($output);
-                }
+            if (! is_array($debug = json_decode($output, true))) {
+                return $this->info($output);
+            }
 
-                if ($debug['level'] == 'info'
-                    && isset($debug['request'])
-                    && $debug['msg'] == 'handled request') {
-                    [
-                        'duration' => $duration,
-                        'request' => [
-                            'method' => $method,
-                            'uri' => $url,
-                        ],
-                        'status' => $statusCode,
-                        'request' => $request,
-                    ] = $debug;
+            if (is_array($stream = json_decode($debug['msg'], true))) {
+                return $this->handleStream($stream);
+            }
 
-                    return $this->requestInfo([
+            if ($debug['level'] == 'info'
+                && isset($debug['request'])
+                && $debug['msg'] == 'handled request') {
+                [
+                    'duration' => $duration,
+                    'request' => [
                         'method' => $method,
-                        'url' => $url,
-                        'statusCode' => $statusCode,
-                        'duration' => (float) $duration * 1000,
-                    ]);
-                }
+                        'uri' => $url,
+                    ],
+                    'status' => $statusCode,
+                    'request' => $request,
+                ] = $debug;
 
-                if ($debug['level'] === 'warn') {
-                    return $this->warn($debug['msg']);
-                }
+                return $this->requestInfo([
+                    'method' => $method,
+                    'url' => $url,
+                    'statusCode' => $statusCode,
+                    'duration' => (float) $duration * 1000,
+                ]);
+            }
 
-                if ($debug['level'] !== 'info') {
-                    return $this->error($debug['msg']);
-                }
-            });
+            if ($debug['level'] === 'warn') {
+                return $this->warn($debug['msg']);
+            }
+
+            if ($debug['level'] !== 'info') {
+                return $this->error($debug['msg']);
+            }
+        });
     }
 
     /**

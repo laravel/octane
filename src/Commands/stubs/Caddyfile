@@ -2,17 +2,17 @@
 	{$CADDY_GLOBAL_OPTIONS}
 
 	frankenphp {
-		worker {$APP_PUBLIC_PATH}/frankenphp-worker.php {$WORKER_COUNT}
+		worker {$APP_PUBLIC_PATH}/frankenphp-worker.php {$CADDY_SERVER_WORKER_COUNT}
 	}
 }
 
-{$SERVER_NAME} {
+{$CADDY_SERVER_SERVER_NAME} {
 	log {
-		level {$LOG_LEVEL}
+		level {$CADDY_SERVER_LOG_LEVEL}
 
 		# Redact the authorization query parameter that can be set by Mercure...
 		format filter {
-			wrap {$LOGGER}
+			wrap {$CADDY_SERVER_LOGGER}
 			fields {
 				uri query {
 					replace authorization REDACTED
