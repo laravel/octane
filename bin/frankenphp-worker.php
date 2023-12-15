@@ -3,8 +3,9 @@
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\FrankenPhp\FrankenPhpClient;
 use Laravel\Octane\RequestContext;
-use Laravel\Octane\Worker;
 use Laravel\Octane\Stream;
+use Laravel\Octane\Worker;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 if ((! ($_SERVER['FRANKENPHP_WORKER'] ?? false)) || ! function_exists('frankenphp_handle_request')) {
@@ -36,24 +37,32 @@ $maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'];
 
 try {
     $handleRequest = static function () use (&$worker, $basePath, $frankenPhpClient) {
-        $worker ??= tap(
-            new Worker(
-                new ApplicationFactory($basePath), $frankenPhpClient
-            )
-        )->boot();
+        try {
+            $worker ??= tap(
+                new Worker(
+                    new ApplicationFactory($basePath), $frankenPhpClient
+                )
+            )->boot();
 
-        [$request, $context] = $frankenPhpClient->marshalRequest(new RequestContext());
+            [$request, $context] = $frankenPhpClient->marshalRequest(new RequestContext());
 
-        $worker->handle($request, $context);
+            $worker->handle($request, $context);
+        } catch (Throwable $e) {
+            $response = new Response('', 500, []);
+
+            $response->send();
+
+            if ($worker) {
+                report($e);
+            }
+
+            Stream::shutdown($e);
+        }
     };
 
     while ($requestCount < $maxRequests && frankenphp_handle_request($handleRequest)) {
         $requestCount++;
     }
-} catch (Throwable $e) {
-    $worker ? report($e) : Stream::shutdown($e);
-
-    exit(1);
 } finally {
     $worker?->terminate();
 }
