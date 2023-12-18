@@ -119,7 +119,7 @@ trait InstallsFrankenPhpDependencies
     }
 
     /**
-     * Ensure the FrankenPHP binary installed in your project meets Octane requirements.
+     * Ensure the installed FrankenPHP binary meets Octane's requirements.
      *
      * @param  string  $frakenPhpBinary
      * @return void
