@@ -100,7 +100,7 @@ trait InteractsWithServers
 
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>http://'.$this->getHost().':'.$this->getPort().' </>',
+            '  Local: <fg=white;options=bold>'.($this->hasOption('https') && $this->option('https') ? 'https://' : 'http://').$this->getHost().':'.$this->getPort().' </>',
             '',
             '  <fg=yellow>Press Ctrl+C to stop the server</>',
             '',
@@ -114,10 +114,14 @@ trait InteractsWithServers
      */
     protected function getServerOutput($server)
     {
-        return tap([
+        $output = [
             $server->getIncrementalOutput(),
             $server->getIncrementalErrorOutput(),
-        ], fn () => $server->clearOutput()->clearErrorOutput());
+        ];
+
+        $server->clearOutput()->clearErrorOutput();
+
+        return $output;
     }
 
     /**
