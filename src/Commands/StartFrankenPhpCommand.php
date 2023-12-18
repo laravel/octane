@@ -141,10 +141,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             $config .= "\n\t\t\t$key $value";
         }
 
-        if ($mercure['demo'] ?? false) {
-            $config .= "\n\t\t\tdemo";
-        }
-
         return "$config\n\t\t}";
     }
 
@@ -220,6 +216,10 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                     'status' => $statusCode,
                     'request' => $request,
                 ] = $debug;
+
+                if (str_starts_with($url, '/.well-known/mercure')) {
+                    return;
+                }
 
                 return $this->requestInfo([
                     'method' => $method,
