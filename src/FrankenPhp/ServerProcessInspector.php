@@ -2,8 +2,8 @@
 
 namespace Laravel\Octane\FrankenPhp;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 use Laravel\Octane\Contracts\ServerProcessInspector as ServerProcessInspectorContract;
 use Symfony\Component\Process\Process;
 

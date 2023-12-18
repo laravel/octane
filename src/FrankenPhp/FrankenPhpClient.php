@@ -6,7 +6,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
-use Laravel\Octane\Stream;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Symfony\Component\HttpFoundation\Response;
