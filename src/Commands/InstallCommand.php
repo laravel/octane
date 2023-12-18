@@ -125,7 +125,7 @@ class InstallCommand extends Command
      */
     public function installFrankenPhpServer()
     {
-        if (! $this->confirm("FrankenPHP's Octane integration is in beta and should used with caution in production. Do you wish to continue?")) {
+        if (! $this->confirm("FrankenPHP's Octane integration is in beta and should be used with caution in production. Do you wish to continue?")) {
             return false;
         }
 
