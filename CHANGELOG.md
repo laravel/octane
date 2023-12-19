@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.1...2.x)
+
+## [v2.2.1](https://github.com/laravel/octane/compare/v2.2.0...v2.2.1) - 2023-12-19
+
+* Fixes `NGINX` proxy usages by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/772
+* Validates if there is a version before using it by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/773
 
 ## [v2.2.0](https://github.com/laravel/octane/compare/v2.1.2...v2.2.0) - 2023-12-18
 
