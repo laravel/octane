@@ -75,7 +75,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
         $serverName = $this->option('https')
             ? "https://$host:$port"
-            : "http://:$port";
+            : "http://$host:$port";
 
         $process = tap(new Process([
             $frankenphpBinary,
