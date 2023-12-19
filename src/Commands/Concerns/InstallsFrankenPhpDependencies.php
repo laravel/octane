@@ -132,7 +132,7 @@ trait InstallsFrankenPhpDependencies
 
         $version = explode(' ', $version)[1] ?? null;
 
-        if ($version === null) {
+        if ($version === null || preg_match('/\d+\.\d+\.\d+/', $version) !== 1) {
             return $this->warn(
                 'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.',
             );
