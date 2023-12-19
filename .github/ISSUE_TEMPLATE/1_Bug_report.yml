@@ -29,6 +29,7 @@ body:
     attributes:
       label: What server type are you using?
       options:
+        - FrankenPHP
         - Open Swoole
         - Roadrunner
         - Swoole
