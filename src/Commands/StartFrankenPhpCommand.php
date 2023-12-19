@@ -71,6 +71,11 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $this->forgetEnvironmentVariables();
 
         $host = $this->option('host');
+        $port = $this->getPort();
+
+        $serverName = $this->option('https')
+            ? "https://$host:$port"
+            : "http://:$port";
 
         $process = tap(new Process([
             $frankenphpBinary,
@@ -84,7 +89,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'MAX_REQUESTS' => $this->option('max-requests'),
             'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'CADDY_SERVER_LOGGER' => 'json',
-            'CADDY_SERVER_SERVER_NAME' => ($this->option('https') ? 'https://' : 'http://')."$host:".$this->getPort(),
+            'CADDY_SERVER_SERVER_NAME' => $serverName,
             'CADDY_SERVER_WORKER_COUNT' => $this->workerCount() ?: '',
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
         ]));

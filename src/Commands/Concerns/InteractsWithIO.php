@@ -36,6 +36,7 @@ trait InteractsWithIO
         '[INFO] RoadRunner server started; version:',
         '[INFO] sdnotify: not notified',
         'exiting; byeee!!',
+        'storage cleaning happened too recently',
     ];
 
     /**
