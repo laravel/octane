@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.1.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.0...2.x)
+
+## [v2.2.0](https://github.com/laravel/octane/compare/v2.1.2...v2.2.0) - 2023-12-18
+
+* Add support for [FrankenPHP](https://frankenphp.dev/) by [@dunglas](https://github.com/dunglas) and [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/764
 
 ## [v2.1.2](https://github.com/laravel/octane/compare/v2.1.1...v2.1.2) - 2023-11-27
 
