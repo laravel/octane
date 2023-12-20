@@ -37,6 +37,7 @@ trait InteractsWithIO
         '[INFO] sdnotify: not notified',
         'exiting; byeee!!',
         'storage cleaning happened too recently',
+        'write error',
     ];
 
     /**
