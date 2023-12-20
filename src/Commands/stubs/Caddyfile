@@ -1,6 +1,8 @@
 {
 	{$CADDY_GLOBAL_OPTIONS}
 
+	admin localhost:{$CADDY_SERVER_ADMIN_PORT}
+
 	frankenphp {
 		worker {$APP_PUBLIC_PATH}/frankenphp-worker.php {$CADDY_SERVER_WORKER_COUNT}
 	}

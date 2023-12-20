@@ -9,10 +9,9 @@ use Symfony\Component\Process\Process;
 
 class ServerProcessInspector implements ServerProcessInspectorContract
 {
-    private const ADMIN_URL = 'http://localhost:2019';
-
-    private const FRANKENPHP_CONFIG_URL = self::ADMIN_URL.'/config/apps/frankenphp';
-
+    /**
+     * Create a new server process inspector instance.
+     */
     public function __construct(
         protected ServerStateFile $serverStateFile,
     ) {
@@ -23,8 +22,12 @@ class ServerProcessInspector implements ServerProcessInspectorContract
      */
     public function serverIsRunning(): bool
     {
+        if (is_null($this->serverStateFile->read()['masterProcessId'] ?? null)) {
+            return false;
+        }
+
         try {
-            return Http::get(self::FRANKENPHP_CONFIG_URL)->successful();
+            return Http::get($this->adminConfigUrl())->successful();
         } catch (ConnectionException $_) {
             return false;
         }
@@ -36,9 +39,9 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     public function reloadServer(): void
     {
         try {
-            Http::withBody(Http::get(self::FRANKENPHP_CONFIG_URL)->body(), 'application/json')
+            Http::withBody(Http::get($this->adminConfigUrl())->body(), 'application/json')
                 ->withHeaders(['Cache-Control' => 'must-revalidate'])
-                ->patch(self::FRANKENPHP_CONFIG_URL);
+                ->patch($this->adminConfigUrl());
         } catch (ConnectionException $_) {
             //
         }
@@ -50,9 +53,27 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     public function stopServer(): bool
     {
         try {
-            return Http::post(self::ADMIN_URL.'/stop')->successful();
+            return Http::post($this->adminUrl().'/stop')->successful();
         } catch (ConnectionException $_) {
             return false;
         }
+    }
+
+    /**
+     * Get the URL to the FrankenPHP admin panel.
+     */
+    protected function adminUrl(): string
+    {
+        $adminPort = $this->serverStateFile->read()['state']['adminPort'] ?? 2019;
+
+        return "http://localhost:{$adminPort}";
+    }
+
+    /**
+     * Get the URL to the FrankenPHP admin panel's configuration endpoint.
+     */
+    protected function adminConfigUrl(): string
+    {
+        return "{$this->adminUrl()}/config/apps/frankenphp";
     }
 }

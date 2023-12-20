@@ -55,6 +55,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
     {
         $this->ensureFrankenPhpWorkerIsInstalled();
+        $this->ensureHostsAreAvailable();
 
         $frankenphpBinary = $this->ensureFrankenPhpBinaryIsInstalled();
 
@@ -87,6 +88,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
             'MAX_REQUESTS' => $this->option('max-requests'),
+            'CADDY_SERVER_ADMIN_PORT' => $this->adminPort(),
             'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'CADDY_SERVER_LOGGER' => 'json',
             'CADDY_SERVER_SERVER_NAME' => $serverName,
@@ -99,6 +101,34 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $serverStateFile->writeProcessId($server->getPid());
 
         return $this->runServer($server, $inspector, 'frankenphp');
+    }
+
+    /**
+     * Ensures the server and admin localhost ports are available.
+     *
+     * @return void
+     */
+    protected function ensureHostsAreAvailable()
+    {
+        $host = $this->getHost();
+
+        $serverPort = $this->getPort();
+        $adminPort = $this->adminPort();
+
+        if ($host !== '127.0.0.1') {
+            return;
+        }
+
+        foreach ([$serverPort, $adminPort] as $port) {
+            $connection = @fsockopen($host, $port);
+            $isAvailable = ! is_resource($connection);
+
+            if (! $isAvailable) {
+                @fclose($connection);
+
+                throw new InvalidArgumentException("Unable to start server. Port {$port} is already in use.");
+            }
+        }
     }
 
     /**
@@ -161,10 +191,23 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'appName' => config('app.name', 'Laravel'),
             'host' => $this->getHost(),
             'port' => $this->getPort(),
+            'adminPort' => $this->adminPort(),
             'workers' => $this->workerCount(),
             'maxRequests' => $this->option('max-requests'),
             'octaneConfig' => config('octane'),
         ]);
+    }
+
+    /**
+     * Get the port the admin URL should be available on.
+     *
+     * @return int
+     */
+    protected function adminPort()
+    {
+        $defaultPort = 2019;
+
+        return $defaultPort + ($this->getPort() - 8000);
     }
 
     /**
