@@ -14,11 +14,6 @@ trait InstallsFrankenPhpDependencies
     use FindsFrankenPhpBinary;
 
     /**
-     * The message that should be displayed Octane is unable to determine the current FrankenPHP binary version.
-     */
-    protected const UNABLE_TO_DETERMINE_CURRENT_VERSION = 'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.';
-
-    /**
      * The minimum required version of the FrankenPHP binary.
      *
      * @var string
@@ -142,13 +137,17 @@ trait InstallsFrankenPhpDependencies
             });
 
         if ($lineWithVersion === null) {
-            return $this->warn(static::UNABLE_TO_DETERMINE_CURRENT_VERSION);
+            return $this->warn(
+                'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.',
+            );
         }
 
         $version = Str::of($lineWithVersion)->trim()->afterLast('v')->value();
 
         if (preg_match('/\d+\.\d+\.\d+/', $version) !== 1) {
-            return $this->warn(static::UNABLE_TO_DETERMINE_CURRENT_VERSION);
+            return $this->warn(
+                'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.',
+            );
         }
 
         if (version_compare($version, $this->requiredFrankenPhpVersion, '>=')) {
