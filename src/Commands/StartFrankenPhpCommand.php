@@ -104,7 +104,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
-     * Ensures server and admin localhost ports are available.
+     * Ensures the server and admin localhost ports are available.
      *
      * @return void
      */
@@ -180,18 +180,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
-     * Get the port the admin URL should be available on.
-     *
-     * @return int
-     */
-    protected function adminPort()
-    {
-        $defaultPort = 2019;
-
-        return $defaultPort + ($this->getPort() - 8000);
-    }
-
-    /**
      * Write the FrankenPHP server state file.
      *
      * @return void
@@ -208,6 +196,18 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'maxRequests' => $this->option('max-requests'),
             'octaneConfig' => config('octane'),
         ]);
+    }
+
+    /**
+     * Get the port the admin URL should be available on.
+     *
+     * @return int
+     */
+    protected function adminPort()
+    {
+        $defaultPort = 2019;
+
+        return $defaultPort + ($this->getPort() - 8000);
     }
 
     /**

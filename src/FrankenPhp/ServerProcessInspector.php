@@ -70,7 +70,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     }
 
     /**
-     * Get the URL to the FrankenPHP admin panel's config endpoint.
+     * Get the URL to the FrankenPHP admin panel's configuration endpoint.
      */
     protected function adminConfigUrl(): string
     {
