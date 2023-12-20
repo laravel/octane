@@ -4,6 +4,7 @@ namespace Laravel\Octane\Commands\Concerns;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Laravel\Octane\FrankenPhp\Concerns\FindsFrankenPhpBinary;
 use Symfony\Component\Process\Process;
 use Throwable;
@@ -11,6 +12,11 @@ use Throwable;
 trait InstallsFrankenPhpDependencies
 {
     use FindsFrankenPhpBinary;
+
+    /**
+     * The message that should be displayed Octane is unable to determine the current FrankenPHP binary version.
+     */
+    protected const UNABLE_TO_DETERMINE_CURRENT_VERSION = 'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.';
 
     /**
      * The minimum required version of the FrankenPHP binary.
@@ -126,16 +132,23 @@ trait InstallsFrankenPhpDependencies
      */
     protected function ensureFrankenPhpBinaryMeetsRequirements($frakenPhpBinary)
     {
-        $version = tap(new Process([$frakenPhpBinary, '--version'], base_path()))
+        $buildInfo = tap(new Process([$frakenPhpBinary, 'build-info',], base_path()))
             ->run()
             ->getOutput();
 
-        $version = explode(' ', $version)[1] ?? null;
+        $lineWithVersion = collect(explode("\n", $buildInfo))
+            ->first(function ($line) {
+                return str_starts_with($line, 'dep') && str_contains($line, 'github.com/dunglas/frankenphp');
+            });
 
-        if ($version === null || preg_match('/\d+\.\d+\.\d+/', $version) !== 1) {
-            return $this->warn(
-                'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.',
-            );
+        if ($lineWithVersion === null) {
+            return $this->warn(static::UNABLE_TO_DETERMINE_CURRENT_VERSION);
+        }
+
+        $version = Str::of($lineWithVersion)->trim()->afterLast('v')->value();
+
+        if (preg_match('/\d+\.\d+\.\d+/', $version) !== 1) {
+            return $this->warn(static::UNABLE_TO_DETERMINE_CURRENT_VERSION);
         }
 
         if (version_compare($version, $this->requiredFrankenPhpVersion, '>=')) {
