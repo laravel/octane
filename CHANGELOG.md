@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.3...2.x)
+
+## [v2.2.3](https://github.com/laravel/octane/compare/v2.2.2...v2.2.3) - 2023-12-20
+
+* Fixes missing entry to `.gitignore` by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/780
 
 ## [v2.2.2](https://github.com/laravel/octane/compare/v2.2.1...v2.2.2) - 2023-12-20
 
