@@ -22,6 +22,10 @@ class ServerProcessInspector implements ServerProcessInspectorContract
      */
     public function serverIsRunning(): bool
     {
+        if (is_null($this->serverStateFile->read()['masterProcessId'] ?? null)) {
+            return false;
+        }
+
         try {
             return Http::get($this->adminConfigUrl())->successful();
         } catch (ConnectionException $_) {
