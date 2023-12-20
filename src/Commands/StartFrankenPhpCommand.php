@@ -55,6 +55,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
     {
         $this->ensureFrankenPhpWorkerIsInstalled();
+        $this->ensureHostsAreAvailable();
 
         $frankenphpBinary = $this->ensureFrankenPhpBinaryIsInstalled();
 
@@ -72,12 +73,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
         $host = $this->option('host');
         $port = $this->getPort();
-
-        if ($this->isHostAvailable() === false) {
-            $this->error("Unable to start server. Port {$port} is already in use.");
-
-            return 1;
-        }
 
         $serverName = $this->option('https')
             ? "https://$host:$port"
@@ -109,23 +104,31 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
-     * Checks if the host is available.
+     * Ensures server and admin localhost ports are available.
      *
-     * @return bool
+     * @return void
      */
-    protected function isHostAvailable()
+    protected function ensureHostsAreAvailable()
     {
         $host = $this->getHost();
-        $port = $this->getPort();
+
+        $serverPort = $this->getPort();
+        $adminPort = $this->adminPort();
 
         if ($host !== '127.0.0.1') {
-            return true;
+            return;
         }
 
-        $connection = @fsockopen($host, $port);
-        $isAvailable = ! is_resource($connection);
+        foreach ([$serverPort, $adminPort] as $port) {
+            $connection = @fsockopen($host, $port);
+            $isAvailable = ! is_resource($connection);
 
-        return tap($isAvailable, fn () => $isAvailable || @fclose($connection));
+            if (! $isAvailable) {
+                @fclose($connection);
+
+                throw new InvalidArgumentException("Unable to start server. Port {$port} is already in use.");
+            }
+        }
     }
 
     /**
