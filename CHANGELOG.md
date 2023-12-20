@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.2...2.x)
+
+## [v2.2.2](https://github.com/laravel/octane/compare/v2.2.1...v2.2.2) - 2023-12-20
+
+* Ignores `write error` message for now by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/778
+* Adds support for multiple FrankenPHP Octane instances by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/777
+* Improves version fetching by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/779
 
 ## [v2.2.1](https://github.com/laravel/octane/compare/v2.2.0...v2.2.1) - 2023-12-19
 
