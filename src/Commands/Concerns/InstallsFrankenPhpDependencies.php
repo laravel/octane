@@ -132,7 +132,7 @@ trait InstallsFrankenPhpDependencies
      */
     protected function ensureFrankenPhpBinaryMeetsRequirements($frakenPhpBinary)
     {
-        $buildInfo = tap(new Process([$frakenPhpBinary, 'build-info',], base_path()))
+        $buildInfo = tap(new Process([$frakenPhpBinary, 'build-info'], base_path()))
             ->run()
             ->getOutput();
 
