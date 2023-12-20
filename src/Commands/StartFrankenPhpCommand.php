@@ -73,6 +73,12 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $host = $this->option('host');
         $port = $this->getPort();
 
+        if ($this->isHostAvailable() === false) {
+            $this->error("Unable to start server. Port {$port} is already in use.");
+
+            return 1;
+        }
+
         $serverName = $this->option('https')
             ? "https://$host:$port"
             : "http://:$port";
@@ -100,6 +106,26 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $serverStateFile->writeProcessId($server->getPid());
 
         return $this->runServer($server, $inspector, 'frankenphp');
+    }
+
+    /**
+     * Checks if the host is available.
+     *
+     * @return bool
+     */
+    protected function isHostAvailable()
+    {
+        $host = $this->getHost();
+        $port = $this->getPort();
+
+        if ($host !== '127.0.0.1') {
+            return true;
+        }
+
+        $connection = @fsockopen($host, $port);
+        $isAvailable = ! is_resource($connection);
+
+        return tap($isAvailable, fn () => $isAvailable || @fclose($connection));
     }
 
     /**
