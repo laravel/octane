@@ -1,6 +1,13 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.4...2.x)
+
+## [v2.2.4](https://github.com/laravel/octane/compare/v2.2.3...v2.2.4) - 2023-12-21
+
+* Fix typo by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/782
+* Improves installation process by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/785
+* Fix Caddyfile when env var values contain spaces by [@francislavoie](https://github.com/francislavoie) in https://github.com/laravel/octane/pull/786
+* Uses Octane's max execution time by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/787
 
 ## [v2.2.3](https://github.com/laravel/octane/compare/v2.2.2...v2.2.3) - 2023-12-20
 
