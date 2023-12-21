@@ -36,7 +36,7 @@ $requestCount = 0;
 $maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'];
 $requestMaxExecutionTime = $_ENV['REQUEST_MAX_EXECUTION_TIME'] ?? $_SERVER['REQUEST_MAX_EXECUTION_TIME'] ?? null;
 
-if (! is_null($requestMaxExecutionTime)) {
+if (PHP_OS_FAMILY === 'Linux' && ! is_null($requestMaxExecutionTime)) {
     set_time_limit((int) $requestMaxExecutionTime);
 }
 
