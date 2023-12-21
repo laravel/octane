@@ -207,7 +207,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     {
         $defaultPort = 2019;
 
-        return $defaultPort + ($this->getPort() - 8000);
+        return $defaultPort + ($this->getPort() + 8000);
     }
 
     /**
