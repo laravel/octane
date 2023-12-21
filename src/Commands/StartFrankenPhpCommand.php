@@ -293,6 +293,11 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             }
 
             if ($debug['level'] !== 'info') {
+                // Request timeout...
+                if (isset($debug['exit_status']) && $debug['exit_status'] === 255) {
+                    return;
+                }
+
                 return $this->error($debug['msg']);
             }
         });
