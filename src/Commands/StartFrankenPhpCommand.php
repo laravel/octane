@@ -25,6 +25,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     public $signature = 'octane:frankenphp
                     {--host=127.0.0.1 : The IP address the server should bind to}
                     {--port= : The port the server should be available on}
+                    {--admin-port= : The port the admin server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--caddyfile= : The path to the FrankenPHP Caddyfile file}
@@ -205,9 +206,19 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function adminPort()
     {
+        if ($this->option('admin-port')) {
+            return (int) $this->option('admin-port');
+        }
+
         $defaultPort = 2019;
 
-        return $defaultPort + ($this->getPort() - 8000);
+        return tap($defaultPort + ($this->getPort() - 8000), function ($adminPort) {
+            if ($adminPort < 0) {
+                throw new InvalidArgumentException(
+                    'Unable to determine admin port. Please specify the [--admin-port] option.',
+                );
+            }
+        });
     }
 
     /**

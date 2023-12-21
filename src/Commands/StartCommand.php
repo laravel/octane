@@ -17,6 +17,7 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--server= : The server that should be used to serve the application}
                     {--host= : The IP address the server should bind to}
                     {--port= : The port the server should be available on [default: "8000"]}
+                    {--admin-port= : The port the admin server should be available on}
                     {--rpc-host= : The RPC IP address the server should bind to}
                     {--rpc-port= : The RPC port the server should be available on}
                     {--workers=auto : The number of workers that should be available to handle requests}
@@ -102,6 +103,7 @@ class StartCommand extends Command implements SignalableCommandInterface
         return $this->call('octane:frankenphp', [
             '--host' => $this->getHost(),
             '--port' => $this->getPort(),
+            '--admin-port' => $this->option('admin-port'),
             '--workers' => $this->option('workers'),
             '--max-requests' => $this->option('max-requests'),
             '--caddyfile' => $this->option('caddyfile'),
