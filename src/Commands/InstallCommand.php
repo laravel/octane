@@ -5,6 +5,7 @@ namespace Laravel\Octane\Commands;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Throwable;
 
 class InstallCommand extends Command
 {
@@ -145,7 +146,15 @@ class InstallCommand extends Command
 
         $this->ensureFrankenPhpWorkerIsInstalled();
 
-        return $this->ensureFrankenPhpBinaryIsInstalled();
+        try {
+            $this->ensureFrankenPhpBinaryIsInstalled();
+        } catch (Throwable $e) {
+            $this->error($e->getMessage());
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
