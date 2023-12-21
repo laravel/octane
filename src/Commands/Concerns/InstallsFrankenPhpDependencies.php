@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Laravel\Octane\FrankenPhp\Concerns\FindsFrankenPhpBinary;
 use Symfony\Component\Process\Process;
+use RuntimeException;
 use Throwable;
 
 trait InstallsFrankenPhpDependencies
@@ -53,7 +54,7 @@ trait InstallsFrankenPhpDependencies
     /**
      * Download the latest version of the FrankenPHP binary.
      *
-     * @return string|false
+     * @return string
      */
     protected function downloadFrankenPhpBinary()
     {
@@ -66,9 +67,7 @@ trait InstallsFrankenPhpDependencies
         };
 
         if ($assetName === null) {
-            $this->error('FrankenPHP binaries are currently only available for Linux (x86_64) and macOS. Other systems should use the Docker images or compile FrankenPHP manually.');
-
-            return false;
+            throw new RuntimeException('FrankenPHP binaries are currently only available for Linux (x86_64) and macOS. Other systems should use the Docker images or compile FrankenPHP manually.');
         }
 
         $assets = Http::accept('application/vnd.github+json')
@@ -114,9 +113,7 @@ trait InstallsFrankenPhpDependencies
             return $path;
         }
 
-        $this->error('FrankenPHP asset not found.');
-
-        return false;
+        throw new RuntimeException('FrankenPHP asset not found.');
     }
 
     /**
@@ -166,7 +163,7 @@ trait InstallsFrankenPhpDependencies
 
                 rename("$frankenPhpBinary.backup", $frankenPhpBinary);
 
-                return $this->warn('Unable to download FrankenPHP binary. The HTTP request exception has been logged.');
+                return $this->warn('Unable to download FrankenPHP binary. The underlying error has been logged.');
             }
 
             unlink("$frankenPhpBinary.backup");
