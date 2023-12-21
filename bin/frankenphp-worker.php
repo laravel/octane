@@ -34,6 +34,11 @@ $frankenPhpClient = new FrankenPhpClient();
 $worker = null;
 $requestCount = 0;
 $maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'];
+$requestMaxExecutionTime = $_ENV['REQUEST_MAX_EXECUTION_TIME'] ?? $_SERVER['REQUEST_MAX_EXECUTION_TIME'] ?? null;
+
+if (! is_null($requestMaxExecutionTime)) {
+    set_time_limit((int) $requestMaxExecutionTime);
+}
 
 try {
     $handleRequest = static function () use (&$worker, $basePath, $frankenPhpClient) {

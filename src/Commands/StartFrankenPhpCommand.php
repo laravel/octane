@@ -88,6 +88,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
             'MAX_REQUESTS' => $this->option('max-requests'),
+            'REQUEST_MAX_EXECUTION_TIME' => $this->maxExecutionTime(),
             'CADDY_SERVER_ADMIN_PORT' => $this->adminPort(),
             'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'CADDY_SERVER_LOGGER' => 'json',
@@ -177,6 +178,16 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         }
 
         return "$config\n\t\t}";
+    }
+
+    /**
+     * Get the maximum number of seconds that workers should be allowed to execute a single request.
+     *
+     * @return int
+     */
+    protected function maxExecutionTime()
+    {
+        return config('octane.max_execution_time', 30);
     }
 
     /**
