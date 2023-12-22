@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\ServerShutdownException;
 use Laravel\Octane\Exceptions\WorkerException;
+use Laravel\Octane\Octane;
 use Laravel\Octane\WorkerExceptionInspector;
 use NunoMaduro\Collision\Writer;
 use Symfony\Component\VarDumper\VarDumper;
@@ -34,6 +35,11 @@ trait InteractsWithIO
         'worker destroyed',
         '[INFO] RoadRunner server started; version:',
         '[INFO] sdnotify: not notified',
+        'exiting; byeee!!',
+        'storage cleaning happened too recently',
+        'write error',
+        'unable to determine directory for user configuration; falling back to current directory',
+        '$HOME environment variable is empty',
     ];
 
     /**
@@ -46,7 +52,7 @@ trait InteractsWithIO
     {
         if (! Str::startsWith($string, $this->ignoreMessages)) {
             $this->output instanceof OutputStyle
-                ? fwrite(STDERR, $string."\n")
+                ? Octane::writeError($string)
                 : $this->output->writeln($string);
         }
     }

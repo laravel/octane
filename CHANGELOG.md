@@ -1,6 +1,32 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.1.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.4...2.x)
+
+## [v2.2.4](https://github.com/laravel/octane/compare/v2.2.3...v2.2.4) - 2023-12-21
+
+* Fix typo by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/782
+* Improves installation process by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/785
+* Fix Caddyfile when env var values contain spaces by [@francislavoie](https://github.com/francislavoie) in https://github.com/laravel/octane/pull/786
+* Uses Octane's max execution time by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/787
+
+## [v2.2.3](https://github.com/laravel/octane/compare/v2.2.2...v2.2.3) - 2023-12-20
+
+* Fixes missing entry to `.gitignore` by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/780
+
+## [v2.2.2](https://github.com/laravel/octane/compare/v2.2.1...v2.2.2) - 2023-12-20
+
+* Ignores `write error` message for now by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/778
+* Adds support for multiple FrankenPHP Octane instances by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/777
+* Improves version fetching by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/779
+
+## [v2.2.1](https://github.com/laravel/octane/compare/v2.2.0...v2.2.1) - 2023-12-19
+
+* Fixes `NGINX` proxy usages by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/772
+* Validates if there is a version before using it by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/773
+
+## [v2.2.0](https://github.com/laravel/octane/compare/v2.1.2...v2.2.0) - 2023-12-18
+
+* Add support for [FrankenPHP](https://frankenphp.dev/) by [@dunglas](https://github.com/dunglas) and [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/764
 
 ## [v2.1.2](https://github.com/laravel/octane/compare/v2.1.1...v2.1.2) - 2023-11-27
 
@@ -19,7 +45,7 @@
 
 - Fix passing invalid connection session id to `Swoole\Http\Response::create()` by [@smortexa](https://github.com/smortexa) in https://github.com/laravel/octane/pull/737
 - Fix missing mode config by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/740
-- Add “raw” type in handleStream method for custom json in stdout by [@mphamid](https://github.com/mphamid) in https://github.com/laravel/octane/pull/742
+- Add `raw` type in handleStream method for custom json in stdout by [@mphamid](https://github.com/mphamid) in https://github.com/laravel/octane/pull/742
 
 ## [v2.0.5](https://github.com/laravel/octane/compare/v2.0.4...v2.0.5) - 2023-08-08
 
