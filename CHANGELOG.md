@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.4...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.5...2.x)
+
+## [v2.2.5](https://github.com/laravel/octane/compare/v2.2.4...v2.2.5) - 2023-12-21
+
+* Adds `--admin-port` by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/790
 
 ## [v2.2.4](https://github.com/laravel/octane/compare/v2.2.3...v2.2.4) - 2023-12-21
 
