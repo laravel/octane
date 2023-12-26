@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.5...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.6...2.x)
+
+## [v2.2.6](https://github.com/laravel/octane/compare/v2.2.5...v2.2.6) - 2023-12-26
+
+* Fix public path for roadrunner by [@chaker2710](https://github.com/chaker2710) in https://github.com/laravel/octane/pull/792
+* Added `aarch64` binary for frankenphp  by [@foremtehan](https://github.com/foremtehan) in https://github.com/laravel/octane/pull/793
 
 ## [v2.2.5](https://github.com/laravel/octane/compare/v2.2.4...v2.2.5) - 2023-12-21
 
