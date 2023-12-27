@@ -8,6 +8,9 @@ use Laravel\Octane\Events\TaskReceived;
 use Laravel\Octane\Events\TaskTerminated;
 use Laravel\Octane\Events\TickReceived;
 use Laravel\Octane\Events\TickTerminated;
+use Laravel\Octane\Events\WebSocketDisconnect;
+use Laravel\Octane\Events\WebSocketMessage;
+use Laravel\Octane\Events\WebSocketOpen;
 use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
@@ -112,6 +115,18 @@ return [
         ],
 
         WorkerStopping::class => [
+            //
+        ],
+
+        WebSocketOpen::class => [
+            //
+        ],
+
+        WebSocketMessage::class => [
+            //
+        ],
+
+        WebSocketDisconnect::class => [
             //
         ],
     ],
