@@ -38,7 +38,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
         $results = app($this->serverClass)->taskWaitMulti(collect($tasks)->mapWithKeys(function ($task, $key) {
             return [$key => $task instanceof Closure
                 ? new SerializableClosure($task)
-                : $task,];
+                : $task, ];
         })->all(), $waitMilliseconds / 1000);
 
         if ($results === false) {
