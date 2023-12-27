@@ -29,7 +29,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                     {--workers=auto : The number of workers that should be available to handle requests}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--caddyfile= : The path to the FrankenPHP Caddyfile file}
-                    {--https : Enable HTTPS, HTTP/2, and HTTP/3, and automatically generate and renew certificates}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
                     {--log-level= : Log messages at or above the specified log level}';
@@ -72,13 +71,6 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
         $this->forgetEnvironmentVariables();
 
-        $host = $this->option('host');
-        $port = $this->getPort();
-
-        $serverName = $this->option('https')
-            ? "https://$host:$port"
-            : "http://:$port";
-
         $process = tap(new Process([
             $frankenphpBinary,
             'run',
@@ -93,7 +85,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'CADDY_SERVER_ADMIN_PORT' => $this->adminPort(),
             'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'CADDY_SERVER_LOGGER' => 'json',
-            'CADDY_SERVER_SERVER_NAME' => $serverName,
+            'CADDY_SERVER_SERVER_NAME' => $this->uri(),
             'CADDY_SERVER_WORKER_COUNT' => $this->workerCount() ?: '',
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
         ]));

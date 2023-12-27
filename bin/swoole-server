@@ -5,11 +5,18 @@ use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\Handlers\OnManagerStart;
 use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
+use Laravel\Octane\Swoole\Handlers\OnWebSocketOpen;
+use Laravel\Octane\Swoole\Handlers\OnWebSocketDisconnect;
+use Laravel\Octane\Swoole\Handlers\OnWebSocketHandshake;
+use Laravel\Octane\Swoole\Handlers\OnWebSocketMessage;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
 use Laravel\Octane\Swoole\WorkerState;
-use Swoole\Http\Server;
+use Swoole\Http\Request;
+use Swoole\Http\Response;
+use Swoole\Server;
 use Swoole\Timer;
+use Swoole\WebSocket\Frame;
 
 ini_set('display_errors', 'stderr');
 
@@ -62,7 +69,8 @@ $server->on('managerstart', function () use ($serverState) {
     require_once __DIR__.'/../src/Swoole/SwooleExtension.php';
 
     (new OnManagerStart(
-         new SwooleExtension, $serverState['appName']
+        new SwooleExtension,
+        $serverState['appName']
     ))();
 });
 
@@ -89,9 +97,13 @@ $workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
 $workerState->timerTable = $timerTable;
 $workerState->tables = require __DIR__.'/createSwooleTables.php';
 
-$server->on('workerstart', fn (Server $server, $workerId) =>
-    (fn ($basePath) => (new OnWorkerStart(
-        new SwooleExtension, $basePath, $serverState, $workerState
+$server->on(
+    'workerstart',
+    fn (Server $server, $workerId) => (fn ($basePath) => (new OnWorkerStart(
+        new SwooleExtension,
+        $basePath,
+        $serverState,
+        $workerState
     ))($server, $workerId))($bootstrap($serverState))
 );
 
@@ -131,6 +143,75 @@ $server->on('request', function ($request, $response) use ($server, $workerState
 
 /*
 |--------------------------------------------------------------------------
+| Handle Websocket Events
+|--------------------------------------------------------------------------
+|
+| The following callbacks manage websocket events when enabled
+|
+*/
+
+if (($serverState['octaneConfig']['swoole']['enableWebSocket'])) {
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Incoming WebSocket open
+    |--------------------------------------------------------------------------
+    |
+    | The following callback will handle all incoming new connections.
+    |
+    */
+
+    $server->on('open', fn (Request $request, Response $response) => (new OnWebSocketOpen(
+        $server,
+        $serverState,
+        $workerState
+    ))($request, $response));
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Incoming WebSocket Connections
+    |--------------------------------------------------------------------------
+    |
+    | The following callback will handle all incoming connections.
+    |
+    */
+
+    $server->on('handshake', fn (Request $request, Response $response) => (new OnWebSocketHandshake(
+        $server,
+        $serverState,
+        $workerState
+    ))($request, $response));
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Incoming WebSocket Messages
+    |--------------------------------------------------------------------------
+    |
+    | The following callback will handle all incoming messages.
+    |
+    */
+
+    $server->on('message', fn (Server $server, Frame $frame) => (new OnWebSocketMessage(
+        $serverState,
+        $workerState
+    ))($server, $frame));
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Disconnect WebSocket Connections
+    |--------------------------------------------------------------------------
+    |
+    | The following callback will handle all disconnect connections.
+    |
+    */
+
+    $server->on('disconnect', fn (Server $server, int $fd) => (new OnWebSocketDisconnect(
+        $serverState,
+        $workerState
+    ))($server, $fd));
+}
+
+/*
+|--------------------------------------------------------------------------
 | Handle Tasks
 |--------------------------------------------------------------------------
 |
@@ -140,10 +221,12 @@ $server->on('request', function ($request, $response) use ($server, $workerState
 |
 */
 
-$server->on('task', fn (Server $server, int $taskId, int $fromWorkerId, $data) =>
+$server->on(
+    'task',
+    fn (Server $server, int $taskId, int $fromWorkerId, $data) =>
     $data === 'octane-tick'
-            ? $workerState->worker->handleTick()
-            : $workerState->worker->handleTask($data)
+        ? $workerState->worker->handleTick()
+        : $workerState->worker->handleTask($data)
 );
 
 $server->on('finish', fn (Server $server, int $taskId, $result) => $result);

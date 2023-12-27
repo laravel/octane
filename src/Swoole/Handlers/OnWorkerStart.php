@@ -8,7 +8,7 @@ use Laravel\Octane\Swoole\SwooleClient;
 use Laravel\Octane\Swoole\SwooleExtension;
 use Laravel\Octane\Swoole\WorkerState;
 use Laravel\Octane\Worker;
-use Swoole\Http\Server;
+use Swoole\Server;
 use Throwable;
 
 class OnWorkerStart
@@ -25,10 +25,9 @@ class OnWorkerStart
     /**
      * Handle the "workerstart" Swoole event.
      *
-     * @param  \Swoole\Http\Server  $server
      * @return void
      */
-    public function __invoke($server, int $workerId)
+    public function __invoke(Server $server, int $workerId)
     {
         $this->clearOpcodeCache();
 
@@ -53,10 +52,9 @@ class OnWorkerStart
     /**
      * Boot the Octane worker and application.
      *
-     * @param  \Swoole\Http\Server  $server
      * @return \Laravel\Octane\Worker|null
      */
-    protected function bootWorker($server)
+    protected function bootWorker(Server $server)
     {
         try {
             return tap(new Worker(
@@ -77,10 +75,9 @@ class OnWorkerStart
     /**
      * Start the Octane server tick to dispatch the tick task every second.
      *
-     * @param  \Swoole\Http\Server  $server
      * @return void
      */
-    protected function dispatchServerTickTaskEverySecond($server)
+    protected function dispatchServerTickTaskEverySecond(Server $server)
     {
         // ...
     }
@@ -88,10 +85,9 @@ class OnWorkerStart
     /**
      * Register the request handled listener that will output request information per request.
      *
-     * @param  \Swoole\Http\Server  $server
      * @return void
      */
-    protected function streamRequestsToConsole($server)
+    protected function streamRequestsToConsole(Server $server)
     {
         $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox) {
             if (! $sandbox->environment('local', 'testing')) {

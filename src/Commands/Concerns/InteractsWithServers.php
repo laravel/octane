@@ -23,7 +23,7 @@ trait InteractsWithServers
             sleep(1);
         }
 
-        $this->writeServerRunningMessage();
+        $this->writeServerRunningMessage($type);
 
         $watcher = $this->startServerWatcher();
 
@@ -31,15 +31,17 @@ trait InteractsWithServers
             while ($server->isRunning()) {
                 $this->writeServerOutput($server);
 
-                if ($watcher->isRunning() &&
-                    $watcher->getIncrementalOutput()) {
+                if (
+                    $watcher->isRunning() &&
+                    $watcher->getIncrementalOutput()
+                ) {
                     $this->info('Application change detected. Restarting workers…');
 
                     $inspector->reloadServer();
                 } elseif ($watcher->isTerminated()) {
                     $this->error(
                         'Watcher process has terminated. Please ensure Node and chokidar are installed.'.PHP_EOL.
-                        $watcher->getErrorOutput()
+                            $watcher->getErrorOutput()
                     );
 
                     return 1;
@@ -94,17 +96,39 @@ trait InteractsWithServers
      *
      * @return void
      */
-    protected function writeServerRunningMessage()
+    protected function writeServerRunningMessage(string $type)
     {
         $this->info('Server running…');
 
+        $urls = [
+            "  Local: <fg=white;options=bold>{$this->uri()}</>",
+        ];
+
+        if ($type === 'swoole' && config('octane.swoole.enableWebSocket', false)) {
+            $uri = (config('octane.https', false) ? 'wss://' : 'ws://').$this->getHost().':'.$this->getPort();
+
+            $urls += [
+                '',
+                '',
+                "  WebSocket: <fg=white;options=bold>$uri</>",
+            ];
+        }
+
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>'.($this->hasOption('https') && $this->option('https') ? 'https://' : 'http://').$this->getHost().':'.$this->getPort().' </>',
+            ...$urls,
             '',
-            '  <fg=yellow>Press Ctrl+C to stop the server</>',
+            '  <fg=yellow;options=bold>Press Ctrl+C to stop the server</>',
             '',
         ]);
+    }
+
+    /**
+     * For the given URI, retrieve the host and port.
+     */
+    protected function uri(): string
+    {
+        return (config('octane.https', false) ? 'https://' : 'http://').$this->getHost().':'.$this->getPort();
     }
 
     /**

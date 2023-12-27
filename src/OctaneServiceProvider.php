@@ -87,9 +87,13 @@ class OctaneServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(DispatchesCoroutines::class, function ($app) {
-            return class_exists('Swoole\Http\Server')
-                        ? new SwooleCoroutineDispatcher($app->bound('Swoole\Http\Server'))
-                        : $app->make(SequentialCoroutineDispatcher::class);
+            $serverClass = config('octane.swoole.enableWebSocket', false)
+                ? \Swoole\Websocket\Server::class
+                : \Swoole\Http\Server::class;
+
+            return class_exists($serverClass)
+                ? new SwooleCoroutineDispatcher($app->bound($serverClass))
+                : $app->make(SequentialCoroutineDispatcher::class);
         });
     }
 
@@ -164,8 +168,8 @@ class OctaneServiceProvider extends ServiceProvider
         }
 
         $store = $this->app->bound('octane.cacheTable')
-                        ? new OctaneStore($this->app['octane.cacheTable'])
-                        : new OctaneArrayStore;
+            ? new OctaneStore($this->app['octane.cacheTable'])
+            : new OctaneArrayStore;
 
         Event::listen(TickReceived::class, fn () => $store->refreshIntervalCaches());
 

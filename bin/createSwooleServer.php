@@ -3,11 +3,15 @@
 $config = $serverState['octaneConfig'];
 
 try {
+    $serverClass = ($config['swoole']['enableWebSocket'] ?? false)
+        ? \Swoole\Websocket\Server::class
+        : \Swoole\Http\Server::class;
+
     $host = $serverState['host'] ?? '127.0.0.1';
 
     $sock = filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? SWOOLE_SOCK_TCP : SWOOLE_SOCK_TCP6;
 
-    $server = new Swoole\Http\Server(
+    $server = new $serverClass(
         $host,
         $serverState['port'] ?? 8000,
         $config['swoole']['mode'] ?? SWOOLE_PROCESS,

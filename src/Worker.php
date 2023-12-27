@@ -12,12 +12,17 @@ use Laravel\Octane\Events\TaskReceived;
 use Laravel\Octane\Events\TaskTerminated;
 use Laravel\Octane\Events\TickReceived;
 use Laravel\Octane\Events\TickTerminated;
+use Laravel\Octane\Events\WebSocketDisconnect;
+use Laravel\Octane\Events\WebSocketMessage;
+use Laravel\Octane\Events\WebSocketOpen;
 use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Swoole\TaskResult;
 use RuntimeException;
+use Swoole\Server;
+use Swoole\WebSocket\Frame;
 use Throwable;
 
 class Worker implements WorkerContract
@@ -238,5 +243,29 @@ class Worker implements WorkerContract
     public function terminate(): void
     {
         $this->dispatchEvent($this->app, new WorkerStopping($this->app));
+    }
+
+    /**
+     * Handle an incoming open from the worker.
+     */
+    public function handleWebSocketOpen(Server $server)
+    {
+        $this->dispatchEvent($this->app, new WebSocketOpen($this->app, $server));
+    }
+
+    /**
+     * Handle an incoming message from the worker.
+     */
+    public function handleWebSocketMessage(Server $server, Frame $frame)
+    {
+        $this->dispatchEvent($this->app, new WebSocketMessage($this->app, $server, $frame));
+    }
+
+    /**
+     * Handle an incoming disconnect from the worker.
+     */
+    public function handleWebSocketDisconnect(Server $server, int $fd)
+    {
+        $this->dispatchEvent($this->app, new WebSocketDisconnect($this->app, $server, $fd));
     }
 }

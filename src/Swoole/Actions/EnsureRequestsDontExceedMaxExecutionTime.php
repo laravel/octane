@@ -4,7 +4,7 @@ namespace Laravel\Octane\Swoole\Actions;
 
 use Laravel\Octane\Swoole\SwooleExtension;
 use Swoole\Http\Response;
-use Swoole\Http\Server;
+use Swoole\Server;
 
 class EnsureRequestsDontExceedMaxExecutionTime
 {
