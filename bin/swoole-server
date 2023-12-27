@@ -150,7 +150,7 @@ $server->on('request', function ($request, $response) use ($server, $workerState
 |
 */
 
-if (($serverState['octaneConfig']['swoole']['enableWebSocket'])) {
+if ($serverState['octaneConfig']['swoole']['enableWebSocket'] ?? false) {
     /*
     |--------------------------------------------------------------------------
     | Handle Incoming WebSocket open
