@@ -248,7 +248,7 @@ class Worker implements WorkerContract
     /**
      * Handle an incoming open from the worker.
      */
-    public function handleWebSocketOpen(Server $server)
+    public function handleWebSocketOpen(Server $server): void
     {
         $this->dispatchEvent($this->app, new WebSocketOpen($this->app, $server));
     }
@@ -256,7 +256,7 @@ class Worker implements WorkerContract
     /**
      * Handle an incoming message from the worker.
      */
-    public function handleWebSocketMessage(Server $server, Frame $frame)
+    public function handleWebSocketMessage(Server $server, Frame $frame): void
     {
         $this->dispatchEvent($this->app, new WebSocketMessage($this->app, $server, $frame));
     }
@@ -264,7 +264,7 @@ class Worker implements WorkerContract
     /**
      * Handle an incoming disconnect from the worker.
      */
-    public function handleWebSocketDisconnect(Server $server, int $fd)
+    public function handleWebSocketDisconnect(Server $server, int $fd): void
     {
         $this->dispatchEvent($this->app, new WebSocketDisconnect($this->app, $server, $fd));
     }

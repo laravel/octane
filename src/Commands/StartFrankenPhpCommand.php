@@ -309,10 +309,10 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     /**
      * {@inheritDoc}
      */
-    protected function writeServerRunningMessage()
+    protected function writeServerRunningMessage(string $type)
     {
         if ($this->option('log-level') === null) {
-            $this->baseWriteServerRunningMessage();
+            $this->baseWriteServerRunningMessage($type);
         }
     }
 
