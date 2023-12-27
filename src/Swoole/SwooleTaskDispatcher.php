@@ -11,6 +11,15 @@ use Laravel\SerializableClosure\SerializableClosure;
 
 class SwooleTaskDispatcher implements DispatchesTasks
 {
+    protected string $serverClass;
+
+    public function __construct()
+    {
+        $this->serverClass = config('octane.swoole.enableWebSocket', false)
+            ? \Swoole\Websocket\Server::class
+            : \Swoole\Http\Server::class;
+    }
+
     /**
      * Concurrently resolve the given callbacks via background tasks, returning the results.
      *
@@ -22,18 +31,14 @@ class SwooleTaskDispatcher implements DispatchesTasks
      */
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array
     {
-        $serverClass = config('octane.swoole.enableWebSocket', false)
-            ? \Swoole\Websocket\Server::class
-            : \Swoole\Http\Server::class;
-
-        if (! app()->bound($serverClass)) {
+        if (! app()->bound($this->serverClass)) {
             throw new InvalidArgumentException('Tasks can only be resolved within a Swoole server context / web request.');
         }
 
-        $results = app($serverClass)->taskWaitMulti(collect($tasks)->mapWithKeys(function ($task, $key) {
+        $results = app($this->serverClass)->taskWaitMulti(collect($tasks)->mapWithKeys(function ($task, $key) {
             return [$key => $task instanceof Closure
                 ? new SerializableClosure($task)
-                : $task, ];
+                : $task,];
         })->all(), $waitMilliseconds / 1000);
 
         if ($results === false) {
@@ -64,18 +69,13 @@ class SwooleTaskDispatcher implements DispatchesTasks
      */
     public function dispatch(array $tasks): void
     {
-        $serverClass = config('octane.swoole.enableWebSocket', false)
-            ? \Swoole\Websocket\Server::class
-            : \Swoole\Http\Server::class;
-
-        if (! app()->bound($serverClass)) {
+        if (! app()->bound($this->serverClass)) {
             throw new InvalidArgumentException('Tasks can only be dispatched within a Swoole server context / web request.');
         }
 
-        $server = app($serverClass);
+        $server = app($this->serverClass);
 
-        collect($tasks)->each(function ($task) use ($server) {
-            $server->task($task instanceof Closure ? new SerializableClosure($task) : $task);
-        });
+        collect($tasks)
+            ->each(fn ($task) => $server->task($task instanceof Closure ? new SerializableClosure($task) : $task));
     }
 }
