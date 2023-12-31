@@ -32,7 +32,7 @@ trait ProvidesConcurrencySupport
      */
     public function tasks()
     {
-        $serverClass = config('octane.swoole.enableWebSocket', false)
+        $serverClass = config('octane.swoole.enable_web_socket', false)
             ? \Swoole\Websocket\Server::class
             : \Swoole\Http\Server::class;
 

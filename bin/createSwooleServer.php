@@ -3,7 +3,7 @@
 $config = $serverState['octaneConfig'];
 
 try {
-    $serverClass = ($config['swoole']['enableWebSocket'] ?? false)
+    $serverClass = ($config['swoole']['enable_web_socket'] ?? false)
         ? \Swoole\Websocket\Server::class
         : \Swoole\Http\Server::class;
 

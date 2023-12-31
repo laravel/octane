@@ -104,7 +104,7 @@ trait InteractsWithServers
             "  Local: <fg=white;options=bold>{$this->uri()}</>",
         ];
 
-        if ($type === 'swoole' && config('octane.swoole.enableWebSocket', false)) {
+        if ($type === 'swoole' && config('octane.swoole.enable_web_socket', false)) {
             $uri = (config('octane.https', false) ? 'wss://' : 'ws://').$this->getHost().':'.$this->getPort();
 
             $urls += [

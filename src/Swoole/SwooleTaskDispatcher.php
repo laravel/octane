@@ -15,7 +15,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
 
     public function __construct()
     {
-        $this->serverClass = config('octane.swoole.enableWebSocket', false)
+        $this->serverClass = config('octane.swoole.enable_web_socket', false)
             ? \Swoole\Websocket\Server::class
             : \Swoole\Http\Server::class;
     }

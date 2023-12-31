@@ -6,7 +6,7 @@ use Laravel\Octane\Swoole\Handlers\OnManagerStart;
 use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
 use Laravel\Octane\Swoole\Handlers\OnWebSocketClose;
-use Laravel\Octane\Swoole\Handlers\OnWebSocketHandshake;
+use Laravel\Octane\Swoole\Handlers\OnWebSocketOpen;
 use Laravel\Octane\Swoole\Handlers\OnWebSocketMessage;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
@@ -16,6 +16,7 @@ use Swoole\Http\Response;
 use Swoole\Server;
 use Swoole\Timer;
 use Swoole\WebSocket\Frame;
+use Swoole\WebSocket\Server as WebSocketServer;
 
 ini_set('display_errors', 'stderr');
 
@@ -149,21 +150,38 @@ $server->on('request', function ($request, $response) use ($server, $workerState
 |
 */
 
-if ($serverState['octaneConfig']['swoole']['enableWebSocket'] ?? false) {
+if ($serverState['octaneConfig']['swoole']['enable_web_socket'] ?? false) {
+
     /*
     |--------------------------------------------------------------------------
-    | Handle Incoming WebSocket Connections
+    | Handle Incoming WebSocket open
     |--------------------------------------------------------------------------
     |
-    | The following callback will handle all incoming connections.
+    | The following callback will handle all new connections.
     |
     */
 
-    $server->on('handshake', fn (Request $request, Response $response) => (new OnWebSocketHandshake(
+    $server->on('open', fn (WebSocketServer $server, Request $request) => (new OnWebSocketOpen(
         $server,
         $serverState,
         $workerState
-    ))($request, $response));
+    ))($request));
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handle Incoming WebSocket handshake
+    |--------------------------------------------------------------------------
+    |
+    | The following callback will handle all incoming handshake.
+    |
+    */
+    if ($serverState['octaneConfig']['swoole']['enable_handshake'] ?? false) {
+        $server->on('handshake', fn (Request $request, Response $response) => (new OnWebSocketOpen(
+            $server,
+            $serverState,
+            $workerState
+        ))($request, $response));
+    }
 
     /*
     |--------------------------------------------------------------------------
