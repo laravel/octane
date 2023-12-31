@@ -27,7 +27,7 @@ class OnWebSocketHandshake
     }
 
     /**
-     * Handle the handshake
+     * Handle the handshake.
      *
      * @see https://www.swoole.co.uk/docs/modules/swoole-websocket-server
      */
