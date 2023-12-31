@@ -5,8 +5,7 @@ use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\Handlers\OnManagerStart;
 use Laravel\Octane\Swoole\Handlers\OnServerStart;
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
-use Laravel\Octane\Swoole\Handlers\OnWebSocketOpen;
-use Laravel\Octane\Swoole\Handlers\OnWebSocketDisconnect;
+use Laravel\Octane\Swoole\Handlers\OnWebSocketClose;
 use Laravel\Octane\Swoole\Handlers\OnWebSocketHandshake;
 use Laravel\Octane\Swoole\Handlers\OnWebSocketMessage;
 use Laravel\Octane\Swoole\ServerStateFile;
@@ -153,21 +152,6 @@ $server->on('request', function ($request, $response) use ($server, $workerState
 if ($serverState['octaneConfig']['swoole']['enableWebSocket'] ?? false) {
     /*
     |--------------------------------------------------------------------------
-    | Handle Incoming WebSocket open
-    |--------------------------------------------------------------------------
-    |
-    | The following callback will handle all incoming new connections.
-    |
-    */
-
-    $server->on('open', fn (Request $request, Response $response) => (new OnWebSocketOpen(
-        $server,
-        $serverState,
-        $workerState
-    ))($request, $response));
-
-    /*
-    |--------------------------------------------------------------------------
     | Handle Incoming WebSocket Connections
     |--------------------------------------------------------------------------
     |
@@ -197,14 +181,14 @@ if ($serverState['octaneConfig']['swoole']['enableWebSocket'] ?? false) {
 
     /*
     |--------------------------------------------------------------------------
-    | Handle Disconnect WebSocket Connections
+    | Handle Close WebSocket Connections
     |--------------------------------------------------------------------------
     |
-    | The following callback will handle all disconnect connections.
+    | The following callback will handle all close connections.
     |
     */
 
-    $server->on('disconnect', fn (Server $server, int $fd) => (new OnWebSocketDisconnect(
+    $server->on('close', fn (Server $server, int $fd) => (new OnWebSocketClose(
         $serverState,
         $workerState
     ))($server, $fd));

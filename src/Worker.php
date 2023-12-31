@@ -21,6 +21,7 @@ use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Swoole\TaskResult;
 use RuntimeException;
+use Swoole\Http\Request as SwooleRequest;
 use Swoole\Server;
 use Swoole\WebSocket\Frame;
 use Throwable;
@@ -248,9 +249,9 @@ class Worker implements WorkerContract
     /**
      * Handle an incoming open from the worker.
      */
-    public function handleWebSocketOpen(Server $server): void
+    public function handleWebSocketOpen(Server $server, SwooleRequest $request): void
     {
-        $this->dispatchEvent($this->app, new WebSocketOpen($this->app, $server));
+        $this->dispatchEvent($this->app, new WebSocketOpen($this->app, $server, $request));
     }
 
     /**

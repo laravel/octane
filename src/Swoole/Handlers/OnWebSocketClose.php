@@ -5,7 +5,7 @@ namespace Laravel\Octane\Swoole\Handlers;
 use Laravel\Octane\Swoole\WorkerState;
 use Swoole\WebSocket\Server;
 
-class OnWebSocketDisconnect
+class OnWebSocketClose
 {
     public function __construct(
         protected array $serverState,

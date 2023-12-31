@@ -19,7 +19,19 @@ class OnWebSocketHandshake
     /**
      * Handle the "handshake" Swoole event.
      */
-    public function __invoke(Request $request, Response $response): bool
+    public function __invoke(Request $request, Response $response): void
+    {
+        if ($this->handshake($request, $response)) {
+            $this->workerState->worker->handleWebSocketOpen($this->server, $request);
+        }
+    }
+
+    /**
+     * Handle the handshake
+     *
+     * @see https://www.swoole.co.uk/docs/modules/swoole-websocket-server
+     */
+    protected function handshake(Request $request, Response $response): bool
     {
         $secWebSocketKey = $request->header['sec-websocket-key'];
 
