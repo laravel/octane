@@ -18,6 +18,8 @@ class InvokeTickCallable
     ) {
     }
 
+    protected bool $lock;
+
     /**
      * Invoke the tick listener.
      *
@@ -66,6 +68,13 @@ class InvokeTickCallable
     {
         $this->immediate = true;
 
+        return $this;
+    }
+
+    public function withoutOverlapping(int $seconds)
+    {
+        $this->lock = true;
+        
         return $this;
     }
 }

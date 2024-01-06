@@ -2,11 +2,13 @@
 
 namespace Laravel\Octane\Swoole;
 
+use Illuminate\Cache\ArrayLock;
 use Illuminate\Cache\Lock;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Swoole\Table;
 
-class SwoolTableLock extends Lock
+class SwoolTableLock extends ArrayLock
 {
     protected $store;
 
@@ -33,16 +35,20 @@ class SwoolTableLock extends Lock
      */
     public function acquire()
     {
-        $expiration = $this->store->locks[$this->name]['expiresAt'] ?? Carbon::now()->addSecond();
+        $aquired = $this->store->get($this->name);
+
+        $expiration = $aquired['expiresAt'] ?? Carbon::now()->addSecond();
 
         if ($this->exists() && $expiration->isFuture()) {
             return false;
         }
 
-        $this->store->locks[$this->name] = [
-            'owner' => $this->owner,
-            'expiresAt' => $this->seconds === 0 ? null : Carbon::now()->addSeconds($this->seconds),
-        ];
+        $this->store->set($this->name,
+            [
+                'owner' => $this->owner,
+                'expiresAt' => $this->seconds === 0 ? null : Carbon::now()->addSeconds($this->seconds),
+            ]
+        );
 
         return true;
     }
@@ -54,27 +60,7 @@ class SwoolTableLock extends Lock
      */
     protected function exists()
     {
-        return isset($this->store->locks[$this->name]);
-    }
-
-    /**
-     * Release the lock.
-     *
-     * @return bool
-     */
-    public function release()
-    {
-        if (! $this->exists()) {
-            return false;
-        }
-
-        if (! $this->isOwnedByCurrentProcess()) {
-            return false;
-        }
-
-        $this->forceRelease();
-
-        return true;
+        return $this->store->exists($this->name);
     }
 
     /**
@@ -88,7 +74,7 @@ class SwoolTableLock extends Lock
             return null;
         }
 
-        return $this->store->locks[$this->name]['owner'];
+        return $this->store->get($this->name)['owner'];
     }
 
     /**
@@ -98,6 +84,6 @@ class SwoolTableLock extends Lock
      */
     public function forceRelease()
     {
-        unset($this->store->locks[$this->name]);
+        $this->store->del($this->name);
     }
 }

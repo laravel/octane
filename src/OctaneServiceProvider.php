@@ -171,6 +171,7 @@ class OctaneServiceProvider extends ServiceProvider
 
         Cache::extend('octane', fn () => Cache::repository($store));
     }
+    
 
     /**
      * Register the commands offered by Octane.
