@@ -268,11 +268,13 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                 return $this->info($output);
             }
 
-            if (is_array($stream = json_decode($debug['msg'], true))) {
+            $message = $debug['msg'] ?? 'unknown error';
+
+            if (is_array($stream = json_decode($message, true))) {
                 return $this->handleStream($stream);
             }
 
-            if ($debug['msg'] == 'handled request') {
+            if ($message == 'handled request') {
                 if (! $this->laravel->isLocal()) {
                     return;
                 }
@@ -300,7 +302,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             }
 
             if ($debug['level'] === 'warn') {
-                return $this->warn($debug['msg']);
+                return $this->warn($message);
             }
 
             if ($debug['level'] !== 'info') {
@@ -309,7 +311,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                     return;
                 }
 
-                return $this->error($debug['msg']);
+                return $this->error($message);
             }
         });
     }
