@@ -19,7 +19,6 @@ class UrlTest extends TestCase
             URL::defaults(['locale' => 'default']);
 
             return ['default-parameters' => URL::getDefaultParameters()];
-
         });
 
         $app['router']->get('b/{locale?}', function (?string $locale = null) {
