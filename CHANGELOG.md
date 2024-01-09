@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.6...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.2.7...2.x)
+
+## [v2.2.7](https://github.com/laravel/octane/compare/v2.2.6...v2.2.7) - 2024-01-08
+
+* [2.x] Fix missing array key issue with FrankenPHP by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/octane/pull/806
+* [2.x] Ensure URL defaults are flushed by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/807
 
 ## [v2.2.6](https://github.com/laravel/octane/compare/v2.2.5...v2.2.6) - 2023-12-26
 
