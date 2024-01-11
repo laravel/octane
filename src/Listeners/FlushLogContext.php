@@ -22,5 +22,9 @@ class FlushLogContext
         if (method_exists($event->sandbox['log']->driver(), 'withoutContext')) {
             $event->sandbox['log']->withoutContext();
         }
+
+        if (method_exists($event->sandbox['log'], 'withoutContext')) {
+            $event->sandbox['log']->withoutContext();
+        }
     }
 }
