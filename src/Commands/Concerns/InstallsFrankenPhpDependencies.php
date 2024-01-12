@@ -19,7 +19,7 @@ trait InstallsFrankenPhpDependencies
      *
      * @var string
      */
-    protected $requiredFrankenPhpVersion = '1.0.0';
+    protected $requiredFrankenPhpVersion = '1.0.2';
 
     /**
      * Ensure the FrankenPHP's Caddyfile and worker script are installed.
@@ -62,12 +62,13 @@ trait InstallsFrankenPhpDependencies
 
         $assetName = match (true) {
             PHP_OS_FAMILY === 'Linux' && $arch === 'x86_64' => 'frankenphp-linux-x86_64',
+            PHP_OS_FAMILY === 'Linux' && $arch === 'aarch64' => 'frankenphp-linux-aarch64',
             PHP_OS_FAMILY === 'Darwin' => "frankenphp-mac-$arch",
             default => null,
         };
 
         if ($assetName === null) {
-            throw new RuntimeException('FrankenPHP binaries are currently only available for Linux (x86_64) and macOS. Other systems should use the Docker images or compile FrankenPHP manually.');
+            throw new RuntimeException('FrankenPHP binaries are currently only available for Linux (x86_64, aarch64) and macOS. Other systems should use the Docker images or compile FrankenPHP manually.');
         }
 
         $assets = Http::accept('application/vnd.github+json')
