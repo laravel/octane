@@ -76,7 +76,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $host = $this->option('host');
         $port = $this->getPort();
 
-        $https =  $this->option('https');
+        $https = $this->option('https');
         $serverName = $https
             ? "https://$host:$port"
             : "http://:$port";
