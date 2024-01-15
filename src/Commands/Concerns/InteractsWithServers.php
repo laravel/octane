@@ -155,7 +155,7 @@ trait InteractsWithServers
     /**
      * The method will be called when the application is signaled.
      */
-    public function handleSignal(int $signal): void
+    public function handleSignal(int $signal, int|false $previousExitCode = 0): int|false
     {
         $this->stopServer();
 
