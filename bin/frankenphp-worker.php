@@ -6,7 +6,6 @@ use Laravel\Octane\RequestContext;
 use Laravel\Octane\Stream;
 use Laravel\Octane\Worker;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 if ((! ($_SERVER['FRANKENPHP_WORKER'] ?? false)) || ! function_exists('frankenphp_handle_request')) {
     echo 'FrankenPHP must be in worker mode to use this script.';
