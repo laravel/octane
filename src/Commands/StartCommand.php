@@ -26,6 +26,7 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--caddyfile= : The path to the FrankenPHP Caddyfile file}
                     {--https : Enable HTTPS, HTTP/2, and HTTP/3, and automatically generate and renew certificates [FrankenPHP only]}
+                    {--http-redirect : Enable HTTP to HTTPS redirection (only enabled if --https is passed [FrankenPHP only]}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
                     {--log-level= : Log messages at or above the specified log level}';
@@ -108,6 +109,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--max-requests' => $this->option('max-requests'),
             '--caddyfile' => $this->option('caddyfile'),
             '--https' => $this->option('https'),
+            '--http-redirect' => $this->option('http-redirect'),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
             '--log-level' => $this->option('log-level'),
