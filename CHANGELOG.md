@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.2.7...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.3.0...2.x)
+
+## [v2.3.0](https://github.com/laravel/octane/compare/v2.2.7...v2.3.0) - 2024-01-16
+
+* [2.x] Laravel v11 support by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/812
+* FrankenPHP: Remove unnecessary use statement to fix PHP warning by [@philbates35](https://github.com/philbates35) in https://github.com/laravel/octane/pull/813
+* feat(frankenphp): make HTTP to HTTPS redirection opt-in by [@dunglas](https://github.com/dunglas) in https://github.com/laravel/octane/pull/814
 
 ## [v2.2.7](https://github.com/laravel/octane/compare/v2.2.6...v2.2.7) - 2024-01-08
 
