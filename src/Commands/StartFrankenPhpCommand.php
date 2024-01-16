@@ -30,6 +30,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--caddyfile= : The path to the FrankenPHP Caddyfile file}
                     {--https : Enable HTTPS, HTTP/2, and HTTP/3, and automatically generate and renew certificates}
+                    {--http-redirect : Enable HTTP to HTTPS redirection (only enabled if --https is passed)}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
                     {--log-level= : Log messages at or above the specified log level}';
@@ -75,7 +76,9 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $host = $this->option('host');
         $port = $this->getPort();
 
-        $serverName = $this->option('https')
+        $https = $this->option('https');
+
+        $serverName = $https
             ? "https://$host:$port"
             : "http://:$port";
 
@@ -90,6 +93,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'LARAVEL_OCTANE' => 1,
             'MAX_REQUESTS' => $this->option('max-requests'),
             'REQUEST_MAX_EXECUTION_TIME' => $this->maxExecutionTime(),
+            'CADDY_GLOBAL_OPTIONS' => ($https && $this->option('http-redirect')) ? '' : 'auto_https disable_redirects',
             'CADDY_SERVER_ADMIN_PORT' => $this->adminPort(),
             'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'CADDY_SERVER_LOGGER' => 'json',
