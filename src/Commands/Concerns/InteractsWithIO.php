@@ -40,6 +40,7 @@ trait InteractsWithIO
         'write error',
         'unable to determine directory for user configuration; falling back to current directory',
         '$HOME environment variable is empty',
+        'admin endpoint on open interface; host checking disabled',
     ];
 
     /**
