@@ -2,11 +2,9 @@
 
 namespace Laravel\Octane\Listeners;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Once;
 use Laravel\Octane\Tests\TestCase;
-use ReflectionClass;
 
 class FlushOnceTest extends TestCase
 {
@@ -40,4 +38,3 @@ function my_rand()
 {
     return once(fn () => rand(1, PHP_INT_MAX));
 }
-
