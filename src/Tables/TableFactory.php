@@ -14,8 +14,8 @@ class TableFactory
         static::ensureDependenciesAreLoaded();
 
         return extension_loaded('openswoole')
-            ? new OpenSwooleTable($size)
-            : new SwooleTable($size);
+            ? new OpenSwooleTable($size, 1)
+            : new SwooleTable($size, 1);
     }
 
     /**
