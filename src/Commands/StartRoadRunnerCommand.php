@@ -86,10 +86,10 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir='.public_path(),
             '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
-            '-o', 'logs.mode=production',
+            '-o', 'logs.mode='.config('octane.roadrunner.logs.mode', 'production'),
             '-o', 'logs.level='.($this->option('log-level') ?: (app()->environment('local') ? 'debug' : 'warn')),
-            '-o', 'logs.output=stdout',
-            '-o', 'logs.encoding=json',
+            '-o', 'logs.output='.config('octane.roadrunner.logs.output', 'stdout'),
+            '-o', 'logs.encoding='.config('octane.roadrunner.logs.encoding', 'json'),
             'serve',
         ]), base_path(), [
             'APP_ENV' => app()->environment(),
