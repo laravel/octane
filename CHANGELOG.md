@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.3.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.3.1...2.x)
+
+## [v2.3.1](https://github.com/laravel/octane/compare/v2.3.0...v2.3.1) - 2024-01-20
+
+* [2.x] Flushes `Once::class` on Operation Terminated by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/821
+* Fix Swoole in-memory table size by [@miguilimzero](https://github.com/miguilimzero) in https://github.com/laravel/octane/pull/818
 
 ## [v2.3.0](https://github.com/laravel/octane/compare/v2.2.7...v2.3.0) - 2024-01-16
 
