@@ -51,6 +51,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\FlushMonologState::class,
             \Laravel\Octane\Listeners\FlushStrCache::class,
             \Laravel\Octane\Listeners\FlushTranslatorCache::class,
+            \Laravel\Octane\Listeners\FlushContext::class,
 
             // First-Party Packages...
             \Laravel\Octane\Listeners\PrepareInertiaForNextOperation::class,
