@@ -18,7 +18,7 @@
         "laravel/framework": "^10.10.1|^11.0",
         "laminas/laminas-diactoros": "^3.0",
         "laravel/serializable-closure": "^1.3.0",
-        "nesbot/carbon": "^2.66.0",
+        "nesbot/carbon": "^3.0",
         "symfony/psr-http-message-bridge": "^2.2.0|^6.4|^7.0"
     },
     "require-dev": {
