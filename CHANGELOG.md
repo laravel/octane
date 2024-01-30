@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.3.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.3.2...2.x)
+
+## [v2.3.2](https://github.com/laravel/octane/compare/v2.3.1...v2.3.2) - 2024-01-30
+
+* Carbon v3 by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/octane/pull/825
 
 ## [v2.3.1](https://github.com/laravel/octane/compare/v2.3.0...v2.3.1) - 2024-01-20
 
