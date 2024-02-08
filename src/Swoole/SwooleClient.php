@@ -11,6 +11,7 @@ use Laravel\Octane\MimeType;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
+use ReflectionClass;
 use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -201,7 +202,10 @@ class SwooleClient implements Client, ServesStaticFiles
     protected function sendResponseContent(OctaneResponse $octaneResponse, SwooleResponse $swooleResponse): void
     {
         if ($octaneResponse->response instanceof BinaryFileResponse) {
-            $swooleResponse->sendfile($octaneResponse->response->getFile()->getPathname());
+            $swooleResponse->sendfile(
+                $octaneResponse->response->getFile()->getPathname(),
+                (new ReflectionClass(BinaryFileResponse::class))->getProperty('offset')->getValue($octaneResponse->response)
+            );
 
             return;
         }
