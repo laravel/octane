@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.3.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.3.3...2.x)
+
+## [v2.3.3](https://github.com/laravel/octane/compare/v2.3.2...v2.3.3) - 2024-02-04
+
+* Update InstallCommand.php by [@brunograndecom](https://github.com/brunograndecom) in https://github.com/laravel/octane/pull/830
 
 ## [v2.3.2](https://github.com/laravel/octane/compare/v2.3.1...v2.3.2) - 2024-01-30
 
