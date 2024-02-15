@@ -43,6 +43,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToRouter::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToValidationFactory::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToViewFactory::class,
+            \Laravel\Octane\Listeners\GiveNewApplicationInstanceToLogManager::class,
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
             \Laravel\Octane\Listeners\FlushDatabaseQueryLog::class,
             \Laravel\Octane\Listeners\RefreshQueryDurationHandling::class,
@@ -51,7 +52,6 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\FlushMonologState::class,
             \Laravel\Octane\Listeners\FlushStrCache::class,
             \Laravel\Octane\Listeners\FlushTranslatorCache::class,
-            \Laravel\Octane\Listeners\FlushContext::class,
 
             // First-Party Packages...
             \Laravel\Octane\Listeners\PrepareInertiaForNextOperation::class,
