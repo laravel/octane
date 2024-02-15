@@ -15,7 +15,9 @@ class GiveNewApplicationInstanceToLogManager
             return;
         }
 
-        $event->sandbox->make('log')->setApplication($event->sandbox);
+        if (method_exists($log = $event->sandbox->make('log'), 'setApplication')) {
+            $log->setApplication($event->sandbox);
+        }
     }
 }
 
