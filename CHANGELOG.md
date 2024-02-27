@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.3.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.3.4...2.x)
+
+## [v2.3.4](https://github.com/laravel/octane/compare/v2.3.3...v2.3.4) - 2024-02-23
+
+* fix swoole file streaming by [@L3o-pold](https://github.com/L3o-pold) in https://github.com/laravel/octane/pull/842
 
 ## [v2.3.3](https://github.com/laravel/octane/compare/v2.3.2...v2.3.3) - 2024-02-04
 
