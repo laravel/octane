@@ -40,6 +40,7 @@ trait InteractsWithIO
         'write error',
         'unable to determine directory for user configuration; falling back to current directory',
         '$HOME environment variable is empty',
+        'unable to get instance ID',
     ];
 
     /**
