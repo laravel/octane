@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.3.4...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.3.5...2.x)
+
+## [v2.3.5](https://github.com/laravel/octane/compare/v2.3.4...v2.3.5) - 2024-03-08
+
+* [2.x] Ignores `storage clean stamps will be incomplete` by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/848
 
 ## [v2.3.4](https://github.com/laravel/octane/compare/v2.3.3...v2.3.4) - 2024-02-23
 
