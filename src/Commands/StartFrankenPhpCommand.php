@@ -58,6 +58,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     {
         $this->ensureFrankenPhpWorkerIsInstalled();
         $this->ensureHostsAreAvailable();
+        $this->ensurePortIsAvailable();
 
         $frankenphpBinary = $this->ensureFrankenPhpBinaryIsInstalled();
 

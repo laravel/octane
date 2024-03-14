@@ -58,6 +58,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             return 1;
         }
 
+        $this->ensurePortIsAvailable();
+
         if ($inspector->serverIsRunning()) {
             $this->error('Server is already running.');
 
