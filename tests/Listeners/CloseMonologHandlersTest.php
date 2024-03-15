@@ -8,7 +8,7 @@ use Laravel\Octane\Tests\TestCase;
 use Mockery;
 use Monolog;
 
-class FlushMonologStateTest extends TestCase
+class CloseMonologHandlersTest extends TestCase
 {
     /** @doesNotPerformAssertions */
     public function test_logger_are_closed_after_worker_termination()
