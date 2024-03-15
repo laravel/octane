@@ -149,7 +149,7 @@ trait InteractsWithServers
      */
     public function getSubscribedSignals(): array
     {
-        return [SIGINT, SIGTERM];
+        return [SIGINT, SIGTERM, SIGHUP];
     }
 
     /**
