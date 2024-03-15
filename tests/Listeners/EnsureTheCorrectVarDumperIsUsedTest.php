@@ -9,7 +9,6 @@ use Laravel\Octane\Tests\TestCase;
 
 class EnsureTheCorrectVarDumperIsUsedTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -39,5 +38,4 @@ class EnsureTheCorrectVarDumperIsUsedTest extends TestCase
         $htmlFromResponse = $client->responses[0]->getContent();
         $this->assertStringContainsString($variableToDump, $htmlFromResponse);
     }
-
 }
