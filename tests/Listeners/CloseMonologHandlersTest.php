@@ -11,7 +11,7 @@ use Monolog;
 class FlushMonologStateTest extends TestCase
 {
     /** @doesNotPerformAssertions */
-    public function test_logger_are_reset()
+    public function test_logger_are_closed_after_worker_termination()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/', 'GET'),
