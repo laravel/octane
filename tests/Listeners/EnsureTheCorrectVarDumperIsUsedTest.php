@@ -24,13 +24,13 @@ class EnsureTheCorrectVarDumperIsUsedTest extends TestCase
 
     public function test_a_variable_is_contained_within_the_html_if_dumped_in_a_blade_view()
     {
-        $variableToDump = "someString";
+        $variableToDump = 'someString';
         [$app, $worker, $client] = $this->createOctaneContext([
-            Request::create('/view', 'GET')
+            Request::create('/view', 'GET'),
         ]);
         $app['router']->get('/view', function (Application $app) use ($variableToDump) {
             return Blade::render('@dump($variableToDump)', [
-                'variableToDump' => $variableToDump
+                'variableToDump' => $variableToDump,
             ]);
         });
 

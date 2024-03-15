@@ -68,7 +68,7 @@ return [
         WorkerStarting::class => [
             EnsureUploadedFilesAreValid::class,
             EnsureUploadedFilesCanBeMoved::class,
-            EnsureTheCorrectVarDumperIsUsed::class
+            EnsureTheCorrectVarDumperIsUsed::class,
         ],
 
         RequestReceived::class => [
