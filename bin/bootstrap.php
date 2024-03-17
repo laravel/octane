@@ -6,6 +6,7 @@ use Laravel\Octane\Octane;
 ini_set('display_errors', 'stderr');
 
 $_ENV['APP_RUNNING_IN_CONSOLE'] = false;
+$_SERVER['VAR_DUMPER_FORMAT'] = 'html';
 
 /*
 |--------------------------------------------------------------------------
