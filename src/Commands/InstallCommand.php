@@ -5,8 +5,10 @@ namespace Laravel\Octane\Commands;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Throwable;
 
+#[AsCommand(name: 'octane:install')]
 class InstallCommand extends Command
 {
     use Concerns\InstallsFrankenPhpDependencies,

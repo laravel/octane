@@ -6,10 +6,12 @@ use Illuminate\Support\Str;
 use Laravel\Octane\Swoole\ServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(name: 'octane:swoole')]
 class StartSwooleCommand extends Command implements SignalableCommandInterface
 {
     use Concerns\InteractsWithEnvironmentVariables, Concerns\InteractsWithServers;
