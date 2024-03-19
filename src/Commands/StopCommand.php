@@ -8,7 +8,9 @@ use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessI
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile as SwooleServerStateFile;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'octane:stop')]
 class StopCommand extends Command
 {
     /**

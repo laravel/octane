@@ -6,9 +6,11 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Laravel\Octane\FrankenPhp\ServerProcessInspector;
 use Laravel\Octane\FrankenPhp\ServerStateFile;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(name: 'octane:frankenphp')]
 class StartFrankenPhpCommand extends Command implements SignalableCommandInterface
 {
     use Concerns\InstallsFrankenPhpDependencies,
