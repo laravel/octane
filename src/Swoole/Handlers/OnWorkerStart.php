@@ -30,7 +30,7 @@ class OnWorkerStart
      */
     public function __invoke($server, int $workerId)
     {
-        if($this->serverState['octaneConfig']['clear_opcode_cache'] ?? true){
+        if ($this->serverState['octaneConfig']['clear_opcode_cache'] ?? true) {
             $this->clearOpcodeCache();
         }
 
