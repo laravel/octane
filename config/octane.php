@@ -116,7 +116,6 @@ return [
 
         WorkerStopping::class => [
             CloseMonologHandlers::class,
-            //
         ],
     ],
 
