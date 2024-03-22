@@ -3,7 +3,7 @@
 namespace Laravel\Octane\Swoole\Actions;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class ConvertSwooleRequestToIlluminateRequest
@@ -35,7 +35,7 @@ class ConvertSwooleRequestToIlluminateRequest
             in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'PATCH', 'DELETE'])) {
             parse_str($request->getContent(), $data);
 
-            $request->request = new ParameterBag($data);
+            $request->request = new InputBag($data);
         }
 
         return Request::createFromBase($request);
