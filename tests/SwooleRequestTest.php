@@ -4,7 +4,6 @@ namespace Laravel\Octane\Tests;
 
 use Illuminate\Http\Request;
 use Laravel\Octane\Swoole\Actions\ConvertSwooleRequestToIlluminateRequest;
-use Laravel\Octane\Swoole\SwooleExtension;
 use Mockery;
 use Orchestra\Testbench\TestCase;
 use Swoole\Http\Request as SwooleRequest;
@@ -15,9 +14,7 @@ class SwooleRequestTest extends TestCase
     {
         parent::setUp();
 
-        $extension = new SwooleExtension();
-
-        if (! $extension->isInstalled()) {
+        if (! extension_loaded('swoole')) {
             $this->markTestSkipped('Swoole extension is not installed.');
         }
     }
