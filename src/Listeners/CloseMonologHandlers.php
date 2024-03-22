@@ -4,6 +4,11 @@ namespace Laravel\Octane\Listeners;
 
 class CloseMonologHandlers
 {
+    /**
+     * Handle the event.
+     *
+     * @param  mixed  $event
+     */
     public function handle($event): void
     {
         if (! $event->app->resolved('log')) {
@@ -11,8 +16,10 @@ class CloseMonologHandlers
         }
 
         collect($event->app->make('log')->getChannels())
-            ->map->getLogger()
+            ->map
+            ->getLogger()
             ->filter(fn ($logger) => method_exists($logger, 'close'))
-            ->each->close();
+            ->each
+            ->close();
     }
 }
