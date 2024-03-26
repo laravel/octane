@@ -1,6 +1,14 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.3.5...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.3.6...2.x)
+
+## [v2.3.6](https://github.com/laravel/octane/compare/v2.3.5...v2.3.6) - 2024-03-26
+
+* [2.x] Make commands lazy by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/octane/pull/857
+* [2.x] Fixes Swoole `PUT|PATCH|DELETE` requests on Laravel 11 by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/862
+* [2.x] Closes monolog handlers by event listener if the worker stops by [@NiroDeveloper](https://github.com/NiroDeveloper) in https://github.com/laravel/octane/pull/854
+* Fix undefined array key "assets" by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/864
+* Ensure HTTP server port is available by [@smortexa](https://github.com/smortexa) in https://github.com/laravel/octane/pull/852
 
 ## [v2.3.5](https://github.com/laravel/octane/compare/v2.3.4...v2.3.5) - 2024-03-08
 
