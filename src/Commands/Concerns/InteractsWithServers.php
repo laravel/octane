@@ -146,8 +146,6 @@ trait InteractsWithServers
 
     /**
      * Ensure the Octane HTTP server port is available.
-     *
-     * @return void
      */
     protected function ensurePortIsAvailable(): void
     {
