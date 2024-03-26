@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands\Concerns;
 
 use GuzzleHttp\Client;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Laravel\Octane\FrankenPhp\Concerns\FindsFrankenPhpBinary;
@@ -55,6 +56,8 @@ trait InstallsFrankenPhpDependencies
      * Download the latest version of the FrankenPHP binary.
      *
      * @return string
+     *
+     * @throws RequestException
      */
     protected function downloadFrankenPhpBinary()
     {
@@ -71,9 +74,12 @@ trait InstallsFrankenPhpDependencies
             throw new RuntimeException('FrankenPHP binaries are currently only available for Linux (x86_64, aarch64) and macOS. Other systems should use the Docker images or compile FrankenPHP manually.');
         }
 
-        $assets = Http::accept('application/vnd.github+json')
+        $response = Http::accept('application/vnd.github+json')
             ->withHeaders(['X-GitHub-Api-Version' => '2022-11-28'])
-            ->get('https://api.github.com/repos/dunglas/frankenphp/releases/latest')['assets'];
+            ->get('https://api.github.com/repos/dunglas/frankenphp/releases/latest')
+            ->throw(fn () => $this->error("Failed to download FrankenPHP."));
+
+        $assets = $response['assets'] ?? [];
 
         foreach ($assets as $asset) {
             if ($asset['name'] !== $assetName) {
