@@ -61,6 +61,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         }
 
         $roadRunnerBinary = $this->ensureRoadRunnerBinaryIsInstalled();
+
         $this->ensurePortIsAvailable();
 
         if ($inspector->serverIsRunning()) {
