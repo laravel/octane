@@ -59,7 +59,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
     {
         $this->ensureFrankenPhpWorkerIsInstalled();
-        $this->ensureHostsAreAvailable();
+        $this->ensurePortIsAvailable();
 
         $frankenphpBinary = $this->ensureFrankenPhpBinaryIsInstalled();
 
@@ -116,7 +116,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      *
      * @return void
      */
-    protected function ensureHostsAreAvailable()
+    protected function ensurePortIsAvailable()
     {
         $host = $this->getHost();
 
