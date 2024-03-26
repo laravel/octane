@@ -77,7 +77,7 @@ trait InstallsFrankenPhpDependencies
         $response = Http::accept('application/vnd.github+json')
             ->withHeaders(['X-GitHub-Api-Version' => '2022-11-28'])
             ->get('https://api.github.com/repos/dunglas/frankenphp/releases/latest')
-            ->throw(fn () => $this->error("Failed to download FrankenPHP."));
+            ->throw(fn () => $this->error('Failed to download FrankenPHP.'));
 
         $assets = $response['assets'] ?? [];
 
