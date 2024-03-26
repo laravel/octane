@@ -230,7 +230,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                         'method' => $method,
                         'url' => $url,
                         'statusCode' => $statusCode,
-                        'duration' => $elapsed,
+                        'duration' => $this->calculateElapsedTime($elapsed),
                     ]);
                 }
             });
@@ -243,6 +243,22 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     $this->error($output);
                 }
             });
+    }
+
+    /**
+     * Calculate the elapsed time for a request.
+     */
+    protected function calculateElapsedTime(string $elapsed): float
+    {
+        if (Str::endsWith($elapsed, 'ms')) {
+            return substr($elapsed, 0, -2);
+        }
+
+        if (Str::endsWith($elapsed, 'µs')) {
+            return mb_substr($elapsed, 0, -2) * 0.001;
+        }
+
+        return (float) $elapsed * 1000;
     }
 
     /**
