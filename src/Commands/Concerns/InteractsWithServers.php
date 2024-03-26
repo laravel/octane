@@ -145,7 +145,7 @@ trait InteractsWithServers
     }
 
     /**
-     * Ensures the Octane HTTP server port is available.
+     * Ensure the Octane HTTP server port is available.
      *
      * @return void
      */
