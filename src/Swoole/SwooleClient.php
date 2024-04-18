@@ -240,7 +240,7 @@ class SwooleClient implements Client, ServesStaticFiles
             return;
         }
 
-        if ($length <= $this->chunkSize) {
+        if ($length <= $this->chunkSize || config('octane.swoole.options.open_http2_protocol', false)) {
             $swooleResponse->end($content);
 
             return;
