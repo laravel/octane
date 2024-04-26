@@ -38,11 +38,11 @@ $roadRunnerClient = new RoadRunnerClient($psr7Client = new PSR7Worker(
 $worker = null;
 
 try {
-    while ($psr7Request = $psr7Client->waitRequest()) {
-        $worker = $worker ?: tap((new Worker(
-            new ApplicationFactory($basePath), $roadRunnerClient
-        )))->boot();
+    $worker = $worker ?: tap((new Worker(
+        new ApplicationFactory($basePath), $roadRunnerClient
+    )))->boot();
 
+    while ($psr7Request = $psr7Client->waitRequest()) {
         if (! $psr7Request instanceof ServerRequestInterface) {
             break;
         }
