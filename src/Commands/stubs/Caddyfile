@@ -25,7 +25,7 @@
 
 	route {
 		root * "{$APP_PUBLIC_PATH}"
-		encode zstd gzip
+		encode zstd br gzip
 
 		# Mercure configuration is injected here...
 		{$CADDY_SERVER_EXTRA_DIRECTIVES}
