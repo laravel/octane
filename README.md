@@ -1,3 +1,4 @@
+
 <p align="center"><img src="/art/logo.svg" alt="Logo Laravel Octane"></p>
 
 <p align="center">
