@@ -20,6 +20,7 @@ use Laravel\Octane\Listeners\FlushOnce;
 use Laravel\Octane\Listeners\FlushTemporaryContainerInstances;
 use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Listeners\ReportException;
+use Laravel\Octane\Listeners\RollbackActiveTransactions;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
 
@@ -77,7 +78,7 @@ return [
         ],
 
         RequestHandled::class => [
-            //
+            RollbackActiveTransactions::class
         ],
 
         RequestTerminated::class => [
