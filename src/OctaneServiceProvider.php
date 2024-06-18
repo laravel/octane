@@ -136,6 +136,7 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToAuthorizationGate::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToBroadcastManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToHttpKernel::class);
+        $this->app->singleton(Listeners\GiveNewApplicationInstanceToLogManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToMailManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToNotificationChannelManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToPipelineHub::class);
