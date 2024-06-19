@@ -27,6 +27,7 @@ class SequentialTaskDispatcherTest extends TestCase
 
     public function test_resolving_tasks_with_exceptions_do_not_effect_other_tasks()
     {
+        $this->createApplication();
         $dispatcher = new SequentialTaskDispatcher;
 
         $a = false;
@@ -77,6 +78,7 @@ class SequentialTaskDispatcherTest extends TestCase
 
     public function test_resolving_tasks_propagate_exceptions()
     {
+        $this->createApplication();
         $dispatcher = new SequentialTaskDispatcher();
 
         $this->expectException(TaskException::class);
@@ -89,6 +91,7 @@ class SequentialTaskDispatcherTest extends TestCase
 
     public function test_resolving_tasks_propagate_dd_calls()
     {
+        $this->createApplication();
         $dispatcher = new SequentialTaskDispatcher();
 
         $this->expectException(DdException::class);

@@ -50,6 +50,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_roadrunner_server_process_can_be_reloaded()
     {
+        $this->createApplication();
         $inspector = new ServerProcessInspector(
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
             $processFactory = Mockery::mock(SymfonyProcessFactory::class),

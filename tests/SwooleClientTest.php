@@ -124,6 +124,7 @@ class SwooleClientTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_static_file_headers_can_be_sent(): void
     {
+        $this->createApplication();
         $client = new SwooleClient;
 
         $request = Request::create('/foo.txt', 'GET');
@@ -206,6 +207,7 @@ class SwooleClientTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_respond_method_send_streamed_response_to_swoole(): void
     {
+        $this->createApplication();
         $client = new SwooleClient;
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
@@ -227,6 +229,7 @@ class SwooleClientTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole(): void
     {
+        $this->createApplication();
         $client = new SwooleClient;
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
@@ -286,6 +289,7 @@ class SwooleClientTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_respond_method_send_not_chunked_response_to_swoole(): void
     {
+        $this->createApplication();
         $client = new SwooleClient;
 
         $swooleResponse = Mockery::mock(SwooleResponse::class);
@@ -307,6 +311,7 @@ class SwooleClientTest extends TestCase
     /** @doesNotPerformAssertions @test */
     public function test_respond_method_send_chunked_response_to_swoole(): void
     {
+        $this->createApplication();
         $client = new SwooleClient(6);
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
