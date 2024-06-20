@@ -2,9 +2,7 @@
 
 namespace Laravel\Octane\Tests\Listeners;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Log;
 use Laravel\Octane\Tests\TestCase;
@@ -31,7 +29,6 @@ class GiveNewApplicationInstanceToLogManagerTest extends TestCase
 
         $worker->run();
 
-        $this->assertStringContainsString('{"foo":"bar"}', file_get_contents($path),);
+        $this->assertStringContainsString('{"foo":"bar"}', file_get_contents($path));
     }
 }
-
