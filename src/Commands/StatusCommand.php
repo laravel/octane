@@ -42,8 +42,8 @@ class StatusCommand extends Command
 
         return ! tap($isRunning, function ($isRunning) {
             $isRunning
-                ? $this->info('Octane server is running.')
-                : $this->info('Octane server is not running.');
+                ? $this->components->info('Octane server is running.')
+                : $this->components->info('Octane server is not running.');
         });
     }
 
@@ -87,7 +87,7 @@ class StatusCommand extends Command
      */
     protected function invalidServer(string $server)
     {
-        $this->error("Invalid server: {$server}.");
+        $this->components->error("Invalid server: {$server}.");
 
         return false;
     }

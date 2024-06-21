@@ -125,7 +125,7 @@ class StartCommand extends Command implements SignalableCommandInterface
      */
     protected function invalidServer(string $server)
     {
-        $this->error("Invalid server: {$server}.");
+        $this->components->error("Invalid server: {$server}.");
 
         return 1;
     }

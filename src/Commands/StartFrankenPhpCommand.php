@@ -65,7 +65,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $frankenphpBinary = $this->ensureFrankenPhpBinaryIsInstalled();
 
         if ($inspector->serverIsRunning()) {
-            $this->error('FrankenPHP server is already running.');
+            $this->components->error('FrankenPHP server is already running.');
 
             return 1;
         }
@@ -274,7 +274,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
         $errorOutput->each(function ($output) {
             if (! is_array($debug = json_decode($output, true))) {
-                return $this->info($output);
+                return $this->components->info($output);
             }
 
             $message = $debug['msg'] ?? 'unknown error';
@@ -312,7 +312,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
             if (isset($debug['level'])) {
                 if ($debug['level'] === 'warn') {
-                    return $this->warn($message);
+                    return $this->components->warn($message);
                 }
 
                 if ($debug['level'] !== 'info') {
@@ -321,7 +321,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                         return;
                     }
 
-                    return $this->error($message);
+                    return $this->components->error($message);
                 }
             }
         });

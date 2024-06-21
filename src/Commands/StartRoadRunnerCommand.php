@@ -57,7 +57,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
     public function handle(ServerProcessInspector $inspector, ServerStateFile $serverStateFile)
     {
         if (! $this->isRoadRunnerInstalled()) {
-            $this->error('RoadRunner not installed. Please execute the `octane:install` Artisan command.');
+            $this->components->error('RoadRunner not installed. Please execute the `octane:install` Artisan command.');
 
             return 1;
         }
@@ -67,7 +67,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         $this->ensurePortIsAvailable();
 
         if ($inspector->serverIsRunning()) {
-            $this->error('RoadRunner server is already running.');
+            $this->components->error('RoadRunner server is already running.');
 
             return 1;
         }
@@ -204,7 +204,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             ->filter()
             ->each(function ($output) {
                 if (! is_array($debug = json_decode($output, true))) {
-                    return $this->info($output);
+                    return $this->components->info($output);
                 }
 
                 if (is_array($stream = json_decode($debug['msg'], true))) {
@@ -240,7 +240,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             ->filter()
             ->each(function ($output) {
                 if (! Str::contains($output, ['DEBUG', 'INFO', 'WARN'])) {
-                    $this->error($output);
+                    $this->components->error($output);
                 }
             });
     }

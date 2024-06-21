@@ -248,7 +248,7 @@ trait InteractsWithIO
             'throwable' => $this->throwableInfo($stream, $verbosity),
             'shutdown' => $this->shutdownInfo($stream, $verbosity),
             'raw' => $this->raw(json_encode($stream)),
-            default => $this->info(json_encode($stream), $verbosity)
+            default => $this->components->info(json_encode($stream), $verbosity)
         };
     }
 }

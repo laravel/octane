@@ -37,11 +37,11 @@ trait InteractsWithServers
 
                 if ($watcher->isRunning() &&
                     $watcher->getIncrementalOutput()) {
-                    $this->info('Application change detected. Restarting workers…');
+                    $this->components->info('Application change detected. Restarting workers…');
 
                     $inspector->reloadServer();
                 } elseif ($watcher->isTerminated()) {
-                    $this->error(
+                    $this->components->error(
                         'Watcher process has terminated. Please ensure Node and chokidar are installed.'.PHP_EOL.
                         $watcher->getErrorOutput()
                     );
@@ -100,7 +100,7 @@ trait InteractsWithServers
      */
     protected function writeServerRunningMessage()
     {
-        $this->info('Server running…');
+        $this->components->info('Server running…');
 
         $this->output->writeln([
             '',

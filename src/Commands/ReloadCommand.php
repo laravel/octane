@@ -51,12 +51,12 @@ class ReloadCommand extends Command
         $inspector = app(SwooleServerProcessInspector::class);
 
         if (! $inspector->serverIsRunning()) {
-            $this->error('Octane server is not running.');
+            $this->components->error('Octane server is not running.');
 
             return 1;
         }
 
-        $this->info('Reloading workers...');
+        $this->components->info('Reloading workers...');
 
         $inspector->reloadServer();
 
@@ -73,12 +73,12 @@ class ReloadCommand extends Command
         $inspector = app(RoadRunnerServerProcessInspector::class);
 
         if (! $inspector->serverIsRunning()) {
-            $this->error('Octane server is not running.');
+            $this->components->error('Octane server is not running.');
 
             return 1;
         }
 
-        $this->info('Reloading workers...');
+        $this->components->info('Reloading workers...');
 
         $inspector->reloadServer();
 
@@ -95,12 +95,12 @@ class ReloadCommand extends Command
         $inspector = app(FrankenPhpServerProcessInspector::class);
 
         if (! $inspector->serverIsRunning()) {
-            $this->error('Octane server is not running.');
+            $this->components->error('Octane server is not running.');
 
             return 1;
         }
 
-        $this->info('Reloading workers...');
+        $this->components->info('Reloading workers...');
 
         $inspector->reloadServer();
 
@@ -114,7 +114,7 @@ class ReloadCommand extends Command
      */
     protected function invalidServer(string $server)
     {
-        $this->error("Invalid server: {$server}.");
+        $this->components->error("Invalid server: {$server}.");
 
         return 1;
     }

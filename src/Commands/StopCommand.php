@@ -56,15 +56,15 @@ class StopCommand extends Command
         if (! $inspector->serverIsRunning()) {
             app(SwooleServerStateFile::class)->delete();
 
-            $this->error('Swoole server is not running.');
+            $this->components->error('Swoole server is not running.');
 
             return 1;
         }
 
-        $this->info('Stopping server...');
+        $this->components->info('Stopping server...');
 
         if (! $inspector->stopServer()) {
-            $this->error('Failed to stop Swoole server.');
+            $this->components->error('Failed to stop Swoole server.');
 
             return 1;
         }
@@ -86,12 +86,12 @@ class StopCommand extends Command
         if (! $inspector->serverIsRunning()) {
             app(RoadRunnerServerStateFile::class)->delete();
 
-            $this->error('RoadRunner server is not running.');
+            $this->components->error('RoadRunner server is not running.');
 
             return 1;
         }
 
-        $this->info('Stopping server...');
+        $this->components->info('Stopping server...');
 
         $inspector->stopServer();
 
@@ -112,12 +112,12 @@ class StopCommand extends Command
         if (! $inspector->serverIsRunning()) {
             app(FrankenPhpStateFile::class)->delete();
 
-            $this->error('FrankenPHP server is not running.');
+            $this->components->error('FrankenPHP server is not running.');
 
             return 1;
         }
 
-        $this->info('Stopping server...');
+        $this->components->info('Stopping server...');
 
         $inspector->stopServer();
 
@@ -133,7 +133,7 @@ class StopCommand extends Command
      */
     protected function invalidServer(string $server)
     {
-        $this->error("Invalid server: {$server}.");
+        $this->components->error("Invalid server: {$server}.");
 
         return 1;
     }

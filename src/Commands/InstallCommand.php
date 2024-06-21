@@ -8,6 +8,8 @@ use Laravel\Octane\Swoole\SwooleExtension;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Throwable;
 
+use function Laravel\Prompts\select;
+
 #[AsCommand(name: 'octane:install')]
 class InstallCommand extends Command
 {
@@ -36,9 +38,10 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $server = $this->option('server') ?: $this->choice(
-            'Which application server you would like to use?',
-            ['roadrunner', 'swoole', 'frankenphp'],
+        $server = $this->option('server') ?: select(
+            label: 'Which application server you would like to use?',
+            options: ['roadrunner', 'swoole', 'frankenphp'],
+            default: 'roadrunner'
         );
 
         return (int) ! tap(match ($server) {
@@ -52,7 +55,7 @@ class InstallCommand extends Command
 
                 $this->callSilent('vendor:publish', ['--tag' => 'octane-config', '--force' => true]);
 
-                $this->info('Octane installed successfully.');
+                $this->components->info('Octane installed successfully.');
                 $this->newLine();
             }
         });
@@ -75,7 +78,7 @@ class InstallCommand extends Command
                     PHP_EOL.'OCTANE_SERVER='.$server.PHP_EOL,
                 );
             } else {
-                $this->warn('Please adjust the `OCTANE_SERVER` environment variable.');
+                $this->components->warn('Please adjust the `OCTANE_SERVER` environment variable.');
             }
         }
     }
@@ -115,7 +118,7 @@ class InstallCommand extends Command
     public function installSwooleServer()
     {
         if (! resolve(SwooleExtension::class)->isInstalled()) {
-            $this->warn('The Swoole extension is missing.');
+            $this->components->warn('The Swoole extension is missing.');
         }
 
         return true;
@@ -147,7 +150,7 @@ class InstallCommand extends Command
         try {
             $this->ensureFrankenPhpBinaryIsInstalled();
         } catch (Throwable $e) {
-            $this->error($e->getMessage());
+            $this->components->error($e->getMessage());
 
             return false;
         }
@@ -162,7 +165,7 @@ class InstallCommand extends Command
      */
     protected function invalidServer(string $server)
     {
-        $this->error("Invalid server: {$server}.");
+        $this->components->error("Invalid server: {$server}.");
 
         return false;
     }
