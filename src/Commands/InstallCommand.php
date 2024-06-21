@@ -40,8 +40,8 @@ class InstallCommand extends Command
     {
         $server = $this->option('server') ?: select(
             label: 'Which application server you would like to use?',
-            options: ['roadrunner', 'swoole', 'frankenphp'],
-            default: 'roadrunner'
+            options: ['frankenphp', 'roadrunner', 'swoole'],
+            default: 'frankenphp'
         );
 
         return (int) ! tap(match ($server) {
