@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\RoadRunner;
 
+use Generator;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;
@@ -10,6 +11,7 @@ use Laravel\Octane\MarshalsPsr7RequestsAndResponses;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
+use ReflectionFunction;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -45,6 +47,20 @@ class RoadRunnerClient implements Client, StoppableClient
             $octaneResponse->response->setContent(
                 $octaneResponse->outputBuffer.$octaneResponse->response->getContent()
             );
+        }
+
+        if (
+            ($octaneResponse->response instanceof StreamedResponse) &&
+            ($responseCallback = $octaneResponse->response->getCallback()) &&
+            (((new ReflectionFunction($responseCallback))->getReturnType()?->getName()) === Generator::class)
+        ) {
+            $this->client->getHttpWorker()->respond(
+                $octaneResponse->response->getStatusCode(),
+                $responseCallback(),
+                $this->toPsr7Response($octaneResponse->response)->getHeaders(),
+            );
+
+            return;
         }
 
         $this->client->respond($this->toPsr7Response($octaneResponse->response));

@@ -3,6 +3,8 @@
 namespace Laravel\Octane\Tests;
 
 use Exception;
+use Generator;
+use Hamcrest\Core\IsInstanceOf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -11,6 +13,7 @@ use Laravel\Octane\RequestContext;
 use Laravel\Octane\RoadRunner\RoadRunnerClient;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
+use Spiral\RoadRunner\Http\HttpWorker;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -61,6 +64,32 @@ class RoadRunnerClientTest extends TestCase
         ]), new OctaneResponse(new StreamedResponse(function () {
             echo 'Hello World';
         }, 200)));
+    }
+
+    /** @doesNotPerformAssertions @test */
+    public function test_respond_method_send_streamed_generator_response_to_roadrunner()
+    {
+        $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
+
+        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+        $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
+
+        $httpWorker = Mockery::mock(HttpWorker::class);
+
+        $responseCallback = function (): Generator {
+            yield 'Hello World';
+        };
+
+        $psr7Client->shouldReceive('getHttpWorker')->once()->andReturn($httpWorker);
+        $httpWorker->shouldReceive('respond')->once()->with(
+            200,
+            IsInstanceOf::anInstanceOf(Generator::class),
+            Mockery::hasKey('cache-control'),
+        );
+
+        $client->respond(new RequestContext([
+            'psr7Request' => $psr7Request,
+        ]), new OctaneResponse(new StreamedResponse($responseCallback, 200)));
     }
 
     /** @doesNotPerformAssertions @test */
