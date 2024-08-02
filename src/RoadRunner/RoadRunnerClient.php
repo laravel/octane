@@ -52,7 +52,7 @@ class RoadRunnerClient implements Client, StoppableClient
         if (
             ($octaneResponse->response instanceof StreamedResponse) &&
             ($responseCallback = $octaneResponse->response->getCallback()) &&
-            (((new ReflectionFunction($responseCallback))->getReturnType()?->getName()) === Generator::class)
+            ((new ReflectionFunction($responseCallback))->getReturnType()?->getName() === Generator::class)
         ) {
             $this->client->getHttpWorker()->respond(
                 $octaneResponse->response->getStatusCode(),
