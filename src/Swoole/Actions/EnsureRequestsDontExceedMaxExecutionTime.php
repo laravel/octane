@@ -24,6 +24,7 @@ class EnsureRequestsDontExceedMaxExecutionTime
     public function __invoke()
     {
         $rows = [];
+
         foreach ($this->timerTable as $workerId => $row) {
             if ((time() - $row['time']) > $this->maxExecutionTime) {
                 $rows[$workerId] = $row;
@@ -36,6 +37,7 @@ class EnsureRequestsDontExceedMaxExecutionTime
             }
 
             $this->timerTable->del($workerId);
+
             if ($this->server instanceof Server && ! $this->server->exists($row['fd'])) {
                 continue;
             }
@@ -44,6 +46,7 @@ class EnsureRequestsDontExceedMaxExecutionTime
 
             if ($this->server instanceof Server) {
                 $response = Response::create($this->server, $row['fd']);
+
                 if ($response) {
                     $response->status(408);
                     $response->end();
