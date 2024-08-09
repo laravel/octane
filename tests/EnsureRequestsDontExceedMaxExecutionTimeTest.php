@@ -17,6 +17,7 @@ class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
         $table['fake-worker-id'] = [
             'worker_pid' => 111,
             'time' => time() - 60,
+            'fd' => 1,
         ];
 
         $action = new EnsureRequestsDontExceedMaxExecutionTime(
