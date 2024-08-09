@@ -30,7 +30,6 @@ class EnsureRequestsDontExceedMaxExecutionTime
             }
         }
 
-
         foreach ($rows as $workerId => $row) {
             if ($this->timerTable->get($workerId, 'fd') !== $row['fd']) {
                 continue;
