@@ -39,4 +39,9 @@ class FakeTimerTable extends ArrayObject
     {
         $this->deleted[] = $workerId;
     }
+
+    public function get($workerId, $field = null)
+    {
+        return 1;
+    }
 }
