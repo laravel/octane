@@ -37,7 +37,7 @@ class EnsureRequestsDontExceedMaxExecutionTime
             }
 
             $this->timerTable->del($workerId);
-            if ($this->server instanceof Server && !$this->server->exists($row['fd'])) {
+            if ($this->server instanceof Server && ! $this->server->exists($row['fd'])) {
                 continue;
             }
 
