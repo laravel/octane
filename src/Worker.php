@@ -113,7 +113,7 @@ class Worker implements WorkerContract
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.
-            unset($gateway, $sandbox, $request, $response, $octaneResponse, $output);
+            unset($gateway, $sandbox, $context, $request, $response, $octaneResponse, $output);
 
             CurrentApplication::set($this->app);
         }
