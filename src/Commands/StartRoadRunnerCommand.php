@@ -82,7 +82,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             $roadRunnerBinary,
             '-c', $this->configPath(),
             '-o', 'version=3',
-            '-o', 'http.address='.$this->option('host').':'.$this->getPort(),
+            '-o', 'http.address='.$this->getHost().':'.$this->getPort(),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().','.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
