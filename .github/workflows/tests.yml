@@ -25,8 +25,6 @@ jobs:
           - php: 8.4
             laravel: 10
           - php: 8.4
-            driver: swoole
-          - php: 8.4
             driver: openswoole
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
