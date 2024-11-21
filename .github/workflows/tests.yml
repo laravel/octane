@@ -47,6 +47,7 @@ jobs:
       - name: Show extension info
         run: |
           php --ri ${{ matrix.driver }}
+        if: matrix.driver == swoole || matrix.driver == openswoole
 
       - name: Install dependencies
         run: |
