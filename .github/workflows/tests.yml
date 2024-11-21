@@ -84,5 +84,9 @@ jobs:
         run: |
           composer update --prefer-dist --no-interaction --no-progress --with="laravel/framework:^${{ matrix.laravel }}"
 
+      - name: Install Roadrunner
+        run: |
+          php vendor/bin/rr get-binary
+
       - name: Execute tests
         run: vendor/bin/phpunit --display-deprecations --fail-on-deprecation
