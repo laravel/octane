@@ -8,7 +8,6 @@ use Laravel\Octane\Tables\SwooleTable;
 use Laravel\Octane\Tables\TableFactory;
 use Swoole\Table;
 
-
 class TableTest extends TestCase
 {
     protected function setUp(): void
