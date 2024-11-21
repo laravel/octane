@@ -78,7 +78,7 @@ jobs:
 
       - name: Requires Roadrunner
         run: |
-          composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http --no-interaction --no-update
+          composer require spiral/roadrunner-cli spiral/roadrunner-http --no-interaction --no-update
 
       - name: Install dependencies
         run: |
