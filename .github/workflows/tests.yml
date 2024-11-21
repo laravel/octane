@@ -47,8 +47,7 @@ jobs:
       - name: Show extension info
         run: |
           php --ri ${{ matrix.driver }}
-        if: |
-          matrix.driver == swoole || matrix.driver == openswoole
+        if: matrix.driver != 'roadrunner/frankenphp'
 
       - name: Install dependencies
         run: |
