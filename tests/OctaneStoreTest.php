@@ -8,6 +8,15 @@ use Laravel\Octane\Cache\OctaneStore;
 
 class OctaneStoreTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (! extension_loaded('openswoole') && ! extension_loaded('swoole')) {
+            $this->markTestSkipped('Require openswoole/swoole extension');
+        }
+
+        parent::setUp();
+    }
+
     public function test_can_retrieve_items_from_store(): void
     {
         $table = $this->createSwooleTable();

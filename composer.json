@@ -31,7 +31,7 @@
         "livewire/livewire": "^2.12.3|^3.0",
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^6.4.0|^7.5.2|^8.0",
-        "orchestra/testbench": "^8.5.2|^9.0",
+        "orchestra/testbench": "^8.21|^9.0",
         "phpstan/phpstan": "^1.10.15",
         "phpunit/phpunit": "^10.4",
         "spiral/roadrunner-http": "^3.3.0",

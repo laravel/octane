@@ -8,8 +8,18 @@ use Laravel\Octane\Tables\SwooleTable;
 use Laravel\Octane\Tables\TableFactory;
 use Swoole\Table;
 
+
 class TableTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (! extension_loaded('openswoole') && ! extension_loaded('swoole')) {
+            $this->markTestSkipped('Require openswoole/swoole extension');
+        }
+
+        parent::setUp();
+    }
+
     public function test_it_gets_used_while_creating_an_octane_store()
     {
         $serverState = ['octaneConfig' => ['cache' => [

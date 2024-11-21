@@ -16,6 +16,8 @@ use Mockery;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Swoole\Table;
 
+use function Orchestra\Testbench\default_skeleton_path;
+
 class TestCase extends BaseTestCase
 {
     protected function createOctaneContext(array $requests)
@@ -37,7 +39,7 @@ class TestCase extends BaseTestCase
 
     protected function createApplication()
     {
-        $factory = new ApplicationFactory(realpath(__DIR__.'/../vendor/orchestra/testbench-core/laravel'));
+        $factory = new ApplicationFactory(default_skeleton_path());
 
         $app = $this->appFactory()->createApplication();
 
