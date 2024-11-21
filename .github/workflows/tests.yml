@@ -24,6 +24,8 @@ jobs:
             laravel: 11
           - php: 8.4
             laravel: 10
+          - php: 8.4
+            driver: swoole
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
 
