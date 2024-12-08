@@ -103,7 +103,9 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'CADDY_SERVER_LOGGER' => 'json',
             'CADDY_SERVER_SERVER_NAME' => $serverName,
             'CADDY_SERVER_WORKER_COUNT' => $this->workerCount() ?: '',
+            'CADDY_SERVER_WORKER_DIRECTIVE' => $this->workerCount() ? "num {$this->workerCount()}" : '',
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
+            'CADDY_SERVER_WATCH_DIRECTIVES' => $this->buildWatchConfig(),
         ]));
 
         $server = $process->start();
@@ -187,6 +189,25 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         }
 
         return "$config\n\t\t}";
+    }
+
+    /**
+     * Generate the file watcher configuration snippet to include in the Caddyfile.
+     *
+     * @return string
+     */
+    protected function buildWatchConfig()
+    {
+        if (! $this->option('watch')) {
+            return '';
+        }
+
+        // If paths are not specified, fall back to FrankenPHP's default watcher pattern
+        if (empty($paths = config('octane.watch'))) {
+            return "\t\twatch";
+        }
+
+        return collect($paths)->map(fn ($path) => "\t\twatch ".base_path($path))->join("\n");
     }
 
     /**
@@ -347,5 +368,20 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $this->callSilent('octane:stop', [
             '--server' => 'frankenphp',
         ]);
+    }
+
+    /**
+     * Always return a no-op object, because FrankenPHP has native
+     * watcher support, so there is no need for an external watcher.
+     */
+    protected function startServerWatcher()
+    {
+        return new class
+        {
+            public function __call($method, $parameters)
+            {
+                return null;
+            }
+        };
     }
 }

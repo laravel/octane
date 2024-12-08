@@ -4,7 +4,11 @@
 	admin {$CADDY_SERVER_ADMIN_HOST}:{$CADDY_SERVER_ADMIN_PORT}
 
 	frankenphp {
-		worker "{$APP_PUBLIC_PATH}/frankenphp-worker.php" {$CADDY_SERVER_WORKER_COUNT}
+		worker {
+			file "{$APP_PUBLIC_PATH}/frankenphp-worker.php"
+			{$CADDY_SERVER_WORKER_DIRECTIVE}
+			{$CADDY_SERVER_WATCH_DIRECTIVES}
+		}
 	}
 }
 
