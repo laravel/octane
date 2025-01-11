@@ -189,6 +189,7 @@ return [
         'config/**/*.php',
         'database/**/*.php',
         'public/**/*.php',
+        'public/build/manifest.json',
         'resources/**/*.php',
         'routes',
         'composer.lock',
