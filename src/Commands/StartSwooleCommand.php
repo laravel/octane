@@ -28,7 +28,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
                     {--task-workers=auto : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--watch : Automatically reload the server when the application is modified}
-                    {--poll : Use file system polling while watching in order to watch files over a network}';
+                    {--poll : Use file system polling while watching in order to watch files over a network}
+                    {--log-level= : Log messages at or above the specified log level}';
 
     /**
      * The command's description.
@@ -126,7 +127,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'enable_coroutine' => false,
             'daemonize' => false,
             'log_file' => storage_path('logs/swoole_http.log'),
-            'log_level' => app()->environment('local') ? SWOOLE_LOG_INFO : SWOOLE_LOG_ERROR,
+            'log_level' => $this->option('log-level') ?: (app()->environment('local') ? SWOOLE_LOG_INFO : SWOOLE_LOG_ERROR),
             'max_request' => $this->option('max-requests'),
             'package_max_length' => 10 * 1024 * 1024,
             'reactor_num' => $this->workerCount($extension),
