@@ -81,8 +81,8 @@ class ApplicationResetter
     {
         $this->createConfigurationSandbox();
         $this->createUrlGeneratorSandbox();
-        $this->giveApplicationInstanceToMailManager();
-        $this->giveApplicationInstanceToNotificationChannelManager();
+        $this->forgetMailers();
+        $this->forgetNotificationChannelDrivers();
         $this->flushDatabaseState();
         $this->flushLogContext();
         $this->flushMonologState();
@@ -169,14 +169,14 @@ class ApplicationResetter
         $this->sandbox->instance('url', clone $this->url);
     }
 
-    private function giveApplicationInstanceToMailManager(): void
+    private function forgetMailers(): void
     {
         $this->snapshot->resetInitialInstance('mail.manager', function ($mailManager) {
             $mailManager->forgetMailers();
         });
     }
 
-    private function giveApplicationInstanceToNotificationChannelManager(): void
+    private function forgetNotificationChannelDrivers(): void
     {
         $this->snapshot->resetInitialInstance(ChannelManager::class, function ($channelManager) {
             $channelManager->forgetDrivers();
