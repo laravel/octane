@@ -10,6 +10,10 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
 use Symfony\Component\Process\Process;
 
+use function app;
+use function base_path;
+use function dirname;
+
 #[AsCommand(name: 'octane:frankenphp')]
 class StartFrankenPhpCommand extends Command implements SignalableCommandInterface
 {
@@ -85,6 +89,9 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             ? "https://$host:$port"
             : "http://:$port";
 
+        $debugEnabled = $this->debugModeEnabled($frankenphpBinary);
+        $workerModeEnabled = $this->workerCount() == 0 && app()->environment('local') && ! $debugEnabled;
+
         $process = tap(new Process([
             $frankenphpBinary,
             'run',
@@ -93,12 +100,14 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
             'APP_PUBLIC_PATH' => public_path(),
+            'APP_INDEX_FILE' => $workerModeEnabled ? 'frankenphp-worker.php' : 'index.php',
             'LARAVEL_OCTANE' => 1,
             'MAX_REQUESTS' => $this->option('max-requests'),
             'REQUEST_MAX_EXECUTION_TIME' => $this->maxExecutionTime(),
             'CADDY_GLOBAL_OPTIONS' => ($https && $this->option('http-redirect')) ? '' : 'auto_https disable_redirects',
             'CADDY_SERVER_ADMIN_PORT' => $this->adminPort(),
             'CADDY_SERVER_ADMIN_HOST' => $this->option('admin-host'),
+            'CADDY_SERVER_FRANKENPHP_OPTIONS' => $workerModeEnabled ? 'import worker' : '',
             'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'CADDY_SERVER_LOGGER' => 'json',
             'CADDY_SERVER_SERVER_NAME' => $serverName,
@@ -139,6 +148,23 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                 throw new InvalidArgumentException("Unable to start server. Port {$port} is already in use.");
             }
         }
+    }
+
+    /**
+     * Check if XDebug is installed and enabled.
+     *
+     * @param  string  $frankenPhpBinary
+     * @return bool
+     */
+    protected function debugModeEnabled($frankenPhpBinary)
+    {
+        $status = tap(new Process([
+            $frankenPhpBinary,
+            'php-cli',
+            dirname(__DIR__, 2).'/bin/checkXdebugMode.php',
+        ], base_path()))->run();
+
+        return $status > 0;
     }
 
     /**
