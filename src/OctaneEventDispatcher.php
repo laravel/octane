@@ -33,7 +33,7 @@ class OctaneEventDispatcher
     }
 
     /**
-     * Register a single event listener
+     * Register a single event listener.
      */
     public function registerListener(string $event, array $eventsWithListeners): void
     {
@@ -73,5 +73,4 @@ class OctaneEventDispatcher
     {
         $this->events[$event][] = new $listeners();
     }
-
 }
