@@ -24,7 +24,7 @@ class ReportExceptionTest extends TestCase
             ->once()
             ->with($exception);
 
-        $worker->dispatchEvent($app, new WorkerErrorOccurred($exception, $app));
+        $worker->dispatchEvent(new WorkerErrorOccurred($exception, $app));
     }
 
     /** @doesNotPerformAssertions @test */
@@ -46,7 +46,7 @@ class ReportExceptionTest extends TestCase
 
         $app->bind(ExceptionHandler::class, fn () => $exceptionHandler);
 
-        $worker->dispatchEvent($app, new WorkerErrorOccurred($exception, $app));
+        $worker->dispatchEvent(new WorkerErrorOccurred($exception, $app));
     }
 
     /** @doesNotPerformAssertions @test */
@@ -60,6 +60,6 @@ class ReportExceptionTest extends TestCase
             ->shouldReceive('throwable')
             ->never();
 
-        $worker->dispatchEvent($app, new WorkerErrorOccurred($exception, $app));
+        $worker->dispatchEvent(new WorkerErrorOccurred($exception, $app));
     }
 }

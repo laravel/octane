@@ -22,7 +22,6 @@ use Throwable;
 
 class Worker implements WorkerContract
 {
-    use DispatchesEvents;
 
     protected $requestHandledCallbacks = [];
 
@@ -40,12 +39,13 @@ class Worker implements WorkerContract
      */
     protected $appSnapshot;
 
-    protected ApplicationResetter $appResetter;
+    protected OctaneEventListener $listener;
 
     public function __construct(
         protected ApplicationFactory $appFactory,
-        protected Client $client
-    ) {
+        protected Client             $client
+    )
+    {
     }
 
     /**
@@ -56,14 +56,16 @@ class Worker implements WorkerContract
         // First we will create an instance of the Laravel application that can serve as
         // the base container instance we will clone from on every request. This will
         // also perform the initial bootstrapping that's required by the framework.
-        $this->sandbox = $app = $this->appFactory->createApplication(
+        $this->sandbox = $this->appFactory->createApplication(
             array_merge(
                 $initialInstances,
                 [Client::class => $this->client],
             )
         );
 
-        $this->dispatchEvent($app, new WorkerStarting($app));
+        $this->listener = new OctaneEventListener();
+        $this->listener->registerListener(WorkerStarting::class);
+        $this->listener->dispatchEvent(new WorkerStarting($this->sandbox));
     }
 
     /**
@@ -83,7 +85,7 @@ class Worker implements WorkerContract
         // certain instances that got resolved / mutated during a previous request.
         $this->createAppSnapshot();
 
-        $gateway = new ApplicationGateway($this->appResetter, $this->appSnapshot, $this->sandbox);
+        $gateway = new ApplicationGateway($this->listener, $this->appSnapshot, $this->sandbox);
 
         try {
             $responded = false;
@@ -124,7 +126,7 @@ class Worker implements WorkerContract
     /**
      * Handle an incoming task.
      *
-     * @param  mixed  $data
+     * @param mixed $data
      * @return mixed
      */
     public function handleTask($data)
@@ -137,14 +139,13 @@ class Worker implements WorkerContract
         $this->createAppSnapshot();
 
         try {
-            $this->appResetter->prepareApplicationForNextOperation();
-            $this->dispatchEvent($this->sandbox, new TaskReceived($this->appSnapshot, $this->sandbox, $data));
+            $this->listener->dispatchEvent(new TaskReceived($this->appSnapshot, $this->sandbox, $data));
 
             $result = $data();
 
-            $this->dispatchEvent($this->sandbox, new TaskTerminated($this->appSnapshot, $this->sandbox, $data, $result));
+            $this->listener->dispatchEvent(new TaskTerminated($this->appSnapshot, $this->sandbox, $data, $result));
         } catch (Throwable $e) {
-            $this->dispatchEvent($this->sandbox, new WorkerErrorOccurred($e, $this->sandbox));
+            $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
 
             return TaskExceptionResult::from($e);
         } finally {
@@ -162,11 +163,10 @@ class Worker implements WorkerContract
         $this->createAppSnapshot();
 
         try {
-            $this->appResetter->prepareApplicationForNextOperation();
-            $this->dispatchEvent($this->sandbox, new TickReceived($this->appSnapshot, $this->sandbox));
-            $this->dispatchEvent($this->sandbox, new TickTerminated($this->appSnapshot, $this->sandbox));
+            $this->listener->dispatchEvent(new TickReceived($this->appSnapshot, $this->sandbox));
+            $this->listener->dispatchEvent(new TickTerminated($this->appSnapshot, $this->sandbox));
         } catch (Throwable $e) {
-            $this->dispatchEvent($this->sandbox, new WorkerErrorOccurred($e, $this->sandbox));
+            $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
         } finally {
             $this->sandbox->flush();
         }
@@ -176,25 +176,26 @@ class Worker implements WorkerContract
      * Handle an uncaught exception from the worker.
      */
     protected function handleWorkerError(
-        Throwable $e,
-        Application $app,
-        Request $request,
+        Throwable      $e,
+        Application    $app,
+        Request        $request,
         RequestContext $context,
-        bool $hasResponded
-    ): void {
-        if (! $hasResponded) {
+        bool           $hasResponded
+    ): void
+    {
+        if (!$hasResponded) {
             $this->client->error($e, $app, $request, $context);
         }
 
-        $this->dispatchEvent($app, new WorkerErrorOccurred($e, $app));
+        $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $app));
     }
 
     /**
      * Invoke the request handled callbacks.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @param  \Illuminate\Foundation\Application  $sandbox
+     * @param \Illuminate\Http\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Illuminate\Foundation\Application $sandbox
      */
     protected function invokeRequestHandledCallbacks($request, $response, $sandbox): void
     {
@@ -220,7 +221,7 @@ class Worker implements WorkerContract
      */
     public function application(): Application
     {
-        if (! $this->sandbox) {
+        if (!$this->sandbox) {
             throw new RuntimeException('Worker has not booted. Unable to access application.');
         }
 
@@ -232,14 +233,20 @@ class Worker implements WorkerContract
      */
     public function terminate(): void
     {
-        $this->dispatchEvent($this->sandbox, new WorkerStopping($this->sandbox));
+        $this->listener->dispatchEvent(new WorkerStopping($this->sandbox));
+    }
+
+    public function dispatchEvent($event): void
+    {
+        $this->listener->registerAllListeners();
+        $this->listener->dispatchEvent($event);
     }
 
     protected function createAppSnapshot(): void
     {
-        if (! isset($this->appSnapshot)) {
+        if (!isset($this->appSnapshot)) {
+            $this->listener->registerAllListeners();
             $this->appSnapshot = ApplicationSnapshot::createSnapshotFrom($this->sandbox);
-            $this->appResetter = new ApplicationResetter($this->appSnapshot, $this->sandbox);
         }
         $this->appSnapshot->loadSnapshotInto($this->sandbox);
     }

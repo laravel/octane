@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -13,9 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationGateway
 {
-    use DispatchesEvents;
 
-    public function __construct(protected ApplicationResetter $resetter, protected Application $snapshot, protected Application $sandbox)
+    public function __construct(protected OctaneEventListener $listener, protected Application $snapshot, protected Application $sandbox)
     {
     }
 
@@ -26,18 +26,15 @@ class ApplicationGateway
     {
         $request->enableHttpMethodParameterOverride();
 
-        // reset all default services
-        $this->resetter->prepareApplicationForNextRequest($request);
-        $this->resetter->prepareApplicationForNextOperation();
-
-        $this->dispatchEvent($this->sandbox, new RequestReceived($this->snapshot, $this->sandbox, $request));
+        $this->listener->dispatchEvent(new RequestReceived($this->snapshot, $this->sandbox, $request));
 
         if (Octane::hasRouteFor($request->getMethod(), '/'.$request->path())) {
             return Octane::invokeRoute($request, $request->getMethod(), '/'.$request->path());
         }
 
-        return tap($this->resetter->kernel->handle($request), function ($response) use ($request) {
-            $this->dispatchEvent($this->sandbox, new RequestHandled($this->sandbox, $request, $response));
+        // TODO: no tap
+        return tap($this->snapshot->initialInstance(Kernel::class)->handle($request), function ($response) use ($request) {
+            $this->listener->dispatchEvent(new RequestHandled($this->sandbox, $request, $response));
         });
     }
 
@@ -46,9 +43,9 @@ class ApplicationGateway
      */
     public function terminate(Request $request, Response $response): void
     {
-        $this->resetter->kernel->terminate($request, $response);
+        $this->snapshot->initialInstance(Kernel::class)->terminate($request, $response);
 
-        $this->dispatchEvent($this->sandbox, new RequestTerminated($this->snapshot, $this->sandbox, $request, $response));
+        $this->listener->dispatchEvent(new RequestTerminated($this->snapshot, $this->sandbox, $request, $response));
 
         $route = $request->route();
 

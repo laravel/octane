@@ -71,6 +71,8 @@ return [
         ],
 
         RequestReceived::class => [
+            ...Octane::prepareApplicationForNextOperation(),
+            ...Octane::prepareApplicationForNextRequest(),
             //
         ],
 
@@ -83,6 +85,7 @@ return [
         ],
 
         TaskReceived::class => [
+            ...Octane::prepareApplicationForNextOperation(),
             //
         ],
 
@@ -91,6 +94,7 @@ return [
         ],
 
         TickReceived::class => [
+            ...Octane::prepareApplicationForNextOperation(),
             //
         ],
 

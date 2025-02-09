@@ -100,14 +100,6 @@ class OctaneServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $dispatcher = $this->app[Dispatcher::class];
-
-        foreach ($this->app['config']->get('octane.listeners', []) as $event => $listeners) {
-            foreach (array_filter(array_unique($listeners)) as $listener) {
-                $dispatcher->listen($event, $listener);
-            }
-        }
-
         $this->registerCacheDriver();
         $this->registerCommands();
         $this->registerHttpTaskHandlingRoutes();

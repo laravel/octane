@@ -4,23 +4,26 @@ namespace Laravel\Octane\Listeners;
 
 class FlushTemporaryContainerInstances
 {
-    /**
-     * Handle the event.
-     *
-     * @param  mixed  $event
-     */
+
+    public function __construct()
+    {
+        $app = app();
+        if (method_exists($app, 'resetScope')) {
+            $app->resetScope();
+        }
+
+        if (method_exists($app, 'forgetScopedInstances')) {
+            $app->forgetScopedInstances();
+        }
+
+        foreach ($app->make('config')->get('octane.flush', []) as $binding) {
+            $app->forgetInstance($binding);
+        }
+    }
+
     public function handle($event): void
     {
-        if (method_exists($event->app, 'resetScope')) {
-            $event->app->resetScope();
-        }
-
-        if (method_exists($event->app, 'forgetScopedInstances')) {
-            $event->app->forgetScopedInstances();
-        }
-
-        foreach ($event->app->make('config')->get('octane.flush', []) as $binding) {
-            $event->app->forgetInstance($binding);
-        }
+        // nothing to do here
+        // flushing the instances on startup is enogh
     }
 }
