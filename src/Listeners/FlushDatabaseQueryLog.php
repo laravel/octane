@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class FlushDatabaseQueryLog
 {
-
     /**
      * @var ?\Illuminate\Database\DatabaseManager
      */

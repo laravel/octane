@@ -6,7 +6,6 @@ use Illuminate\Notifications\ChannelManager;
 
 class GiveNewApplicationInstanceToNotificationChannelManager
 {
-
     /**
      * @var ?ChannelManager
      */

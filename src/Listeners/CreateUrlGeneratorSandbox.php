@@ -6,7 +6,6 @@ use Illuminate\Routing\UrlGenerator;
 
 class CreateUrlGeneratorSandbox
 {
-
     /**
      * @var UrlGenerator
      */

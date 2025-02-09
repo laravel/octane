@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class FlushDatabaseRecordModificationState
 {
-
     /**
      * @var ?\Illuminate\Database\DatabaseManager
      */
@@ -24,7 +23,7 @@ class FlushDatabaseRecordModificationState
      */
     public function handle($event): void
     {
-        if (!$this->db) {
+        if (! $this->db) {
             return;
         }
 

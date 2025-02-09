@@ -6,7 +6,6 @@ use Livewire\LivewireManager;
 
 class PrepareLivewireForNextOperation
 {
-
     /**
      * @var ?LivewireManager
      */

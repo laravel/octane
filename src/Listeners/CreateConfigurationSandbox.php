@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class CreateConfigurationSandbox
 {
-
     /**
      * @var \Illuminate\Config\Repository
      */

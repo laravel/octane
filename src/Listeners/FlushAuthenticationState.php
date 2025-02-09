@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class FlushAuthenticationState
 {
-
     /**
      * @var ?\Illuminate\Auth\AuthManager
      */
@@ -28,7 +27,7 @@ class FlushAuthenticationState
      */
     public function handle($event): void
     {
-        if($this->auth){
+        if ($this->auth) {
             $this->auth->forgetGuards();
         }
     }

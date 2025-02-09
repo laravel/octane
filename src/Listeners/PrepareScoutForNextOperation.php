@@ -6,7 +6,6 @@ use Laravel\Scout\EngineManager;
 
 class PrepareScoutForNextOperation
 {
-
     /**
      * @var ?EngineManager
      */

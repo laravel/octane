@@ -6,7 +6,6 @@ use Illuminate\Database\DatabaseManager;
 
 class RefreshQueryDurationHandling
 {
-
     /**
      * @var ?DatabaseManager
      */

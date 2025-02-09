@@ -6,7 +6,6 @@ use Laravel\Socialite\Contracts\Factory;
 
 class PrepareSocialiteForNextOperation
 {
-
     /**
      * @var ?Factory
      */

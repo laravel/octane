@@ -6,7 +6,6 @@ use Illuminate\Log\LogManager;
 
 class FlushLogContext
 {
-
     /**
      * @var ?LogManager
      */

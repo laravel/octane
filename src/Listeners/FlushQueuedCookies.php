@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class FlushQueuedCookies
 {
-
     /**
      * @var ?\Illuminate\Cookie\CookieJar
      */
@@ -16,6 +15,7 @@ class FlushQueuedCookies
             $this->cookie = app('cookie');
         }
     }
+
     /**
      * Handle the event.
      *

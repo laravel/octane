@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class FlushSessionState
 {
-
     /**
      * @var ?\Illuminate\Session\SessionManager
      */

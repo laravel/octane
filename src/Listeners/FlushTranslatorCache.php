@@ -7,7 +7,6 @@ use Illuminate\Translation\Translator;
 
 class FlushTranslatorCache
 {
-
     /**
      * @var ?Translator
      */

@@ -6,16 +6,16 @@ use Illuminate\Routing\UrlGenerator;
 
 class EnforceRequestScheme
 {
-
     /**
      * @var UrlGenerator
      */
     private $url;
+
     private bool $octaneHttps;
 
     public function __construct()
     {
-        $this->octaneHttps = (bool)config('octane.https');
+        $this->octaneHttps = (bool) config('octane.https');
         $this->url = app('url');
     }
 

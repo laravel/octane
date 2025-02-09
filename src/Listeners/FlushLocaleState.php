@@ -7,12 +7,13 @@ use Carbon\Laravel\ServiceProvider as CarbonServiceProvider;
 
 class FlushLocaleState
 {
-
     /**
      * @var ?\Illuminate\Translation\Translator
      */
     private $translator = null;
+
     private $initialAppLocale;
+
     private $initialAppFallbackLocale;
 
     public function __construct()

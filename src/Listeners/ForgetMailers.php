@@ -6,7 +6,6 @@ use Illuminate\Mail\MailManager;
 
 class ForgetMailers
 {
-
     /**
      * @var ?MailManager
      */

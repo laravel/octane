@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class FlushTemporaryContainerInstances
 {
-
     public function __construct()
     {
         $app = app();

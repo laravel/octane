@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class EnsureRequestServerPortMatchesScheme
 {
-
     public function handle($event): void
     {
         $port = $event->request->getPort();

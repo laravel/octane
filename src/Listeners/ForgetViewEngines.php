@@ -6,7 +6,6 @@ use Illuminate\View\Engines\EngineResolver;
 
 class ForgetViewEngines
 {
-
     /**
      * @var ?EngineResolver
      */
@@ -28,5 +27,4 @@ class ForgetViewEngines
         $this->view->forget('blade');
         $this->view->forget('php');
     }
-
 }

@@ -4,7 +4,6 @@ namespace Laravel\Octane\Listeners;
 
 class FlushArrayCache
 {
-
     /**
      * @var ?\Illuminate\Cache\ArrayStore
      */

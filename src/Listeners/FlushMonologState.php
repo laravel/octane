@@ -7,7 +7,6 @@ use Monolog\ResettableInterface;
 
 class FlushMonologState
 {
-
     /**
      * @var ?LogManager
      */
@@ -22,7 +21,7 @@ class FlushMonologState
 
     public function handle($event): void
     {
-        if (!$this->log) {
+        if (! $this->log) {
             return;
         }
 

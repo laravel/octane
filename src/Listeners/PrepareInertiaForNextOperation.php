@@ -6,7 +6,6 @@ use Inertia\ResponseFactory;
 
 class PrepareInertiaForNextOperation
 {
-
     /**
      * @var ?ResponseFactory
      */
