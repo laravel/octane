@@ -31,7 +31,6 @@ class ApplicationGateway
             return Octane::invokeRoute($request, $request->getMethod(), '/'.$request->path());
         }
 
-        // TODO: no tap
         return tap($this->snapshot->initialInstance(Kernel::class)->handle($request), function ($response) use ($request) {
             $this->dispatcher->dispatchEvent(new RequestHandled($this->sandbox, $request, $response));
         });
