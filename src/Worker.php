@@ -36,16 +36,14 @@ class Worker implements WorkerContract
      *
      * @var ApplicationSnapshot
      */
-    protected $appSnapshot;
+    protected $snapshot;
 
     protected OctaneEventListener $listener;
 
     public function __construct(
         protected ApplicationFactory $appFactory,
-        protected Client             $client
-    )
-    {
-    }
+        protected Client $client
+    ) {}
 
     /**
      * Boot / initialize the Octane worker.
@@ -82,9 +80,9 @@ class Worker implements WorkerContract
         // We will clone the application instance so that we have a clean copy to switch
         // back to once the request has been handled. This allows us to easily delete
         // certain instances that got resolved / mutated during a previous request.
-        $this->createAppSnapshot();
+        $this->loadAppSnapshot();
 
-        $gateway = new ApplicationGateway($this->listener, $this->appSnapshot, $this->sandbox);
+        $gateway = new ApplicationGateway($this->listener, $this->snapshot, $this->sandbox);
 
         try {
             $responded = false;
@@ -135,14 +133,14 @@ class Worker implements WorkerContract
         // We will clone the application instance so that we have a clean copy to switch
         // back to once the request has been handled. This allows us to easily delete
         // certain instances that got resolved / mutated during a previous request.
-        $this->createAppSnapshot();
+        $this->loadAppSnapshot();
 
         try {
-            $this->listener->dispatchEvent(new TaskReceived($this->appSnapshot, $this->sandbox, $data));
+            $this->listener->dispatchEvent(new TaskReceived($this->snapshot, $this->sandbox, $data));
 
             $result = $data();
 
-            $this->listener->dispatchEvent(new TaskTerminated($this->appSnapshot, $this->sandbox, $data, $result));
+            $this->listener->dispatchEvent(new TaskTerminated($this->snapshot, $this->sandbox, $data, $result));
         } catch (Throwable $e) {
             $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
 
@@ -159,11 +157,11 @@ class Worker implements WorkerContract
      */
     public function handleTick(): void
     {
-        $this->createAppSnapshot();
+        $this->loadAppSnapshot();
 
         try {
-            $this->listener->dispatchEvent(new TickReceived($this->appSnapshot, $this->sandbox));
-            $this->listener->dispatchEvent(new TickTerminated($this->appSnapshot, $this->sandbox));
+            $this->listener->dispatchEvent(new TickReceived($this->snapshot, $this->sandbox));
+            $this->listener->dispatchEvent(new TickTerminated($this->snapshot, $this->sandbox));
         } catch (Throwable $e) {
             $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
         } finally {
@@ -240,12 +238,12 @@ class Worker implements WorkerContract
         $this->listener->dispatchEvent($event);
     }
 
-    protected function createAppSnapshot(): void
+    protected function loadAppSnapshot(): void
     {
-        if (! isset($this->appSnapshot)) {
+        if (! isset($this->snapshot)) {
             $this->listener->registerAllListeners();
-            $this->appSnapshot = ApplicationSnapshot::createSnapshotFrom($this->sandbox);
+            $this->snapshot = ApplicationSnapshot::createSnapshotFrom($this->sandbox);
         }
-        $this->appSnapshot->loadSnapshotInto($this->sandbox);
+        $this->snapshot->loadSnapshotInto($this->sandbox);
     }
 }
