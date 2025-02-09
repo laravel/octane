@@ -22,7 +22,6 @@ use Throwable;
 
 class Worker implements WorkerContract
 {
-
     protected $requestHandledCallbacks = [];
 
     /**
@@ -63,7 +62,7 @@ class Worker implements WorkerContract
             )
         );
 
-        $this->listener = new OctaneEventListener();
+        $this->listener = new OctaneEventListener;
         $this->listener->registerListener(WorkerStarting::class);
         $this->listener->dispatchEvent(new WorkerStarting($this->sandbox));
     }
@@ -126,7 +125,7 @@ class Worker implements WorkerContract
     /**
      * Handle an incoming task.
      *
-     * @param mixed $data
+     * @param  mixed  $data
      * @return mixed
      */
     public function handleTask($data)
@@ -176,14 +175,13 @@ class Worker implements WorkerContract
      * Handle an uncaught exception from the worker.
      */
     protected function handleWorkerError(
-        Throwable      $e,
-        Application    $app,
-        Request        $request,
+        Throwable $e,
+        Application $app,
+        Request $request,
         RequestContext $context,
-        bool           $hasResponded
-    ): void
-    {
-        if (!$hasResponded) {
+        bool $hasResponded
+    ): void {
+        if (! $hasResponded) {
             $this->client->error($e, $app, $request, $context);
         }
 
@@ -193,9 +191,9 @@ class Worker implements WorkerContract
     /**
      * Invoke the request handled callbacks.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param \Illuminate\Foundation\Application $sandbox
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Illuminate\Foundation\Application  $sandbox
      */
     protected function invokeRequestHandledCallbacks($request, $response, $sandbox): void
     {
@@ -221,7 +219,7 @@ class Worker implements WorkerContract
      */
     public function application(): Application
     {
-        if (!$this->sandbox) {
+        if (! $this->sandbox) {
             throw new RuntimeException('Worker has not booted. Unable to access application.');
         }
 
@@ -244,7 +242,7 @@ class Worker implements WorkerContract
 
     protected function createAppSnapshot(): void
     {
-        if (!isset($this->appSnapshot)) {
+        if (! isset($this->appSnapshot)) {
             $this->listener->registerAllListeners();
             $this->appSnapshot = ApplicationSnapshot::createSnapshotFrom($this->sandbox);
         }

@@ -11,7 +11,7 @@ class ApplicationSnapshot extends Application
     public static function createSnapshotFrom(Application $app): ApplicationSnapshot
     {
         $previousInstance = Container::getInstance();
-        $snapshot = new ApplicationSnapshot();
+        $snapshot = new ApplicationSnapshot;
         foreach (get_object_vars($app) as $key => $value) {
             $snapshot->$key = $value;
         }
@@ -30,9 +30,10 @@ class ApplicationSnapshot extends Application
 
     public function initialInstance(string $abstract)
     {
-        if (!array_key_exists($abstract, $this->resolved)) {
+        if (! array_key_exists($abstract, $this->resolved)) {
             return null;
         }
+
         return $this->instances[$abstract] ?? $this->bindings[$abstract]['concrete']();
     }
 }
