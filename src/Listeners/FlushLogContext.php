@@ -10,11 +10,13 @@ class FlushLogContext
      * @var ?LogManager
      */
     private $log = null;
+    private $logDefaultDriver = null;
 
     public function __construct()
     {
         if (app()->resolved('log')) {
             $this->log = app('log');
+            $this->logDefaultDriver = $this->log->driver();
         }
     }
 
@@ -33,8 +35,8 @@ class FlushLogContext
             $this->log->flushSharedContext();
         }
 
-        if (method_exists($this->log->driver(), 'withoutContext')) {
-            $this->log->driver()->withoutContext();
+        if (method_exists($this->logDefaultDriver, 'withoutContext')) {
+            $this->logDefaultDriver->withoutContext();
         }
 
         if (method_exists($this->log, 'withoutContext')) {
