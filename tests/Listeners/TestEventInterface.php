@@ -2,6 +2,6 @@
 
 namespace Laravel\Octane\Tests\Listeners;
 
-interface TestEventInterface {
-
+interface TestEventInterface
+{
 }

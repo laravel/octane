@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationGateway
 {
-
     public function __construct(protected OctaneEventDispatcher $dispatcher, protected Application $snapshot, protected Application $sandbox)
     {
     }

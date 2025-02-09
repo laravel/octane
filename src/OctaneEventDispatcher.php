@@ -16,7 +16,7 @@ class OctaneEventDispatcher
      * [
      *   Event::class => [ Listener::class, Listener::class ],
      *   Event::class => [ Listener::class, Listener::class ],
-     * ]
+     * ].
      */
     public function registerAllListeners(array $eventsWithListeners): void
     {
@@ -32,6 +32,9 @@ class OctaneEventDispatcher
         }
     }
 
+    /**
+     * Register a single event listener
+     */
     public function registerListener(string $event, array $eventsWithListeners): void
     {
         $listeners = $eventsWithListeners[$event] ?? [];
@@ -57,7 +60,7 @@ class OctaneEventDispatcher
 
     private function registerInterface(string $interface, string $event, array $allEvents): void
     {
-        if (!isset($allEvents[$interface])) {
+        if (! isset($allEvents[$interface])) {
             return;
         }
         $listeners = $allEvents[$interface];
