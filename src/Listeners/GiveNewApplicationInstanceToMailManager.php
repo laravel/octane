@@ -4,7 +4,7 @@ namespace Laravel\Octane\Listeners;
 
 use Illuminate\Mail\MailManager;
 
-class ForgetMailers
+class GiveNewApplicationInstanceToMailManager
 {
     /**
      * @var ?MailManager

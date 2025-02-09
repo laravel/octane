@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\Concerns;
 
-
 trait ProvidesDefaultConfigurationOptions
 {
     /**
@@ -18,7 +17,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\EnforceRequestScheme::class,
             \Laravel\Octane\Listeners\EnsureRequestServerPortMatchesScheme::class,
             \Laravel\Octane\Listeners\GiveNewRequestInstanceToApplication::class,
-            \Laravel\Octane\Listeners\ForgetViewEngines::class
+            \Laravel\Octane\Listeners\ForgetViewEngines::class,
         ];
     }
 
@@ -31,7 +30,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\CreateConfigurationSandbox::class,
             \Laravel\Octane\Listeners\CreateUrlGeneratorSandbox::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToLogManager::class,
-            \Laravel\Octane\Listeners\ForgetMailers::class,
+            \Laravel\Octane\Listeners\GiveNewApplicationInstanceToMailManager::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToNotificationChannelManager::class,
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
             \Laravel\Octane\Listeners\FlushDatabaseQueryLog::class,
