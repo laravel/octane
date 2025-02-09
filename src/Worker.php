@@ -38,7 +38,7 @@ class Worker implements WorkerContract
      */
     protected $snapshot;
 
-    protected OctaneEventListener $listener;
+    protected OctaneEventDispatcher $dispatcher;
 
     public function __construct(
         protected ApplicationFactory $appFactory,
@@ -60,9 +60,9 @@ class Worker implements WorkerContract
             )
         );
 
-        $this->listener = new OctaneEventListener;
-        $this->listener->registerListener(WorkerStarting::class);
-        $this->listener->dispatchEvent(new WorkerStarting($this->sandbox));
+        $this->dispatcher = new OctaneEventDispatcher;
+        $this->dispatcher->registerListener(WorkerStarting::class, config('octane.listeners', []));
+        $this->dispatcher->dispatchEvent(new WorkerStarting($this->sandbox));
     }
 
     /**
@@ -82,7 +82,7 @@ class Worker implements WorkerContract
         // certain instances that got resolved / mutated during a previous request.
         $this->loadAppSnapshot();
 
-        $gateway = new ApplicationGateway($this->listener, $this->snapshot, $this->sandbox);
+        $gateway = new ApplicationGateway($this->dispatcher, $this->snapshot, $this->sandbox);
 
         try {
             $responded = false;
@@ -136,13 +136,13 @@ class Worker implements WorkerContract
         $this->loadAppSnapshot();
 
         try {
-            $this->listener->dispatchEvent(new TaskReceived($this->snapshot, $this->sandbox, $data));
+            $this->dispatcher->dispatchEvent(new TaskReceived($this->snapshot, $this->sandbox, $data));
 
             $result = $data();
 
-            $this->listener->dispatchEvent(new TaskTerminated($this->snapshot, $this->sandbox, $data, $result));
+            $this->dispatcher->dispatchEvent(new TaskTerminated($this->snapshot, $this->sandbox, $data, $result));
         } catch (Throwable $e) {
-            $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
+            $this->dispatcher->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
 
             return TaskExceptionResult::from($e);
         } finally {
@@ -160,10 +160,10 @@ class Worker implements WorkerContract
         $this->loadAppSnapshot();
 
         try {
-            $this->listener->dispatchEvent(new TickReceived($this->snapshot, $this->sandbox));
-            $this->listener->dispatchEvent(new TickTerminated($this->snapshot, $this->sandbox));
+            $this->dispatcher->dispatchEvent(new TickReceived($this->snapshot, $this->sandbox));
+            $this->dispatcher->dispatchEvent(new TickTerminated($this->snapshot, $this->sandbox));
         } catch (Throwable $e) {
-            $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
+            $this->dispatcher->dispatchEvent(new WorkerErrorOccurred($e, $this->sandbox));
         } finally {
             $this->sandbox->flush();
         }
@@ -183,7 +183,7 @@ class Worker implements WorkerContract
             $this->client->error($e, $app, $request, $context);
         }
 
-        $this->listener->dispatchEvent(new WorkerErrorOccurred($e, $app));
+        $this->dispatcher->dispatchEvent(new WorkerErrorOccurred($e, $app));
     }
 
     /**
@@ -229,19 +229,19 @@ class Worker implements WorkerContract
      */
     public function terminate(): void
     {
-        $this->listener->dispatchEvent(new WorkerStopping($this->sandbox));
+        $this->dispatcher->dispatchEvent(new WorkerStopping($this->sandbox));
     }
 
     public function dispatchEvent($event): void
     {
-        $this->listener->registerAllListeners();
-        $this->listener->dispatchEvent($event);
+        $this->dispatcher->registerAllListeners(config('octane.listeners', []));
+        $this->dispatcher->dispatchEvent($event);
     }
 
     protected function loadAppSnapshot(): void
     {
         if (! isset($this->snapshot)) {
-            $this->listener->registerAllListeners();
+            $this->dispatcher->registerAllListeners(config('octane.listeners', []));
             $this->snapshot = ApplicationSnapshot::createSnapshotFrom($this->sandbox);
         }
         $this->snapshot->loadSnapshotInto($this->sandbox);

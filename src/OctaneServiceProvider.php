@@ -3,7 +3,6 @@
 namespace Laravel\Octane;
 
 use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;

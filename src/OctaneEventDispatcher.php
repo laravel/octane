@@ -3,26 +3,24 @@
 namespace Laravel\Octane;
 
 // This Event Listener is optimized for Octane
-// Listeners are registered in the config/octane.php file
 // Listeners must implement the handle() method
 // All Listeners are only instantiated once at startup
 // Listeners may keep references to initial app instances
-class OctaneEventListener
+// Events may extend an interface, but both the event and interface must be registered
+class OctaneEventDispatcher
 {
     private array $events = [];
 
-    public function registerListener(string $event): void
+    /**
+     * $eventsWithListeners is an array of events with listeners
+     * [
+     *   Event::class => [ Listener::class, Listener::class ],
+     *   Event::class => [ Listener::class, Listener::class ],
+     * ]
+     */
+    public function registerAllListeners(array $eventsWithListeners): void
     {
-        $listeners = config('octane.listeners', [])[$event] ?? [];
-        foreach (array_filter(array_unique($listeners)) as $listener) {
-            $this->addListener($event, $listener);
-        }
-    }
-
-    public function registerAllListeners(): void
-    {
-        $allEvents = config('octane.listeners', []);
-        foreach ($allEvents as $event => $listeners) {
+        foreach ($eventsWithListeners as $event => $listeners) {
             // skip listeners that are already registered
             if (array_key_exists($event, $this->events)) {
                 continue;
@@ -30,8 +28,17 @@ class OctaneEventListener
             foreach (array_filter(array_unique($listeners)) as $listener) {
                 $this->addListener($event, $listener);
             }
-            $this->registerInterfaces($event, $allEvents);
+            $this->registerInterfaces($event, $eventsWithListeners);
         }
+    }
+
+    public function registerListener(string $event, array $eventsWithListeners): void
+    {
+        $listeners = $eventsWithListeners[$event] ?? [];
+        foreach (array_filter(array_unique($listeners)) as $listener) {
+            $this->addListener($event, $listener);
+        }
+        $this->registerInterfaces($event, $eventsWithListeners);
     }
 
     public function dispatchEvent($event): void
