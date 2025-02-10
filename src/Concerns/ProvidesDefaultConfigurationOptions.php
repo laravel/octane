@@ -59,6 +59,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\PrepareLivewireForNextOperation::class,
             \Laravel\Octane\Listeners\PrepareScoutForNextOperation::class,
             \Laravel\Octane\Listeners\PrepareSocialiteForNextOperation::class,
+            \Laravel\Octane\Listeners\PrepareViteForNextOperation::class,
         ];
     }
 
