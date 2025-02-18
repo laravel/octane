@@ -190,8 +190,13 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
-        $swooleResponse->shouldReceive('cookie')->once()->with('new', 'value', 0, '/', '', false, true, 'lax');
-        $swooleResponse->shouldReceive('cookie')->once()->with('cleared', 'deleted', Mockery::type('int'), '/', '', false, true, 'lax');
+        if (extension_loaded('swoole') && SWOOLE_VERSION_ID >= 60000) {
+            $swooleResponse->shouldReceive('cookie')->once()->with('new', 'value', 0, '/', '', false, true, 'lax', '', false);
+            $swooleResponse->shouldReceive('cookie')->once()->with('cleared', 'deleted', Mockery::type('int'), '/', '', false, true, 'lax', '', false);
+        } else {
+            $swooleResponse->shouldReceive('cookie')->once()->with('new', 'value', 0, '/', '', false, true, 'lax');
+            $swooleResponse->shouldReceive('cookie')->once()->with('cleared', 'deleted', Mockery::type('int'), '/', '', false, true, 'lax');
+        }
         $swooleResponse->shouldReceive('write')->with('Hello World');
         $swooleResponse->shouldReceive('end')->once();
 

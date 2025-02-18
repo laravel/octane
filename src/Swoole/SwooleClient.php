@@ -180,7 +180,8 @@ class SwooleClient implements Client, ServesStaticFiles
         foreach ($response->headers->getCookies() as $cookie) {
             $shouldDelete = (string) $cookie->getValue() === '';
 
-            $swooleResponse->{$cookie->isRaw() ? 'rawcookie' : 'cookie'}(
+            $method = $cookie->isRaw() ? 'rawcookie' : 'cookie';
+            $params = [
                 $cookie->getName(),
                 $shouldDelete ? 'deleted' : $cookie->getValue(),
                 $cookie->getExpiresTime(),
@@ -189,7 +190,14 @@ class SwooleClient implements Client, ServesStaticFiles
                 $cookie->isSecure(),
                 $cookie->isHttpOnly(),
                 $cookie->getSameSite() ?? '',
-            );
+            ];
+
+            if (extension_loaded('swoole') && SWOOLE_VERSION_ID >= 60000) {
+                $params[] = '';
+                $params[] = $cookie->isPartitioned();
+            }
+
+            $swooleResponse->$method(...$params);
         }
     }
 
