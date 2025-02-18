@@ -181,6 +181,7 @@ class SwooleClient implements Client, ServesStaticFiles
             $shouldDelete = (string) $cookie->getValue() === '';
 
             $method = $cookie->isRaw() ? 'rawcookie' : 'cookie';
+
             $params = [
                 $cookie->getName(),
                 $shouldDelete ? 'deleted' : $cookie->getValue(),
