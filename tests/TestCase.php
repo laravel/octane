@@ -4,6 +4,7 @@ namespace Laravel\Octane\Tests;
 
 use Carbon\Laravel\ServiceProvider as CarbonServiceProvider;
 use Illuminate\Container\Container;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
 use Illuminate\Support\Facades\Facade;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Contracts\Client;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Swoole\Table;
 
 use function Orchestra\Testbench\default_skeleton_path;
+use function Orchestra\Testbench\laravel_version_compare;
 
 class TestCase extends BaseTestCase
 {
@@ -75,6 +77,12 @@ class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+
+        if (laravel_version_compare('11.0', '>=')) {
+            HandleExceptions::flushState();
+        } else {
+            HandleExceptions::forgetApp();
+        }
 
         Container::setInstance(null);
 
