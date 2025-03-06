@@ -10,3 +10,5 @@ parameters:
     - "#Unsafe usage of new static\\(\\)#"
     - "#\\(void\\) is used.#"
     - "#Instantiated class Swoole\\Coroutine\\WaitGroup not found.#"
+
+  reportUnmatchedIgnoredErrors: false
