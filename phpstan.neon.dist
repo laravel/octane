@@ -9,4 +9,4 @@ parameters:
   ignoreErrors:
     - "#Unsafe usage of new static\\(\\)#"
     - "#\\(void\\) is used.#"
-    - "#Function Swoole\\\\Coroutine\\\\run not found.#"
+    - "#Instantiated class Swoole\\Coroutine\\WaitGroup not found.#"
