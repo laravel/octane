@@ -54,4 +54,6 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress --with="laravel/framework:^${{ matrix.laravel }}"
 
       - name: Execute tests
-        run: vendor/bin/phpunit --display-deprecations --fail-on-deprecation
+        run: |
+          vendor/bin/testbench package:sync-skeleton
+          vendor/bin/phpunit --display-deprecations --fail-on-deprecation
