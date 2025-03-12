@@ -1,6 +1,14 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.8.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.8.2...2.x)
+
+## [v2.8.2](https://github.com/laravel/octane/compare/v2.8.1...v2.8.2) - 2025-03-12
+
+* Supports PHPStan 2 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1006
+* Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1005
+* Chokidar v4 wildcards support by [@4unit](https://github.com/4unit) in https://github.com/laravel/octane/pull/1003
+* Fix tests CI by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1007
+* Set version=3 for RoadRunner's reload by [@apih](https://github.com/apih) in https://github.com/laravel/octane/pull/1008
 
 ## [v2.8.1](https://github.com/laravel/octane/compare/v2.8.0...v2.8.1) - 2025-02-19
 
