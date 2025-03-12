@@ -47,6 +47,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
         tap($this->processFactory->createProcess([
             $this->findRoadRunnerBinary(),
             'reset',
+            '-o', 'version=3',
             '-o', "rpc.listen=tcp://$host:$rpcPort",
             '-s',
         ], base_path()))->start()->waitUntil(function ($type, $buffer) {
