@@ -13,7 +13,7 @@ use Swoole\Timer;
 
 ini_set('display_errors', 'stderr');
 
-$basePath = realpath(getenv('APP_RELEASE_BIN_DIR'));
+$basePath = getenv('APP_RELEASE_BIN_DIR');
 
 require_once $basePath . '/../src/Stream.php';
 
@@ -51,9 +51,8 @@ $timerTable = require $basePath . '/createSwooleTimerTable.php';
 |
 */
 
-$server->on('beforereload', function (Server $server) use (&$basePath) {
+$server->on('beforereload', function (Server $server) {
     clearstatcache(true);
-    $basePath = realpath(getenv('APP_RELEASE_BIN_DIR'));
 });
 
 $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnServerStart(
