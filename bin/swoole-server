@@ -13,11 +13,13 @@ use Swoole\Timer;
 
 ini_set('display_errors', 'stderr');
 
-require_once __DIR__.'/../src/Stream.php';
+$basePath = realpath(getenv('APP_RELEASE_BIN_DIR'));
 
-require __DIR__.'/../fixes/fix-symfony-dd.php';
+require_once $basePath . '/../src/Stream.php';
 
-$bootstrap = fn ($serverState) => require __DIR__.'/bootstrap.php';
+require $basePath . '/../fixes/fix-symfony-dd.php';
+
+$bootstrap = fn($serverState) => require $basePath . '/bootstrap.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +36,9 @@ $serverState = json_decode(file_get_contents(
     $serverStateFile = $_SERVER['argv'][1]
 ), true)['state'];
 
-$server = require __DIR__.'/createSwooleServer.php';
+$server = require $basePath . '/createSwooleServer.php';
 
-$timerTable = require __DIR__.'/createSwooleTimerTable.php';
+$timerTable = require $basePath . '/createSwooleTimerTable.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +51,11 @@ $timerTable = require __DIR__.'/createSwooleTimerTable.php';
 |
 */
 
+$server->on('beforereload', function (Server $server) use (&$basePath) {
+    clearstatcache(true);
+    $basePath = realpath(getenv('APP_RELEASE_BIN_DIR'));
+});
+
 $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnServerStart(
     new ServerStateFile($serverStateFile),
     new SwooleExtension,
@@ -58,13 +65,13 @@ $server->on('start', fn (Server $server) => $bootstrap($serverState) && (new OnS
     $serverState['octaneConfig']['tick'] ?? true
 ))($server));
 
-$server->on('managerstart', function () use ($serverState) {
+$server->on('managerstart', function () use (&$serverState, $basePath) {
     // Don't bootstrap entire application before server / worker start. Otherwise, files can't be gracefully reloaded... #632
-    require_once __DIR__.'/../src/Swoole/Handlers/OnManagerStart.php';
-    require_once __DIR__.'/../src/Swoole/SwooleExtension.php';
+    require_once $basePath . '/../src/Swoole/Handlers/OnManagerStart.php';
+    require_once $basePath . '/../src/Swoole/SwooleExtension.php';
 
     (new OnManagerStart(
-         new SwooleExtension, $serverState['appName']
+        new SwooleExtension, $serverState['appName']
     ))();
 });
 
@@ -83,13 +90,13 @@ $server->on('managerstart', function () use ($serverState) {
 |
 */
 
-require_once __DIR__.'/WorkerState.php';
+require_once $basePath . '/WorkerState.php';
 
 $workerState = new WorkerState;
 
-$workerState->cacheTable = require __DIR__.'/createSwooleCacheTable.php';
+$workerState->cacheTable = require $basePath . '/createSwooleCacheTable.php';
 $workerState->timerTable = $timerTable;
-$workerState->tables = require __DIR__.'/createSwooleTables.php';
+$workerState->tables = require $basePath . '/createSwooleTables.php';
 
 $server->on('workerstart', fn (Server $server, $workerId) =>
     (fn ($basePath) => (new OnWorkerStart(
