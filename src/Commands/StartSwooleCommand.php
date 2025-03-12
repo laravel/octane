@@ -177,10 +177,17 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     protected function getPwd(): void
     {
         $working_dir = dirname(request()->server('SCRIPT_NAME'));
-        if (str_starts_with($working_dir, './')) {
-            $working_dir = substr($working_dir, 2);
+        if (($starts_as_curr = str_starts_with($working_dir, './')) || str_starts_with($working_dir, '/')) {
+            if ($starts_as_curr) {
+                $working_dir = substr($working_dir, 2);
+            }
 
-            $this->pwd = getcwd().'/'.$working_dir;
+            $cwd = getcwd();
+            if (! str_starts_with($cwd, $working_dir)) {
+                $this->pwd = getcwd() . '/' . $working_dir;
+            } else {
+                $this->pwd = $working_dir;
+            }
         } elseif ($working_dir === '.') {
             // This part comes into action only if the server changes to
             // the base path directory before running the Artisan command.
@@ -190,6 +197,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             } else {
                 $this->pwd = trim(shell_exec('pwd')); // For Unix-like systems
             }
+        } else {
+            $this->pwd = $this->real_cwd;
         }
     }
 
