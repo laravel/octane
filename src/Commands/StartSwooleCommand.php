@@ -43,6 +43,30 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      * @var bool
      */
     protected $hidden = true;
+    protected bool $isSymlinked = false;
+    protected string $dir;
+    protected string $real_cwd;
+    protected string $pwd;
+
+    public function __construct()
+    {
+        $this->dir = __DIR__;
+        $this->real_cwd = base_path();
+        $this->getPwd();
+
+        if ($this->pwd !== $this->real_cwd) {
+            $this->isSymlinked = true;
+            $this->dir = str_replace($this->real_cwd, $this->pwd, $this->dir);
+            app()->setBasePath($this->pwd);
+
+            $log_file = config('octane.swoole.options.log_file');
+            if ($log_file) {
+                config(['octane.swoole.options.log_file' => $this->realpath($log_file)]);
+            }
+        }
+
+        parent::__construct();
+    }
 
     /**
      * Handle the command.
@@ -83,9 +107,10 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             ...config('octane.swoole.php_options', []),
             config('octane.swoole.command', 'swoole-server'),
             $serverStateFile->path(),
-        ], realpath(__DIR__.'/../../bin'), [
+        ], $this->realpath($this->dir.'/../../bin'), [
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
+            'APP_RELEASE_BIN_DIR' => $this->realpath($this->dir.'/../../bin'),
             'LARAVEL_OCTANE' => 1,
         ]))->start();
 
@@ -136,6 +161,36 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'task_worker_num' => $this->taskWorkerCount($extension),
             'worker_num' => $this->workerCount($extension),
         ];
+    }
+
+    protected function realpath(string $file): string
+    {
+        $realPath = realpath($file);
+
+        if (!$this->isSymlinked) {
+            return $realPath;
+        }
+
+        return str_replace($this->real_cwd, $this->pwd, $realPath);
+    }
+
+    protected function getPwd(): void
+    {
+        $working_dir = dirname(request()->server('SCRIPT_NAME'));
+        if (str_starts_with($working_dir, './')) {
+            $working_dir = substr($working_dir, 2);
+
+            $this->pwd = getcwd() . '/' . $working_dir;
+        } elseif ($working_dir === '.') {
+            // This part comes into action only if the server changes to
+            // the base path directory before running the Artisan command.
+            // eg. cd /www/current && php artisan octane:start
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $this->pwd = trim(shell_exec('cd')); // For Windows
+            } else {
+                $this->pwd = trim(shell_exec('pwd')); // For Unix-like systems
+            }
+        }
     }
 
     /**
