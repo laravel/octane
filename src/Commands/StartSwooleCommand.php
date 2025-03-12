@@ -184,7 +184,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
 
             $cwd = getcwd();
             if (! str_starts_with($cwd, $working_dir)) {
-                $this->pwd = getcwd() . '/' . $working_dir;
+                $this->pwd = "$cwd/$working_dir";
             } else {
                 $this->pwd = $working_dir;
             }
