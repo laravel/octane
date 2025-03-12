@@ -167,7 +167,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     {
         $realPath = realpath($file);
 
-        if (!$this->isSymlinked) {
+        if (! $this->isSymlinked) {
             return $realPath;
         }
 
@@ -180,7 +180,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         if (str_starts_with($working_dir, './')) {
             $working_dir = substr($working_dir, 2);
 
-            $this->pwd = getcwd() . '/' . $working_dir;
+            $this->pwd = getcwd().'/'.$working_dir;
         } elseif ($working_dir === '.') {
             // This part comes into action only if the server changes to
             // the base path directory before running the Artisan command.
