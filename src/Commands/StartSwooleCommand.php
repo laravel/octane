@@ -43,9 +43,26 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      * @var bool
      */
     protected $hidden = true;
+
+    /**
+     * Indicates whether the command runs in a symlinked directory path.
+     */
     protected bool $isSymlinked = false;
+
+    /**
+     * The reliable directory path to use, relative to the Octane path.
+     */
     protected string $dir;
+
+    /**
+     * The actual path, rather than the symlinked path.
+     */
     protected string $real_cwd;
+
+    /**
+     * The reliable working directory path of the process.
+     * Respects the symlink path and does not convert to the real path.
+     */
     protected string $pwd;
 
     public function __construct()
@@ -163,6 +180,11 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         ];
     }
 
+    /**
+     * Returns the real path of a file. If the working directory path is symlinked,
+     * it returns the file location relative to the reliable working directory path of the process,
+     * instead of the real path.
+     */
     protected function realpath(string $file): string
     {
         $realPath = realpath($file);
@@ -174,6 +196,10 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         return str_replace($this->real_cwd, $this->pwd, $realPath);
     }
 
+    /**
+     * Determines and sets the reliable working directory path of the process.
+     * Respects the symlink path and does not convert to the real path.
+     */
     protected function getPwd(): void
     {
         $working_dir = dirname(request()->server('SCRIPT_NAME'));
