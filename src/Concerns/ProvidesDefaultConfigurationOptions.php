@@ -48,11 +48,12 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\FlushDatabaseRecordModificationState::class,
             \Laravel\Octane\Listeners\FlushDatabaseQueryLog::class,
             \Laravel\Octane\Listeners\RefreshQueryDurationHandling::class,
-            \Laravel\Octane\Listeners\FlushLogContext::class,
             \Laravel\Octane\Listeners\FlushArrayCache::class,
+            \Laravel\Octane\Listeners\FlushLogContext::class,
             \Laravel\Octane\Listeners\FlushMonologState::class,
             \Laravel\Octane\Listeners\FlushStrCache::class,
             \Laravel\Octane\Listeners\FlushTranslatorCache::class,
+            \Laravel\Octane\Listeners\FlushVite::class,
 
             // First-Party Packages...
             \Laravel\Octane\Listeners\PrepareInertiaForNextOperation::class,
