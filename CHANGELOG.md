@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.8.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.8.3...2.x)
+
+## [v2.8.3](https://github.com/laravel/octane/compare/v2.8.2...v2.8.3) - 2025-04-01
+
+* [2.x] Flush Vite per-request state by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/octane/pull/1016
 
 ## [v2.8.2](https://github.com/laravel/octane/compare/v2.8.1...v2.8.2) - 2025-03-12
 
