@@ -40,8 +40,7 @@ class FlushViteTest extends TestCase
         ]);
         $app['router']->get('/', fn () => 'ok');
 
-        $app->instance(Vite::class, new class
-        {
+        $app->instance(Vite::class, new class {
             //
         });
         $worker->run();
