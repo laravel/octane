@@ -69,7 +69,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     {
         $this->dir = __DIR__;
         $this->real_cwd = base_path();
-        $this->getPwd();
+        $this->setPwd();
 
         if ($this->pwd !== $this->real_cwd) {
             $this->isSymlinked = true;
@@ -200,7 +200,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      * Determines and sets the reliable working directory path of the process.
      * Respects the symlink path and does not convert to the real path.
      */
-    protected function getPwd(): void
+    protected function setPwd(): void
     {
         $working_dir = dirname(request()->server('SCRIPT_NAME'));
         if (($starts_as_curr = str_starts_with($working_dir, './')) || str_starts_with($working_dir, '/')) {
