@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.8.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.9.0...2.x)
+
+## [v2.9.0](https://github.com/laravel/octane/compare/v2.8.3...v2.9.0) - 2025-04-04
+
+* Add {$CADDY_EXTRA_CONFIG} to Caddyfile by [@tm1000](https://github.com/tm1000) in https://github.com/laravel/octane/pull/1017
+* Update logo by [@iamdavidhill](https://github.com/iamdavidhill) in https://github.com/laravel/octane/pull/1018
 
 ## [v2.8.3](https://github.com/laravel/octane/compare/v2.8.2...v2.8.3) - 2025-04-01
 
