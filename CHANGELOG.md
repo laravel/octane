@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.9.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.9.1...2.x)
+
+## [v2.9.1](https://github.com/laravel/octane/compare/v2.9.0...v2.9.1) - 2025-04-13
+
+* FrankenPHP: Fix ServerProcessInspector::adminUrl() by [@rush9537](https://github.com/rush9537) in https://github.com/laravel/octane/pull/1021
 
 ## [v2.9.0](https://github.com/laravel/octane/compare/v2.8.3...v2.9.0) - 2025-04-04
 
