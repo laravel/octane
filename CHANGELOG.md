@@ -1,6 +1,27 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.8.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.9.1...2.x)
+
+## [v2.9.1](https://github.com/laravel/octane/compare/v2.9.0...v2.9.1) - 2025-04-13
+
+* FrankenPHP: Fix ServerProcessInspector::adminUrl() by [@rush9537](https://github.com/rush9537) in https://github.com/laravel/octane/pull/1021
+
+## [v2.9.0](https://github.com/laravel/octane/compare/v2.8.3...v2.9.0) - 2025-04-04
+
+* Add {$CADDY_EXTRA_CONFIG} to Caddyfile by [@tm1000](https://github.com/tm1000) in https://github.com/laravel/octane/pull/1017
+* Update logo by [@iamdavidhill](https://github.com/iamdavidhill) in https://github.com/laravel/octane/pull/1018
+
+## [v2.8.3](https://github.com/laravel/octane/compare/v2.8.2...v2.8.3) - 2025-04-01
+
+* [2.x] Flush Vite per-request state by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/octane/pull/1016
+
+## [v2.8.2](https://github.com/laravel/octane/compare/v2.8.1...v2.8.2) - 2025-03-12
+
+* Supports PHPStan 2 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1006
+* Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1005
+* Chokidar v4 wildcards support by [@4unit](https://github.com/4unit) in https://github.com/laravel/octane/pull/1003
+* Fix tests CI by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1007
+* Set version=3 for RoadRunner's reload by [@apih](https://github.com/apih) in https://github.com/laravel/octane/pull/1008
 
 ## [v2.8.1](https://github.com/laravel/octane/compare/v2.8.0...v2.8.1) - 2025-02-19
 

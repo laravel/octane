@@ -64,9 +64,12 @@ class ServerProcessInspector implements ServerProcessInspectorContract
      */
     protected function adminUrl(): string
     {
-        $adminPort = $this->serverStateFile->read()['state']['adminPort'] ?? 2019;
+        $serverStateFile = $this->serverStateFile->read();
 
-        return "http://localhost:{$adminPort}";
+        $adminHost = $serverStateFile['state']['adminHost'] ?? 'localhost';
+        $adminPort = $serverStateFile['state']['adminPort'] ?? 2019;
+
+        return "http://{$adminHost}:{$adminPort}";
     }
 
     /**

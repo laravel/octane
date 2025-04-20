@@ -63,7 +63,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         ]);
 
         $processFactory->shouldReceive('createProcess')->with(
-            [$this->findRoadRunnerBinary(), 'reset', '-o', 'rpc.listen=tcp://127.0.0.1:6002', '-s'],
+            [$this->findRoadRunnerBinary(), 'reset', '-o', 'server=3', '-o', 'rpc.listen=tcp://127.0.0.1:6002', '-s'],
             base_path(),
         )->andReturn($process = Mockery::mock('stdClass'));
 
