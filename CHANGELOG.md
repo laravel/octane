@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.9.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.9.2...2.x)
+
+## [v2.9.2](https://github.com/laravel/octane/compare/v2.9.1...v2.9.2) - 2025-05-05
+
+* Fix argument in RoadRunner process reset command by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1023
+* Allows run server with composer vendor out of application by [@unidevio](https://github.com/unidevio) in https://github.com/laravel/octane/pull/1025
 
 ## [v2.9.1](https://github.com/laravel/octane/compare/v2.9.0...v2.9.1) - 2025-04-13
 
