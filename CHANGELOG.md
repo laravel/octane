@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.9.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.9.3...2.x)
+
+## [v2.9.3](https://github.com/laravel/octane/compare/v2.9.2...v2.9.3) - 2025-05-14
+
+* Use null coalescing operator for vendor directory assignment by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1027
 
 ## [v2.9.2](https://github.com/laravel/octane/compare/v2.9.1...v2.9.2) - 2025-05-05
 
