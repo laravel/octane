@@ -37,7 +37,7 @@ if (! is_string($basePath)) {
 |
 */
 
-$vendorDir = $_ENV['COMPOSER_VENDOR_DIR'] ?: "{$basePath}/vendor";
+$vendorDir = $_ENV['COMPOSER_VENDOR_DIR'] ?? "{$basePath}/vendor";
 
 if (! is_file($autoload_file = "{$vendorDir}/autoload.php")) {
     Octane::writeError("Composer autoload file was not found. Did you install the project's dependencies?");
