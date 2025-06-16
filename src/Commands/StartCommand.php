@@ -69,7 +69,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--port' => $this->getPort(),
             '--workers' => $this->option('workers') ?: config('octane.workers', 'auto'),
             '--task-workers' => $this->option('task-workers') ?: config('octane.task_workers', 'auto'),
-            '--max-requests' => $this->option('max-requests') ?: config('octane.max_requests', 500),                           
+            '--max-requests' => $this->option('max-requests') ?: config('octane.max_requests', 500),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
         ]);
