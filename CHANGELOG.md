@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.9.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.10.0...2.x)
+
+## [v2.10.0](https://github.com/laravel/octane/compare/v2.9.3...v2.10.0) - 2025-06-16
+
+* Allow configuring max workers, requests via config by [@glensc](https://github.com/glensc) in https://github.com/laravel/octane/pull/1028
 
 ## [v2.9.3](https://github.com/laravel/octane/compare/v2.9.2...v2.9.3) - 2025-05-14
 
