@@ -192,6 +192,22 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
+     * Always return a no-op object, because FrankenPHP has native watcher support.
+     *
+     * @return object
+     */
+    protected function startServerWatcher()
+    {
+        return new class
+        {
+            public function __call($method, $parameters)
+            {
+                return null;
+            }
+        };
+    }
+
+    /**
      * Generate the file watcher configuration snippet to include in the Caddyfile.
      *
      * @return string
@@ -202,7 +218,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             return '';
         }
 
-        // If paths are not specified, fall back to FrankenPHP's default watcher pattern
+        // If paths are not specified, fall back to FrankenPHP's default watcher pattern...
         if (empty($paths = config('octane.watch'))) {
             return "\t\twatch";
         }
@@ -368,20 +384,5 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $this->callSilent('octane:stop', [
             '--server' => 'frankenphp',
         ]);
-    }
-
-    /**
-     * Always return a no-op object, because FrankenPHP has native
-     * watcher support, so there is no need for an external watcher.
-     */
-    protected function startServerWatcher()
-    {
-        return new class
-        {
-            public function __call($method, $parameters)
-            {
-                return null;
-            }
-        };
     }
 }
