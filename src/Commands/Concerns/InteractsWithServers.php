@@ -102,9 +102,15 @@ trait InteractsWithServers
     {
         $this->components->info('Server running…');
 
+        if ($this->option('sock')) {
+            $str = '  Local: <fg=white;options=bold>unix:'.$this->option('sock').' </>';
+        } else {
+            $str = '  Local: <fg=white;options=bold>'.($this->hasOption('https') && $this->option('https') ? 'https://' : 'http://').$this->getHost().':'.$this->getPort().' </>';
+        }
+
         $this->output->writeln([
             '',
-            '  Local: <fg=white;options=bold>'.($this->hasOption('https') && $this->option('https') ? 'https://' : 'http://').$this->getHost().':'.$this->getPort().' </>',
+            $str,
             '',
             '  <fg=yellow>Press Ctrl+C to stop the server</>',
             '',
