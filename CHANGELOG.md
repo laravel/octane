@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.10.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.11.0...2.x)
+
+## [v2.11.0](https://github.com/laravel/octane/compare/v2.10.0...v2.11.0) - 2025-06-28
+
+* Use FrankenPHP's built-in file watcher by [@kohenkatz](https://github.com/kohenkatz) in https://github.com/laravel/octane/pull/971
 
 ## [v2.10.0](https://github.com/laravel/octane/compare/v2.9.3...v2.10.0) - 2025-06-16
 
