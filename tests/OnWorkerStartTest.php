@@ -36,4 +36,3 @@ class OnWorkerStartTest extends TestCase
         $this->assertFalse($method->invoke($handler));
     }
 }
-
