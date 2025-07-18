@@ -11,10 +11,10 @@ class OnWorkerStartTest extends TestCase
     public function test_should_clear_opcache_returns_true_by_default(): void
     {
         $this->createApplication();
-        
+
         // Mock the OnWorkerStart handler to test just the shouldClearOpcodeCache method
         $handler = Mockery::mock(OnWorkerStart::class)->makePartial();
-        
+
         $reflection = new \ReflectionClass($handler);
         $method = $reflection->getMethod('shouldClearOpcodeCache');
         $method->setAccessible(true);
@@ -26,10 +26,10 @@ class OnWorkerStartTest extends TestCase
     {
         $app = $this->createApplication();
         $app['config']['octane.swoole.clear_opcache'] = false;
-        
+
         // Mock the OnWorkerStart handler to test just the shouldClearOpcodeCache method
         $handler = Mockery::mock(OnWorkerStart::class)->makePartial();
-        
+
         $reflection = new \ReflectionClass($handler);
         $method = $reflection->getMethod('shouldClearOpcodeCache');
         $method->setAccessible(true);
