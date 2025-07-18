@@ -50,6 +50,13 @@ class SwooleClient implements Client, ServesStaticFiles
      */
     public function canServeRequestAsStaticFile(Request $request, RequestContext $context): bool
     {
+        $octaneConfig = $context->octaneConfig ?? [];
+
+        if (array_key_exists('serve_static_files', $octaneConfig) && 
+            ! $octaneConfig['serve_static_files']) {
+            return false;
+        }
+
         if (! ($context->publicPath ?? false) ||
             $request->path() === '/') {
             return false;

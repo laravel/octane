@@ -30,7 +30,9 @@ class OnWorkerStart
      */
     public function __invoke($server, int $workerId)
     {
-        $this->clearOpcodeCache();
+        if ($this->shouldClearOpcodeCache()) {
+            $this->clearOpcodeCache();
+        }
 
         $this->workerState->server = $server;
         $this->workerState->workerId = $workerId;
@@ -105,6 +107,16 @@ class OnWorkerStart
                 (microtime(true) - $this->workerState->lastRequestTime) * 1000,
             );
         });
+    }
+
+    /**
+     * Determine if the opcode cache should be cleared.
+     *
+     * @return bool
+     */
+    protected function shouldClearOpcodeCache()
+    {
+        return config('octane.swoole.clear_opcache', true);
     }
 
     /**
