@@ -110,11 +110,11 @@ class OnWorkerStart
     }
 
     /**
-     * Determine if opcode cache should be cleared.
+     * Determine if the opcode cache should be cleared.
      *
      * @return bool
      */
-    protected function shouldClearOpcodeCache(): bool
+    protected function shouldClearOpcodeCache()
     {
         return config('octane.swoole.clear_opcache', true);
     }
