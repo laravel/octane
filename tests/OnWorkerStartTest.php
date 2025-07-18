@@ -3,7 +3,6 @@
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\Swoole\Handlers\OnWorkerStart;
-use Laravel\Octane\Swoole\SwooleExtension;
 use Mockery;
 
 class OnWorkerStartTest extends TestCase
@@ -37,3 +36,4 @@ class OnWorkerStartTest extends TestCase
         $this->assertFalse($method->invoke($handler));
     }
 }
+
