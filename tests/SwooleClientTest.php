@@ -73,6 +73,38 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
     }
 
+    public function test_can_serve_static_files_when_explicitly_enabled(): void
+    {
+        $client = new SwooleClient;
+
+        $request = Request::create('/foo.txt', 'GET');
+
+        $context = new RequestContext([
+            'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [
+                'serve_static_files' => true,
+            ],
+        ]);
+
+        $this->assertTrue($client->canServeRequestAsStaticFile($request, $context));
+    }
+
+    public function test_cant_serve_static_files_when_disabled(): void
+    {
+        $client = new SwooleClient;
+
+        $request = Request::create('/foo.txt', 'GET');
+
+        $context = new RequestContext([
+            'publicPath' => __DIR__.'/public',
+            'octaneConfig' => [
+                'serve_static_files' => false,
+            ],
+        ]);
+
+        $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
+    }
+
     public function test_cant_serve_static_files_if_file_is_outside_public_directory(): void
     {
         $client = new SwooleClient;
