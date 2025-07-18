@@ -52,7 +52,7 @@ class SwooleClient implements Client, ServesStaticFiles
     {
         $octaneConfig = $context->octaneConfig ?? [];
 
-        if (array_key_exists('serve_static_files', $octaneConfig) && 
+        if (array_key_exists('serve_static_files', $octaneConfig) &&
             ! $octaneConfig['serve_static_files']) {
             return false;
         }
