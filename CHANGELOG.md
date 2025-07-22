@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.11.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.12.0...2.x)
+
+## [v2.12.0](https://github.com/laravel/octane/compare/v2.11.0...v2.12.0) - 2025-07-18
+
+* Add configurable opcache clearing and static file serving options by [@hughcube](https://github.com/hughcube) in https://github.com/laravel/octane/pull/1035
 
 ## [v2.11.0](https://github.com/laravel/octane/compare/v2.10.0...v2.11.0) - 2025-06-28
 
