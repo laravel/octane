@@ -30,14 +30,14 @@ class OnWorkerStart
      */
     public function __invoke($server, int $workerId)
     {
-        if ($this->shouldClearOpcodeCache()) {
-            $this->clearOpcodeCache();
-        }
-
         $this->workerState->server = $server;
         $this->workerState->workerId = $workerId;
         $this->workerState->workerPid = posix_getpid();
         $this->workerState->worker = $this->bootWorker($server);
+
+        if ($this->shouldClearOpcodeCache()) {
+            $this->clearOpcodeCache();
+        }
 
         $this->dispatchServerTickTaskEverySecond($server);
         $this->streamRequestsToConsole($server);
