@@ -116,7 +116,7 @@ class OnWorkerStart
      */
     protected function shouldClearOpcodeCache()
     {
-        return config('octane.swoole.clear_opcache', true);
+        return $this->serverState['octaneConfig']['swoole']['clear_opcache'] ?? true;
     }
 
     /**
