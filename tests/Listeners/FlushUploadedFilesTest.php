@@ -22,8 +22,8 @@ class FlushUploadedFilesTest extends TestCase
             ];
 
             ($request = Request::create('http://127.0.0.1:123/foo'))->files->add([
-                new UploadedFile($file1path, Str::random()),
-                new UploadedFile($file2path, Str::random()),
+                [new UploadedFile($file1path, Str::random())],
+                [new UploadedFile($file2path, Str::random())],
                 new UploadedFile($file3path, Str::random()),
             ]);
 
