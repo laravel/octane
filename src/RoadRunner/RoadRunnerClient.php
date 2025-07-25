@@ -2,7 +2,6 @@
 
 namespace Laravel\Octane\RoadRunner;
 
-use Closure;
 use Generator;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
