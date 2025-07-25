@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\RoadRunner;
 
+use Closure;
 use Generator;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -51,8 +52,7 @@ class RoadRunnerClient implements Client, StoppableClient
 
         if (
             ($octaneResponse->response instanceof StreamedResponse) &&
-            ($responseCallback = $octaneResponse->response->getCallback()) &&
-            ((new ReflectionFunction($responseCallback))->getReturnType()?->getName() === Generator::class)
+            ! is_null($responseCallback = static::resolveStreamResponseCallback($octaneResponse->response))
         ) {
             $this->client->getHttpWorker()->respond(
                 $octaneResponse->response->getStatusCode(),
@@ -83,5 +83,29 @@ class RoadRunnerClient implements Client, StoppableClient
     public function stop(): void
     {
         $this->client->getWorker()->stop();
+    }
+
+    /**
+     * Resolve stream response callback.
+     *
+     * @param  \Symfony\Component\HttpFoundation\StreamedResponse  $response
+     * @return \Closure|null
+     */
+    public static function resolveStreamResponseCallback(StreamedResponse $response)
+    {
+        if (is_null($responseCallback = $response->getCallback())) {
+            return null;
+        }
+
+        $reflection = new ReflectionFunction($responseCallback);
+
+        if (
+            $reflection->hasReturnType() === true &&
+            in_array($reflection->getReturnType()?->getName(), [Generator::class, 'string'])
+        ) {
+            return $responseCallback;
+        }
+
+        return null;
     }
 }
