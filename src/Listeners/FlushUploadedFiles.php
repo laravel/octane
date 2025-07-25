@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Listeners;
 
+use Illuminate\Support\Arr;
 use SplFileInfo;
 
 class FlushUploadedFiles
@@ -14,7 +15,7 @@ class FlushUploadedFiles
     public function handle($event): void
     {
         foreach ($event->request->files->all() as $files) {
-            foreach ((array) $files as $file) {
+            foreach (Arr::wrap($files) as $file) {
                 if (! $file instanceof SplFileInfo ||
                     ! is_string($path = $file->getRealPath())) {
                     continue;
