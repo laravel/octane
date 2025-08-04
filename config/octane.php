@@ -232,7 +232,4 @@ return [
             'package_max_length' => env('OCTANE_PACKAGE_MAX_LENGTH', 50 * 1024 * 1024), // 50MB default
         ],
     ],
-
-
-
 ];
