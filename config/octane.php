@@ -221,4 +221,18 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+   |--------------------------------------------------------------------------
+   | Swoole Options (your custom part)
+   |--------------------------------------------------------------------------
+   */
+    'swoole' => [
+        'options' => [
+            // Maximum package (upload) size for Swoole. You can set it from .env via OCTANE_PACKAGE_MAX_LENGTH.
+            'package_max_length' => env('OCTANE_PACKAGE_MAX_LENGTH', 50 * 1024 * 1024), // 50MB default
+        ],
+    ],
+
+
+
 ];
