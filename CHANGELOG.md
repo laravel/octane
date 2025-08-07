@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.12.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.12.1...2.x)
+
+## [v2.12.1](https://github.com/laravel/octane/compare/v2.12.0...v2.12.1) - 2025-07-25
+
+* Fix getting clear_opcache config failures by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1037
+* [2.x] Fix resolving `StreamResponse` callback by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1042
+* Fix FlushUploadedFiles listener by [@eldario](https://github.com/eldario) in https://github.com/laravel/octane/pull/1044
 
 ## [v2.12.0](https://github.com/laravel/octane/compare/v2.11.0...v2.12.0) - 2025-07-18
 
