@@ -56,8 +56,10 @@ try {
                 report($e);
             }
 
+            $hasDebugModeEnabled = app()->has('config') && app()->hasDebugModeEnabled();
+
             $response = new Response(
-                'Internal Server Error',
+                $hasDebugModeEnabled ? (string)$e : 'Internal Server Error',
                 500,
                 [
                     'Status' => '500 Internal Server Error',
