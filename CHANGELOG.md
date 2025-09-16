@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.12.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.12.2...2.x)
+
+## [v2.12.2](https://github.com/laravel/octane/compare/v2.12.1...v2.12.2) - 2025-09-07
+
+* FrankenPHP: show worker startup errors if `APP_DEBUG=true` by [@AlliBalliBaba](https://github.com/AlliBalliBaba) in https://github.com/laravel/octane/pull/1055
 
 ## [v2.12.1](https://github.com/laravel/octane/compare/v2.12.0...v2.12.1) - 2025-07-25
 
