@@ -20,7 +20,7 @@ $_ENV['APP_RUNNING_IN_CONSOLE'] = false;
 $basePath = $_SERVER['APP_BASE_PATH'] ?? $_ENV['APP_BASE_PATH'] ?? $serverState['octaneConfig']['base_path'] ?? null;
 
 if (! is_string($basePath)) {
-    Octane::writeError('Cannot find application base path.');
+    die('Cannot find application base path.');
 
     exit(11);
 }
@@ -40,7 +40,7 @@ if (! is_string($basePath)) {
 $vendorDir = $_ENV['COMPOSER_VENDOR_DIR'] ?? "{$basePath}/vendor";
 
 if (! is_file($autoload_file = "{$vendorDir}/autoload.php")) {
-    Octane::writeError("Composer autoload file was not found. Did you install the project's dependencies?");
+    die("Composer autoload file was not found. Did you install the project's dependencies?");
 
     exit(10);
 }
