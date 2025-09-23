@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.12.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.12.3...2.x)
+
+## [v2.12.3](https://github.com/laravel/octane/compare/v2.12.2...v2.12.3) - 2025-09-23
+
+* Replace Octane::writeError with die statements by [@7amoood](https://github.com/7amoood) in https://github.com/laravel/octane/pull/1057
+* Advance worker initialization in frankenphp-worker by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1059
 
 ## [v2.12.2](https://github.com/laravel/octane/compare/v2.12.1...v2.12.2) - 2025-09-07
 
