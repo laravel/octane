@@ -30,15 +30,13 @@ $basePath = require __DIR__.'/bootstrap.php';
 
 $frankenPhpClient = new FrankenPhpClient();
 
-$worker = tap(
-    new Worker(
-        new ApplicationFactory($basePath), $frankenPhpClient
-    )
-)->boot();
+$worker = tap(new Worker(
+    new ApplicationFactory($basePath), $frankenPhpClient
+))->boot();
 
 $requestCount = 0;
-$maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'] ?? 1000;
 $debugMode = $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? 'false';
+$maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'] ?? 1000;
 $requestMaxExecutionTime = $_ENV['REQUEST_MAX_EXECUTION_TIME'] ?? $_SERVER['REQUEST_MAX_EXECUTION_TIME'] ?? null;
 
 if (PHP_OS_FAMILY === 'Linux' && ! is_null($requestMaxExecutionTime)) {
