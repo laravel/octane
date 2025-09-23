@@ -38,6 +38,7 @@ $worker = tap(
 
 $requestCount = 0;
 $maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'] ?? 1000;
+$debugMode = $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? 'false';
 $requestMaxExecutionTime = $_ENV['REQUEST_MAX_EXECUTION_TIME'] ?? $_SERVER['REQUEST_MAX_EXECUTION_TIME'] ?? null;
 
 if (PHP_OS_FAMILY === 'Linux' && ! is_null($requestMaxExecutionTime)) {
@@ -45,7 +46,7 @@ if (PHP_OS_FAMILY === 'Linux' && ! is_null($requestMaxExecutionTime)) {
 }
 
 try {
-    $handleRequest = static function () use ($worker, $frankenPhpClient) {
+    $handleRequest = static function () use ($worker, $frankenPhpClient, $debugMode) {
         try {
             [$request, $context] = $frankenPhpClient->marshalRequest(new RequestContext());
 
@@ -54,8 +55,6 @@ try {
             if ($worker) {
                 report($e);
             }
-
-            $debugMode = $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? 'false';
 
             $response = new Response(
                 $debugMode === 'true' ? (string) $e : 'Internal Server Error',
