@@ -221,4 +221,17 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Vendor Path
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the path to the "vendor" directory that Octane will
+    | use when bootstrapping the application. By default, it will use the
+    | vendor folder inside the base path of the application.
+    |
+    */
+
+    'vendor_path' => env('OCTANE_VENDOR_PATH', base_path('vendor')),
+
 ];
