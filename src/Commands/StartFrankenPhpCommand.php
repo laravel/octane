@@ -106,6 +106,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'CADDY_SERVER_WORKER_DIRECTIVE' => $this->workerCount() ? "num {$this->workerCount()}" : '',
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
             'CADDY_SERVER_WATCH_DIRECTIVES' => $this->buildWatchConfig(),
+            'COMPOSER_VENDOR_DIR' => config('octane.vendor_path'),
         ]));
 
         $server = $process->start();
