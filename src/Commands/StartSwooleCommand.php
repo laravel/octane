@@ -87,6 +87,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'APP_ENV' => app()->environment(),
             'APP_BASE_PATH' => base_path(),
             'LARAVEL_OCTANE' => 1,
+            'COMPOSER_VENDOR_DIR' => config('octane.vendor_path'),
         ]))->start();
 
         return $this->runServer($server, $inspector, 'swoole');
