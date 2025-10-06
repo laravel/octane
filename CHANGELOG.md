@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/laravel/octane/compare/v2.12.3...2.x)
 
+### Added
+
+* FrankenPHP: Add env option `OCTANE_FRANKENPHP_DISABLE_ACCESS_LOGS` to disable Caddy access logs
+
 ## [v2.12.3](https://github.com/laravel/octane/compare/v2.12.2...v2.12.3) - 2025-09-23
 
 * Replace Octane::writeError with die statements by [@7amoood](https://github.com/7amoood) in https://github.com/laravel/octane/pull/1057

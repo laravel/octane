@@ -30,3 +30,13 @@ Please review [our security policy](https://github.com/laravel/octane/security/p
 ## License
 
 Laravel Octane is open-sourced software licensed under the [MIT license](LICENSE.md).
+
+### Disable Caddy Access Logs
+
+By default, Caddy logs every request when using FrankenPHP. To disable these access logs, set the following environment variable in your `.env` or server configuration:
+
+```bash
+OCTANE_FRANKENPHP_DISABLE_ACCESS_LOGS=true
+```
+
+When not set, access logs remain enabled by default.

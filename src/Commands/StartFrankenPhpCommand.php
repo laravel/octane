@@ -84,6 +84,25 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         $serverName = $https
             ? "https://$host:$port"
             : "http://:$port";
+        // Allow disabling Caddy access logs via environment variable (default: enabled)
+        $disableAccessLogs = env('OCTANE_FRANKENPHP_DISABLE_ACCESS_LOGS', false);
+        $logBlock = $disableAccessLogs
+            ? '# Access logs disabled via env'
+            : <<<'LOG'
+log {
+	level {$CADDY_SERVER_LOG_LEVEL}
+
+	# Redact the authorization query parameter that can be set by Mercure...
+	format filter {
+		wrap {$CADDY_SERVER_LOGGER}
+		fields {
+			uri query {
+				replace authorization REDACTED
+			}
+		}
+	}
+}
+LOG;
 
         $process = tap(new Process([
             $frankenphpBinary,
@@ -101,6 +120,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'CADDY_SERVER_ADMIN_HOST' => $this->option('admin-host'),
             'CADDY_SERVER_LOG_LEVEL' => $this->option('log-level') ?: (app()->environment('local') ? 'INFO' : 'WARN'),
             'CADDY_SERVER_LOGGER' => 'json',
+            'CADDY_SERVER_LOG_BLOCK' => $logBlock,
             'CADDY_SERVER_SERVER_NAME' => $serverName,
             'CADDY_SERVER_WORKER_COUNT' => $this->workerCount() ?: '',
             'CADDY_SERVER_WORKER_DIRECTIVE' => $this->workerCount() ? "num {$this->workerCount()}" : '',

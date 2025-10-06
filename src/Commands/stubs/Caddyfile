@@ -15,19 +15,7 @@
 {$CADDY_EXTRA_CONFIG}
 
 {$CADDY_SERVER_SERVER_NAME} {
-	log {
-		level {$CADDY_SERVER_LOG_LEVEL}
-
-		# Redact the authorization query parameter that can be set by Mercure...
-		format filter {
-			wrap {$CADDY_SERVER_LOGGER}
-			fields {
-				uri query {
-					replace authorization REDACTED
-				}
-			}
-		}
-	}
+	{$CADDY_SERVER_LOG_BLOCK}
 
 	route {
 		root * "{$APP_PUBLIC_PATH}"
