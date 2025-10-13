@@ -22,7 +22,7 @@ trait InstallsFrankenPhpDependencies
      *
      * @var string
      */
-    protected $requiredFrankenPhpVersion = '1.3.0';
+    protected $requiredFrankenPhpVersion = '1.5.0';
 
     /**
      * Ensure the FrankenPHP's Caddyfile and worker script are installed.
@@ -65,20 +65,26 @@ trait InstallsFrankenPhpDependencies
     {
         $arch = php_uname('m');
 
-        $assetName = match (true) {
-            PHP_OS_FAMILY === 'Linux' && $arch === 'x86_64' => 'frankenphp-linux-x86_64',
-            PHP_OS_FAMILY === 'Linux' && $arch === 'aarch64' => 'frankenphp-linux-aarch64',
-            PHP_OS_FAMILY === 'Darwin' => "frankenphp-mac-$arch",
-            default => null,
-        };
+        $assetName = match (PHP_OS_FAMILY) {
+            'Linux' => (function () use ($arch): string {
+                $process = new Process(['getconf', 'GNU_LIBC_VERSION']);
+                $process->run();
 
-        if ($assetName === null) {
-            throw new RuntimeException('FrankenPHP binaries are currently only available for Linux (x86_64, aarch64) and macOS. Other systems should use the Docker images or compile FrankenPHP manually.');
-        }
+                $gnu = $process->isSuccessful() ? '-gnu' : '';
+
+                return match ($arch) {
+                    'x86_64' => "frankenphp-linux-x86_64$gnu",
+                    'aarch64' => "frankenphp-linux-aarch64$gnu",
+                    default => throw new RuntimeException('FrankenPHP binaries are only available for x86_64 and aarch64 architectures. For other architectures, compile FrankenPHP manually.')
+                };
+            })(),
+            'Darwin' => "frankenphp-mac-$arch",
+            default => throw new RuntimeException('FrankenPHP binaries are only available for Linux and macOS. On Windows, use WSL or Docker. On other systems use the Docker images or compile FrankenPHP manually.'),
+        };
 
         $response = Http::accept('application/vnd.github+json')
             ->withHeaders(['X-GitHub-Api-Version' => '2022-11-28'])
-            ->get('https://api.github.com/repos/dunglas/frankenphp/releases/latest')
+            ->get('https://api.github.com/repos/php/frankenphp/releases/latest')
             ->throw(fn () => $this->components->error('Failed to download FrankenPHP.'));
 
         $assets = $response['assets'] ?? [];
@@ -103,6 +109,7 @@ trait InstallsFrankenPhpDependencies
 
                         if ($progressBar === null) {
                             $progressBar = $this->output->createProgressBar($downloadTotal);
+                            $progressBar->setFormat('%percent%% [%bar%] %current%/%max% bytes');
                             $progressBar->start($downloadTotal, $downloadedBytes);
 
                             return;
