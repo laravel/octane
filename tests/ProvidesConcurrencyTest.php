@@ -29,10 +29,9 @@ class ProvidesConcurrencyTest extends TestCase
     {
         $fakeClass = $this->fakeClass();
 
-
         $results = $fakeClass->concurrently([
-            fn() => 1 + 1,
-            fn() => 2 + 2,
+            fn () => 1 + 1,
+            fn () => 2 + 2,
         ]);
 
         $this->assertEquals([2, 4], $results);
