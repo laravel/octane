@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Concerns;
 
+use InvalidArgumentException;
 use Laravel\Octane\Contracts\DispatchesTasks;
 use Laravel\Octane\SequentialTaskDispatcher;
 use Laravel\Octane\Swoole\ServerStateFile;
@@ -23,6 +24,10 @@ trait ProvidesConcurrencySupport
      */
     public function concurrently(array $tasks, int $waitMilliseconds = 3000)
     {
+        if (empty($tasks)) {
+            throw new InvalidArgumentException('Tasks cannot be an empty array');
+        }
+
         return $this->tasks()->resolve($tasks, $waitMilliseconds);
     }
 
