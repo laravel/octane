@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.12.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.13.0...2.x)
+
+## [v2.13.0](https://github.com/laravel/octane/compare/v2.12.3...v2.13.0) - 2025-10-13
+
+* feat: download FrankenPHP mostly static binary when possible by [@dunglas](https://github.com/dunglas) in https://github.com/laravel/octane/pull/1065
 
 ## [v2.12.3](https://github.com/laravel/octane/compare/v2.12.2...v2.12.3) - 2025-09-23
 
