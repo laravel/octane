@@ -19,12 +19,13 @@ class SignalDispatcher
     /**
      * Send a SIGTERM signal to the given process.
      */
-    public function terminate(int $processId, int $wait = 0): bool
+    public function terminate(int $processId, int $waitMilliseconds = 0): bool
     {
         $this->extension->dispatchProcessSignal($processId, SIGTERM);
 
-        if ($wait) {
+        if ($waitMilliseconds) {
             $start = time();
+            $waitSeconds = $waitMilliseconds / 1000;
 
             do {
                 if (! $this->canCommunicateWith($processId)) {
@@ -34,7 +35,7 @@ class SignalDispatcher
                 $this->extension->dispatchProcessSignal($processId, SIGTERM);
 
                 sleep(1);
-            } while (time() < $start + $wait);
+            } while (time() < $start + $waitSeconds);
         }
 
         return false;

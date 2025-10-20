@@ -15,11 +15,11 @@ class SwooleCoroutineDispatcher implements DispatchesCoroutines
     /**
      * Concurrently resolve the given callbacks via coroutines, returning the results.
      */
-    public function resolve(array $coroutines, int $waitSeconds = -1): array
+    public function resolve(array $coroutines, int $waitMilliseconds = -1): array
     {
         $results = [];
 
-        $callback = function () use (&$results, $coroutines, $waitSeconds) {
+        $callback = function () use (&$results, $coroutines, $waitMilliseconds) {
             $waitGroup = new WaitGroup;
 
             foreach ($coroutines as $key => $callback) {
@@ -32,6 +32,8 @@ class SwooleCoroutineDispatcher implements DispatchesCoroutines
                 });
             }
 
+            // Convert milliseconds to seconds for Swoole's wait method
+            $waitSeconds = $waitMilliseconds === -1 ? -1 : $waitMilliseconds / 1000;
             $waitGroup->wait($waitSeconds);
         };
 

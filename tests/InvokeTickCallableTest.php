@@ -14,13 +14,13 @@ class InvokeTickCallableTest extends TestCase
         Carbon::setTestNow($now = now());
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1, true,
+            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1000, true,
             $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
         );
 
-        $cache->shouldReceive('get')->with('tick-key')->andReturn(time() - 100);
+        $cache->shouldReceive('get')->with('tick-key')->andReturn($now->getTimestampMs() - 2000);
 
-        $cache->shouldReceive('forever')->once()->with('tick-key', $now->getTimestamp());
+        $cache->shouldReceive('forever')->once()->with('tick-key', $now->getTimestampMs());
 
         $instance();
 
@@ -37,11 +37,11 @@ class InvokeTickCallableTest extends TestCase
         $_SERVER['__test.invokeTickCallable'] = false;
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 30, true,
+            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 30000, true,
             $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
         );
 
-        $cache->shouldReceive('get')->with('tick-key')->andReturn(time() - 10);
+        $cache->shouldReceive('get')->with('tick-key')->andReturn($now->getTimestampMs() - 10000);
 
         $cache->shouldReceive('forever')->never();
 
@@ -58,13 +58,13 @@ class InvokeTickCallableTest extends TestCase
         Carbon::setTestNow($now = now());
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1, true,
+            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1000, true,
             $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
         );
 
         $cache->shouldReceive('get')->with('tick-key')->andReturn(null);
 
-        $cache->shouldReceive('forever')->once()->with('tick-key', $now->getTimestamp());
+        $cache->shouldReceive('forever')->once()->with('tick-key', $now->getTimestampMs());
 
         $instance();
 
@@ -79,13 +79,13 @@ class InvokeTickCallableTest extends TestCase
         Carbon::setTestNow($now = now());
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1, false,
+            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1000, false,
             $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
         );
 
         $cache->shouldReceive('get')->with('tick-key')->andReturn(null);
 
-        $cache->shouldReceive('forever')->once()->with('tick-key', $now->getTimestamp());
+        $cache->shouldReceive('forever')->once()->with('tick-key', $now->getTimestampMs());
 
         $instance();
 

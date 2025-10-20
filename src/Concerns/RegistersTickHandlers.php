@@ -11,16 +11,16 @@ use Laravel\Octane\Swoole\InvokeTickCallable;
 trait RegistersTickHandlers
 {
     /**
-     * Register a callback to be called every N seconds.
+     * Register a callback to be called every N milliseconds.
      *
      * @return \Laravel\Octane\Swoole\InvokeTickCallable
      */
-    public function tick(string $key, callable $callback, int $seconds = 1, bool $immediate = true)
+    public function tick(string $key, callable $callback, int $milliseconds = 1000, bool $immediate = true)
     {
         $listener = new InvokeTickCallable(
             $key,
             $callback,
-            $seconds,
+            $milliseconds,
             $immediate,
             Cache::store('octane'),
             app(ExceptionHandler::class)
