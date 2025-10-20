@@ -37,7 +37,6 @@ trait InteractsWithIO
         '[INFO] sdnotify: not notified',
         'exiting; byeee!!',
         'storage cleaning happened too recently',
-        'write error',
         'unable to determine directory for user configuration; falling back to current directory',
         '$HOME environment variable is empty',
         'unable to get instance ID',
