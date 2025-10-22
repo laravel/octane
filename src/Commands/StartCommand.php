@@ -22,8 +22,8 @@ class StartCommand extends Command implements SignalableCommandInterface
                     {--admin-port= : The port the admin server should be available on [FrankenPHP only]}
                     {--rpc-host= : The RPC IP address the server should bind to}
                     {--rpc-port= : The RPC port the server should be available on}
-                    {--workers=auto : The number of workers that should be available to handle requests}
-                    {--task-workers=auto : The number of task workers that should be available to handle tasks}
+                    {--workers= : The number of workers that should be available to handle requests}
+                    {--task-workers= : The number of task workers that should be available to handle tasks}
                     {--max-requests=500 : The number of requests to process before reloading the server}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--caddyfile= : The path to the FrankenPHP Caddyfile file}
