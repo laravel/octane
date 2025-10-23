@@ -149,6 +149,42 @@ trait InteractsWithServers
     }
 
     /**
+     * Get the Octane workers count.
+     *
+     * @return string
+     */
+    protected function getWorkers()
+    {
+        return $this->option('workers') ?? config('octane.workers') ?? $_ENV['OCTANE_WORKERS'] ?? 'auto';
+    }
+
+    /**
+     * Get the Octane task workers count.
+     *
+     * @return string
+     */
+    protected function getTaskWorkers()
+    {
+        return $this->option('task-workers')
+            ?? config('octane.task_workers')
+            ?? $_ENV['OCTANE_TASK_WORKERS']
+            ?? 'auto';
+    }
+
+    /**
+     * Get the Octane worker max requests.
+     *
+     * @return string
+     */
+    protected function getMaxRequests()
+    {
+        return $this->option('max-requests')
+            ?? config('octane.max_requests')
+            ?? $_ENV['OCTANE_MAX_REQUESTS']
+            ?? '500';
+    }
+
+    /**
      * Ensure the Octane HTTP server port is available.
      */
     protected function ensurePortIsAvailable(): void

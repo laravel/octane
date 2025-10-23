@@ -29,8 +29,8 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
                     {--port= : The port the server should be available on}
                     {--admin-host=localhost : The host the admin server should be available on}
                     {--admin-port=2019 : The port the admin server should be available on}
-                    {--workers=auto : The number of workers that should be available to handle requests}
-                    {--max-requests=500 : The number of requests to process before reloading the server}
+                    {--workers= : The number of workers that should be available to handle requests}
+                    {--max-requests= : The number of requests to process before reloading the server}
                     {--caddyfile= : The path to the FrankenPHP Caddyfile file}
                     {--https : Enable HTTPS, HTTP/2, and HTTP/3, and automatically generate and renew certificates}
                     {--http-redirect : Enable HTTP to HTTPS redirection (only enabled if --https is passed)}
@@ -94,7 +94,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'APP_BASE_PATH' => base_path(),
             'APP_PUBLIC_PATH' => public_path(),
             'LARAVEL_OCTANE' => 1,
-            'MAX_REQUESTS' => $this->option('max-requests'),
+            'MAX_REQUESTS' => $this->getMaxRequests(),
             'REQUEST_MAX_EXECUTION_TIME' => $this->maxExecutionTime(),
             'CADDY_GLOBAL_OPTIONS' => ($https && $this->option('http-redirect')) ? '' : 'auto_https disable_redirects',
             'CADDY_SERVER_ADMIN_PORT' => $this->adminPort(),
@@ -251,7 +251,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'adminHost' => $this->option('admin-host'),
             'adminPort' => $this->adminPort(),
             'workers' => $this->workerCount(),
-            'maxRequests' => $this->option('max-requests'),
+            'maxRequests' => $this->getMaxRequests(),
             'octaneConfig' => config('octane'),
         ]);
     }
@@ -285,9 +285,11 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function workerCount()
     {
-        return $this->option('workers') === 'auto'
+        $workers = $this->getWorkers();
+
+        return $workers === 'auto'
             ? 0
-            : $this->option('workers');
+            : $workers;
     }
 
     /**
