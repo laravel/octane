@@ -221,4 +221,6 @@ return [
 
     'max_execution_time' => 30,
 
+    'workers' => 32,
+
 ];
