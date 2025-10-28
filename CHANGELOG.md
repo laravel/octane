@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.13.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.13.1...2.x)
+
+## [v2.13.1](https://github.com/laravel/octane/compare/v2.13.0...v2.13.1) - 2025-10-27
+
+* [2.x] Don't ignore *write error* messages anymore by [@Carnicero90](https://github.com/Carnicero90) in https://github.com/laravel/octane/pull/1068
+* fix(concurrency): skip Octane::concurrently when no tasks to prevent … by [@emtudo](https://github.com/emtudo) in https://github.com/laravel/octane/pull/1071
+* Update the signature for octane:start by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1073
 
 ## [v2.13.0](https://github.com/laravel/octane/compare/v2.12.3...v2.13.0) - 2025-10-13
 
