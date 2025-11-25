@@ -10,7 +10,6 @@ use Monolog;
 
 class FlushMonologStateTest extends TestCase
 {
-    /** @doesNotPerformAssertions */
     public function test_logger_are_reset()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

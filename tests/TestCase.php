@@ -14,6 +14,8 @@ use Laravel\Octane\Tables\TableFactory;
 use Laravel\Octane\Testing\Fakes\FakeClient;
 use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
+use Orchestra\Testbench\Concerns\InteractsWithMockery;
+use Orchestra\Testbench\Foundation\Application as Testbench;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Swoole\Table;
 
@@ -22,6 +24,8 @@ use function Orchestra\Testbench\laravel_version_compare;
 
 class TestCase extends BaseTestCase
 {
+    use InteractsWithMockery;
+
     protected function createOctaneContext(array $requests)
     {
         $appFactory = Mockery::mock(ApplicationFactory::class);
@@ -76,19 +80,10 @@ class TestCase extends BaseTestCase
 
     protected function tearDown(): void
     {
+        Testbench::flushState($this);
+
+        $this->tearDownTheTestEnvironmentUsingMockery();
+
         parent::tearDown();
-
-        if (laravel_version_compare('11.0', '>=')) {
-            HandleExceptions::flushState();
-        } else {
-            HandleExceptions::forgetApp();
-        }
-
-        Container::setInstance(null);
-
-        Facade::clearResolvedInstances();
-        Facade::setFacadeApplication(null);
-
-        Mockery::close();
     }
 }
