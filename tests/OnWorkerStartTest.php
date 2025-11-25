@@ -7,6 +7,8 @@ use Laravel\Octane\Swoole\SwooleExtension;
 use Laravel\Octane\Swoole\WorkerState;
 use Mockery;
 
+use function Orchestra\Testbench\default_skeleton_path;
+
 class OnWorkerStartTest extends TestCase
 {
     public function test_should_clear_opcache_returns_true_by_default(): void
@@ -25,7 +27,7 @@ class OnWorkerStartTest extends TestCase
     {
         $extension = Mockery::mock(SwooleExtension::class);
         $workerState = Mockery::mock(WorkerState::class);
-        $basePath = realpath(__DIR__.'/../vendor/orchestra/testbench-core/laravel');
+        $basePath = default_skeleton_path();
 
         // Mock the OnWorkerStart handler to test just the shouldClearOpcodeCache method
         $handler = Mockery::mock(OnWorkerStart::class, [

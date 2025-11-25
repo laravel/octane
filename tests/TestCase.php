@@ -66,7 +66,7 @@ class TestCase extends BaseTestCase
 
     protected function appFactory()
     {
-        return new ApplicationFactory(realpath(__DIR__.'/../vendor/orchestra/testbench-core/laravel'));
+        return new ApplicationFactory(default_skeleton_path());
     }
 
     protected function config()

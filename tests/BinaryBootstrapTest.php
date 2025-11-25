@@ -2,30 +2,52 @@
 
 namespace Laravel\Octane\Tests;
 
+use Orchestra\Testbench\Foundation\Application as Testbench;
+use Orchestra\Testbench\Foundation\Actions\DeleteVendorSymlink;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
+use function Orchestra\Testbench\default_skeleton_path;
+use function Orchestra\Testbench\package_path;
+use function Orchestra\Testbench\php_binary;
+
 class BinaryBootstrapTest extends TestCase
 {
+    protected $app;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app = Testbench::createVendorSymlink(default_skeleton_path(), package_path('vendor'));
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        (new DeleteVendorSymlink)->handle($this->app);
+
+        unset($this->app);
+    }
+
     public function test_it_can_retrieve_base_path_from_environment_variable()
     {
-        $basePath = realpath(__DIR__.'/../vendor/orchestra/testbench-core/laravel');
+        $basePath = default_skeleton_path();
 
         $process = Process::fromShellCommandline(
-            '"'.$this->phpBinary().'" base-path.php', __DIR__, ['APP_BASE_PATH' => $basePath], null, null
+            php_binary(escape: true).' base-path.php', __DIR__, ['APP_BASE_PATH' => $basePath], null, null
         );
 
         $process->mustRun();
 
         $output = $process->getOutput();
 
-        if (\PHP_VERSION_ID >= 80100) {
-            $output = array_filter(explode("\n", $output), function ($output) {
-                return ! empty($output) && ! str_starts_with($output, 'Deprecated:');
-            });
+        $output = array_filter(explode("\n", $output), function ($output) {
+            return ! empty($output) && ! str_starts_with($output, 'Deprecated:');
+        });
 
-            $output = implode('', $output);
-        }
+        $output = implode('', $output);
 
         $this->assertSame($basePath, $output);
     }
