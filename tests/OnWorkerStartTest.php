@@ -18,7 +18,6 @@ class OnWorkerStartTest extends TestCase
 
         $reflection = new \ReflectionClass($handler);
         $method = $reflection->getMethod('shouldClearOpcodeCache');
-        $method->setAccessible(true);
 
         $this->assertTrue($method->invoke($handler));
     }
@@ -43,7 +42,6 @@ class OnWorkerStartTest extends TestCase
 
         $reflection = new \ReflectionClass($handler);
         $method = $reflection->getMethod('shouldClearOpcodeCache');
-        $method->setAccessible(true);
 
         $this->assertFalse($method->invoke($handler));
     }
