@@ -2,8 +2,8 @@
 
 namespace Laravel\Octane\Tests;
 
-use Orchestra\Testbench\Foundation\Application as Testbench;
 use Orchestra\Testbench\Foundation\Actions\DeleteVendorSymlink;
+use Orchestra\Testbench\Foundation\Application as Testbench;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
