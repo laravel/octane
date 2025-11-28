@@ -192,6 +192,10 @@ class OctaneServiceProvider extends ServiceProvider
                 Commands\StatusCommand::class,
                 Commands\StopCommand::class,
             ]);
+
+            if (method_exists($this, 'reloads')) {
+                $this->reloads('octane:reload', 'octane');
+            }
         }
     }
 
