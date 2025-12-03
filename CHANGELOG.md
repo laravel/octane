@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.13.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.13.2...2.x)
+
+## [v2.13.2](https://github.com/laravel/octane/compare/v2.13.1...v2.13.2) - 2025-11-28
+
+* Register reload command by [@barryvdh](https://github.com/barryvdh) in https://github.com/laravel/octane/pull/1081
 
 ## [v2.13.1](https://github.com/laravel/octane/compare/v2.13.0...v2.13.1) - 2025-10-27
 
