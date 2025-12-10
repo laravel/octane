@@ -28,7 +28,6 @@ class FlushStrCacheTest extends TestCase
 
         $reflection = new ReflectionClass(Str::class);
         $property = $reflection->getProperty('snakeCache');
-        $property->setAccessible(true);
 
         $this->assertEmpty($property->getValue());
 

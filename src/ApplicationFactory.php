@@ -59,8 +59,6 @@ class ApplicationFactory
             $kernel = $app->make(HttpKernelContract::class)
         ))->getMethod('bootstrappers');
 
-        $method->setAccessible(true);
-
         return $this->injectBootstrapperBefore(
             RegisterProviders::class,
             SetRequestForConsole::class,
