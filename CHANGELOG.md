@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.13.2...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.13.3...2.x)
+
+## [v2.13.3](https://github.com/laravel/octane/compare/v2.13.2...v2.13.3) - 2025-12-10
+
+* Remove setAccessible calls from reflection properties and methods by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1083
 
 ## [v2.13.2](https://github.com/laravel/octane/compare/v2.13.1...v2.13.2) - 2025-11-28
 
