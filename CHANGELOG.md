@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.13.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.13.4...2.x)
+
+## [v2.13.4](https://github.com/laravel/octane/compare/v2.13.3...v2.13.4) - 2025-12-21
+
+* Fix APP_PUBLIC_PATH fallback logic in frankenphp-worker by [@kieranbrown](https://github.com/kieranbrown) in https://github.com/laravel/octane/pull/1085
 
 ## [v2.13.3](https://github.com/laravel/octane/compare/v2.13.2...v2.13.3) - 2025-12-10
 
