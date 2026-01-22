@@ -82,7 +82,7 @@ trait InstallsFrankenPhpDependencies
             default => throw new RuntimeException('FrankenPHP binaries are only available for Linux and macOS. On Windows, use WSL or Docker. On other systems use the Docker images or compile FrankenPHP manually.'),
         };
 
-        $githubProxyPrefix = env('GITHUB_PROXY_PREFIX', '');
+        $githubProxyPrefix = env('OCTANE_GITHUB_PROXY_PREFIX', '');
 
         $response = Http::accept('application/vnd.github+json')
             ->withHeaders(['X-GitHub-Api-Version' => '2022-11-28'])
