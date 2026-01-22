@@ -82,9 +82,11 @@ trait InstallsFrankenPhpDependencies
             default => throw new RuntimeException('FrankenPHP binaries are only available for Linux and macOS. On Windows, use WSL or Docker. On other systems use the Docker images or compile FrankenPHP manually.'),
         };
 
+        $githubProxyPrefix = env('OCTANE_GITHUB_PROXY_PREFIX', '');
+
         $response = Http::accept('application/vnd.github+json')
             ->withHeaders(['X-GitHub-Api-Version' => '2022-11-28'])
-            ->get('https://api.github.com/repos/php/frankenphp/releases/latest')
+            ->get($githubProxyPrefix.'https://api.github.com/repos/php/frankenphp/releases/latest')
             ->throw(fn () => $this->components->error('Failed to download FrankenPHP.'));
 
         $assets = $response['assets'] ?? [];
@@ -99,7 +101,7 @@ trait InstallsFrankenPhpDependencies
             $progressBar = null;
 
             (new Client)->get(
-                $asset['browser_download_url'],
+                $githubProxyPrefix.$asset['browser_download_url'],
                 [
                     'sink' => $path,
                     'progress' => function ($downloadTotal, $downloadedBytes) use (&$progressBar) {
