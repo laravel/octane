@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.13.4...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.13.5...2.x)
+
+## [v2.13.5](https://github.com/laravel/octane/compare/v2.13.4...v2.13.5) - 2026-01-22
+
+* Add the GITHUB_PROXY_PREFIX environment variable by [@sanzhangshitou](https://github.com/sanzhangshitou) in https://github.com/laravel/octane/pull/1091
 
 ## [v2.13.4](https://github.com/laravel/octane/compare/v2.13.3...v2.13.4) - 2025-12-21
 
