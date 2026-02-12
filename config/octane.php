@@ -221,4 +221,17 @@ return [
 
     'max_execution_time' => 30,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Extra Environment Vairables
+    |--------------------------------------------------------------------------
+    |
+    | Extra environment variables passed to Caddyfile.
+    |
+    */
+
+    'extra_envs' => [
+        // 'SOME_CONFIG_VALUE' => env('SOME_CONFIG_VALUE'),
+    ],
+
 ];
