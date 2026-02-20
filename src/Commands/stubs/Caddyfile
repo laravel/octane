@@ -5,14 +5,14 @@
 
 	frankenphp {
 		worker {
-			file "{$APP_PUBLIC_PATH}/frankenphp-worker.php"
-			{$CADDY_SERVER_WORKER_DIRECTIVE}
+			file "{$APP_PUBLIC_PATH}/frankenphp-worker.php" 
+			{$CADDY_SERVER_WORKER_DIRECTIVE} 
 			{$CADDY_SERVER_WATCH_DIRECTIVES}
 		}
 	}
 }
 
-{$CADDY_EXTRA_CONFIG}
+{$CADDY_EXTRA_CONFIG} 
 
 {$CADDY_SERVER_SERVER_NAME} {
 	log {
