@@ -17,6 +17,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
         Concerns\InteractsWithEnvironmentVariables,
         Concerns\InteractsWithServers {
             Concerns\InteractsWithServers::writeServerRunningMessage as baseWriteServerRunningMessage;
+            Concerns\InteractsWithServers::startServerWatcher as baseStartServerWatcher;
         }
 
     /**
@@ -192,12 +193,17 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     }
 
     /**
-     * Always return a no-op object, because FrankenPHP has native watcher support.
+     * Use the regular watcher when --poll is passed (e.g. for network file systems).
+     * Otherwise use FrankenPHP's built-in watcher.
      *
-     * @return object
+     * @return \Symfony\Component\Process\Process|object
      */
     protected function startServerWatcher()
     {
+        if ($this->option('poll') && $this->option('watch')) {
+            return $this->baseStartServerWatcher();
+        }
+
         return new class
         {
             public function __call($method, $parameters)
@@ -209,12 +215,13 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
     /**
      * Generate the file watcher configuration snippet to include in the Caddyfile.
+     * When --poll is passed, the regular watcher is used instead, so no Caddy config.
      *
      * @return string
      */
     protected function buildWatchConfig()
     {
-        if (! $this->option('watch')) {
+        if (! $this->option('watch') || $this->option('poll')) {
             return '';
         }
 
