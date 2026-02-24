@@ -56,10 +56,9 @@ try {
                 report($e);
             }
 
-            $debugMode = $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? 'false';
 
             $response = new Response(
-                $debugMode === 'true' ? (string) $e : 'Internal Server Error',
+                'Internal Server Error',
                 500,
                 [
                     'Status' => '500 Internal Server Error',
