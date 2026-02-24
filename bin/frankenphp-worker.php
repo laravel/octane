@@ -56,7 +56,6 @@ try {
                 report($e);
             }
 
-
             $response = new Response(
                 'Internal Server Error',
                 500,
