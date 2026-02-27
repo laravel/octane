@@ -10,6 +10,7 @@ use Laravel\Octane\Exceptions\TaskTimeoutException;
 use Laravel\Octane\SequentialTaskDispatcher;
 use Laravel\Octane\Swoole\SwooleHttpTaskDispatcher;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class SwooleHttpTaskDispatcherTest extends TestCase
 {
@@ -37,7 +38,8 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]));
     }
 
-    /** @doesNotPerformAssertions @test */
+    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function test_tasks_can_be_dispatched_via_http()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -73,7 +75,8 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]));
     }
 
-    /** @doesNotPerformAssertions @test */
+    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function test_tasks_can_be_dispatched_via_fallback_dispatcher()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -124,7 +127,8 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => throw new DdException(['foo' => 'bar'])]);
     }
 
-    /** @doesNotPerformAssertions @test */
+    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function test_dispatching_tasks_do_not_propagate_exceptions()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(

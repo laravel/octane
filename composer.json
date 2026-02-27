@@ -58,7 +58,12 @@
     },
     "scripts": {
         "post-autoload-dump": [
+            "@php vendor/bin/testbench package:sync-skeleton --ansi",
             "@php vendor/bin/testbench package:discover --ansi"
+        ],
+        "test": [
+            "@php vendor/bin/testbench package:sync-skeleton --ansi",
+            "@php vendor/bin/phpunit"
         ]
     },
     "extra": {

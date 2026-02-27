@@ -7,10 +7,12 @@ use Illuminate\Log\Logger;
 use Laravel\Octane\Tests\TestCase;
 use Mockery;
 use Monolog;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class FlushMonologStateTest extends TestCase
 {
     /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function test_logger_are_reset()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

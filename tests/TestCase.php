@@ -14,6 +14,7 @@ use Laravel\Octane\Tables\TableFactory;
 use Laravel\Octane\Testing\Fakes\FakeClient;
 use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
+use Orchestra\Testbench\Foundation\Application as Testbench;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Swoole\Table;
 
@@ -66,7 +67,7 @@ class TestCase extends BaseTestCase
 
     protected function appFactory()
     {
-        return new ApplicationFactory(realpath(__DIR__.'/../vendor/orchestra/testbench-core/laravel'));
+        return new ApplicationFactory(default_skeleton_path());
     }
 
     protected function config()
@@ -78,11 +79,7 @@ class TestCase extends BaseTestCase
     {
         parent::tearDown();
 
-        if (laravel_version_compare('11.0', '>=')) {
-            HandleExceptions::flushState();
-        } else {
-            HandleExceptions::forgetApp();
-        }
+        Testbench::flushState($this);
 
         Container::setInstance(null);
 
