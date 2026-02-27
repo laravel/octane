@@ -6,6 +6,7 @@ use Laravel\Octane\Exceptions\ValueTooLargeForColumnException;
 use Laravel\Octane\Tables\OpenSwooleTable;
 use Laravel\Octane\Tables\SwooleTable;
 use Laravel\Octane\Tables\TableFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Swoole\Table;
 
 class TableTest extends TestCase
@@ -83,9 +84,8 @@ class TableTest extends TestCase
         $this->assertSame(1000, $table->count());
     }
 
-    /**
-     * @dataProvider validStringValues
-     */
+    /** @dataProvider validStringValues */
+    #[DataProvider('validStringValues')]
     public function test_set_of_string_columns($value)
     {
         $table = $this->createSwooleTable();
@@ -95,9 +95,8 @@ class TableTest extends TestCase
         $this->assertSame($value, $table->get('key')['string']);
     }
 
-    /**
-     * @dataProvider tooLargeStringValues
-     */
+    /** @dataProvider tooLargeStringValues */
+    #[DataProvider('tooLargeStringValues')]
     public function test_ensures_string_sizes($value)
     {
         $table = $this->createSwooleTable();
@@ -134,9 +133,6 @@ class TableTest extends TestCase
         $this->assertSame($value, $table->get('key')['int']);
     }
 
-    /**
-     * @dataProvider
-     */
     public static function validStringValues()
     {
         return [
@@ -150,9 +146,6 @@ class TableTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider
-     */
     public static function tooLargeStringValues()
     {
         return [
