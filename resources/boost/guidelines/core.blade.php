@@ -1,6 +1,7 @@
 # Octane
 
 - Octane boots the application once and reuses it across requests, so singletons persist between requests.
+- The Laravel container's `scoped` method may be used as a safe alternative to `singleton`.
 - Never inject the container, request, or config repository into a singleton's constructor; use a resolver closure or `bind()` instead:
 
 ```php
