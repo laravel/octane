@@ -41,6 +41,12 @@ class SwooleExtension
      */
     public function cpuCount(): int
     {
+        $cgroupCpuCount = $this->containerCpuCount();
+
+        if ($cgroupCpuCount !== null) {
+            return $cgroupCpuCount;
+        }
+
         if (function_exists('swoole_cpu_num')) {
             return swoole_cpu_num();
         }
@@ -50,5 +56,44 @@ class SwooleExtension
         }
 
         return 1;
+    }
+
+    /**
+     * Get the CPU count from the container's cgroup CPU quota, if available.
+     */
+    protected function containerCpuCount(): ?int
+    {
+        // cgroups v2
+        if (is_readable('/sys/fs/cgroup/cpu.max')) {
+            $cpuMax = @file_get_contents('/sys/fs/cgroup/cpu.max');
+
+            if ($cpuMax !== false) {
+                [$quota, $period] = explode(' ', trim($cpuMax));
+
+                if ($quota !== 'max') {
+                    return (int) max(1, ceil((int) $quota / (int) $period));
+                }
+            }
+        }
+
+        // cgroups v1
+        $quotaFile = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
+        $periodFile = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
+
+        if (is_readable($quotaFile) && is_readable($periodFile)) {
+            $quota = @file_get_contents($quotaFile);
+            $period = @file_get_contents($periodFile);
+
+            if ($quota !== false && $period !== false) {
+                $quota = (int) trim($quota);
+                $period = (int) trim($period);
+
+                if ($quota > 0 && $period > 0) {
+                    return (int) max(1, ceil($quota / $period));
+                }
+            }
+        }
+
+        return null;
     }
 }
