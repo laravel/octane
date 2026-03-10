@@ -2,10 +2,22 @@
 
 namespace Laravel\Octane\Swoole;
 
+use Closure;
 use Swoole\Process;
 
 class SwooleExtension
 {
+    /**
+     * Create a new Swoole extension helper.
+     */
+    public function __construct(
+        protected ?Closure $isReadable = null,
+        protected ?Closure $fileGetContents = null,
+    ) {
+        $this->isReadable ??= static fn (string $path): bool => is_readable($path);
+        $this->fileGetContents ??= static fn (string $path): string|false => @file_get_contents($path);
+    }
+
     /**
      * Determine if the Swoole extension is installed.
      */
@@ -64,14 +76,16 @@ class SwooleExtension
     protected function containerCpuCount(): ?int
     {
         // cgroups v2...
-        if (is_readable('/sys/fs/cgroup/cpu.max')) {
-            $cpuMax = @file_get_contents('/sys/fs/cgroup/cpu.max');
+        if (($this->isReadable)('/sys/fs/cgroup/cpu.max')) {
+            $cpuMax = ($this->fileGetContents)('/sys/fs/cgroup/cpu.max');
 
             if ($cpuMax !== false) {
-                [$quota, $period] = explode(' ', trim($cpuMax));
+                $parts = preg_split('/\s+/', trim($cpuMax));
+                $quota = $parts[0] ?? null;
+                $period = isset($parts[1]) ? (int) $parts[1] : 0;
 
-                if ($quota !== 'max') {
-                    return (int) max(1, ceil((int) $quota / (int) $period));
+                if ($quota !== 'max' && $period > 0) {
+                    return (int) max(1, ceil((int) $quota / $period));
                 }
             }
         }
@@ -80,9 +94,9 @@ class SwooleExtension
         $quotaFile = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
         $periodFile = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
 
-        if (is_readable($quotaFile) && is_readable($periodFile)) {
-            $quota = @file_get_contents($quotaFile);
-            $period = @file_get_contents($periodFile);
+        if (($this->isReadable)($quotaFile) && ($this->isReadable)($periodFile)) {
+            $quota = ($this->fileGetContents)($quotaFile);
+            $period = ($this->fileGetContents)($periodFile);
 
             if ($quota !== false && $period !== false) {
                 $quota = (int) trim($quota);
