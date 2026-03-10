@@ -63,7 +63,7 @@ class SwooleExtension
      */
     protected function containerCpuCount(): ?int
     {
-        // cgroups v2
+        // cgroups v2...
         if (is_readable('/sys/fs/cgroup/cpu.max')) {
             $cpuMax = @file_get_contents('/sys/fs/cgroup/cpu.max');
 
@@ -76,7 +76,7 @@ class SwooleExtension
             }
         }
 
-        // cgroups v1
+        // cgroups v1...
         $quotaFile = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
         $periodFile = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
 
