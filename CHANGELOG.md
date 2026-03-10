@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.14.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.15.0...2.x)
+
+## [v2.15.0](https://github.com/laravel/octane/compare/v2.14.0...v2.15.0) - 2026-03-10
+
+* Add Boost guidelines for Octane dependency injection by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/octane/pull/1099
+* Fix Swoole auto worker count in containers by [@mtawil](https://github.com/mtawil) in https://github.com/laravel/octane/pull/1101
 
 ## [v2.14.0](https://github.com/laravel/octane/compare/v2.13.5...v2.14.0) - 2026-02-20
 
