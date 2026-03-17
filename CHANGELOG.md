@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.15.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.16.0...2.x)
+
+## [v2.16.0](https://github.com/laravel/octane/compare/v2.15.0...v2.16.0) - 2026-03-17
+
+* [2.x] PHP 8.5 Compatibility by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1080
+* [2.x] Supports Laravel 13 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1093
 
 ## [v2.15.0](https://github.com/laravel/octane/compare/v2.14.0...v2.15.0) - 2026-03-10
 
