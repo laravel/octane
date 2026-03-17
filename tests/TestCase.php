@@ -11,6 +11,7 @@ use Laravel\Octane\Tables\TableFactory;
 use Laravel\Octane\Testing\Fakes\FakeClient;
 use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
+use Orchestra\Testbench\Concerns\InteractsWithMockery;
 use Orchestra\Testbench\Foundation\Application as Testbench;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Swoole\Table;
