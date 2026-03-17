@@ -6,6 +6,7 @@ use Exception;
 use Laravel\Octane\Exceptions\DdException;
 use Laravel\Octane\Exceptions\TaskException;
 use Laravel\Octane\SequentialTaskDispatcher;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class SequentialTaskDispatcherTest extends TestCase
 {
@@ -46,7 +47,8 @@ class SequentialTaskDispatcherTest extends TestCase
         $this->assertTrue($a);
     }
 
-    /** @doesNotPerformAssertions @test */
+    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function test_dispatching_tasks_do_not_propagate_exceptions()
     {
         $dispatcher = new SequentialTaskDispatcher;

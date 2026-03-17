@@ -17,7 +17,7 @@ class OctaneStoreTest extends TestCase
         parent::setUp();
     }
 
-    public function test_can_retrieve_items_from_store(): void
+    public function test_can_retrieve_items_from_store()
     {
         $table = $this->createSwooleTable();
 

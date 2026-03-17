@@ -7,9 +7,12 @@ use Illuminate\Log\Logger;
 use Laravel\Octane\Tests\TestCase;
 use Mockery;
 use Monolog;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class CloseMonologHandlersTest extends TestCase
 {
+    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function test_logger_are_closed_after_worker_termination()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

@@ -6,10 +6,12 @@ use ArrayObject;
 use Laravel\Octane\Swoole\Actions\EnsureRequestsDontExceedMaxExecutionTime;
 use Laravel\Octane\Swoole\SwooleExtension;
 use Mockery;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
 {
-    /** @test */
+    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function test_process_is_killed_if_current_request_exceeds_max_execution_time()
     {
         $table = new FakeTimerTable;

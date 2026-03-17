@@ -76,6 +76,8 @@ class TestCase extends BaseTestCase
 
     protected function tearDown(): void
     {
+        parent::tearDown();
+
         Testbench::flushState($this);
 
         $this->tearDownTheTestEnvironmentUsingMockery();
