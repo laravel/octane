@@ -3,8 +3,6 @@
 namespace Laravel\Octane\Tests;
 
 use Carbon\Laravel\ServiceProvider as CarbonServiceProvider;
-use Illuminate\Container\Container;
-use Illuminate\Support\Facades\Facade;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
