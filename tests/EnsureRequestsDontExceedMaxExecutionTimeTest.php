@@ -9,7 +9,7 @@ use Mockery;
 
 class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
 {
-    /** @doesNotPerformAssertions @test */
+    /** @test */
     public function test_process_is_killed_if_current_request_exceeds_max_execution_time()
     {
         $table = new FakeTimerTable;
