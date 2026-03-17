@@ -21,6 +21,8 @@ use function Orchestra\Testbench\default_skeleton_path;
 
 class TestCase extends BaseTestCase
 {
+    use InteractsWithMockery;
+
     protected function createOctaneContext(array $requests)
     {
         $appFactory = Mockery::mock(ApplicationFactory::class);
@@ -79,11 +81,8 @@ class TestCase extends BaseTestCase
 
         Testbench::flushState($this);
 
-        Container::setInstance(null);
+        $this->tearDownTheTestEnvironmentUsingMockery();
 
-        Facade::clearResolvedInstances();
-        Facade::setFacadeApplication(null);
-
-        Mockery::close();
+        parent::tearDown();
     }
 }
