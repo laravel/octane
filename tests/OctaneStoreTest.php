@@ -141,6 +141,49 @@ class OctaneStoreTest extends TestCase
         Carbon::setTestNow();
     }
 
+    public function test_touch_updates_expiration()
+    {
+        $table = $this->createSwooleTable();
+
+        $store = new OctaneStore($table);
+
+        $store->put('foo', 'bar', 5);
+
+        Carbon::setTestNow(now()->addSeconds(3));
+
+        $store->touch('foo', 10);
+
+        Carbon::setTestNow(now()->addSeconds(8));
+
+        $this->assertEquals('bar', $store->get('foo'));
+
+        Carbon::setTestNow();
+    }
+
+    public function test_touch_returns_false_for_missing_items()
+    {
+        $table = $this->createSwooleTable();
+
+        $store = new OctaneStore($table);
+
+        $this->assertFalse($store->touch('foo', 10));
+    }
+
+    public function test_touch_returns_false_for_expired_items()
+    {
+        $table = $this->createSwooleTable();
+
+        $store = new OctaneStore($table);
+
+        $store->put('foo', 'bar', 5);
+
+        Carbon::setTestNow(now()->addSeconds(10));
+
+        $this->assertFalse($store->touch('foo', 10));
+
+        Carbon::setTestNow();
+    }
+
     public function test_can_forget_cache_items()
     {
         $table = $this->createSwooleTable();
