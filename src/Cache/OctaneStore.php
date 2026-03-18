@@ -277,6 +277,4 @@ class OctaneStore implements Store
     {
         return '';
     }
-
-
 }
