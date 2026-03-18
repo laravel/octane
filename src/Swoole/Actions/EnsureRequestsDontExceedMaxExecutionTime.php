@@ -42,7 +42,7 @@ class EnsureRequestsDontExceedMaxExecutionTime
                 continue;
             }
 
-            $this->extension->dispatchProcessSignal($row['worker_pid'], SIGKILL);
+            $this->extension->dispatchProcessSignal($row['worker_pid'], defined('SIGKILL') ? SIGKILL : 9);
 
             if ($this->server instanceof Server) {
                 $response = Response::create($this->server, $row['fd']);

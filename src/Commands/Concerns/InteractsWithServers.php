@@ -171,7 +171,11 @@ trait InteractsWithServers
      */
     public function getSubscribedSignals(): array
     {
-        return [SIGINT, SIGTERM, SIGHUP];
+        return array_filter([
+            defined('SIGINT') ? SIGINT : null,
+            defined('SIGTERM') ? SIGTERM : null,
+            defined('SIGHUP') ? SIGHUP : null,
+        ]);
     }
 
     /**

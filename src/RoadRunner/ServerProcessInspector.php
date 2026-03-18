@@ -68,6 +68,6 @@ class ServerProcessInspector implements ServerProcessInspectorContract
             'masterProcessId' => $masterProcessId,
         ] = $this->serverStateFile->read();
 
-        return (bool) $this->posix->kill($masterProcessId, SIGTERM);
+        return (bool) $this->posix->kill($masterProcessId, defined('SIGTERM') ? SIGTERM : 15);
     }
 }

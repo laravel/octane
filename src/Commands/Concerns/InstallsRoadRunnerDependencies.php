@@ -69,7 +69,7 @@ trait InstallsRoadRunnerDependencies
                 $this->output->write($line);
             });
         } catch (ProcessSignaledException $e) {
-            if (extension_loaded('pcntl') && $e->getSignal() !== SIGINT) {
+            if (extension_loaded('pcntl') && $e->getSignal() !== (defined('SIGINT') ? SIGINT : 2)) {
                 throw $e;
             }
         }

@@ -21,7 +21,9 @@ class SignalDispatcher
      */
     public function terminate(int $processId, int $wait = 0): bool
     {
-        $this->extension->dispatchProcessSignal($processId, SIGTERM);
+        $sigterm = defined('SIGTERM') ? SIGTERM : 15;
+
+        $this->extension->dispatchProcessSignal($processId, $sigterm);
 
         if ($wait) {
             $start = time();
@@ -31,7 +33,7 @@ class SignalDispatcher
                     return true;
                 }
 
-                $this->extension->dispatchProcessSignal($processId, SIGTERM);
+                $this->extension->dispatchProcessSignal($processId, $sigterm);
 
                 sleep(1);
             } while (time() < $start + $wait);

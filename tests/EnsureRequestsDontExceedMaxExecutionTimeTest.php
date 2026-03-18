@@ -25,7 +25,7 @@ class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
             30,
         );
 
-        $extension->shouldReceive('dispatchProcessSignal')->once()->with(111, SIGKILL);
+        $extension->shouldReceive('dispatchProcessSignal')->once()->with(111, defined('SIGKILL') ? SIGKILL : 9);
 
         $action();
     }

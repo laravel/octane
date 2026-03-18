@@ -38,7 +38,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
             'masterProcessId' => $masterProcessId,
         ] = $this->serverStateFile->read();
 
-        $this->dispatcher->signal((int) $masterProcessId, SIGUSR1);
+        $this->dispatcher->signal((int) $masterProcessId, defined('SIGUSR1') ? SIGUSR1 : 10);
     }
 
     /**
@@ -54,7 +54,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
         $workerProcessIds = $this->exec->run('pgrep -P '.$managerProcessId);
 
         foreach ([$masterProcessId, $managerProcessId, ...$workerProcessIds] as $processId) {
-            $this->dispatcher->signal((int) $processId, SIGKILL);
+            $this->dispatcher->signal((int) $processId, defined('SIGKILL') ? SIGKILL : 9);
         }
 
         return true;
