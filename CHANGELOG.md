@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.16.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.17.0...2.x)
+
+## [v2.17.0](https://github.com/laravel/octane/compare/v2.16.0...v2.17.0) - 2026-03-18
+
+* Support PHPUnit 13 and fix Laravel Passport compatibility conflicts by [@Nationalcat](https://github.com/Nationalcat) in https://github.com/laravel/octane/pull/1103
 
 ## [v2.16.0](https://github.com/laravel/octane/compare/v2.15.0...v2.16.0) - 2026-03-17
 
