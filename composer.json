@@ -32,7 +32,7 @@
         "nunomaduro/collision": "^6.4.0|^7.5.2|^8.0",
         "orchestra/testbench": "^8.21|^9.0|^10.0|^11.0",
         "phpstan/phpstan": "^2.1.7",
-        "phpunit/phpunit": "^10.4|^11.5|^12.0",
+        "phpunit/phpunit": "^10.4|^11.5|^12.0|^13.0",
         "spiral/roadrunner-cli": "^2.6.0",
         "spiral/roadrunner-http": "^3.3.0"
     },
@@ -41,7 +41,6 @@
         "bin/swoole-server"
     ],
     "conflict": {
-        "phpunit/phpunit": ">12.0.0",
         "spiral/roadrunner": "<2023.1.0",
         "spiral/roadrunner-cli": "<2.6.0",
         "spiral/roadrunner-http": "<3.3.0"

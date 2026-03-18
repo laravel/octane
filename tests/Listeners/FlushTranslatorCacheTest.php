@@ -5,12 +5,9 @@ namespace Laravel\Octane\Listeners;
 use Illuminate\Http\Request;
 use Laravel\Octane\Tests\TestCase;
 use Mockery;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class FlushTranslatorCacheTest extends TestCase
 {
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_parsed_keys_cache_is_flushed()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

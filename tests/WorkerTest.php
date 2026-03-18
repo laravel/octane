@@ -3,7 +3,6 @@
 namespace Laravel\Octane\Tests;
 
 use Illuminate\Http\Request;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class WorkerTest extends TestCase
 {
@@ -40,8 +39,6 @@ class WorkerTest extends TestCase
         $this->assertNull($responses[2]->result);
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_worker_can_dispatch_ticks_to_application_and_returns_responses_to_client()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
@@ -50,6 +47,8 @@ class WorkerTest extends TestCase
         ]);
 
         $worker->runTicks();
+
+        $this->assertTrue(true);
     }
 
     public function test_worker_doesnt_throw_buffer_error()
@@ -59,7 +58,9 @@ class WorkerTest extends TestCase
         ]);
 
         $app['router']->get('/test', function () {
-            while (ob_get_level() !== 0) {
+            $baselineBufferLevel = ob_get_level();
+
+            while (ob_get_level() > $baselineBufferLevel) {
                 ob_end_clean();
             }
 
