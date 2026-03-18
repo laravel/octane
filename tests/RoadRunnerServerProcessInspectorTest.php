@@ -8,7 +8,6 @@ use Laravel\Octane\RoadRunner\ServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile;
 use Laravel\Octane\SymfonyProcessFactory;
 use Mockery;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class RoadRunnerServerProcessInspectorTest extends TestCase
 {
@@ -48,8 +47,6 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_roadrunner_server_process_can_be_reloaded()
     {
         $this->createApplication();

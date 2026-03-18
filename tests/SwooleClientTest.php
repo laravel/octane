@@ -10,7 +10,6 @@ use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\SwooleClient;
 use Mockery;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -134,8 +133,6 @@ class SwooleClientTest extends TestCase
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_static_file_can_be_served(): void
     {
         $client = new SwooleClient;
@@ -155,8 +152,6 @@ class SwooleClientTest extends TestCase
         $client->serveStaticFile($request, $context);
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_static_file_headers_can_be_sent(): void
     {
         $this->createApplication();
@@ -212,8 +207,6 @@ class SwooleClientTest extends TestCase
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_respond_method_sends_response_to_swoole(): void
     {
         $this->createApplication();
@@ -245,8 +238,6 @@ class SwooleClientTest extends TestCase
         ]), new OctaneResponse($response));
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_respond_method_send_streamed_response_to_swoole(): void
     {
         $this->createApplication();
@@ -268,8 +259,6 @@ class SwooleClientTest extends TestCase
         }, 200, ['Content-Type' => 'text/html'])));
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole(): void
     {
         $this->createApplication();
@@ -289,8 +278,6 @@ class SwooleClientTest extends TestCase
         ]), new OctaneResponse(new Response('Hello World', 419, ['Content-Type' => 'text/html'])));
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_error_method_sends_error_response_to_swoole(): void
     {
         $client = new SwooleClient;
@@ -310,8 +297,6 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldHaveReceived('end')->with('Internal server error.');
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_error_method_sends_detailed_error_response_to_swoole_in_debug_mode(): void
     {
         $client = new SwooleClient;
@@ -331,8 +316,6 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldHaveReceived('end')->with((string) $e);
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_respond_method_send_not_chunked_response_to_swoole(): void
     {
         $this->createApplication();
@@ -354,8 +337,6 @@ class SwooleClientTest extends TestCase
         ]), new OctaneResponse($response));
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_respond_method_send_chunked_response_to_swoole(): void
     {
         $this->createApplication();
@@ -378,8 +359,6 @@ class SwooleClientTest extends TestCase
         ]), new OctaneResponse($response));
     }
 
-    /** @doesNotPerformAssertions */
-    #[DoesNotPerformAssertions]
     public function test_respond_method_preserves_header_formatting_if_configured(): void
     {
         $this->createApplication();

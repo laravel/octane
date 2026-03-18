@@ -18,21 +18,20 @@ class FlushStrCacheTest extends TestCase
             Request::create('/', 'GET'),
         ]);
 
-        $app['router']->middleware('web')->get('/', function () {
-            return 'Hello World';
-        });
-
         $app['router']->middleware('web')->get('/test-str-cache', function () {
             return Str::snake('Taylor Otwell');
         });
 
-        $reflection = new ReflectionClass(Str::class);
-        $property = $reflection->getProperty('snakeCache');
+        $app['router']->middleware('web')->get('/', function () {
+            $reflection = new ReflectionClass(Str::class);
+            $property = $reflection->getProperty('snakeCache');
 
-        $this->assertEmpty($property->getValue());
+            return empty($property->getValue()) ? 'cache-is-empty' : 'cache-is-not-empty';
+        });
 
         $worker->run();
 
-        $this->assertEmpty($property->getValue());
+        $this->assertSame('taylor_otwell', $client->responses[0]->getContent());
+        $this->assertSame('cache-is-empty', $client->responses[1]->getContent());
     }
 }
