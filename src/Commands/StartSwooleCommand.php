@@ -14,7 +14,7 @@ use Symfony\Component\Process\Process;
 #[AsCommand(name: 'octane:swoole')]
 class StartSwooleCommand extends Command implements SignalableCommandInterface
 {
-    use Concerns\InteractsWithEnvironmentVariables, Concerns\InteractsWithServers;
+    use Concerns\InteractsWithEnvironmentVariables, Concerns\InteractsWithServers, Concerns\ResolvesSymlinks;
 
     /**
      * The command's signature.
@@ -78,14 +78,26 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
 
         $this->forgetEnvironmentVariables();
 
+        $basePath = $this->resolveBasePath();
+
+        $binDir = realpath(__DIR__.'/../../bin');
+
+        // When running inside a symlinked directory, remap the bin directory
+        // so that file paths go through the symlink rather than the resolved
+        // real path. This ensures workers reload from the correct release.
+        if ($basePath !== base_path()) {
+            $binDir = str_replace(base_path(), $basePath, $binDir);
+        }
+
         $server = tap(new Process([
             (new PhpExecutableFinder)->find(),
             ...config('octane.swoole.php_options', []),
             config('octane.swoole.command', 'swoole-server'),
             $serverStateFile->path(),
-        ], realpath(__DIR__.'/../../bin'), [
+        ], $binDir, [
             'APP_ENV' => app()->environment(),
-            'APP_BASE_PATH' => base_path(),
+            'APP_BASE_PATH' => $basePath,
+            'APP_RELEASE_BIN_DIR' => $binDir,
             'LARAVEL_OCTANE' => 1,
         ]))->start();
 

@@ -16,7 +16,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 {
     use Concerns\InstallsRoadRunnerDependencies,
         Concerns\InteractsWithEnvironmentVariables,
-        Concerns\InteractsWithServers;
+        Concerns\InteractsWithServers,
+        Concerns\ResolvesSymlinks;
 
     /**
      * The command's signature.
@@ -78,6 +79,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
 
         $this->forgetEnvironmentVariables();
 
+        $basePath = $this->resolveBasePath();
+
+
         $server = tap(new Process(array_filter([
             $roadRunnerBinary,
             '-c', $this->configPath(),
@@ -95,9 +99,9 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'logs.output=stdout',
             '-o', 'logs.encoding=json',
             'serve',
-        ]), base_path(), [
+        ]), $basePath, [
             'APP_ENV' => app()->environment(),
-            'APP_BASE_PATH' => base_path(),
+            'APP_BASE_PATH' => $basePath,
             'LARAVEL_OCTANE' => 1,
         ]))->start();
 
