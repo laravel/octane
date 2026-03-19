@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class AttributeSingletonPropagationTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // The #[Singleton] attribute was introduced in Laravel 11.
+        if (! class_exists(\Illuminate\Container\Attributes\Singleton::class)) {
+            $this->markTestSkipped('Requires Laravel 11+ for #[Singleton] attribute support.');
+        }
+    }
+
     public function test_singleton_attribute_classes_persist_across_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

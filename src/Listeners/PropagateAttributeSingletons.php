@@ -26,6 +26,13 @@ class PropagateAttributeSingletons
         $sandbox = $event->sandbox;
         $app = $event->app;
 
+        // The checkedForSingletonOrScopedAttributes property was introduced in
+        // Laravel 11 alongside the #[Singleton] attribute. On older versions
+        // there is nothing to propagate, so bail out early.
+        if (! property_exists($sandbox, 'checkedForSingletonOrScopedAttributes')) {
+            return;
+        }
+
         // Access the protected attribute cache from the sandbox via reflection.
         $checkedAttributes = $this->getProtectedProperty($sandbox, 'checkedForSingletonOrScopedAttributes');
 
