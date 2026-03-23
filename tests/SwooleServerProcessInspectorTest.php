@@ -92,7 +92,7 @@ class SwooleServerProcessInspectorTest extends TestCase
         collect([2, 3, 4, 5])->each(
             fn ($processId) => $dispatcher
                 ->shouldReceive('signal')
-                ->with($processId, SIGKILL)
+                ->with($processId, defined('SIGKILL') ? SIGKILL : 9)
                 ->once(),
         );
 
