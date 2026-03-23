@@ -28,8 +28,8 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
                     {--port= : The port the server should be available on}
                     {--rpc-host= : The RPC IP address the server should bind to}
                     {--rpc-port= : The RPC port the server should be available on}
-                    {--workers=auto : The number of workers that should be available to handle requests}
-                    {--max-requests=500 : The number of requests to process before reloading the server}
+                    {--workers= : The number of workers that should be available to handle requests (default: auto)}
+                    {--max-requests= : The number of requests to process before reloading the server (default: 500)}
                     {--rr-config= : The path to the RoadRunner .rr.yaml file}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}
@@ -85,7 +85,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'http.address='.$this->getHost().':'.$this->getPort(),
             '-o', 'server.command='.(new PhpExecutableFinder)->find().','.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
-            '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
+            '-o', 'http.pool.max_jobs='.$this->maxRequests(),
             '-o', 'rpc.listen=tcp://'.$this->rpcHost().':'.$this->rpcPort(),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir='.public_path(),
@@ -120,7 +120,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             'port' => $this->getPort(),
             'rpcPort' => $this->rpcPort(),
             'workers' => $this->workerCount(),
-            'maxRequests' => $this->option('max-requests'),
+            'maxRequests' => $this->maxRequests(),
             'octaneConfig' => config('octane'),
         ]);
     }
@@ -132,9 +132,19 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
      */
     protected function workerCount()
     {
-        return $this->option('workers') == 'auto'
-                            ? 0
-                            : $this->option('workers');
+        $workers = $this->option('workers') ?? config('octane.workers') ?? 'auto';
+
+        return $workers === 'auto' ? 0 : $workers;
+    }
+
+    /**
+     * Get the number of requests to process before reloading the server.
+     *
+     * @return int
+     */
+    protected function maxRequests()
+    {
+        return $this->option('max-requests') ?? config('octane.max_requests') ?? 500;
     }
 
     /**

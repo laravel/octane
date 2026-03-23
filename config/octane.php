@@ -42,6 +42,47 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Octane Workers
+    |--------------------------------------------------------------------------
+    |
+    | The number of worker processes used to handle incoming requests. When
+    | null, the server default applies, which may not be suitable for containers
+    | where the visible core count does not reflect the desired concurrency.
+    | Server defaults:
+    |   roadrunner, swoole: CPU Count
+    |   frankenphp: CPU Count *2
+    |
+    */
+
+    'workers' => env('OCTANE_WORKERS'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Octane Task Workers (Swoole only)
+    |--------------------------------------------------------------------------
+    |
+    | The number of task worker processes available to handle tasks dispatched
+    | via Octane::concurrently(). When null, the server default applies.
+    |
+    */
+
+    'task_workers' => env('OCTANE_TASK_WORKERS'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Octane Max Requests
+    |--------------------------------------------------------------------------
+    |
+    | The number of requests a worker will handle before being restarted. This
+    | helps prevent memory leaks from accumulating over time. When null, the
+    | server default applies (500).
+    |
+    */
+
+    'max_requests' => env('OCTANE_MAX_REQUESTS'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Force HTTPS
     |--------------------------------------------------------------------------
     |

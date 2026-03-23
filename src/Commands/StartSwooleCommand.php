@@ -24,9 +24,9 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     public $signature = 'octane:swoole
                     {--host= : The IP address the server should bind to}
                     {--port= : The port the server should be available on}
-                    {--workers=auto : The number of workers that should be available to handle requests}
-                    {--task-workers=auto : The number of task workers that should be available to handle tasks}
-                    {--max-requests=500 : The number of requests to process before reloading the server}
+                    {--workers= : The number of workers that should be available to handle requests (default: auto)}
+                    {--task-workers= : The number of task workers that should be available to handle tasks (default: auto)}
+                    {--max-requests= : The number of requests to process before reloading the server (default: 500)}
                     {--watch : Automatically reload the server when the application is modified}
                     {--poll : Use file system polling while watching in order to watch files over a network}';
 
@@ -107,7 +107,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'port' => $this->getPort(),
             'workers' => $this->workerCount($extension),
             'taskWorkers' => $this->taskWorkerCount($extension),
-            'maxRequests' => $this->option('max-requests'),
+            'maxRequests' => $this->maxRequests(),
             'publicPath' => public_path(),
             'storagePath' => storage_path(),
             'defaultServerOptions' => $this->defaultServerOptions($extension),
@@ -127,12 +127,12 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'daemonize' => false,
             'log_file' => storage_path('logs/swoole_http.log'),
             'log_level' => app()->environment('local') ? SWOOLE_LOG_INFO : SWOOLE_LOG_ERROR,
-            'max_request' => $this->option('max-requests'),
+            'max_request' => $this->maxRequests(),
             'package_max_length' => 10 * 1024 * 1024,
             'reactor_num' => $this->workerCount($extension),
             'send_yield' => true,
             'socket_buffer_size' => 10 * 1024 * 1024,
-            'task_max_request' => $this->option('max-requests'),
+            'task_max_request' => $this->maxRequests(),
             'task_worker_num' => $this->taskWorkerCount($extension),
             'worker_num' => $this->workerCount($extension),
         ];
@@ -145,9 +145,9 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      */
     protected function workerCount(SwooleExtension $extension)
     {
-        return $this->option('workers') === 'auto'
-                    ? $extension->cpuCount()
-                    : $this->option('workers');
+        $workers = $this->option('workers') ?? config('octane.workers') ?? 'auto';
+
+        return $workers === 'auto' ? $extension->cpuCount() : $workers;
     }
 
     /**
@@ -157,13 +157,23 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
      */
     protected function taskWorkerCount(SwooleExtension $extension)
     {
-        return $this->option('task-workers') === 'auto'
-                    ? $extension->cpuCount()
-                    : $this->option('task-workers');
+        $workers = $this->option('task-workers') ?? config('octane.task_workers') ?? 'auto';
+
+        return $workers === 'auto' ? $extension->cpuCount() : $workers;
     }
 
     /**
-     * Write the server process output ot the console.
+     * Get the number of requests to process before reloading the server.
+     *
+     * @return int
+     */
+    protected function maxRequests()
+    {
+        return $this->option('max-requests') ?? config('octane.max_requests') ?? 500;
+    }
+
+    /**
+     * Write the server process output to the console.
      *
      * @param  \Symfony\Component\Process\Process  $server
      * @return void
