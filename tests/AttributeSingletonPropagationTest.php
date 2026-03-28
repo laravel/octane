@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Tests;
 
+use Illuminate\Container\Attributes\Scoped;
 use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -96,6 +97,42 @@ class AttributeSingletonPropagationTest extends TestCase
         $this->assertEquals($hashes[0], $hashes[1]);
         $this->assertEquals($hashes[1], $hashes[2]);
     }
+
+    public function test_scoped_attribute_classes_are_not_propagated_to_root_app()
+    {
+        [$app, $worker, $client] = $this->createOctaneContext([
+            Request::create('/first', 'GET'),
+            Request::create('/first', 'GET'),
+            Request::create('/first', 'GET'),
+        ]);
+
+        $app['router']->get('/first', function (Application $app) {
+            $instance = $app->make(AttributeScopedService::class);
+
+            return spl_object_hash($instance);
+        });
+
+        $worker->run();
+
+        // Each request should get a fresh scoped instance because the
+        // PropagateAttributeSingletons listener intentionally skips
+        // classes with the #[Scoped] attribute.
+        $this->assertNotEquals(
+            $client->responses[0]->original,
+            $client->responses[1]->original,
+        );
+
+        $this->assertNotEquals(
+            $client->responses[1]->original,
+            $client->responses[2]->original,
+        );
+    }
+}
+
+#[Scoped]
+class AttributeScopedService
+{
+    //
 }
 
 #[Singleton]
