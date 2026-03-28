@@ -39,8 +39,6 @@ trait ResolvesSymlinks
      *
      * On Unix-like systems, `pwd` (without -P) returns the logical path
      * which preserves symlinks. PHP's getcwd() always resolves symlinks.
-     *
-     * @return string|false
      */
     protected function getSymlinkAwareCwd(): string|false
     {

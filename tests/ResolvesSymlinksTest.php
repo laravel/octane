@@ -40,7 +40,8 @@ class ResolvesSymlinksTest extends TestCase
 
     protected function createTraitInstance()
     {
-        return new class {
+        return new class
+        {
             use ResolvesSymlinks;
 
             public function callGetSymlinkAwareCwd(): string|false
