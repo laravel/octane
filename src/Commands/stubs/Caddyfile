@@ -36,11 +36,23 @@
 		# Mercure configuration is injected here...
 		{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
+		# Serve static assets directly via Caddy; never fall through to PHP.
+		@static {
+			path *.css *.js *.mjs *.map *.ico *.png *.jpg *.jpeg *.gif *.svg *.webp *.avif *.woff *.woff2 *.ttf *.otf *.eot *.mp4 *.webm *.ogg *.mp3 *.wav *.pdf *.zip *.txt *.xml *.json *.wasm *.webmanifest *.manifest
+		}
+		file_server @static
+
 		php_server {
 			index frankenphp-worker.php
 			try_files {path} frankenphp-worker.php
 			# Required for the public/storage/ directory...
 			resolve_root_symlink
+		}
+
+		# Friendly fallback page for static-asset 404s (and any other unhandled error).
+		handle_errors {
+			header Content-Type "text/html; charset=utf-8"
+			respond "<!doctype html><html><head><meta charset=utf-8><title>{err.status_code} {err.status_text}</title><style>body{font-family:system-ui,sans-serif;text-align:center;padding:3em;color:#333}h1{font-size:2em;margin:.2em 0}hr{margin:1.5em auto;width:6em;border:none;border-top:1px solid #ccc}small{color:#888}</style></head><body><h1>{err.status_code} {err.status_text}</h1></body></html>" {err.status_code}
 		}
 	}
 }
