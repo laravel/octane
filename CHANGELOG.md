@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.17.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.17.2...2.x)
+
+## [v2.17.2](https://github.com/laravel/octane/compare/v2.17.1...v2.17.2) - 2026-04-16
+
+* [2.x] Improves CI / tests against L13 by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/1107
 
 ## [v2.17.1](https://github.com/laravel/octane/compare/v2.17.0...v2.17.1) - 2026-03-18
 
