@@ -1,3 +1,11 @@
+---
+name: octane-development
+description: "Use this skill when working with Laravel Octane — a long-running PHP process server. Covers: state isolation, request lifecycle, concurrency (Swoole), shared memory tables (Swoole), driver-specific setup (FrankenPHP, RoadRunner), memory management, and testing with Octane::fake(). Trigger when: configuring Octane server drivers, debugging memory leaks or state bleed, using Octane::concurrently() or Octane::table(), writing services that run inside Octane processes, or testing Octane applications."
+license: MIT
+metadata:
+  author: laravel
+---
+
 # Octane
 
 Comprehensive rules for **Laravel Octane** — the long-running server toolkit for Swoole, RoadRunner, and FrankenPHP.
