@@ -25,7 +25,6 @@ trait HasApplicationState
         }
 
         Facade::clearResolvedInstances();
-        Facade::setFacadeApplication($app);
 
         return [$this->appState, $app];
     }
