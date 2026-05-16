@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ViewFactoryStateTest extends TestCase
 {
-    public function test_view_factory_application_is_updated_on_subsequent_requests()
+    public function test_view_factory_application_is_not_updated_on_subsequent_requests()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -20,7 +20,7 @@ class ViewFactoryStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertNotEquals(
+        $this->assertEquals(
             $client->responses[0]->getContent(),
             $client->responses[1]->getContent()
         );

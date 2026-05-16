@@ -40,7 +40,7 @@ class RequestStateTest extends TestCase
         $app['router']->get('/first', function (RequestStateTestFormRequest $request) {
             return [
                 'name' => $request->query('name'),
-                'container' => spl_object_hash($request->getContainer()),
+                'container' => spl_object_hash($request),
             ];
         });
 

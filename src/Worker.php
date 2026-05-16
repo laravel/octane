@@ -17,12 +17,13 @@ use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Swoole\TaskResult;
+use Laravel\Octane\Concerns\HasApplicationState;
 use RuntimeException;
 use Throwable;
 
 class Worker implements WorkerContract
 {
-    use DispatchesEvents;
+    use DispatchesEvents, HasApplicationState;
 
     protected $requestHandledCallbacks = [];
 
@@ -72,9 +73,10 @@ class Worker implements WorkerContract
         // We will clone the application instance so that we have a clean copy to switch
         // back to once the request has been handled. This allows us to easily delete
         // certain instances that got resolved / mutated during a previous request.
-        CurrentApplication::set($sandbox = clone $this->app);
+        $originalApp = $this->captureApplicationState($this->app);
+        $sandbox = $this->restoreApplicationState($this->app);
 
-        $gateway = new ApplicationGateway($this->app, $sandbox);
+        $gateway = new ApplicationGateway($originalApp, $sandbox);
 
         try {
             $responded = false;
@@ -105,8 +107,6 @@ class Worker implements WorkerContract
         } catch (Throwable $e) {
             $this->handleWorkerError($e, $sandbox, $request, $context, $responded);
         } finally {
-            $sandbox->flush();
-
             $this->app->make('view.engine.resolver')->forget('blade');
             $this->app->make('view.engine.resolver')->forget('php');
 
@@ -114,8 +114,6 @@ class Worker implements WorkerContract
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.
             unset($gateway, $sandbox, $context, $request, $response, $octaneResponse, $output);
-
-            CurrentApplication::set($this->app);
         }
     }
 
@@ -132,27 +130,24 @@ class Worker implements WorkerContract
         // We will clone the application instance so that we have a clean copy to switch
         // back to once the request has been handled. This allows us to easily delete
         // certain instances that got resolved / mutated during a previous request.
-        CurrentApplication::set($sandbox = clone $this->app);
+        $originalApp = $this->captureApplicationState($this->app);
+        $sandbox = $this->restoreApplicationState($this->app);
 
         try {
-            $this->dispatchEvent($sandbox, new TaskReceived($this->app, $sandbox, $data));
+            $this->dispatchEvent($sandbox, new TaskReceived($originalApp, $sandbox, $data));
 
             $result = $data();
 
-            $this->dispatchEvent($sandbox, new TaskTerminated($this->app, $sandbox, $data, $result));
+            $this->dispatchEvent($sandbox, new TaskTerminated($originalApp, $sandbox, $data, $result));
         } catch (Throwable $e) {
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
 
             return TaskExceptionResult::from($e);
         } finally {
-            $sandbox->flush();
-
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.
             unset($sandbox);
-
-            CurrentApplication::set($this->app);
         }
 
         return new TaskResult($result);
@@ -163,19 +158,16 @@ class Worker implements WorkerContract
      */
     public function handleTick(): void
     {
-        CurrentApplication::set($sandbox = clone $this->app);
+        $originalApp = $this->captureApplicationState($this->app);
+        $sandbox = $this->restoreApplicationState($this->app);
 
         try {
-            $this->dispatchEvent($sandbox, new TickReceived($this->app, $sandbox));
-            $this->dispatchEvent($sandbox, new TickTerminated($this->app, $sandbox));
+            $this->dispatchEvent($sandbox, new TickReceived($originalApp, $sandbox));
+            $this->dispatchEvent($sandbox, new TickTerminated($originalApp, $sandbox));
         } catch (Throwable $e) {
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
         } finally {
-            $sandbox->flush();
-
             unset($sandbox);
-
-            CurrentApplication::set($this->app);
         }
     }
 

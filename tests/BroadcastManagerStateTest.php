@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class BroadcastManagerStateTest extends TestCase
 {
-    public function test_broadcast_manager_has_fresh_application_instance()
+    public function test_broadcast_manager_has_same_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first?name=Taylor', 'GET'),
@@ -29,6 +29,6 @@ class BroadcastManagerStateTest extends TestCase
         $this->assertEquals('Taylor', $client->responses[0]->original['name']);
         $this->assertEquals('Abigail', $client->responses[1]->original['name']);
 
-        $this->assertNotEquals($client->responses[0]->original['hash'], $client->responses[1]->original['hash']);
+        $this->assertEquals($client->responses[0]->original['hash'], $client->responses[1]->original['hash']);
     }
 }

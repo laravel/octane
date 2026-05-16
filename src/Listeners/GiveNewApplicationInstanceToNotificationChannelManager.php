@@ -18,7 +18,6 @@ class GiveNewApplicationInstanceToNotificationChannelManager
         }
 
         with($event->sandbox->make(ChannelManager::class), function ($manager) use ($event) {
-            $manager->setContainer($event->sandbox);
             $manager->forgetDrivers();
         });
     }

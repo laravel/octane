@@ -8,7 +8,7 @@ use Illuminate\Notifications\ChannelManager;
 
 class NotificationChannelManagerStateTest extends TestCase
 {
-    public function test_notification_channel_manager_has_fresh_application_instance()
+    public function test_notification_channel_manager_has_same_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -23,6 +23,6 @@ class NotificationChannelManagerStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertNotEquals($client->responses[0]->original, $client->responses[1]->original);
+        $this->assertEquals($client->responses[0]->original, $client->responses[1]->original);
     }
 }

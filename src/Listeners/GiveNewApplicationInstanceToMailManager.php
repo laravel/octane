@@ -16,7 +16,6 @@ class GiveNewApplicationInstanceToMailManager
         }
 
         with($event->sandbox->make('mail.manager'), function ($manager) use ($event) {
-            $manager->setApplication($event->sandbox);
             $manager->forgetMailers();
         });
     }

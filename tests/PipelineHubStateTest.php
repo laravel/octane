@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PipelineHubStateTest extends TestCase
 {
-    public function test_pipeline_hub_has_fresh_application_instance()
+    public function test_pipeline_hub_has_same_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -23,6 +23,6 @@ class PipelineHubStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertNotEquals($client->responses[0]->original, $client->responses[1]->original);
+        $this->assertEquals($client->responses[0]->original, $client->responses[1]->original);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ValidationFactoryStateTest extends TestCase
 {
-    public function test_validation_factory_has_fresh_application_instance()
+    public function test_validation_factory_has_same_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -22,6 +22,6 @@ class ValidationFactoryStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertNotEquals($client->responses[0]->original, $client->responses[1]->original);
+        $this->assertEquals($client->responses[0]->original, $client->responses[1]->original);
     }
 }

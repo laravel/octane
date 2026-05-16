@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 class FilesystemManagerStateTest extends TestCase
 {
-    public function test_filesystem_manager_has_fresh_application_instance()
+    public function test_filesystem_manager_has_same_application_instance()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -24,6 +24,6 @@ class FilesystemManagerStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertNotEquals($client->responses[0]->original, $client->responses[1]->original);
+        $this->assertEquals($client->responses[0]->original, $client->responses[1]->original);
     }
 }

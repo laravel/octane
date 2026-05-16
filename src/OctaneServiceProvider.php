@@ -133,17 +133,8 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\FlushQueuedCookies::class);
         $this->app->singleton(Listeners\FlushSessionState::class);
         $this->app->singleton(Listeners\FlushTemporaryContainerInstances::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToAuthorizationGate::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToBroadcastManager::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToHttpKernel::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToLogManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToMailManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToNotificationChannelManager::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToPipelineHub::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToQueueManager::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToRouter::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToValidationFactory::class);
-        $this->app->singleton(Listeners\GiveNewApplicationInstanceToViewFactory::class);
         $this->app->singleton(Listeners\GiveNewRequestInstanceToApplication::class);
         $this->app->singleton(Listeners\GiveNewRequestInstanceToPaginator::class);
         $this->app->singleton(Listeners\PrepareInertiaForNextOperation::class);
