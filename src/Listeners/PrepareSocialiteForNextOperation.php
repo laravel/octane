@@ -24,6 +24,5 @@ class PrepareSocialiteForNextOperation
         }
 
         $factory->forgetDrivers();
-        $factory->setContainer($event->sandbox);
     }
 }

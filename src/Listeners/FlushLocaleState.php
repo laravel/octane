@@ -20,10 +20,6 @@ class FlushLocaleState
             $translator->setFallback($config->get('app.fallback_locale'));
         });
 
-        $provider = tap(new CarbonServiceProvider($event->app))->updateLocale();
-
-        collect($event->sandbox->getProviders($provider))
-            ->values()
-            ->whenNotEmpty(fn ($providers) => $providers->first()->setAppGetter(fn () => $event->sandbox));
+        (new CarbonServiceProvider($event->app))->updateLocale();
     }
 }

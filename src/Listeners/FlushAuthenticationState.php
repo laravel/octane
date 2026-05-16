@@ -17,7 +17,6 @@ class FlushAuthenticationState
 
         if ($event->sandbox->resolved('auth')) {
             with($event->sandbox->make('auth'), function ($auth) use ($event) {
-                $auth->setApplication($event->sandbox);
                 $auth->forgetGuards();
             });
         }
