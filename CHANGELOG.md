@@ -1,6 +1,72 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.12.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.17.3...2.x)
+
+## [v2.17.3](https://github.com/laravel/octane/compare/v2.17.2...v2.17.3) - 2026-04-23
+
+* Refresh Router Containers for Compiled Routes by [@dbpolito](https://github.com/dbpolito) in https://github.com/laravel/octane/pull/1121
+
+## [v2.17.2](https://github.com/laravel/octane/compare/v2.17.1...v2.17.2) - 2026-04-16
+
+* [2.x] Improves CI / tests against L13 by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/octane/pull/1107
+
+## [v2.17.1](https://github.com/laravel/octane/compare/v2.17.0...v2.17.1) - 2026-03-18
+
+* Fix laravel Octane Store by [@kamil-michalak](https://github.com/kamil-michalak) in https://github.com/laravel/octane/pull/1106
+
+## [v2.17.0](https://github.com/laravel/octane/compare/v2.16.0...v2.17.0) - 2026-03-18
+
+* Support PHPUnit 13 and fix Laravel Passport compatibility conflicts by [@Nationalcat](https://github.com/Nationalcat) in https://github.com/laravel/octane/pull/1103
+
+## [v2.16.0](https://github.com/laravel/octane/compare/v2.15.0...v2.16.0) - 2026-03-17
+
+* [2.x] PHP 8.5 Compatibility by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1080
+* [2.x] Supports Laravel 13 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1093
+
+## [v2.15.0](https://github.com/laravel/octane/compare/v2.14.0...v2.15.0) - 2026-03-10
+
+* Add Boost guidelines for Octane dependency injection by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/octane/pull/1099
+* Fix Swoole auto worker count in containers by [@mtawil](https://github.com/mtawil) in https://github.com/laravel/octane/pull/1101
+
+## [v2.14.0](https://github.com/laravel/octane/compare/v2.13.5...v2.14.0) - 2026-02-20
+
+* Allow to use more environment variables to FrankenPHP/Caddyfile #895 by [@taai](https://github.com/taai) in https://github.com/laravel/octane/pull/1095
+* Format Caddyfile stub by [@davidkvasnovsky](https://github.com/davidkvasnovsky) in https://github.com/laravel/octane/pull/1096
+
+## [v2.13.5](https://github.com/laravel/octane/compare/v2.13.4...v2.13.5) - 2026-01-22
+
+* Add the GITHUB_PROXY_PREFIX environment variable by [@sanzhangshitou](https://github.com/sanzhangshitou) in https://github.com/laravel/octane/pull/1091
+
+## [v2.13.4](https://github.com/laravel/octane/compare/v2.13.3...v2.13.4) - 2025-12-21
+
+* Fix APP_PUBLIC_PATH fallback logic in frankenphp-worker by [@kieranbrown](https://github.com/kieranbrown) in https://github.com/laravel/octane/pull/1085
+
+## [v2.13.3](https://github.com/laravel/octane/compare/v2.13.2...v2.13.3) - 2025-12-10
+
+* Remove setAccessible calls from reflection properties and methods by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1083
+
+## [v2.13.2](https://github.com/laravel/octane/compare/v2.13.1...v2.13.2) - 2025-11-28
+
+* Register reload command by [@barryvdh](https://github.com/barryvdh) in https://github.com/laravel/octane/pull/1081
+
+## [v2.13.1](https://github.com/laravel/octane/compare/v2.13.0...v2.13.1) - 2025-10-27
+
+* [2.x] Don't ignore *write error* messages anymore by [@Carnicero90](https://github.com/Carnicero90) in https://github.com/laravel/octane/pull/1068
+* fix(concurrency): skip Octane::concurrently when no tasks to prevent … by [@emtudo](https://github.com/emtudo) in https://github.com/laravel/octane/pull/1071
+* Update the signature for octane:start by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1073
+
+## [v2.13.0](https://github.com/laravel/octane/compare/v2.12.3...v2.13.0) - 2025-10-13
+
+* feat: download FrankenPHP mostly static binary when possible by [@dunglas](https://github.com/dunglas) in https://github.com/laravel/octane/pull/1065
+
+## [v2.12.3](https://github.com/laravel/octane/compare/v2.12.2...v2.12.3) - 2025-09-23
+
+* Replace Octane::writeError with die statements by [@7amoood](https://github.com/7amoood) in https://github.com/laravel/octane/pull/1057
+* Advance worker initialization in frankenphp-worker by [@sy-records](https://github.com/sy-records) in https://github.com/laravel/octane/pull/1059
+
+## [v2.12.2](https://github.com/laravel/octane/compare/v2.12.1...v2.12.2) - 2025-09-07
+
+* FrankenPHP: show worker startup errors if `APP_DEBUG=true` by [@AlliBalliBaba](https://github.com/AlliBalliBaba) in https://github.com/laravel/octane/pull/1055
 
 ## [v2.12.1](https://github.com/laravel/octane/compare/v2.12.0...v2.12.1) - 2025-07-25
 

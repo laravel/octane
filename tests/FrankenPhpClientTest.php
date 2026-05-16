@@ -18,14 +18,13 @@ class FrankenPhpClientTest extends TestCase
         $this->assertSame($requestContext, $marshaledRequest[1]);
     }
 
-    /**
-     * @doesNotPerformAssertions @test
-     */
     public function test_response()
     {
         $response = \Mockery::mock(Response::class);
         $response->shouldReceive('send');
 
         (new FrankenPhpClient())->respond(new RequestContext(), new OctaneResponse($response));
+
+        $this->assertTrue(true);
     }
 }

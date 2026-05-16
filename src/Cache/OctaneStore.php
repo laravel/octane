@@ -209,6 +209,26 @@ class OctaneStore implements Store
     }
 
     /**
+     * Set the expiration of a cached item.
+     *
+     * @param  string  $key
+     * @param  int  $seconds
+     * @return bool
+     */
+    public function touch($key, $seconds)
+    {
+        $record = $this->table->get($key);
+
+        if ($this->recordIsFalseOrExpired($record)) {
+            return false;
+        }
+
+        return $this->table->set($key, [
+            'expiration' => Carbon::now()->getTimestamp() + $seconds,
+        ]);
+    }
+
+    /**
      * Remove an item from the cache.
      *
      * @param  string  $key

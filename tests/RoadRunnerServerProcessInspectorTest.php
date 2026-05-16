@@ -47,7 +47,6 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         $processIdFile->delete();
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_roadrunner_server_process_can_be_reloaded()
     {
         $this->createApplication();

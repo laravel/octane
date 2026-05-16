@@ -37,7 +37,6 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_tasks_can_be_dispatched_via_http()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -54,6 +53,8 @@ class SwooleHttpTaskDispatcherTest extends TestCase
             'first' => fn () => 1,
             'second' => fn () => 2,
         ]);
+
+        $this->assertTrue(true);
     }
 
     public function test_tasks_can_be_resolved_via_fallback_dispatcher()
@@ -73,7 +74,6 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_tasks_can_be_dispatched_via_fallback_dispatcher()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -86,6 +86,8 @@ class SwooleHttpTaskDispatcherTest extends TestCase
             'first' => fn () => 1,
             'second' => fn () => 2,
         ]);
+
+        $this->assertTrue(true);
     }
 
     public function test_resolving_tasks_propagate_exceptions()
@@ -124,7 +126,6 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher->resolve(['first' => fn () => throw new DdException(['foo' => 'bar'])]);
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_dispatching_tasks_do_not_propagate_exceptions()
     {
         $dispatcher = new SwooleHttpTaskDispatcher(
@@ -138,6 +139,8 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         ]);
 
         $dispatcher->dispatch(['first' => fn () => throw new Exception('Something went wrong.')]);
+
+        $this->assertTrue(true);
     }
 
     public function test_resolving_tasks_may_timeout()

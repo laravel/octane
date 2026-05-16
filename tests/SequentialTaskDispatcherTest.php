@@ -46,7 +46,6 @@ class SequentialTaskDispatcherTest extends TestCase
         $this->assertTrue($a);
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_dispatching_tasks_do_not_propagate_exceptions()
     {
         $dispatcher = new SequentialTaskDispatcher;
@@ -54,6 +53,8 @@ class SequentialTaskDispatcherTest extends TestCase
         $dispatcher->dispatch([
             'first' => fn () => throw new Exception('Something went wrong'),
         ]);
+
+        $this->assertTrue(true);
     }
 
     public function test_tasks_can_be_dispatched()

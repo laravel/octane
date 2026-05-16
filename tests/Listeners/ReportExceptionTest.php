@@ -12,7 +12,6 @@ use Mockery;
 
 class ReportExceptionTest extends TestCase
 {
-    /** @doesNotPerformAssertions @test */
     public function test_exceptions_are_streamed()
     {
         [$app, $worker] = $this->createOctaneContext([]);
@@ -27,7 +26,6 @@ class ReportExceptionTest extends TestCase
         $worker->dispatchEvent($app, new WorkerErrorOccurred($exception, $app));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_exceptions_are_reported()
     {
         [$app, $worker] = $this->createOctaneContext([]);
@@ -49,7 +47,6 @@ class ReportExceptionTest extends TestCase
         $worker->dispatchEvent($app, new WorkerErrorOccurred($exception, $app));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_dd_calls_are_not_streamed()
     {
         [$app, $worker] = $this->createOctaneContext([]);

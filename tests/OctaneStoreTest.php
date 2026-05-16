@@ -17,7 +17,7 @@ class OctaneStoreTest extends TestCase
         parent::setUp();
     }
 
-    public function test_can_retrieve_items_from_store(): void
+    public function test_can_retrieve_items_from_store()
     {
         $table = $this->createSwooleTable();
 
@@ -137,6 +137,61 @@ class OctaneStoreTest extends TestCase
 
         $this->assertTrue(is_string($second = $store->get('foo')));
         $this->assertNotEquals($first, $second);
+
+        Carbon::setTestNow();
+    }
+
+    public function test_touch_updates_expiration()
+    {
+        if (! method_exists(OctaneStore::class, 'touch')) {
+            $this->markTestSkipped('Requires OctaneStore::touch method');
+        }
+
+        $table = $this->createSwooleTable();
+
+        $store = new OctaneStore($table);
+
+        $store->put('foo', 'bar', 5);
+
+        Carbon::setTestNow(now()->addSeconds(3));
+
+        $store->touch('foo', 10);
+
+        Carbon::setTestNow(now()->addSeconds(8));
+
+        $this->assertEquals('bar', $store->get('foo'));
+
+        Carbon::setTestNow();
+    }
+
+    public function test_touch_returns_false_for_missing_items()
+    {
+        if (! method_exists(OctaneStore::class, 'touch')) {
+            $this->markTestSkipped('Requires OctaneStore::touch method');
+        }
+
+        $table = $this->createSwooleTable();
+
+        $store = new OctaneStore($table);
+
+        $this->assertFalse($store->touch('foo', 10));
+    }
+
+    public function test_touch_returns_false_for_expired_items()
+    {
+        if (! method_exists(OctaneStore::class, 'touch')) {
+            $this->markTestSkipped('Requires OctaneStore::touch method');
+        }
+
+        $table = $this->createSwooleTable();
+
+        $store = new OctaneStore($table);
+
+        $store->put('foo', 'bar', 5);
+
+        Carbon::setTestNow(now()->addSeconds(10));
+
+        $this->assertFalse($store->touch('foo', 10));
 
         Carbon::setTestNow();
     }

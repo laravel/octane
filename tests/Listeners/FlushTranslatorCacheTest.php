@@ -8,7 +8,6 @@ use Mockery;
 
 class FlushTranslatorCacheTest extends TestCase
 {
-    /** @doesNotPerformAssertions */
     public function test_parsed_keys_cache_is_flushed()
     {
         [$app, $worker, $client] = $this->createOctaneContext([

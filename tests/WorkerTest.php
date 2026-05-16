@@ -39,7 +39,6 @@ class WorkerTest extends TestCase
         $this->assertNull($responses[2]->result);
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_worker_can_dispatch_ticks_to_application_and_returns_responses_to_client()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
@@ -48,9 +47,10 @@ class WorkerTest extends TestCase
         ]);
 
         $worker->runTicks();
+
+        $this->assertTrue(true);
     }
 
-    /** @test */
     public function test_worker_doesnt_throw_buffer_error()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
@@ -58,7 +58,9 @@ class WorkerTest extends TestCase
         ]);
 
         $app['router']->get('/test', function () {
-            while (ob_get_level() !== 0) {
+            $baselineBufferLevel = ob_get_level();
+
+            while (ob_get_level() > $baselineBufferLevel) {
                 ob_end_clean();
             }
 

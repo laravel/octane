@@ -30,8 +30,12 @@ $basePath = require __DIR__.'/bootstrap.php';
 
 $frankenPhpClient = new FrankenPhpClient();
 
-$worker = null;
+$worker = tap(new Worker(
+    new ApplicationFactory($basePath), $frankenPhpClient
+))->boot();
+
 $requestCount = 0;
+$debugMode = $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? 'false';
 $maxRequests = $_ENV['MAX_REQUESTS'] ?? $_SERVER['MAX_REQUESTS'] ?? 1000;
 $requestMaxExecutionTime = $_ENV['REQUEST_MAX_EXECUTION_TIME'] ?? $_SERVER['REQUEST_MAX_EXECUTION_TIME'] ?? null;
 
@@ -40,14 +44,8 @@ if (PHP_OS_FAMILY === 'Linux' && ! is_null($requestMaxExecutionTime)) {
 }
 
 try {
-    $handleRequest = static function () use (&$worker, $basePath, $frankenPhpClient) {
+    $handleRequest = static function () use ($worker, $frankenPhpClient, $debugMode) {
         try {
-            $worker ??= tap(
-                new Worker(
-                    new ApplicationFactory($basePath), $frankenPhpClient
-                )
-            )->boot();
-
             [$request, $context] = $frankenPhpClient->marshalRequest(new RequestContext());
 
             $worker->handle($request, $context);
@@ -57,7 +55,7 @@ try {
             }
 
             $response = new Response(
-                'Internal Server Error',
+                $debugMode === 'true' ? (string) $e : 'Internal Server Error',
                 500,
                 [
                     'Status' => '500 Internal Server Error',

@@ -23,6 +23,10 @@ trait ProvidesConcurrencySupport
      */
     public function concurrently(array $tasks, int $waitMilliseconds = 3000)
     {
+        if (empty($tasks)) {
+            return [];
+        }
+
         return $this->tasks()->resolve($tasks, $waitMilliseconds);
     }
 

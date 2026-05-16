@@ -34,7 +34,6 @@ class RoadRunnerClientTest extends TestCase
         $this->assertEquals('Taylor', $request->query('name'));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_respond_method_send_response_to_roadrunner()
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
@@ -49,7 +48,6 @@ class RoadRunnerClientTest extends TestCase
         ]), new OctaneResponse(new Response('Hello World', 200)));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_respond_method_send_streamed_response_to_roadrunner()
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
@@ -66,7 +64,6 @@ class RoadRunnerClientTest extends TestCase
         }, 200)));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_respond_method_send_streamed_generator_response_to_roadrunner()
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
@@ -92,7 +89,6 @@ class RoadRunnerClientTest extends TestCase
         ]), new OctaneResponse(new StreamedResponse($responseCallback, 200)));
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_error_method_sends_error_response_to_roadrunner()
     {
         $psr7Client = Mockery::mock(PSR7Worker::class);
@@ -108,7 +104,6 @@ class RoadRunnerClientTest extends TestCase
         $client->error(new Exception('Something went wrong...'), $app, $request, $context);
     }
 
-    /** @doesNotPerformAssertions @test */
     public function test_error_method_sends_detailed_error_response_to_roadrunner_in_debug_mode()
     {
         $e = new Exception('Something went wrong...');
