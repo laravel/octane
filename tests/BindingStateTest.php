@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class BindingStateTest extends TestCase
 {
-    public function test_container_instances_given_to_dependencies_can_be_stale_if_an_old_instance_is_given()
+    public function test_container_instances_given_to_dependencies_can_not_be_stale_if_an_old_instance_is_given()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -24,7 +24,7 @@ class BindingStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertNotEquals(
+        $this->assertEquals(
             $client->responses[0]->original['app'],
             $client->responses[0]->original['state']
         );
@@ -76,7 +76,7 @@ class BindingStateTest extends TestCase
         );
     }
 
-    public function test_container_instances_given_to_dependencies_will_be_stale_if_singleton_and_resolved_during_boot()
+    public function test_container_instances_given_to_dependencies_will_not_be_stale_if_singleton_and_resolved_during_boot()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
             Request::create('/first', 'GET'),
@@ -95,7 +95,7 @@ class BindingStateTest extends TestCase
 
         $worker->run();
 
-        $this->assertNotEquals(
+        $this->assertEquals(
             $client->responses[0]->original['app'],
             $client->responses[0]->original['state']
         );

@@ -73,10 +73,9 @@ class Worker implements WorkerContract
         // We will clone the application instance so that we have a clean copy to switch
         // back to once the request has been handled. This allows us to easily delete
         // certain instances that got resolved / mutated during a previous request.
-        $originalApp = $this->captureApplicationState($this->app);
-        $sandbox = $this->restoreApplicationState($this->app);
+        [$original, $sandbox] = $this->captureApplicationState($this->app);
 
-        $gateway = new ApplicationGateway($originalApp, $sandbox);
+        $gateway = new ApplicationGateway($original, $sandbox);
 
         try {
             $responded = false;
@@ -130,15 +129,14 @@ class Worker implements WorkerContract
         // We will clone the application instance so that we have a clean copy to switch
         // back to once the request has been handled. This allows us to easily delete
         // certain instances that got resolved / mutated during a previous request.
-        $originalApp = $this->captureApplicationState($this->app);
-        $sandbox = $this->restoreApplicationState($this->app);
+        [$original, $sandbox] = $this->captureApplicationState($this->app);
 
         try {
-            $this->dispatchEvent($sandbox, new TaskReceived($originalApp, $sandbox, $data));
+            $this->dispatchEvent($sandbox, new TaskReceived($original, $sandbox, $data));
 
             $result = $data();
 
-            $this->dispatchEvent($sandbox, new TaskTerminated($originalApp, $sandbox, $data, $result));
+            $this->dispatchEvent($sandbox, new TaskTerminated($original, $sandbox, $data, $result));
         } catch (Throwable $e) {
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
 
@@ -158,12 +156,11 @@ class Worker implements WorkerContract
      */
     public function handleTick(): void
     {
-        $originalApp = $this->captureApplicationState($this->app);
-        $sandbox = $this->restoreApplicationState($this->app);
+        [$original, $sandbox] = $this->captureApplicationState($this->app);
 
         try {
-            $this->dispatchEvent($sandbox, new TickReceived($originalApp, $sandbox));
-            $this->dispatchEvent($sandbox, new TickTerminated($originalApp, $sandbox));
+            $this->dispatchEvent($sandbox, new TickReceived($original, $sandbox));
+            $this->dispatchEvent($sandbox, new TickTerminated($original, $sandbox));
         } catch (Throwable $e) {
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
         } finally {

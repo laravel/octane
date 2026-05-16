@@ -10,22 +10,23 @@ trait HasApplicationState
 {
     protected ApplicationState $appState;
 
+    /**
+     * Capture the application state.
+     * Reset the original application passed to the captured state.
+     *
+     * @return array{0: Application, 1: ApplicationState}
+     */
     protected function captureApplicationState(Application $app)
     {
-        if (!isset($this->appState)) {
+        if (! isset($this->appState)) {
             $this->appState = new ApplicationState($app);
+        } else {
+            $this->appState->loadInto($app);
         }
-
-        return $this->appState->appState;
-    }
-
-    protected function restoreApplicationState(Application $app)
-    {
-        $this->appState->loadInto($app);
 
         Facade::clearResolvedInstances();
         Facade::setFacadeApplication($app);
 
-        return $app;
+        return [$this->appState, $app];
     }
 }

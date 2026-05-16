@@ -6,12 +6,11 @@ use Illuminate\Foundation\Application;
 class ApplicationState extends Application
 {
 
-    public Application $appState;
-
     public function __construct(Application $app)
     {
-        $this->appState = clone $app;
-
+        foreach (get_object_vars($app) as $key => $value) {
+            $this->$key = $value;
+        }
         // skip parent constructor
     }
 
@@ -20,7 +19,7 @@ class ApplicationState extends Application
      */
     public function loadInto(Application $app)
     {
-        foreach (get_object_vars($this->appState) as $key => $value) {
+        foreach (get_object_vars($this) as $key => $value) {
             $app->$key = $value;
         }
     }
