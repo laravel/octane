@@ -14,7 +14,7 @@ trait HasApplicationState
      * Capture the application state.
      * Reset the original application passed to the captured state.
      *
-     * @return array{0: Application, 1: ApplicationState}
+     * @return array{0: ApplicationState, 1: Application}
      */
     protected function captureApplicationState(Application $app)
     {
