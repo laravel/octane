@@ -5,6 +5,7 @@ namespace Laravel\Octane;
 use Closure;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Laravel\Octane\Concerns\HasApplicationState;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\Contracts\Worker as WorkerContract;
@@ -17,7 +18,6 @@ use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
 use Laravel\Octane\Swoole\TaskResult;
-use Laravel\Octane\Concerns\HasApplicationState;
 use RuntimeException;
 use Throwable;
 

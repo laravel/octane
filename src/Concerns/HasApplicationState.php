@@ -2,9 +2,9 @@
 
 namespace Laravel\Octane\Concerns;
 
-use Laravel\Octane\ApplicationState;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Facade;
+use Laravel\Octane\ApplicationState;
 
 trait HasApplicationState
 {
