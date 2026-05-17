@@ -2,7 +2,7 @@
 
 namespace Laravel\Octane\Listeners;
 
-class GiveNewApplicationInstanceToBroadcastManager
+class GiveNewApplicationInstanceToAuthorizationGate
 {
     public function handle($event): void
     {
