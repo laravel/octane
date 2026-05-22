@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.17.3...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.17.4...2.x)
+
+## [v2.17.4](https://github.com/laravel/octane/compare/v2.17.3...v2.17.4) - 2026-05-22
+
+* Skip full compiled route iteration in router listener by [@faytekin](https://github.com/faytekin) in https://github.com/laravel/octane/pull/1126
 
 ## [v2.17.3](https://github.com/laravel/octane/compare/v2.17.2...v2.17.3) - 2026-04-23
 
