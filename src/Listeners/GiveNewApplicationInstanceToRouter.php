@@ -26,10 +26,6 @@ class GiveNewApplicationInstanceToRouter
 
         $routes = $event->sandbox->make('routes');
 
-        if (! $routes instanceof RouteCollection && ! $routes instanceof CompiledRouteCollection) {
-            return;
-        }
-
         if ($routes instanceof CompiledRouteCollection) {
             $routes->setContainer($event->sandbox);
 
@@ -38,10 +34,14 @@ class GiveNewApplicationInstanceToRouter
             })->call($routes) as $route) {
                 $route->setContainer($event->sandbox);
             }
+
+            return;
         }
 
-        foreach ($routes as $route) {
-            $route->setContainer($event->sandbox);
+        if ($routes instanceof RouteCollection) {
+            foreach ($routes as $route) {
+                $route->setContainer($event->sandbox);
+            }
         }
     }
 }
