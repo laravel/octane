@@ -1,10 +1,13 @@
 <?php
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\FrankenPhp\FrankenPhpClient;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Stream;
 use Laravel\Octane\Worker;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Response;
 
 if ((! ($_SERVER['FRANKENPHP_WORKER'] ?? false)) || ! function_exists('frankenphp_handle_request')) {
@@ -30,9 +33,32 @@ $basePath = require __DIR__.'/bootstrap.php';
 
 $frankenPhpClient = new FrankenPhpClient();
 
-$worker = tap(new Worker(
-    new ApplicationFactory($basePath), $frankenPhpClient
-))->boot();
+try {
+    $worker = tap(new Worker(
+        new ApplicationFactory($basePath), $frankenPhpClient
+    ))->boot();
+} catch (Throwable $e) {
+    try {
+        $container = Container::getInstance();
+
+        if ($container && $container->bound(ExceptionHandler::class)) {
+            $container->make(ExceptionHandler::class)
+                ->renderForConsole(new ConsoleOutput, $e);
+        } else {
+            fwrite(STDERR, sprintf(
+                "[octane bootstrap] %s: %s\n  in %s:%d\n%s\n",
+                $e::class, $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString()
+            ));
+        }
+    } catch (Throwable) {
+        fwrite(STDERR, sprintf(
+            "[octane bootstrap] %s: %s\n  in %s:%d\n%s\n",
+            $e::class, $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString()
+        ));
+    }
+
+    exit(1);
+}
 
 $requestCount = 0;
 $debugMode = $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? 'false';
