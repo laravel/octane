@@ -40,6 +40,7 @@ try {
 } catch (Throwable $e) {
     try {
         $container = Container::getInstance();
+
         if ($container && $container->bound(ExceptionHandler::class)) {
             $container->make(ExceptionHandler::class)
                 ->renderForConsole(new ConsoleOutput, $e);
