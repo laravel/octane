@@ -33,7 +33,7 @@ php artisan octane:start --server=frankenphp --http2 --https
 
 ## Caddyfile Configuration
 
-The `Caddyfile` at your project root configures the Caddy server:
+The Caddyfile at your project root configures the Caddy server:
 
 ```caddyfile
 {
@@ -76,6 +76,7 @@ CMD ["php", "artisan", "octane:frankenphp-worker", "--max-requests=1000"]
 ```
 
 Or use the Octane-specific Docker image pattern:
+
 ```dockerfile
 FROM dunglas/frankenphp
 
@@ -114,7 +115,7 @@ https://myapp.com {
     servers {
         protocols h1 h2 h3
     }
-    
+
     root * public/
     php_server
 }
@@ -135,7 +136,7 @@ header('Link: </js/app.js>; rel=preload; as=script', false, 103);
 ## Feature Comparison vs. Other Drivers
 
 | Feature | FrankenPHP | Swoole | RoadRunner |
-|---------|-----------|--------|------------|
+|----------|------------|--------|------------|
 | HTTP/2 native | ✅ | ❌ (via proxy) | ❌ (via proxy) |
 | HTTP/3 / QUIC | ✅ | ❌ | ❌ |
 | Early hints (103) | ✅ | ❌ | ❌ |
@@ -152,3 +153,23 @@ header('Link: </js/app.js>; rel=preload; as=script', false, 103);
 **Port 443 permission denied**: On Linux, run with elevated permissions or use Caddy's `bind` directive with a non-privileged port and reverse proxy.
 
 **SSL certificate issues in development**: FrankenPHP uses Caddy's automatic HTTPS with Let's Encrypt. For localhost, it uses a self-signed certificate — trust it in your browser or OS.
+
+**Worker mode not detected when Caddyfile path is a symlink**: FrankenPHP may fail to detect worker mode if the `root` path in your Caddyfile resolves through a symlink. This is a known FrankenPHP gotcha — it checks the resolved filesystem path, not the symlink target.
+
+**Symptom**: You see `FrankenPHP must be in worker mode to use this script` even though your Caddyfile has a `worker` directive.
+
+**Fix**: Use the real absolute path in your Caddyfile's `root` directive instead of a symlinked path:
+
+```bash
+# Check if your project root is a symlink
+readlink your-project-dir
+
+# If it is, use the resolved path in Caddyfile:
+root * /real/absolute/path/to/public/
+```
+
+Or resolve the symlink when starting:
+
+```bash
+php artisan octane:start --server=frankenphp --caddyfile=$(realpath Caddyfile)
+```
