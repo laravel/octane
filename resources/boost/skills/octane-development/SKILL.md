@@ -67,6 +67,30 @@ Guard the driver, then run closures in parallel:
 - Call `$this->refreshApplication()` between assertions to simulate the per-request scoped-binding flush and prove state does not bleed.
 - Guard Swoole-specific tests with `extension_loaded('swoole')` and skip them when the extension is absent.
 
+## Common Pitfalls
+
+These recur in real Octane bug reports. Guard against each one.
+
+- Do not call `config()`, `app('config')`, or other container services on `WorkerStarting` / `OnWorkerStart` or in a provider constructor. They may run before the container is bootstrapped and throw `ReflectionException: Class "config" does not exist`, especially when config is not cached. Resolve config inside the request lifecycle and never assume `php artisan config:cache` has run.
+- Never capture `Auth::user()` in a singleton, static, or custom guard binding. It leaves one user logged in for later requests on the same worker, even after their cookie is cleared. Resolve auth per request and add stateful services to the `flush` list. See [State Isolation](#state-isolation-all-drivers).
+- Close per-request Redis, database, and HTTP client connections you open outside the framework's managed pools. Octane does not close them, so they accumulate until the worker recycles. Reset them on a `RequestTerminated` listener.
+- Do not read PHP superglobals. `$_GET`, `$_POST`, and `$_SERVER` are not reliably populated under workers. Use the `Request` object instead.
+- Do not rely on `max_execution_time` or `php.ini` upload limits. Long-running workers do not honor them the way PHP-FPM does. Set timeouts and upload limits through the driver and server config.
+- Do not capture non-serializable values in a `concurrently()` closure. A `PDO` connection, Eloquent model, or `$this` throws a serialization error. Pass scalar IDs and re-fetch inside the closure.
+- Fix PHP warnings emitted during request startup. On FrankenPHP they shut down the worker. Resolve the underlying notice rather than suppressing it.
+- Let Caddy serve static assets directly on FrankenPHP. Routing static files through the PHP worker exhausts resources.
+- Confirm the configured driver matches the installed runtime. Installing for RoadRunner or FrankenPHP while `octane.server` still points at `swoole` produces "Swoole extension missing" startup errors.
+- Reload workers after changing code, providers, env, or config. Workers hold the booted app in memory and pick up changes only after `octane:reload` or a restart. Use `--watch` in development only.
+
+## References
+
+Verify driver-specific specifics against the official docs (versions and config keys drift):
+
+- Laravel Octane: https://laravel.com/docs/octane
+- FrankenPHP: https://frankenphp.dev/docs/ (worker mode: `/docs/worker/`, Laravel: `/docs/laravel/`, config/Caddyfile: `/docs/config/`, known issues: `/docs/known-issues/`)
+- OpenSwoole: https://openswoole.com/docs
+- RoadRunner: https://docs.roadrunner.dev/docs (PHP workers: `/docs/php-worker/worker.md`, intro: `/docs/general/about.md`)
+
 ## Verification
 
 1. Confirm `config('octane.server')` matches the driver assumed by any Swoole-only code.
