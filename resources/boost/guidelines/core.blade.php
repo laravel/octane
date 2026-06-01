@@ -1,4 +1,4 @@
-## Laravel Octane
+# Laravel Octane
 
 This application uses Laravel Octane, a long-running PHP server. The application bootstraps once and handles many requests within the same process.
 
