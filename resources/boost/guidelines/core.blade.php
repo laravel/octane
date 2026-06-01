@@ -7,4 +7,4 @@ Critical rules (always apply):
 - Use `config('octane.server')` to detect the active driver (`swoole`, `roadrunner`, or `frankenphp`)
 - Prefer scoped bindings (`$this->app->scoped()`) over singletons for per-request services
 
-> When working on Octane-specific features (concurrency, shared tables, memory, driver config, testing), ask for the Octane skill for detailed rules.
+> When working on Octane-specific features (concurrency, shared tables, memory, driver config, testing), invoke `octane-developement` for detailed rules.
