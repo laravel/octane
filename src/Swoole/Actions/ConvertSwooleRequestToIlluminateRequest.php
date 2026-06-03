@@ -3,7 +3,6 @@
 namespace Laravel\Octane\Swoole\Actions;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class ConvertSwooleRequestToIlluminateRequest
@@ -21,22 +20,26 @@ class ConvertSwooleRequestToIlluminateRequest
             $phpSapi
         );
 
+        $data = [];
+        $method = strtoupper($serverVariables['REQUEST_METHOD'] ?? 'GET');
+        $contentType = (string) ($serverVariables['CONTENT_TYPE'] ?? '');
+
+        if (
+            str_starts_with($contentType, 'application/x-www-form-urlencoded')
+            && in_array($method, ['PUT', 'PATCH', 'DELETE'], true)
+        ) {
+            parse_str($swooleRequest->rawContent(), $data);
+        }
+
         $request = new SymfonyRequest(
             $swooleRequest->get ?? [],
-            $swooleRequest->post ?? [],
+            $data ?: ($swooleRequest->post ?? []),
             [],
             $swooleRequest->cookie ?? [],
             $swooleRequest->files ?? [],
             $serverVariables,
-            $swooleRequest->rawContent(),
+            $swooleRequest->rawContent()
         );
-
-        if (str_starts_with((string) $request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded') &&
-            in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'PATCH', 'DELETE'])) {
-            parse_str($request->getContent(), $data);
-
-            $request->request = new InputBag($data);
-        }
 
         return Request::createFromBase($request);
     }
@@ -63,9 +66,9 @@ class ConvertSwooleRequestToIlluminateRequest
             $results['REQUEST_URI'] .= '?'.$results['QUERY_STRING'];
         }
 
-        return $phpSapi === 'cli-server'
-                ? $this->correctHeadersSetIncorrectlyByPhpDevServer($results)
-                : $results;
+        return str_starts_with($phpSapi, 'cli')
+            ? $this->correctHeadersSetIncorrectlyByPhpDevServer($results)
+            : $results;
     }
 
     /**
