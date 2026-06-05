@@ -3,10 +3,14 @@
 namespace Laravel\Octane\Tests;
 
 use Illuminate\Http\Request;
+use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\FrankenPhp\FrankenPhpClient;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
+use Laravel\Octane\Testing\Fakes\FakeWorker;
+use Mockery;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FrankenPhpClientTest extends TestCase
 {
@@ -26,5 +30,76 @@ class FrankenPhpClientTest extends TestCase
         (new FrankenPhpClient())->respond(new RequestContext(), new OctaneResponse($response));
 
         $this->assertTrue(true);
+    }
+
+    public function test_response_with_streamed_generator()
+    {
+        $response = new StreamedResponse(function (): iterable {
+            yield 'Hello ';
+            yield 'World';
+        }, 200);
+
+        ob_start();
+
+        (new FrankenPhpClient())->respond(new RequestContext(), new OctaneResponse($response));
+
+        $this->assertSame('Hello World', ob_get_clean());
+    }
+
+    public function test_worker_streams_generator_responses_created_by_response_factory()
+    {
+        $previousOctaneServerFlag = $_SERVER['LARAVEL_OCTANE'] ?? null;
+        $_SERVER['LARAVEL_OCTANE'] = 1;
+
+        try {
+            $app = $this->createApplication();
+
+            $app['router']->get('/stream', fn () => response()->stream(function (): iterable {
+                yield "data: hello\n\n";
+                yield "data: [DONE]\n\n";
+            }, headers: ['Content-Type' => 'text/event-stream']));
+
+            $appFactory = Mockery::mock(ApplicationFactory::class);
+            $appFactory->shouldReceive('createApplication')->andReturn($app);
+
+            $worker = new FakeWorker($appFactory, new class([Request::create('/stream')]) extends FrankenPhpClient
+            {
+                public function __construct(public array $requests)
+                {
+                }
+
+                public function marshalRequest(RequestContext $context): array
+                {
+                    return [$context->request, $context];
+                }
+            });
+
+            $worker->boot();
+
+            ob_start();
+
+            $worker->run();
+
+            $this->assertSame("data: hello\n\ndata: [DONE]\n\n", ob_get_clean());
+        } finally {
+            if ($previousOctaneServerFlag === null) {
+                unset($_SERVER['LARAVEL_OCTANE']);
+            } else {
+                $_SERVER['LARAVEL_OCTANE'] = $previousOctaneServerFlag;
+            }
+        }
+    }
+
+    public function test_response_with_streamed_string_callback()
+    {
+        $response = new StreamedResponse(function (): string {
+            return 'Hello World';
+        }, 200);
+
+        ob_start();
+
+        (new FrankenPhpClient())->respond(new RequestContext(), new OctaneResponse($response));
+
+        $this->assertSame('Hello World', ob_get_clean());
     }
 }
