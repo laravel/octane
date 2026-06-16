@@ -109,6 +109,13 @@ $server->on('workerstart', fn (Server $server, $workerId) =>
 */
 
 $server->on('request', function ($request, $response) use ($server, $workerState, $serverState) {
+    if (! $workerState->worker || ! $workerState->client) {
+        $response->status(503);
+        $response->end('Service Unavailable');
+
+        return;
+    }
+
     $workerState->lastRequestTime = microtime(true);
 
     if ($workerState->timerTable) {
