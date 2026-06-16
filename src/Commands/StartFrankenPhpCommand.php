@@ -15,7 +15,8 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 {
     use Concerns\InstallsFrankenPhpDependencies,
         Concerns\InteractsWithEnvironmentVariables,
-        Concerns\InteractsWithServers {
+        Concerns\InteractsWithServers,
+        Concerns\ResolvesSymlinks {
             Concerns\InteractsWithServers::writeServerRunningMessage as baseWriteServerRunningMessage;
         }
 
@@ -76,6 +77,8 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
         $this->forgetEnvironmentVariables();
 
+        $basePath = $this->resolveBasePath();
+
         $host = $this->getHost();
         $port = $this->getPort();
 
@@ -89,10 +92,10 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             $frankenphpBinary,
             'run',
             '-c', $this->configPath(),
-        ], base_path(), [
+        ], $basePath, [
             'APP_ENV' => app()->environment(),
-            'APP_BASE_PATH' => base_path(),
-            'APP_PUBLIC_PATH' => public_path(),
+            'APP_BASE_PATH' => $basePath,
+            'APP_PUBLIC_PATH' => $basePath.'/public',
             'LARAVEL_OCTANE' => 1,
             'MAX_REQUESTS' => $this->option('max-requests'),
             'REQUEST_MAX_EXECUTION_TIME' => $this->maxExecutionTime(),
@@ -224,7 +227,9 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             return "\t\twatch";
         }
 
-        return collect($paths)->map(fn ($path) => "\t\twatch ".base_path($path))->join("\n");
+        $basePath = $this->resolveBasePath();
+
+        return collect($paths)->map(fn ($path) => "\t\twatch ".$basePath.'/'.$path)->join("\n");
     }
 
     /**

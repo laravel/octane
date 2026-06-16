@@ -31,6 +31,11 @@ class ReloadCommand extends Command
      */
     public function handle()
     {
+        // Clear PHP stat cache so symlinks are re-resolved after a
+        // zero-downtime deployment (e.g. Deployer, Envoyer) atomically
+        // switches the "current" symlink to a new release directory.
+        clearstatcache(true);
+
         $server = $this->option('server') ?: config('octane.server');
 
         return match ($server) {
