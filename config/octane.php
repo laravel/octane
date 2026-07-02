@@ -42,6 +42,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Octane Server State File
+    |--------------------------------------------------------------------------
+    |
+    | This value determines where Octane stores the state file used to track
+    | the running server's master process ID and admin endpoint, which is
+    | read by the octane:status, octane:stop, and octane:reload commands.
+    | You may change this value if your deployment needs the file stored
+    | outside of the default location, such as when running multiple
+    | servers against shared storage.
+    |
+    */
+
+    'state_file' => env('OCTANE_STATE_FILE', storage_path('logs/octane-server-state.json')),
+
+    /*
+    |--------------------------------------------------------------------------
     | Force HTTPS
     |--------------------------------------------------------------------------
     |
