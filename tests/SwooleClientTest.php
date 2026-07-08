@@ -348,6 +348,28 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
+        $swooleResponse->shouldReceive('write')->never();
+        $swooleResponse->shouldReceive('end')->once()->with('Hello World');
+
+        $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse($response));
+    }
+
+    public function test_respond_method_send_chunked_response_to_swoole_with_coroutines(): void
+    {
+        $this->createApplication();
+        Config::set('octane.swoole.options.enable_coroutine', true);
+        $client = new SwooleClient(6);
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->once()->with('Hello ');
         $swooleResponse->shouldReceive('write')->once()->with('World');
         $swooleResponse->shouldReceive('end')->once();
