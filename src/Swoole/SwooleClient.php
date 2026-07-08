@@ -226,8 +226,6 @@ class SwooleClient implements Client, ServesStaticFiles
             return;
         }
 
-        $canStream = config('octane.swoole.options.enable_coroutine', false);
-
         if ($octaneResponse->outputBuffer) {
             $swooleResponse->write($octaneResponse->outputBuffer);
         }
@@ -258,7 +256,7 @@ class SwooleClient implements Client, ServesStaticFiles
             return;
         }
 
-        if ($length <= $this->chunkSize || config('octane.swoole.options.open_http2_protocol', false) || ! $canStream) {
+        if ($length <= $this->chunkSize || config('octane.swoole.options.open_http2_protocol', false) || ! config('octane.swoole.options.enable_coroutine', false)) {
             $swooleResponse->end($content);
 
             return;
