@@ -95,7 +95,7 @@ try {
         }
     };
 
-    while ($requestCount < $maxRequests && frankenphp_handle_request($handleRequest)) {
+    while ($requestCount < $maxRequests && @frankenphp_handle_request($handleRequest)) {
         $requestCount++;
     }
 } finally {
