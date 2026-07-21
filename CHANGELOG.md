@@ -1,6 +1,15 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.17.5...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.18.0...2.x)
+
+## [v2.18.0](https://github.com/laravel/octane/compare/v2.17.5...v2.18.0) - 2026-07-21
+
+* Bump shivammathur/setup-php from 2.37.1 to 2.37.2 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/octane/pull/1145
+* Bump actions/checkout from 6.0.3 to 7.0.0 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/octane/pull/1146
+* Add state_file config option with env() override by [@serpentblade](https://github.com/serpentblade) in https://github.com/laravel/octane/pull/1147
+* Update the existing OCTANE_SERVER value on install by [@lazerg](https://github.com/lazerg) in https://github.com/laravel/octane/pull/1148
+* fix: prevent malformed multipart request from crashing the frankenphp worker by [@lazerg](https://github.com/lazerg) in https://github.com/laravel/octane/pull/1152
+* Fix formatting in Caddyfile stub by [@michaelr0](https://github.com/michaelr0) in https://github.com/laravel/octane/pull/1153
 
 ## [v2.17.5](https://github.com/laravel/octane/compare/v2.17.4...v2.17.5) - 2026-06-04
 
