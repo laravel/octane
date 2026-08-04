@@ -54,4 +54,14 @@ class Octane
 
         error_log($message, 4);
     }
+
+    /**
+     * Register the Octane dev commands.
+     */
+    public static function registerDevCommands(): void
+    {
+        if (class_exists(\Illuminate\Foundation\DevCommands::class)) {
+            \Illuminate\Foundation\DevCommands::artisan('octane:start --watch', 'server');
+        }
+    }
 }
