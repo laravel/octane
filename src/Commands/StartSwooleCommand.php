@@ -130,7 +130,6 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'max_request' => $this->option('max-requests'),
             'package_max_length' => 10 * 1024 * 1024,
             'reactor_num' => $this->workerCount($extension),
-            'send_yield' => true,
             'socket_buffer_size' => 10 * 1024 * 1024,
             'task_max_request' => $this->option('max-requests'),
             'task_worker_num' => $this->taskWorkerCount($extension),
