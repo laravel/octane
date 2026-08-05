@@ -91,6 +91,8 @@ class OctaneServiceProvider extends ServiceProvider
                         ? new SwooleCoroutineDispatcher($app->bound('Swoole\Http\Server'))
                         : $app->make(SequentialCoroutineDispatcher::class);
         });
+
+        Octane::registerDevCommands();
     }
 
     /**
