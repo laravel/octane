@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.18.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.19.0...2.x)
+
+## [v2.19.0](https://github.com/laravel/octane/compare/v2.18.0...v2.19.0) - 2026-08-05
+
+* Bump actions/checkout from 7.0.0 to 7.0.1 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/octane/pull/1154
+* Override "server" `artisan dev` command by [@joetannenbaum](https://github.com/joetannenbaum) in https://github.com/laravel/octane/pull/1156
 
 ## [v2.18.0](https://github.com/laravel/octane/compare/v2.17.5...v2.18.0) - 2026-07-21
 
