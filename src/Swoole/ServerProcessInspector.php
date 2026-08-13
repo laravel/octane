@@ -51,7 +51,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
             'managerProcessId' => $managerProcessId
         ] = $this->serverStateFile->read();
 
-        $workerProcessIds = $this->exec->run('pgrep -P '.$managerProcessId);
+        $workerProcessIds = $this->exec->run('pgrep -P '.(int) $managerProcessId);
 
         foreach ([$masterProcessId, $managerProcessId, ...$workerProcessIds] as $processId) {
             $this->dispatcher->signal((int) $processId, SIGKILL);
