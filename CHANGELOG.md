@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.19.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.19.1...2.x)
+
+## [v2.19.1](https://github.com/laravel/octane/compare/v2.19.0...v2.19.1) - 2026-08-13
+
+* Cast `$managerProcessId` to integer within Swoole's `ServerProcessInspector::stopServer()` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/octane/pull/1158
 
 ## [v2.19.0](https://github.com/laravel/octane/compare/v2.18.0...v2.19.0) - 2026-08-05
 
