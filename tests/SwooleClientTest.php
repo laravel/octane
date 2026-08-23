@@ -10,6 +10,7 @@ use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\SwooleClient;
 use Mockery;
+use Swoole\Coroutine;
 use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -350,6 +351,31 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
         $swooleResponse->shouldReceive('write')->once()->with('Hello ');
         $swooleResponse->shouldReceive('write')->once()->with('World');
+        $swooleResponse->shouldReceive('end')->once();
+
+        $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse($response));
+    }
+
+    public function test_respond_method_sends_chunked_response_within_coroutine_context(): void
+    {
+        $this->createApplication();
+        $client = new SwooleClient(6);
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/html', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
+        $swooleResponse->shouldReceive('write')->twice()->with(Mockery::on(function () {
+            $this->assertNotSame(-1, Coroutine::getCid());
+
+            return true;
+        }));
         $swooleResponse->shouldReceive('end')->once();
 
         $response = new Response('Hello World', 200, ['Content-Type' => 'text/html']);
