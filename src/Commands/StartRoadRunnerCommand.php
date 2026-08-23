@@ -83,7 +83,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-c', $this->configPath(),
             '-o', 'version=3',
             '-o', 'http.address='.$this->getHost().':'.$this->getPort(),
-            '-o', 'server.command='.(new PhpExecutableFinder)->find().','.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
+            '-o', 'server.command='.(new PhpExecutableFinder)->find().','.$this->workerCommand(),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'rpc.listen=tcp://'.$this->rpcHost().':'.$this->rpcPort(),
@@ -135,6 +135,29 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         return $this->option('workers') == 'auto'
                             ? 0
                             : $this->option('workers');
+    }
+
+    /**
+     * Get the path to the RoadRunner worker command.
+     *
+     * @return string
+     */
+    protected function workerCommand()
+    {
+        $command = config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker');
+
+        return $this->isAbsolutePath($command) ? $command : base_path($command);
+    }
+
+    /**
+     * Determine if the given path is absolute.
+     *
+     * @param  string  $path
+     * @return bool
+     */
+    protected function isAbsolutePath($path)
+    {
+        return str_starts_with($path, '/') || preg_match('/^[a-zA-Z]:[\\\\\/]/', $path) === 1;
     }
 
     /**
