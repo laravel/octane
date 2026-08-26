@@ -12,6 +12,7 @@ use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use ReflectionClass;
+use Swoole\Coroutine;
 use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -227,21 +228,23 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         if ($octaneResponse->outputBuffer) {
-            $swooleResponse->write($octaneResponse->outputBuffer);
+            Coroutine\run(fn () => $swooleResponse->write($octaneResponse->outputBuffer));
         }
 
         if ($octaneResponse->response instanceof StreamedResponse) {
-            ob_start(function ($data) use ($swooleResponse) {
-                if (strlen($data) > 0) {
-                    $swooleResponse->write($data);
-                }
+            Coroutine\run(function () use ($swooleResponse, $octaneResponse) {
+                ob_start(function ($data) use ($swooleResponse) {
+                    if (strlen($data) > 0) {
+                        $swooleResponse->write($data);
+                    }
 
-                return '';
-            }, 1);
+                    return '';
+                }, 1);
 
-            $octaneResponse->response->sendContent();
+                $octaneResponse->response->sendContent();
 
-            ob_end_clean();
+                ob_end_clean();
+            });
 
             $swooleResponse->end();
 
@@ -262,9 +265,11 @@ class SwooleClient implements Client, ServesStaticFiles
             return;
         }
 
-        for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
-            $swooleResponse->write(substr($content, $offset, $this->chunkSize));
-        }
+        Coroutine\run(function () use ($swooleResponse, $content, $length) {
+            for ($offset = 0; $offset < $length; $offset += $this->chunkSize) {
+                $swooleResponse->write(substr($content, $offset, $this->chunkSize));
+            }
+        });
 
         $swooleResponse->end();
     }
