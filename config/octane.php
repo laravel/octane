@@ -197,6 +197,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Reload Changed Files
+    |--------------------------------------------------------------------------
+    |
+    | When this option is true, Octane detects PHP files already loaded by a
+    | worker that later change on disk and reloads that worker. This avoids
+    | serving stale classes until a manual octane:reload. When null, the
+    | check runs only in the local environment. Node and --watch are not
+    | required. Set OCTANE_RELOAD_CHANGED_FILES=false to disable.
+    |
+    */
+
+    'reload_changed_files' => env('OCTANE_RELOAD_CHANGED_FILES'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Garbage Collection Threshold
     |--------------------------------------------------------------------------
     |
