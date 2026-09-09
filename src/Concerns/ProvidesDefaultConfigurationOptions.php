@@ -18,6 +18,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\EnsureRequestServerPortMatchesScheme::class,
             \Laravel\Octane\Listeners\GiveNewRequestInstanceToApplication::class,
             \Laravel\Octane\Listeners\GiveNewRequestInstanceToPaginator::class,
+            \Laravel\Octane\Listeners\ReloadWorkerIfLoadedFilesChanged::class,
         ];
     }
 
