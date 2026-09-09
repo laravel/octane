@@ -4,6 +4,7 @@ namespace Laravel\Octane\Listeners;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Laravel\Octane\Exceptions\DdException;
+use Laravel\Octane\Exceptions\StaleApplicationException;
 use Laravel\Octane\Stream;
 
 class ReportException
@@ -21,7 +22,8 @@ class ReportException
                     return;
                 }
 
-                if ($sandbox->environment('local', 'testing')) {
+                if ($sandbox->environment('local', 'testing') &&
+                    ! $event->exception instanceof StaleApplicationException) {
                     Stream::throwable($event->exception);
                 }
 
