@@ -3,6 +3,7 @@
 namespace Laravel\Octane;
 
 use Exception;
+use Laravel\Octane\Exceptions\StaleApplicationException;
 use Laravel\Octane\Swoole\WorkerState;
 use Swoole\Http\Server;
 use Swoole\Table;
@@ -38,6 +39,10 @@ class Octane
      */
     public static function formatExceptionForClient(Throwable $e, bool $debug = false): string
     {
+        if ($e instanceof StaleApplicationException) {
+            return $e->getMessage();
+        }
+
         return $debug ? (string) $e : 'Internal server error.';
     }
 
