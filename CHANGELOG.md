@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.19.1...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.20.0...2.x)
+
+## [v2.20.0](https://github.com/laravel/octane/compare/v2.19.1...v2.20.0) - 2026-08-23
+
+* Make RoadRunner worker command configurable and absolute-path safe by [@wakqasahmed](https://github.com/wakqasahmed) in https://github.com/laravel/octane/pull/1162
 
 ## [v2.19.1](https://github.com/laravel/octane/compare/v2.19.0...v2.19.1) - 2026-08-13
 
