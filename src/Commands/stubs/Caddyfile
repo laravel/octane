@@ -22,7 +22,7 @@
 		format filter {
 			wrap {$CADDY_SERVER_LOGGER}
 			fields {
-				uri query {
+				request>uri query {
 					replace authorization REDACTED
 				}
 			}
