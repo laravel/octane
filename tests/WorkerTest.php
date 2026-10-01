@@ -87,11 +87,13 @@ class WorkerTest extends TestCase
             $this->markTestSkipped('Once is only supported in Laravel 11+');
         }
 
-        $client = new class([
+        $requests = [
             Request::create('/once?value=first'),
             Request::create('/once?value=second'),
             Request::create('/once?value=third'),
-        ]) extends FakeClient
+        ];
+
+        $client = new class($requests) extends FakeClient
         {
             public function respond(RequestContext $context, OctaneResponse $octaneResponse): void
             {
