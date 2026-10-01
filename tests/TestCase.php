@@ -22,7 +22,7 @@ class TestCase extends BaseTestCase
 {
     use InteractsWithMockery;
 
-    protected function createOctaneContext(array $requests)
+    protected function createOctaneContext(array $requests, ?FakeClient $client = null)
     {
         $appFactory = Mockery::mock(ApplicationFactory::class);
 
@@ -31,7 +31,7 @@ class TestCase extends BaseTestCase
         $app->register(new CarbonServiceProvider($app));
         $app->register(new OctaneServiceProvider($app));
 
-        $worker = new FakeWorker($appFactory, $roadRunnerClient = new FakeClient($requests));
+        $worker = new FakeWorker($appFactory, $roadRunnerClient = $client ?? new FakeClient($requests));
         $app->bind(Client::class, fn () => $roadRunnerClient);
 
         $worker->boot();

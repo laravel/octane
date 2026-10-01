@@ -89,19 +89,24 @@ class Worker implements WorkerContract
                 ob_end_clean();
             }
 
-            // Here we will actually hand the incoming request to the Laravel application so
-            // it can generate a response. We'll send this response back to the client so
-            // it can be returned to a browser. This gateway will also dispatch events.
-            $this->client->respond(
-                $context,
-                $octaneResponse = new OctaneResponse($response, $output),
-            );
+            try {
+                // Here we will actually hand the incoming request to the Laravel application so
+                // it can generate a response. We'll send this response back to the client so
+                // it can be returned to a browser. This gateway will also dispatch events.
+                $this->client->respond(
+                    $context,
+                    $octaneResponse = new OctaneResponse($response, $output),
+                );
 
-            $responded = true;
+                $responded = true;
 
-            $this->invokeRequestHandledCallbacks($request, $response, $sandbox);
-
-            $gateway->terminate($request, $response);
+                $this->invokeRequestHandledCallbacks($request, $response, $sandbox);
+            } finally {
+                // The request was handled, so it should always be terminated, even when the
+                // client fails to send the response. Otherwise, the terminating listeners
+                // would not flush the request's state before the next request is handled.
+                $gateway->terminate($request, $response);
+            }
         } catch (Throwable $e) {
             $this->handleWorkerError($e, $sandbox, $request, $context, $responded);
         } finally {
