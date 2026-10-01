@@ -51,6 +51,7 @@ trait ProvidesDefaultConfigurationOptions
             \Laravel\Octane\Listeners\FlushArrayCache::class,
             \Laravel\Octane\Listeners\FlushLogContext::class,
             \Laravel\Octane\Listeners\FlushMonologState::class,
+            \Laravel\Octane\Listeners\FlushOnce::class,
             \Laravel\Octane\Listeners\FlushStrCache::class,
             \Laravel\Octane\Listeners\FlushTranslatorCache::class,
             \Laravel\Octane\Listeners\FlushVite::class,
