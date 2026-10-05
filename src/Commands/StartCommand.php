@@ -137,7 +137,8 @@ class StartCommand extends Command implements SignalableCommandInterface
      */
     protected function stopServer()
     {
-        $server = $this->option('server') ?: config('octane.server');
+        // A signal may arrive before the command's input has been bound...
+        $server = (isset($this->input) ? $this->option('server') : null) ?: config('octane.server');
 
         $this->callSilent('octane:stop', [
             '--server' => $server,
