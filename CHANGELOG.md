@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.20.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.21.0...2.x)
+
+## [v2.21.0](https://github.com/laravel/octane/compare/v2.20.0...v2.21.0) - 2026-10-05
+
+* [2.x] Fix redaction of authorization query parameter in FrankenPHP access logs by [@m0nclous](https://github.com/m0nclous) in https://github.com/laravel/octane/pull/1167
+* [2.x] Flush once() cache when preparing for the next operation by [@cristiangirlea](https://github.com/cristiangirlea) in https://github.com/laravel/octane/pull/1169
+* Fix stopServer() when a signal arrives before the input is bound by [@jasparsteenman](https://github.com/jasparsteenman) in https://github.com/laravel/octane/pull/1170
 
 ## [v2.20.0](https://github.com/laravel/octane/compare/v2.19.1...v2.20.0) - 2026-08-23
 
