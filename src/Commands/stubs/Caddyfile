@@ -29,9 +29,12 @@
 		}
 	}
 
+	# Compressing the Mercure stream costs memory per subscriber and enables BREACH-style attacks...
+	@compressible not path /.well-known/mercure
+
 	route {
 		root * "{$APP_PUBLIC_PATH}"
-		encode zstd br gzip
+		encode @compressible zstd br gzip
 
 		# Mercure configuration is injected here...
 		{$CADDY_SERVER_EXTRA_DIRECTIVES}
