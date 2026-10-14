@@ -22,7 +22,7 @@ trait InstallsFrankenPhpDependencies
      *
      * @var string
      */
-    protected $requiredFrankenPhpVersion = '1.5.0';
+    protected $requiredFrankenPhpVersion = '1.13.0';
 
     /**
      * Ensure the FrankenPHP's Caddyfile and worker script are installed.

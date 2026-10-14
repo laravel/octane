@@ -2,6 +2,7 @@
 
 namespace Laravel\Octane\Commands;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Laravel\Octane\FrankenPhp\ServerProcessInspector;
@@ -105,6 +106,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             'CADDY_SERVER_WORKER_COUNT' => $this->workerCount() ?: '',
             'CADDY_SERVER_WORKER_DIRECTIVE' => $this->workerCount() ? "num {$this->workerCount()}" : '',
             'CADDY_SERVER_EXTRA_DIRECTIVES' => $this->buildMercureConfig(),
+            ...$this->mercureEnvironmentVariables(),
             'CADDY_SERVER_WATCH_DIRECTIVES' => $this->buildWatchConfig(),
             ...config('octane.caddy.env', []),
         ]));
@@ -169,27 +171,177 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function buildMercureConfig()
     {
-        if (! $mercure = (config('octane')['mercure'] ?? false)) {
+        if (! $mercure = config('octane.mercure') ?? $this->mercureConfigFromBroadcasting()) {
             return '';
         }
 
-        $config = 'mercure {';
+        return 'mercure '.$this->buildCaddyfileBlock($mercure, 2);
+    }
 
-        foreach ($mercure as $key => $value) {
+    /**
+     * Generate a Caddyfile block from the given directives, nesting arrays as sub-blocks.
+     *
+     * @param  array  $directives
+     * @param  int  $depth
+     * @return string
+     */
+    protected function buildCaddyfileBlock(array $directives, int $depth)
+    {
+        $indent = str_repeat("\t", $depth + 1);
+
+        $config = '{';
+
+        foreach ($directives as $key => $value) {
             if ($value === false) {
                 continue;
             }
 
-            if ($value === true) {
-                $config .= "\n\t\t\t$key";
-
-                continue;
-            }
-
-            $config .= "\n\t\t\t$key $value";
+            $config .= "\n$indent".match (true) {
+                $value === true => $key,
+                is_array($value) => "$key ".$this->buildCaddyfileBlock($value, $depth + 1),
+                default => "$key $value",
+            };
         }
 
-        return "$config\n\t\t}";
+        return $config."\n".str_repeat("\t", $depth).'}';
+    }
+
+    /**
+     * Generate the Mercure hub directives matching the default broadcasting connection.
+     *
+     * @return array
+     */
+    protected function mercureConfigFromBroadcasting()
+    {
+        if (! $connection = $this->frankenPhpMercureConnection()) {
+            return [];
+        }
+
+        $keys = $this->mercureKeys($connection);
+
+        foreach (array_filter($keys) as [, $algorithm]) {
+            if (! str_starts_with($algorithm, 'HS')) {
+                $this->components->warn("Unable to configure the FrankenPHP Mercure hub for the [$algorithm] algorithm. Please configure it using the [octane.mercure] configuration option.");
+
+                return [];
+            }
+        }
+
+        // Mirror the claims the broadcaster signs its tokens with...
+        $claims = $connection['claims'] ?? [];
+        $appUrl = config('app.url');
+        $origin = $this->origin($appUrl);
+
+        $url = ($connection['url'] ?? null)
+            ?: (($connection['public_url'] ?? null) ?: ($origin ? $origin.'/.well-known/mercure' : '/.well-known/mercure'));
+
+        $audience = Arr::first(Arr::wrap($claims['aud'] ?? null)) ?: (($connection['public_url'] ?? null) ?: $url);
+        $issuer = ($claims['iss'] ?? null) ?: ($appUrl ?: $url);
+
+        return [
+            'issuer '.$issuer => [
+                'publisher' => $keys['publisher'] ? ['jwt' => '{env.OCTANE_MERCURE_PUBLISHER_JWT_KEY} '.$keys['publisher'][1]] : false,
+                'subscriber' => ['jwt' => '{env.OCTANE_MERCURE_SUBSCRIBER_JWT_KEY} '.$keys['subscriber'][1]],
+            ],
+            'resource_identifier' => $this->origin($audience) ? $audience : false,
+            'subscriptions' => true,
+            'publish_origins' => $this->mercureClientEvents($connection) && $origin ? $origin : false,
+            'cookie_name' => ($connection['cookie_name'] ?? null) ?: false,
+        ];
+    }
+
+    /**
+     * Get the keys verifying the tokens of the FrankenPHP Mercure hub.
+     *
+     * @return array
+     */
+    protected function mercureEnvironmentVariables()
+    {
+        if (config('octane.mercure') !== null || ! $connection = $this->frankenPhpMercureConnection()) {
+            return [];
+        }
+
+        $keys = $this->mercureKeys($connection);
+
+        return [
+            'OCTANE_MERCURE_PUBLISHER_JWT_KEY' => $keys['publisher'][0] ?? '',
+            'OCTANE_MERCURE_SUBSCRIBER_JWT_KEY' => $keys['subscriber'][0],
+        ];
+    }
+
+    /**
+     * Get the secret and algorithm of the publisher and subscriber tokens of the given connection.
+     *
+     * @param  array  $connection
+     * @return array{publisher: array{0: string, 1: string}|null, subscriber: array{0: string, 1: string}}
+     */
+    protected function mercureKeys(array $connection)
+    {
+        $key = fn ($side) => [
+            (string) (($connection[$side.'_secret'] ?? null) ?: ($connection['secret'] ?? '')),
+            $connection[$side.'_algorithm'] ?? $connection['algorithm'] ?? 'HS256',
+        ];
+
+        // Browsers publish whispers with their subscriber token...
+        return [
+            'publisher' => match (true) {
+                ! empty($connection['url']) => $key('publish'),
+                $this->mercureClientEvents($connection) => $key('subscribe'),
+                default => null,
+            },
+            'subscriber' => $key('subscribe'),
+        ];
+    }
+
+    /**
+     * Determine if the given connection allows clients to whisper.
+     *
+     * @param  array  $connection
+     * @return bool
+     */
+    protected function mercureClientEvents(array $connection)
+    {
+        return (bool) ($connection['client_events'] ?? true);
+    }
+
+    /**
+     * Get the default broadcasting connection if browsers subscribe to FrankenPHP's built-in Mercure hub.
+     *
+     * @return array|null
+     */
+    protected function frankenPhpMercureConnection()
+    {
+        $connection = config('broadcasting.connections.'.config('broadcasting.default'));
+
+        if (($connection['driver'] ?? null) !== 'mercure') {
+            return null;
+        }
+
+        // A hub served from another origin is a remote one...
+        $origin = $this->origin(($connection['public_url'] ?? null) ?: ($connection['url'] ?? null));
+
+        if ($origin && $origin !== $this->origin(config('app.url'))) {
+            return null;
+        }
+
+        return $connection;
+    }
+
+    /**
+     * Get the origin of the given absolute URL.
+     *
+     * @param  string|null  $url
+     * @return string|null
+     */
+    protected function origin($url)
+    {
+        $parts = parse_url((string) $url);
+
+        if (! isset($parts['scheme'], $parts['host'])) {
+            return null;
+        }
+
+        return $parts['scheme'].'://'.$parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : '');
     }
 
     /**
