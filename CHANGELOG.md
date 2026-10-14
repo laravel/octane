@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.21.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.22.0...2.x)
+
+## [v2.22.0](https://github.com/laravel/octane/compare/v2.21.0...v2.22.0) - 2026-10-14
+
+* Remove security policy in favor of the org-wide default by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/octane/pull/1172
+* [2.x] Support Mercure 1.0 and Laravel's Mercure broadcaster with FrankenPHP by [@dunglas](https://github.com/dunglas) in https://github.com/laravel/octane/pull/1171
 
 ## [v2.21.0](https://github.com/laravel/octane/compare/v2.20.0...v2.21.0) - 2026-10-05
 
