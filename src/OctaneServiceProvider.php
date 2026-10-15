@@ -131,12 +131,26 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\EnsureRequestServerPortMatchesScheme::class);
         $this->app->singleton(Listeners\EnsureUploadedFilesAreValid::class);
         $this->app->singleton(Listeners\EnsureUploadedFilesCanBeMoved::class);
+        $this->app->singleton(Listeners\FlushArrayCache::class);
         $this->app->singleton(Listeners\FlushAuthenticationState::class);
+        $this->app->singleton(Listeners\FlushDatabaseQueryLog::class);
+        $this->app->singleton(Listeners\FlushDatabaseRecordModificationState::class);
+        $this->app->singleton(Listeners\FlushLocaleState::class);
+        $this->app->singleton(Listeners\FlushLogContext::class);
+        $this->app->singleton(Listeners\FlushMonologState::class);
+        $this->app->singleton(Listeners\FlushOnce::class);
         $this->app->singleton(Listeners\FlushQueuedCookies::class);
         $this->app->singleton(Listeners\FlushSessionState::class);
+        $this->app->singleton(Listeners\FlushStrCache::class);
         $this->app->singleton(Listeners\FlushTemporaryContainerInstances::class);
+        $this->app->singleton(Listeners\FlushTranslatorCache::class);
+        $this->app->singleton(Listeners\FlushVite::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToAuthorizationGate::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToBroadcastManager::class);
+        $this->app->singleton(Listeners\GiveNewApplicationInstanceToCacheManager::class);
+        $this->app->singleton(Listeners\GiveNewApplicationInstanceToDatabaseManager::class);
+        $this->app->singleton(Listeners\GiveNewApplicationInstanceToDatabaseSessionHandler::class);
+        $this->app->singleton(Listeners\GiveNewApplicationInstanceToFilesystemManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToHttpKernel::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToLogManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToMailManager::class);
@@ -144,6 +158,7 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToPipelineHub::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToQueueManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToRouter::class);
+        $this->app->singleton(Listeners\GiveNewApplicationInstanceToSessionManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToValidationFactory::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToViewFactory::class);
         $this->app->singleton(Listeners\GiveNewRequestInstanceToApplication::class);
@@ -152,6 +167,7 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\PrepareLivewireForNextOperation::class);
         $this->app->singleton(Listeners\PrepareScoutForNextOperation::class);
         $this->app->singleton(Listeners\PrepareSocialiteForNextOperation::class);
+        $this->app->singleton(Listeners\RefreshQueryDurationHandling::class);
         $this->app->singleton(Listeners\ReportException::class);
         $this->app->singleton(Listeners\StopWorkerIfNecessary::class);
     }

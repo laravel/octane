@@ -4,9 +4,24 @@ namespace Laravel\Octane\Tests;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Laravel\Octane\Octane;
 
 class BindingStateTest extends TestCase
 {
+    public function test_default_listeners_are_bound_as_singletons()
+    {
+        [$app] = $this->createOctaneContext([]);
+
+        $listeners = array_unique([
+            ...Octane::prepareApplicationForNextOperation(),
+            ...Octane::prepareApplicationForNextRequest(),
+        ]);
+
+        foreach ($listeners as $listener) {
+            $this->assertTrue($app->isShared($listener), "{$listener} is not bound as a singleton.");
+        }
+    }
+
     public function test_container_instances_given_to_dependencies_can_be_stale_if_an_old_instance_is_given()
     {
         [$app, $worker, $client] = $this->createOctaneContext([
