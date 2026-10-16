@@ -34,14 +34,14 @@
         "phpstan/phpstan": "^2.1.7",
         "phpunit/phpunit": "^10.4|^11.5|^12.0|^13.0",
         "spiral/roadrunner-cli": "^2.6.0",
-        "spiral/roadrunner-http": "^3.3.0"
+        "spiral/roadrunner-http": "^4.2.0"
     },
     "bin": [
         "bin/roadrunner-worker",
         "bin/swoole-server"
     ],
     "conflict": {
-        "spiral/roadrunner": "<2023.1.0",
+        "spiral/roadrunner": ">=2020.1.0 <2023.1.0",
         "spiral/roadrunner-cli": "<2.6.0",
         "spiral/roadrunner-http": "<3.3.0"
     },
