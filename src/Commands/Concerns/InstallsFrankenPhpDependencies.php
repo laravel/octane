@@ -171,6 +171,10 @@ trait InstallsFrankenPhpDependencies
 
         $this->components->warn("Your FrankenPHP binary version (<fg=red>$version</>) may be incompatible with Octane.");
 
+        if (realpath($frankenPhpBinary) !== realpath(base_path('frankenphp'))) {
+            return $this->components->warn("Please update the FrankenPHP binary located at [$frankenPhpBinary] manually.");
+        }
+
         if (confirm('Should Octane download the latest FrankenPHP binary version for your operating system?', true)) {
             rename($frankenPhpBinary, "$frankenPhpBinary.backup");
 
