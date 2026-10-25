@@ -26,6 +26,13 @@ trait InstallsRoadRunnerDependencies
     protected $requiredRoadRunnerVersion = '2023.3.0';
 
     /**
+     * The first RoadRunner binary version that uses semantic versioning.
+     *
+     * @var string
+     */
+    protected $firstSemanticRoadRunnerVersion = '3.0.0';
+
+    /**
      * Determine if RoadRunner is installed.
      *
      * @return bool
@@ -133,7 +140,7 @@ trait InstallsRoadRunnerDependencies
 
         $version = explode(' ', $version)[2];
 
-        if (version_compare($version, $this->requiredRoadRunnerVersion, '>=')) {
+        if ($this->roadRunnerBinaryVersionIsSupported($version)) {
             return;
         }
 
@@ -154,6 +161,23 @@ trait InstallsRoadRunnerDependencies
 
             unlink("$roadRunnerBinary.backup");
         }
+    }
+
+    /**
+     * Determine if the given RoadRunner binary version is supported by Octane.
+     *
+     * RoadRunner used calendar versioning from 2023.1.0 through 2025.x and moved to semantic versioning with 3.0.0.
+     *
+     * @param  string  $version
+     * @return bool
+     */
+    protected function roadRunnerBinaryVersionIsSupported($version)
+    {
+        if ((int) $version < 2000) {
+            return version_compare($version, $this->firstSemanticRoadRunnerVersion, '>=');
+        }
+
+        return version_compare($version, $this->requiredRoadRunnerVersion, '>=');
     }
 
     /**
