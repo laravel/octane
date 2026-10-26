@@ -124,7 +124,7 @@ trait InstallsFrankenPhpDependencies
 
             chmod($path, 0755);
 
-            $progressBar->finish();
+            $progressBar?->finish();
 
             $this->newLine();
 
