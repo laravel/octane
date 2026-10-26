@@ -139,6 +139,10 @@ trait InstallsRoadRunnerDependencies
 
         $this->components->warn("Your RoadRunner binary version (<fg=red>$version</>) may be incompatible with Octane.");
 
+        if (realpath($roadRunnerBinary) !== realpath(base_path('rr'))) {
+            return $this->components->warn("Please update the RoadRunner binary located at [$roadRunnerBinary] manually.");
+        }
+
         if (confirm('Should Octane download the latest RoadRunner binary version for your operating system?', true)) {
             rename($roadRunnerBinary, "$roadRunnerBinary.backup");
 
