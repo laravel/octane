@@ -121,9 +121,7 @@ class Worker implements WorkerContract
             // Stop long-lived objects from holding this request until the next one.
             $this->app->instance('request', $this->bootRequest);
 
-            if ($this->app->resolved('router')) {
-                (fn () => $this->currentRequest = null)->call($this->app->make('router'));
-            }
+            (fn () => $this->currentRequest = null)->call($this->app->make('router'));
 
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
