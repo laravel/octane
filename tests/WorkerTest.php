@@ -37,7 +37,13 @@ class WorkerTest extends TestCase
         $released = WeakReference::create($payload);
         unset($payload);
 
+        $this->assertNotNull($released->get());
+
         $worker->run();
+
+        $this->assertEquals('Hello World', $client->responses[0]->getContent());
+        $this->assertNotNull($released->get());
+
         $client->requests = [];
 
         $this->assertNull($released->get());
