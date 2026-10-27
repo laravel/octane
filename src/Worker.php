@@ -123,6 +123,10 @@ class Worker implements WorkerContract
 
             (fn () => $this->currentRequest = null)->call($this->app->make('router'));
 
+            if ($this->app->resolved('auth')) {
+                $this->app->make('auth')->forgetGuards();
+            }
+
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.

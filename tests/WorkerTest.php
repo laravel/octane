@@ -31,7 +31,11 @@ class WorkerTest extends TestCase
             Request::create('/', 'GET'),
         ]);
 
-        $app['router']->get('/', fn () => 'Hello World');
+        $app['router']->get('/', function () {
+            auth()->guard();
+
+            return 'Hello World';
+        });
 
         $client->requests[0]->attributes->set('payload', $payload = new stdClass);
         $released = WeakReference::create($payload);
