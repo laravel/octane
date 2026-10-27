@@ -3,6 +3,7 @@
 use Laravel\Octane\Contracts\OperationTerminated;
 use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
+use Laravel\Octane\Events\RequestReleased;
 use Laravel\Octane\Events\RequestTerminated;
 use Laravel\Octane\Events\TaskReceived;
 use Laravel\Octane\Events\TaskTerminated;
@@ -85,6 +86,10 @@ return [
             // FlushUploadedFiles::class,
         ],
 
+        RequestReleased::class => [
+            // ReleaseFreedMemory::class,
+        ],
+
         TaskReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
             //
@@ -108,7 +113,6 @@ return [
             FlushTemporaryContainerInstances::class,
             // DisconnectFromDatabases::class,
             // CollectGarbage::class,
-            // ReleaseFreedMemory::class,
         ],
 
         WorkerErrorOccurred::class => [

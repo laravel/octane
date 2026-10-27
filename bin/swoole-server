@@ -129,6 +129,8 @@ $server->on('request', function ($request, $response) use ($server, $workerState
     if ($workerState->timerTable) {
         $workerState->timerTable->del($workerState->workerId);
     }
+
+    $workerState->worker->requestReleased();
 });
 
 /*
