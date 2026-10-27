@@ -4,7 +4,7 @@ namespace Laravel\Octane\Events;
 
 use Illuminate\Foundation\Application;
 
-class RequestReleased
+class OperationReleased
 {
     public function __construct(public Application $app)
     {

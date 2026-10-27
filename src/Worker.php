@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\Contracts\Worker as WorkerContract;
-use Laravel\Octane\Events\RequestReleased;
+use Laravel\Octane\Events\OperationReleased;
 use Laravel\Octane\Events\TaskReceived;
 use Laravel\Octane\Events\TaskTerminated;
 use Laravel\Octane\Events\TickReceived;
@@ -135,11 +135,11 @@ class Worker implements WorkerContract
     }
 
     /**
-     * Notify listeners once the server no longer holds the last request.
+     * Notify listeners once the server no longer holds the last request, task or tick.
      */
-    public function requestReleased(): void
+    public function operationReleased(): void
     {
-        $this->dispatchEvent($this->app, new RequestReleased($this->app));
+        $this->dispatchEvent($this->app, new OperationReleased($this->app));
     }
 
     /**
