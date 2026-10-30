@@ -50,6 +50,10 @@ jobs:
           php --ri ${{ matrix.driver }}
         if: matrix.driver != 'roadrunner/frankenphp'
 
+      - name: Allow Laravel 11 releases with security advisories
+        if: matrix.laravel == 11
+        run: composer config policy.advisories.block false
+
       - name: Install dependencies
         run: |
           composer update --prefer-dist --no-interaction --no-progress --with="laravel/framework:^${{ matrix.laravel }}"
