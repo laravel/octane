@@ -13,6 +13,7 @@ use Laravel\Octane\RequestContext;
 use Laravel\Octane\RoadRunner\RoadRunnerClient;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
+use Spiral\RoadRunner\Http\Exception\StreamStoppedException;
 use Spiral\RoadRunner\Http\HttpWorker;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -101,6 +102,34 @@ class RoadRunnerClientTest extends TestCase
         $httpWorker->shouldReceive('respond')->once()->with(
             200,
             Mockery::on(fn ($body) => $body instanceof Generator && iterator_to_array($body) === ['Hello', 'World']),
+            Mockery::hasKey('cache-control'),
+        );
+
+        $client->respond(new RequestContext([
+            'psr7Request' => $psr7Request,
+        ]), new OctaneResponse(new StreamedResponse(function () {
+            yield 'Hello';
+            yield 'World';
+        }, 200)));
+    }
+
+    public function test_respond_method_ends_streamed_generator_response_quietly_when_roadrunner_stops_it()
+    {
+        $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
+
+        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+
+        $httpWorker = Mockery::mock(HttpWorker::class);
+
+        $psr7Client->shouldReceive('getHttpWorker')->once()->andReturn($httpWorker);
+        $httpWorker->shouldReceive('respond')->once()->with(
+            200,
+            Mockery::on(function ($body) {
+                $body->current();
+                $body->throw(new StreamStoppedException);
+
+                return ! $body->valid();
+            }),
             Mockery::hasKey('cache-control'),
         );
 

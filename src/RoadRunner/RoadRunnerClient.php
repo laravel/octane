@@ -12,6 +12,7 @@ use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use ReflectionFunction;
+use Spiral\RoadRunner\Http\Exception\StreamStoppedException;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -53,7 +54,7 @@ class RoadRunnerClient implements Client, StoppableClient
             ! is_null($responseCallback = static::resolveStreamResponseCallback($octaneResponse->response))) {
             $this->client->getHttpWorker()->respond(
                 $octaneResponse->response->getStatusCode(),
-                $responseCallback(),
+                static::endStreamWhenStopped($responseCallback()),
                 $this->toPsr7Response($octaneResponse->response)->getHeaders(),
             );
 
@@ -61,6 +62,24 @@ class RoadRunnerClient implements Client, StoppableClient
         }
 
         $this->client->respond($this->toPsr7Response($octaneResponse->response));
+    }
+
+    /**
+     * End the given stream quietly once RoadRunner reports that the client has stopped it.
+     */
+    protected static function endStreamWhenStopped(Generator|string $body): Generator|string
+    {
+        if (is_string($body)) {
+            return $body;
+        }
+
+        return (function () use ($body) {
+            try {
+                return yield from $body;
+            } catch (StreamStoppedException) {
+                //
+            }
+        })();
     }
 
     /**
