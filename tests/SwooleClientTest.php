@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Laravel\Octane\Swoole\SwooleClient;
+use LogicException;
 use Mockery;
 use Swoole\Http\Response as SwooleResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -280,6 +281,33 @@ class SwooleClientTest extends TestCase
             yield 'Hello';
             yield 'World';
         }, 200, ['Content-Type' => 'text/event-stream'])));
+    }
+
+    public function test_respond_method_closes_output_buffer_when_streamed_response_throws(): void
+    {
+        $this->createApplication();
+        $client = new SwooleClient;
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+        $swooleResponse->shouldIgnoreMissing();
+
+        $level = ob_get_level();
+
+        try {
+            $client->respond(new RequestContext([
+                'swooleResponse' => $swooleResponse,
+            ]), new OctaneResponse(new StreamedResponse(function () {
+                yield 'Hello';
+
+                throw new LogicException('Stream failed.');
+            })));
+
+            $this->fail('The exception was not rethrown.');
+        } catch (LogicException $e) {
+            $this->assertSame('Stream failed.', $e->getMessage());
+        }
+
+        $this->assertSame($level, ob_get_level());
     }
 
     public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole(): void

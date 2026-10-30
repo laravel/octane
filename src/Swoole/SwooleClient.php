@@ -244,9 +244,11 @@ class SwooleClient implements Client, ServesStaticFiles
                 return '';
             }, 1);
 
-            $octaneResponse->response->sendContent();
-
-            ob_end_clean();
+            try {
+                $octaneResponse->response->sendContent();
+            } finally {
+                ob_end_clean();
+            }
 
             $swooleResponse->end();
 
