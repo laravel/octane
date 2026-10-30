@@ -259,6 +259,29 @@ class SwooleClientTest extends TestCase
         }, 200, ['Content-Type' => 'text/html'])));
     }
 
+    public function test_respond_method_send_streamed_generator_response_to_swoole(): void
+    {
+        $this->createApplication();
+        $client = new SwooleClient;
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+
+        $swooleResponse->shouldReceive('status')->once()->with(200);
+        $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/event-stream', true);
+        $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
+        $swooleResponse->shouldReceive('write')->once()->with('Hello')->ordered();
+        $swooleResponse->shouldReceive('write')->once()->with('World')->ordered();
+        $swooleResponse->shouldReceive('end')->once();
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse(new StreamedResponse(function () {
+            yield 'Hello';
+            yield 'World';
+        }, 200, ['Content-Type' => 'text/event-stream'])));
+    }
+
     public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole(): void
     {
         $this->createApplication();
