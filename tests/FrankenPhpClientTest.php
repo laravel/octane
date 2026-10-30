@@ -7,6 +7,7 @@ use Laravel\Octane\FrankenPhp\FrankenPhpClient;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FrankenPhpClientTest extends TestCase
 {
@@ -26,5 +27,27 @@ class FrankenPhpClientTest extends TestCase
         (new FrankenPhpClient())->respond(new RequestContext(), new OctaneResponse($response));
 
         $this->assertTrue(true);
+    }
+
+    public function test_streamed_generator_response_flushes_each_yielded_chunk()
+    {
+        $chunks = [];
+
+        ob_start(function (string $buffer) use (&$chunks) {
+            if ($buffer !== '') {
+                $chunks[] = $buffer;
+            }
+
+            return '';
+        });
+
+        (new FrankenPhpClient())->respond(new RequestContext(), new OctaneResponse(new StreamedResponse(function () {
+            yield 'Hello';
+            yield 'World';
+        })));
+
+        ob_end_clean();
+
+        $this->assertSame(['Hello', 'World'], $chunks);
     }
 }

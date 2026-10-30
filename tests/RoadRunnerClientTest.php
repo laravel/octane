@@ -89,6 +89,29 @@ class RoadRunnerClientTest extends TestCase
         ]), new OctaneResponse(new StreamedResponse($responseCallback, 200)));
     }
 
+    public function test_respond_method_send_streamed_untyped_generator_response_to_roadrunner()
+    {
+        $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
+
+        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+
+        $httpWorker = Mockery::mock(HttpWorker::class);
+
+        $psr7Client->shouldReceive('getHttpWorker')->once()->andReturn($httpWorker);
+        $httpWorker->shouldReceive('respond')->once()->with(
+            200,
+            Mockery::on(fn ($body) => $body instanceof Generator && iterator_to_array($body) === ['Hello', 'World']),
+            Mockery::hasKey('cache-control'),
+        );
+
+        $client->respond(new RequestContext([
+            'psr7Request' => $psr7Request,
+        ]), new OctaneResponse(new StreamedResponse(function () {
+            yield 'Hello';
+            yield 'World';
+        }, 200)));
+    }
+
     public function test_error_method_sends_error_response_to_roadrunner()
     {
         $psr7Client = Mockery::mock(PSR7Worker::class);

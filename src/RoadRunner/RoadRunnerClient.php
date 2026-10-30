@@ -77,8 +77,8 @@ class RoadRunnerClient implements Client, StoppableClient
 
         $reflection = new ReflectionFunction($responseCallback);
 
-        if ($reflection->hasReturnType() === true &&
-            in_array($reflection->getReturnType()?->getName(), [Generator::class, 'string'])) {
+        if ($reflection->isGenerator() || ($reflection->hasReturnType() === true &&
+            in_array($reflection->getReturnType()?->getName(), [Generator::class, 'string']))) {
             return $responseCallback;
         }
 

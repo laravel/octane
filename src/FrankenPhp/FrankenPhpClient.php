@@ -8,11 +8,15 @@ use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Octane;
 use Laravel\Octane\OctaneResponse;
 use Laravel\Octane\RequestContext;
+use Laravel\Octane\StreamsGeneratorResponses;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
 class FrankenPhpClient implements Client
 {
+    use StreamsGeneratorResponses;
+
     /**
      * Marshal the given request context into an Illuminate request.
      */
@@ -29,6 +33,10 @@ class FrankenPhpClient implements Client
      */
     public function respond(RequestContext $context, OctaneResponse $octaneResponse): void
     {
+        if ($octaneResponse->response instanceof StreamedResponse) {
+            $this->streamGeneratorResponse($octaneResponse->response);
+        }
+
         $octaneResponse->response->send();
     }
 
