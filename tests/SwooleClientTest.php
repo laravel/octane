@@ -271,8 +271,8 @@ class SwooleClientTest extends TestCase
         $swooleResponse->shouldReceive('header')->once()->with('Cache-Control', 'no-cache, private', true);
         $swooleResponse->shouldReceive('header')->once()->with('Content-Type', 'text/event-stream', true);
         $swooleResponse->shouldReceive('header')->once()->with('Date', Mockery::type('string'), true);
-        $swooleResponse->shouldReceive('write')->once()->with('Hello')->ordered();
-        $swooleResponse->shouldReceive('write')->once()->with('World')->ordered();
+        $swooleResponse->shouldReceive('write')->once()->with('Hello')->ordered()->andReturn(true);
+        $swooleResponse->shouldReceive('write')->once()->with('World')->ordered()->andReturn(true);
         $swooleResponse->shouldReceive('end')->once();
 
         $client->respond(new RequestContext([
@@ -289,6 +289,7 @@ class SwooleClientTest extends TestCase
         $client = new SwooleClient;
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
+        $swooleResponse->shouldReceive('write')->andReturn(true);
         $swooleResponse->shouldIgnoreMissing();
 
         $level = ob_get_level();
@@ -308,6 +309,31 @@ class SwooleClientTest extends TestCase
         }
 
         $this->assertSame($level, ob_get_level());
+    }
+
+    public function test_respond_method_stops_streamed_generator_response_when_client_disconnects(): void
+    {
+        $this->createApplication();
+        $client = new SwooleClient;
+
+        $swooleResponse = Mockery::mock('Swoole\Http\Response');
+        $swooleResponse->shouldIgnoreMissing();
+        $swooleResponse->shouldReceive('write')->once()->with('Hello')->andReturn(false);
+        $swooleResponse->shouldReceive('end')->once();
+
+        $resumed = false;
+
+        $client->respond(new RequestContext([
+            'swooleResponse' => $swooleResponse,
+        ]), new OctaneResponse(new StreamedResponse(function () use (&$resumed) {
+            yield 'Hello';
+
+            $resumed = true;
+
+            yield 'World';
+        })));
+
+        $this->assertFalse($resumed);
     }
 
     public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole(): void

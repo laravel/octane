@@ -2,15 +2,16 @@
 
 namespace Laravel\Octane;
 
+use Closure;
 use ReflectionFunction;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 trait StreamsGeneratorResponses
 {
     /**
-     * Write and flush each chunk yielded by a generator stream callback, which Symfony would otherwise discard.
+     * Write each chunk yielded by a generator stream callback, stopping when a write returns false.
      */
-    protected function streamGeneratorResponse(StreamedResponse $response): void
+    protected function streamGeneratorResponse(StreamedResponse $response, ?Closure $write = null): void
     {
         $callback = $response->getCallback();
 
@@ -18,16 +19,30 @@ trait StreamsGeneratorResponses
             return;
         }
 
-        $response->setCallback(function () use ($callback) {
+        $write ??= $this->writeStreamedChunk(...);
+
+        $response->setCallback(function () use ($callback, $write) {
             foreach ($callback() as $chunk) {
-                echo $chunk;
-
-                if (ob_get_level() > 0) {
-                    ob_flush();
+                if ($write($chunk) === false) {
+                    break;
                 }
-
-                flush();
             }
         });
+    }
+
+    /**
+     * Echo and flush the given chunk, returning false once the client has disconnected.
+     */
+    protected function writeStreamedChunk(string $chunk): bool
+    {
+        echo $chunk;
+
+        if (ob_get_level() > 0) {
+            ob_flush();
+        }
+
+        flush();
+
+        return ! connection_aborted();
     }
 }

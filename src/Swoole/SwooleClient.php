@@ -234,7 +234,11 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         if ($octaneResponse->response instanceof StreamedResponse) {
-            $this->streamGeneratorResponse($octaneResponse->response);
+            $this->streamGeneratorResponse($octaneResponse->response, function ($chunk) use ($swooleResponse) {
+                if ((string) $chunk !== '') {
+                    return $swooleResponse->write($chunk);
+                }
+            });
 
             ob_start(function ($data) use ($swooleResponse) {
                 if (strlen($data) > 0) {
