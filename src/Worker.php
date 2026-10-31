@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\Contracts\Worker as WorkerContract;
+use Laravel\Octane\Events\OperationReleased;
 use Laravel\Octane\Events\TaskReceived;
 use Laravel\Octane\Events\TaskTerminated;
 use Laravel\Octane\Events\TickReceived;
@@ -33,6 +34,11 @@ class Worker implements WorkerContract
      */
     protected $app;
 
+    /**
+     * The request the application was booted with.
+     */
+    protected ?Request $bootRequest = null;
+
     public function __construct(
         protected ApplicationFactory $appFactory,
         protected Client $client
@@ -53,6 +59,8 @@ class Worker implements WorkerContract
                 [Client::class => $this->client],
             )
         );
+
+        $this->bootRequest = $app->make('request');
 
         $this->dispatchEvent($app, new WorkerStarting($app));
     }
@@ -110,6 +118,15 @@ class Worker implements WorkerContract
             $this->app->make('view.engine.resolver')->forget('blade');
             $this->app->make('view.engine.resolver')->forget('php');
 
+            // Stop long-lived objects from holding this request until the next one.
+            $this->app->instance('request', $this->bootRequest);
+
+            (fn () => $this->currentRequest = null)->call($this->app->make('router'));
+
+            if ($this->app->resolved('auth')) {
+                $this->app->make('auth')->forgetGuards();
+            }
+
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.
@@ -117,6 +134,14 @@ class Worker implements WorkerContract
 
             CurrentApplication::set($this->app);
         }
+    }
+
+    /**
+     * Notify listeners once the server no longer holds the last request, task or tick.
+     */
+    public function operationReleased(): void
+    {
+        $this->dispatchEvent($this->app, new OperationReleased($this->app));
     }
 
     /**

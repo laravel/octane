@@ -97,6 +97,8 @@ try {
 
     while ($requestCount < $maxRequests && @frankenphp_handle_request($handleRequest)) {
         $requestCount++;
+
+        $worker->operationReleased();
     }
 } finally {
     $worker?->terminate();

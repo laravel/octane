@@ -3,6 +3,8 @@
 namespace Laravel\Octane\Tests;
 
 use Illuminate\Http\Request;
+use stdClass;
+use WeakReference;
 
 class WorkerTest extends TestCase
 {
@@ -21,6 +23,34 @@ class WorkerTest extends TestCase
         $this->assertCount(2, $client->responses);
         $this->assertEquals('First Response', $client->responses[0]->getContent());
         $this->assertEquals('Second Response', $client->responses[1]->getContent());
+    }
+
+    public function test_worker_releases_the_request_once_it_is_handled()
+    {
+        [$app, $worker, $client] = $this->createOctaneContext([
+            Request::create('/', 'GET'),
+        ]);
+
+        $app['router']->get('/', function () {
+            auth()->guard();
+
+            return 'Hello World';
+        });
+
+        $client->requests[0]->attributes->set('payload', $payload = new stdClass);
+        $released = WeakReference::create($payload);
+        unset($payload);
+
+        $this->assertNotNull($released->get());
+
+        $worker->run();
+
+        $this->assertEquals('Hello World', $client->responses[0]->getContent());
+        $this->assertNotNull($released->get());
+
+        $client->requests = [];
+
+        $this->assertNull($released->get());
     }
 
     public function test_worker_can_dispatch_task_to_application_and_returns_responses_to_client()
