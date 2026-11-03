@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.22.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.23.0...2.x)
+
+## [v2.23.0](https://github.com/laravel/octane/compare/v2.22.0...v2.23.0) - 2026-10-30
+
+* Bump shivammathur/setup-php from 2.37.2 to 2.40.0 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/octane/pull/1173
+* [2.x] Bind all default listeners as singletons by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/octane/pull/1174
+* fix: Conflict on spiral/roadrunner blocks RoadRunner 3.0.0 by [@eldario](https://github.com/eldario) in https://github.com/laravel/octane/pull/1175
+* [2.x] Don't replace FrankenPHP binaries outside the project root by [@sabira-khan](https://github.com/sabira-khan) in https://github.com/laravel/octane/pull/1177
+* [2.x] Require FrankenPHP 1.13.2 by [@sabira-khan](https://github.com/sabira-khan) in https://github.com/laravel/octane/pull/1176
+* [2.x] Accept RoadRunner 3.x binaries in the version check by [@juanklagos](https://github.com/juanklagos) in https://github.com/laravel/octane/pull/1178
+* [2.x] Stream generator responses on FrankenPHP, Swoole, and RoadRunner by [@pascalbaljet](https://github.com/pascalbaljet) in https://github.com/laravel/octane/pull/1182
+* [2.x] Harden generator stream responses by [@pascalbaljet](https://github.com/pascalbaljet) in https://github.com/laravel/octane/pull/1183
 
 ## [v2.22.0](https://github.com/laravel/octane/compare/v2.21.0...v2.22.0) - 2026-10-14
 
