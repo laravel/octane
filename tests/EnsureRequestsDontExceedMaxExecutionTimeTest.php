@@ -6,6 +6,7 @@ use ArrayObject;
 use Laravel\Octane\Swoole\Actions\EnsureRequestsDontExceedMaxExecutionTime;
 use Laravel\Octane\Swoole\SwooleExtension;
 use Mockery;
+use Swoole\Http\Server;
 
 class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
 {
@@ -28,6 +29,37 @@ class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
         $extension->shouldReceive('dispatchProcessSignal')->once()->with(111, SIGKILL);
 
         $action();
+    }
+
+    public function test_process_is_killed_even_if_client_has_disconnected()
+    {
+        if (! extension_loaded('openswoole') && ! extension_loaded('swoole')) {
+            $this->markTestSkipped('Require openswoole/swoole extension');
+        }
+
+        $table = new FakeTimerTable;
+
+        $table['fake-worker-id'] = [
+            'worker_pid' => 111,
+            'time' => time() - 60,
+            'fd' => 1,
+        ];
+
+        $server = Mockery::mock(Server::class);
+        $server->shouldReceive('exists')->with(1)->andReturn(false);
+
+        $action = new EnsureRequestsDontExceedMaxExecutionTime(
+            $extension = Mockery::mock(SwooleExtension::class),
+            $table,
+            30,
+            $server,
+        );
+
+        $extension->shouldReceive('dispatchProcessSignal')->once()->with(111, SIGKILL);
+
+        $action();
+
+        $this->assertSame(['fake-worker-id'], $table->deleted);
     }
 }
 
