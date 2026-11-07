@@ -2,7 +2,10 @@
 
 namespace Laravel\Octane\Tests;
 
+use Exception;
 use Illuminate\Http\Request;
+use Laravel\Octane\Events\OperationReleased;
+use Laravel\Octane\Events\WorkerErrorOccurred;
 use stdClass;
 use WeakReference;
 
@@ -51,6 +54,27 @@ class WorkerTest extends TestCase
         $client->requests = [];
 
         $this->assertNull($released->get());
+    }
+
+    public function test_worker_reports_exceptions_thrown_by_operation_released_listeners()
+    {
+        [$app, $worker] = $this->createOctaneContext([]);
+
+        $app['events']->listen(OperationReleased::class, function () {
+            throw new Exception('Released');
+        });
+
+        $exception = null;
+
+        $app['events']->forget(WorkerErrorOccurred::class);
+        $app['events']->listen(WorkerErrorOccurred::class, function ($event) use (&$exception) {
+            $exception = $event->exception;
+        });
+
+        $worker->operationReleased();
+
+        $this->assertInstanceOf(Exception::class, $exception);
+        $this->assertSame('Released', $exception->getMessage());
     }
 
     public function test_worker_can_dispatch_task_to_application_and_returns_responses_to_client()

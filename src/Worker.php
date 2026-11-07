@@ -141,7 +141,11 @@ class Worker implements WorkerContract
      */
     public function operationReleased(): void
     {
-        $this->dispatchEvent($this->app, new OperationReleased($this->app));
+        try {
+            $this->dispatchEvent($this->app, new OperationReleased($this->app));
+        } catch (Throwable $e) {
+            $this->dispatchEvent($this->app, new WorkerErrorOccurred($e, $this->app));
+        }
     }
 
     /**
