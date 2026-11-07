@@ -22,8 +22,10 @@ class FlushLocaleState
 
         $provider = tap(new CarbonServiceProvider($event->app))->updateLocale();
 
-        collect($event->sandbox->getProviders($provider))
+        $sandbox = $event->sandbox;
+
+        collect($sandbox->getProviders($provider))
             ->values()
-            ->whenNotEmpty(fn ($providers) => $providers->first()->setAppGetter(fn () => $event->sandbox));
+            ->whenNotEmpty(fn ($providers) => $providers->first()->setAppGetter(fn () => $sandbox));
     }
 }

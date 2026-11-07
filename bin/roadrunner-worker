@@ -54,6 +54,10 @@ try {
         ]));
 
         $worker->handle($request, $context);
+
+        unset($psr7Request, $request, $context);
+
+        $worker->operationReleased();
     }
 } catch (Throwable $e) {
     if (! $e instanceof RelayException) {
