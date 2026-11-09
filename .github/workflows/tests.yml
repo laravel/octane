@@ -20,13 +20,11 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.2, 8.3, 8.4, 8.5]
-        laravel: [11, 12, 13]
+        laravel: [12, 13]
         driver: [swoole, openswoole, 'roadrunner/frankenphp']
         exclude:
           - php: 8.2
             laravel: 13
-          - php: 8.5
-            laravel: 11
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.driver }}
 
@@ -49,10 +47,6 @@ jobs:
         run: |
           php --ri ${{ matrix.driver }}
         if: matrix.driver != 'roadrunner/frankenphp'
-
-      - name: Allow Laravel 11 releases with security advisories
-        if: matrix.laravel == 11
-        run: composer config policy.advisories.block false
 
       - name: Install dependencies
         run: |
