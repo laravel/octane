@@ -82,8 +82,7 @@ class ConvertSwooleRequestToIlluminateRequest
             if (! in_array($name, ['HTTPS', 'REMOTE_ADDR', 'SERVER_PORT'])) {
                 $results['HTTP_'.$name] = $value;
             } elseif ($name === strtoupper($key) || ! array_key_exists($name, $exactHeaders)) {
-                // Proxies such as Nginx drop client headers containing underscores, so an exact "REMOTE_ADDR"
-                // header comes from the proxy and takes precedence over a client's "Remote-Addr" header...
+                // Exact "REMOTE_ADDR" headers come from the proxy, so they take precedence over "Remote-Addr"...
                 $results[$name] = $value;
             }
         }
