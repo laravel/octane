@@ -13,7 +13,8 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     public function __construct(
         protected ServerStateFile $serverStateFile,
         protected PosixExtension $posix,
-    ) {}
+    ) {
+    }
 
     /**
      * Determine if the PAM server process is running.
