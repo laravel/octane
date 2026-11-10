@@ -5,6 +5,7 @@ namespace Laravel\Octane\Swoole;
 use DateTime;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\MimeType;
@@ -116,7 +117,7 @@ class SwooleClient implements Client, ServesStaticFiles
     {
         return $pathToFile &&
                ! in_array(pathinfo($pathToFile, PATHINFO_EXTENSION), ['php', 'htaccess', 'config']) &&
-               str_starts_with($pathToFile, $publicPath) &&
+               str_starts_with($pathToFile, Str::finish($publicPath, '/')) &&
                is_file($pathToFile);
     }
 
