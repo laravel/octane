@@ -60,6 +60,42 @@ class SwooleClientTest extends TestCase
         $this->assertSame($givenContext, $context);
     }
 
+    public function test_marshal_request_method_does_not_allow_headers_to_override_connection_server_variables(): void
+    {
+        $client = new SwooleClient;
+
+        $swooleRequest = new class
+        {
+            public $server = [
+                'remote_addr' => '203.0.113.9',
+                'server_port' => 80,
+                'request_method' => 'GET',
+                'request_uri' => '/',
+            ];
+
+            public $header = [
+                'host' => 'localhost',
+                'remote-addr' => '127.0.0.1',
+                'https' => 'on',
+                'server-port' => '443',
+            ];
+
+            public function rawContent()
+            {
+                return '';
+            }
+        };
+
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $swooleRequest,
+        ]));
+
+        $this->assertSame('203.0.113.9', $request->ip());
+        $this->assertFalse($request->isSecure());
+        $this->assertSame(80, $request->getPort());
+        $this->assertSame('127.0.0.1', $request->headers->get('remote-addr'));
+    }
+
     public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory(): void
     {
         $client = new SwooleClient;

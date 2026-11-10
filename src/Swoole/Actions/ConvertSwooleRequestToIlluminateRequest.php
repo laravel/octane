@@ -75,13 +75,7 @@ class ConvertSwooleRequestToIlluminateRequest
         $results = [];
 
         foreach ($headers as $key => $value) {
-            $key = strtoupper(str_replace('-', '_', $key));
-
-            if (! in_array($key, ['HTTPS', 'REMOTE_ADDR', 'SERVER_PORT'])) {
-                $key = 'HTTP_'.$key;
-            }
-
-            $results[$key] = $value;
+            $results['HTTP_'.strtoupper(str_replace('-', '_', $key))] = $value;
         }
 
         return $results;
