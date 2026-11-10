@@ -96,6 +96,64 @@ class SwooleClientTest extends TestCase
         $this->assertSame('127.0.0.1', $request->headers->get('remote-addr'));
     }
 
+    public function test_marshal_request_method_uses_connection_server_variables_from_trusted_proxy_headers(): void
+    {
+        $client = new SwooleClient;
+
+        $swooleRequest = function (string $remoteAddress) {
+            return new class($remoteAddress)
+            {
+                public $server;
+
+                public $header = [
+                    'host' => 'localhost',
+                    'remote_addr' => '198.51.100.7',
+                    'server_port' => '8443',
+                    'remote-addr' => '192.0.2.1',
+                    'https' => 'on',
+                ];
+
+                public function __construct(string $remoteAddress)
+                {
+                    $this->server = [
+                        'remote_addr' => $remoteAddress,
+                        'server_port' => 8000,
+                        'request_method' => 'GET',
+                        'request_uri' => '/',
+                    ];
+                }
+
+                public function rawContent()
+                {
+                    return '';
+                }
+            };
+        };
+
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $swooleRequest('127.0.0.1'),
+        ]));
+
+        $this->assertSame('198.51.100.7', $request->ip());
+        $this->assertSame('8443', $request->server->get('SERVER_PORT'));
+        $this->assertFalse($request->isSecure());
+
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $swooleRequest('10.0.0.5'),
+            'octaneConfig' => ['swoole' => ['trusted_proxies' => ['10.0.0.0/8']]],
+        ]));
+
+        $this->assertSame('198.51.100.7', $request->ip());
+
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $swooleRequest('127.0.0.1'),
+            'octaneConfig' => ['swoole' => ['trusted_proxies' => ['10.0.0.0/8']]],
+        ]));
+
+        $this->assertSame('127.0.0.1', $request->ip());
+        $this->assertSame(8000, $request->server->get('SERVER_PORT'));
+    }
+
     public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory(): void
     {
         $client = new SwooleClient;

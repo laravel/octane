@@ -42,7 +42,8 @@ class SwooleClient implements Client, ServesStaticFiles
         return [
             (new Actions\ConvertSwooleRequestToIlluminateRequest)(
                 $context->swooleRequest,
-                PHP_SAPI
+                PHP_SAPI,
+                $context->data['octaneConfig']['swoole']['trusted_proxies'] ?? ['127.0.0.1', '::1'],
             ),
             $context,
         ];

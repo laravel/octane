@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Swoole\Actions;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class ConvertSwooleRequestToIlluminateRequest
@@ -11,13 +12,15 @@ class ConvertSwooleRequestToIlluminateRequest
      * Convert the given Swoole request into an Illuminate request.
      *
      * @param  \Swoole\Http\Request  $swooleRequest
+     * @param  array<int, string>  $trustedProxies
      */
-    public function __invoke($swooleRequest, string $phpSapi): Request
+    public function __invoke($swooleRequest, string $phpSapi, array $trustedProxies = ['127.0.0.1', '::1']): Request
     {
         $serverVariables = $this->prepareServerVariables(
             $swooleRequest->server ?? [],
             $swooleRequest->header ?? [],
-            $phpSapi
+            $phpSapi,
+            $trustedProxies
         );
 
         $request = new SymfonyRequest(
@@ -43,7 +46,7 @@ class ConvertSwooleRequestToIlluminateRequest
     /**
      * Parse the "server" variables and headers into a single array of $_SERVER variables.
      */
-    protected function prepareServerVariables(array $server, array $headers, string $phpSapi): array
+    protected function prepareServerVariables(array $server, array $headers, string $phpSapi, array $trustedProxies = []): array
     {
         $results = [];
 
@@ -53,7 +56,10 @@ class ConvertSwooleRequestToIlluminateRequest
 
         $results = array_merge(
             $results,
-            $this->formatHttpHeadersIntoServerVariables($headers)
+            $this->formatHttpHeadersIntoServerVariables(
+                $headers,
+                isset($results['REMOTE_ADDR']) && IpUtils::checkIp((string) $results['REMOTE_ADDR'], $trustedProxies)
+            )
         );
 
         if (isset($results['REQUEST_URI'], $results['QUERY_STRING']) &&
@@ -69,12 +75,20 @@ class ConvertSwooleRequestToIlluminateRequest
 
     /**
      * Format the given HTTP headers into properly formatted $_SERVER variables.
+     *
+     * A trusted proxy may set REMOTE_ADDR and SERVER_PORT using "REMOTE_ADDR" and "SERVER_PORT" headers.
      */
-    protected function formatHttpHeadersIntoServerVariables(array $headers): array
+    protected function formatHttpHeadersIntoServerVariables(array $headers, bool $fromTrustedProxy = false): array
     {
         $results = [];
 
         foreach ($headers as $key => $value) {
+            if ($fromTrustedProxy && in_array($key, ['remote_addr', 'server_port'], true)) {
+                $results[strtoupper($key)] = $value;
+
+                continue;
+            }
+
             $results['HTTP_'.strtoupper(str_replace('-', '_', $key))] = $value;
         }
 
