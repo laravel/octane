@@ -60,25 +60,22 @@ class SwooleClientTest extends TestCase
         $this->assertSame($givenContext, $context);
     }
 
-    public function test_marshal_request_method_prefers_proxy_server_variable_headers_over_client_headers(): void
+    public function test_marshal_request_method_prefers_exact_server_variable_headers_over_dashed_headers(): void
     {
-        $client = new SwooleClient;
+        $proxyHeaders = ['server_port' => '80', 'remote_addr' => '198.51.100.7'];
+        $clientHeaders = ['remote-addr' => '6.6.6.6', 'server-port' => '443'];
 
-        // Nginx forwards its own "REMOTE_ADDR" / "SERVER_PORT" headers followed by the client's headers...
-        [$request] = $client->marshalRequest(new RequestContext([
-            'swooleRequest' => $this->swooleRequestFrom('127.0.0.1', [
-                'server_port' => '80',
-                'remote_addr' => '198.51.100.7',
-                'remote-addr' => '6.6.6.6',
-                'server-port' => '443',
-            ]),
+        [$request] = (new SwooleClient)->marshalRequest(new RequestContext([
+            'swooleRequest' => $this->swooleRequestFrom('127.0.0.1', [...$proxyHeaders, ...$clientHeaders]),
         ]));
 
         $this->assertSame('198.51.100.7', $request->ip());
         $this->assertSame('80', $request->server->get('SERVER_PORT'));
+    }
 
-        // Proxies that only send the dashed headers keep working...
-        [$request] = $client->marshalRequest(new RequestContext([
+    public function test_marshal_request_method_uses_dashed_server_variable_headers_without_exact_headers(): void
+    {
+        [$request] = (new SwooleClient)->marshalRequest(new RequestContext([
             'swooleRequest' => $this->swooleRequestFrom('127.0.0.1', [
                 'remote-addr' => '198.51.100.7',
                 'https' => 'on',
