@@ -3,20 +3,10 @@
 namespace Laravel\Octane\Swoole\Actions;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class ConvertSwooleRequestToIlluminateRequest
 {
-    /**
-     * Create a new action instance.
-     *
-     * @param  array<int, string>|null  $trustedProxies  The proxies allowed to set HTTPS, REMOTE_ADDR, and SERVER_PORT via headers. Null allows any.
-     */
-    public function __construct(protected ?array $trustedProxies = null)
-    {
-    }
-
     /**
      * Convert the given Swoole request into an Illuminate request.
      *
@@ -61,14 +51,10 @@ class ConvertSwooleRequestToIlluminateRequest
             $results[strtoupper($key)] = $value;
         }
 
-        $headerVariables = $this->formatHttpHeadersIntoServerVariables($headers);
-
-        if ($this->trustedProxies !== null &&
-            ! IpUtils::checkIp((string) ($results['REMOTE_ADDR'] ?? ''), $this->trustedProxies)) {
-            unset($headerVariables['HTTPS'], $headerVariables['REMOTE_ADDR'], $headerVariables['SERVER_PORT']);
-        }
-
-        $results = array_merge($results, $headerVariables);
+        $results = array_merge(
+            $results,
+            $this->formatHttpHeadersIntoServerVariables($headers)
+        );
 
         if (isset($results['REQUEST_URI'], $results['QUERY_STRING']) &&
             strlen($results['QUERY_STRING']) > 0 &&

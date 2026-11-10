@@ -89,32 +89,6 @@ class SwooleClientTest extends TestCase
         $this->assertTrue($request->isSecure());
     }
 
-    public function test_marshal_request_method_only_accepts_server_variable_headers_from_configured_trusted_proxies(): void
-    {
-        $client = new SwooleClient;
-
-        $headers = ['remote_addr' => '198.51.100.7', 'server_port' => '8443', 'https' => 'on'];
-        $octaneConfig = ['swoole' => ['trusted_proxies' => ['10.0.0.0/8']]];
-
-        [$request] = $client->marshalRequest(new RequestContext([
-            'swooleRequest' => $this->swooleRequestFrom('10.0.0.5', $headers),
-            'octaneConfig' => $octaneConfig,
-        ]));
-
-        $this->assertSame('198.51.100.7', $request->ip());
-        $this->assertSame('8443', $request->server->get('SERVER_PORT'));
-        $this->assertTrue($request->isSecure());
-
-        [$request] = $client->marshalRequest(new RequestContext([
-            'swooleRequest' => $this->swooleRequestFrom('203.0.113.9', $headers),
-            'octaneConfig' => $octaneConfig,
-        ]));
-
-        $this->assertSame('203.0.113.9', $request->ip());
-        $this->assertSame(8000, $request->server->get('SERVER_PORT'));
-        $this->assertFalse($request->isSecure());
-    }
-
     protected function swooleRequestFrom(string $remoteAddress, array $headers): object
     {
         return new class($remoteAddress, $headers)
