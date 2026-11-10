@@ -9,18 +9,25 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 class ConvertSwooleRequestToIlluminateRequest
 {
     /**
+     * Create a new action instance.
+     *
+     * @param  array<int, string>|null  $trustedProxies  The proxies allowed to set HTTPS, REMOTE_ADDR, and SERVER_PORT via headers. Null allows any.
+     */
+    public function __construct(protected ?array $trustedProxies = null)
+    {
+    }
+
+    /**
      * Convert the given Swoole request into an Illuminate request.
      *
      * @param  \Swoole\Http\Request  $swooleRequest
-     * @param  array<int, string>  $trustedProxies
      */
-    public function __invoke($swooleRequest, string $phpSapi, array $trustedProxies = ['127.0.0.1', '::1']): Request
+    public function __invoke($swooleRequest, string $phpSapi): Request
     {
         $serverVariables = $this->prepareServerVariables(
             $swooleRequest->server ?? [],
             $swooleRequest->header ?? [],
-            $phpSapi,
-            $trustedProxies
+            $phpSapi
         );
 
         $request = new SymfonyRequest(
@@ -46,7 +53,7 @@ class ConvertSwooleRequestToIlluminateRequest
     /**
      * Parse the "server" variables and headers into a single array of $_SERVER variables.
      */
-    protected function prepareServerVariables(array $server, array $headers, string $phpSapi, array $trustedProxies = []): array
+    protected function prepareServerVariables(array $server, array $headers, string $phpSapi): array
     {
         $results = [];
 
@@ -54,13 +61,14 @@ class ConvertSwooleRequestToIlluminateRequest
             $results[strtoupper($key)] = $value;
         }
 
-        $results = array_merge(
-            $results,
-            $this->formatHttpHeadersIntoServerVariables(
-                $headers,
-                isset($results['REMOTE_ADDR']) && IpUtils::checkIp((string) $results['REMOTE_ADDR'], $trustedProxies)
-            )
-        );
+        $headerVariables = $this->formatHttpHeadersIntoServerVariables($headers);
+
+        if ($this->trustedProxies !== null &&
+            ! IpUtils::checkIp((string) ($results['REMOTE_ADDR'] ?? ''), $this->trustedProxies)) {
+            unset($headerVariables['HTTPS'], $headerVariables['REMOTE_ADDR'], $headerVariables['SERVER_PORT']);
+        }
+
+        $results = array_merge($results, $headerVariables);
 
         if (isset($results['REQUEST_URI'], $results['QUERY_STRING']) &&
             strlen($results['QUERY_STRING']) > 0 &&
@@ -75,21 +83,23 @@ class ConvertSwooleRequestToIlluminateRequest
 
     /**
      * Format the given HTTP headers into properly formatted $_SERVER variables.
-     *
-     * A trusted proxy may set REMOTE_ADDR and SERVER_PORT using "REMOTE_ADDR" and "SERVER_PORT" headers.
      */
-    protected function formatHttpHeadersIntoServerVariables(array $headers, bool $fromTrustedProxy = false): array
+    protected function formatHttpHeadersIntoServerVariables(array $headers): array
     {
         $results = [];
 
+        $exactHeaders = array_change_key_case($headers, CASE_UPPER);
+
         foreach ($headers as $key => $value) {
-            if ($fromTrustedProxy && in_array($key, ['remote_addr', 'server_port'], true)) {
-                $results[strtoupper($key)] = $value;
+            $name = strtoupper(str_replace('-', '_', $key));
 
-                continue;
+            if (! in_array($name, ['HTTPS', 'REMOTE_ADDR', 'SERVER_PORT'])) {
+                $results['HTTP_'.$name] = $value;
+            } elseif ($name === strtoupper($key) || ! array_key_exists($name, $exactHeaders)) {
+                // Proxies such as Nginx drop client headers containing underscores, so an exact "REMOTE_ADDR"
+                // header comes from the proxy and takes precedence over a client's "Remote-Addr" header...
+                $results[$name] = $value;
             }
-
-            $results['HTTP_'.strtoupper(str_replace('-', '_', $key))] = $value;
         }
 
         return $results;

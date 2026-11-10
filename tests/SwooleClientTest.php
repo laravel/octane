@@ -60,98 +60,82 @@ class SwooleClientTest extends TestCase
         $this->assertSame($givenContext, $context);
     }
 
-    public function test_marshal_request_method_does_not_allow_headers_to_override_connection_server_variables(): void
+    public function test_marshal_request_method_prefers_proxy_server_variable_headers_over_client_headers(): void
     {
         $client = new SwooleClient;
 
-        $swooleRequest = new class
-        {
-            public $server = [
-                'remote_addr' => '203.0.113.9',
-                'server_port' => 80,
-                'request_method' => 'GET',
-                'request_uri' => '/',
-            ];
-
-            public $header = [
-                'host' => 'localhost',
-                'remote-addr' => '127.0.0.1',
-                'https' => 'on',
+        // Nginx forwards its own "REMOTE_ADDR" / "SERVER_PORT" headers followed by the client's headers...
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $this->swooleRequestFrom('127.0.0.1', [
+                'server_port' => '80',
+                'remote_addr' => '198.51.100.7',
+                'remote-addr' => '6.6.6.6',
                 'server-port' => '443',
-            ];
+            ]),
+        ]));
+
+        $this->assertSame('198.51.100.7', $request->ip());
+        $this->assertSame('80', $request->server->get('SERVER_PORT'));
+
+        // Proxies that only send the dashed headers keep working...
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $this->swooleRequestFrom('127.0.0.1', [
+                'remote-addr' => '198.51.100.7',
+                'https' => 'on',
+            ]),
+        ]));
+
+        $this->assertSame('198.51.100.7', $request->ip());
+        $this->assertTrue($request->isSecure());
+    }
+
+    public function test_marshal_request_method_only_accepts_server_variable_headers_from_configured_trusted_proxies(): void
+    {
+        $client = new SwooleClient;
+
+        $headers = ['remote_addr' => '198.51.100.7', 'server_port' => '8443', 'https' => 'on'];
+        $octaneConfig = ['swoole' => ['trusted_proxies' => ['10.0.0.0/8']]];
+
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $this->swooleRequestFrom('10.0.0.5', $headers),
+            'octaneConfig' => $octaneConfig,
+        ]));
+
+        $this->assertSame('198.51.100.7', $request->ip());
+        $this->assertSame('8443', $request->server->get('SERVER_PORT'));
+        $this->assertTrue($request->isSecure());
+
+        [$request] = $client->marshalRequest(new RequestContext([
+            'swooleRequest' => $this->swooleRequestFrom('203.0.113.9', $headers),
+            'octaneConfig' => $octaneConfig,
+        ]));
+
+        $this->assertSame('203.0.113.9', $request->ip());
+        $this->assertSame(8000, $request->server->get('SERVER_PORT'));
+        $this->assertFalse($request->isSecure());
+    }
+
+    protected function swooleRequestFrom(string $remoteAddress, array $headers): object
+    {
+        return new class($remoteAddress, $headers)
+        {
+            public $server;
+
+            public function __construct(string $remoteAddress, public $header)
+            {
+                $this->server = [
+                    'remote_addr' => $remoteAddress,
+                    'server_port' => 8000,
+                    'request_method' => 'GET',
+                    'request_uri' => '/',
+                ];
+            }
 
             public function rawContent()
             {
                 return '';
             }
         };
-
-        [$request] = $client->marshalRequest(new RequestContext([
-            'swooleRequest' => $swooleRequest,
-        ]));
-
-        $this->assertSame('203.0.113.9', $request->ip());
-        $this->assertFalse($request->isSecure());
-        $this->assertSame(80, $request->getPort());
-        $this->assertSame('127.0.0.1', $request->headers->get('remote-addr'));
-    }
-
-    public function test_marshal_request_method_uses_connection_server_variables_from_trusted_proxy_headers(): void
-    {
-        $client = new SwooleClient;
-
-        $swooleRequest = function (string $remoteAddress) {
-            return new class($remoteAddress)
-            {
-                public $server;
-
-                public $header = [
-                    'host' => 'localhost',
-                    'remote_addr' => '198.51.100.7',
-                    'server_port' => '8443',
-                    'remote-addr' => '192.0.2.1',
-                    'https' => 'on',
-                ];
-
-                public function __construct(string $remoteAddress)
-                {
-                    $this->server = [
-                        'remote_addr' => $remoteAddress,
-                        'server_port' => 8000,
-                        'request_method' => 'GET',
-                        'request_uri' => '/',
-                    ];
-                }
-
-                public function rawContent()
-                {
-                    return '';
-                }
-            };
-        };
-
-        [$request] = $client->marshalRequest(new RequestContext([
-            'swooleRequest' => $swooleRequest('127.0.0.1'),
-        ]));
-
-        $this->assertSame('198.51.100.7', $request->ip());
-        $this->assertSame('8443', $request->server->get('SERVER_PORT'));
-        $this->assertFalse($request->isSecure());
-
-        [$request] = $client->marshalRequest(new RequestContext([
-            'swooleRequest' => $swooleRequest('10.0.0.5'),
-            'octaneConfig' => ['swoole' => ['trusted_proxies' => ['10.0.0.0/8']]],
-        ]));
-
-        $this->assertSame('198.51.100.7', $request->ip());
-
-        [$request] = $client->marshalRequest(new RequestContext([
-            'swooleRequest' => $swooleRequest('127.0.0.1'),
-            'octaneConfig' => ['swoole' => ['trusted_proxies' => ['10.0.0.0/8']]],
-        ]));
-
-        $this->assertSame('127.0.0.1', $request->ip());
-        $this->assertSame(8000, $request->server->get('SERVER_PORT'));
     }
 
     public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory(): void

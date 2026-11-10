@@ -5,6 +5,7 @@ namespace Laravel\Octane\Swoole;
 use DateTime;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Octane\Contracts\Client;
 use Laravel\Octane\Contracts\ServesStaticFiles;
 use Laravel\Octane\MimeType;
@@ -40,10 +41,11 @@ class SwooleClient implements Client, ServesStaticFiles
     public function marshalRequest(RequestContext $context): array
     {
         return [
-            (new Actions\ConvertSwooleRequestToIlluminateRequest)(
+            (new Actions\ConvertSwooleRequestToIlluminateRequest(
+                $context->data['octaneConfig']['swoole']['trusted_proxies'] ?? null
+            ))(
                 $context->swooleRequest,
-                PHP_SAPI,
-                $context->data['octaneConfig']['swoole']['trusted_proxies'] ?? ['127.0.0.1', '::1'],
+                PHP_SAPI
             ),
             $context,
         ];
@@ -117,7 +119,7 @@ class SwooleClient implements Client, ServesStaticFiles
     {
         return $pathToFile &&
                ! in_array(pathinfo($pathToFile, PATHINFO_EXTENSION), ['php', 'htaccess', 'config']) &&
-               str_starts_with($pathToFile, $publicPath) &&
+               str_starts_with($pathToFile, Str::finish($publicPath, '/')) &&
                is_file($pathToFile);
     }
 
