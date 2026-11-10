@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Laravel\Octane\FrankenPhp\ServerProcessInspector as FrankenPhpServerProcessInspector;
+use Laravel\Octane\Pam\ServerProcessInspector as PamServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -37,6 +38,7 @@ class ReloadCommand extends Command
             'swoole' => $this->reloadSwooleServer(),
             'roadrunner' => $this->reloadRoadRunnerServer(),
             'frankenphp' => $this->reloadFrankenPhpServer(),
+            'pam' => $this->reloadPamServer(),
             default => $this->invalidServer($server),
         };
     }
@@ -93,6 +95,28 @@ class ReloadCommand extends Command
     protected function reloadFrankenPhpServer()
     {
         $inspector = app(FrankenPhpServerProcessInspector::class);
+
+        if (! $inspector->serverIsRunning()) {
+            $this->components->error('Octane server is not running.');
+
+            return 1;
+        }
+
+        $this->components->info('Reloading workers...');
+
+        $inspector->reloadServer();
+
+        return 0;
+    }
+
+    /**
+     * Reload the PAM server for Octane.
+     *
+     * @return int
+     */
+    protected function reloadPamServer()
+    {
+        $inspector = app(PamServerProcessInspector::class);
 
         if (! $inspector->serverIsRunning()) {
             $this->components->error('Octane server is not running.');

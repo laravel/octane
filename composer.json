@@ -1,7 +1,7 @@
 {
     "name": "laravel/octane",
     "description": "Supercharge your Laravel application's performance.",
-    "keywords": ["laravel", "octane", "roadrunner", "swoole", "frankenphp"],
+    "keywords": ["laravel", "octane", "roadrunner", "swoole", "frankenphp", "pam"],
     "license": "MIT",
     "support": {
         "issues": "https://github.com/laravel/octane/issues",

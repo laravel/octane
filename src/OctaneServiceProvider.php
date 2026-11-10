@@ -20,6 +20,8 @@ use Laravel\Octane\Exceptions\TaskTimeoutException;
 use Laravel\Octane\Facades\Octane as OctaneFacade;
 use Laravel\Octane\FrankenPhp\ServerProcessInspector as FrankenPhpServerProcessInspector;
 use Laravel\Octane\FrankenPhp\ServerStateFile as FrankenPhpServerStateFile;
+use Laravel\Octane\Pam\ServerProcessInspector as PamServerProcessInspector;
+use Laravel\Octane\Pam\ServerStateFile as PamServerStateFile;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
@@ -81,6 +83,20 @@ class OctaneServiceProvider extends ServiceProvider
 
         $this->app->bind(FrankenPhpServerStateFile::class, function ($app) {
             return new FrankenPhpServerStateFile($app['config']->get(
+                'octane.state_file',
+                storage_path('logs/octane-server-state.json')
+            ));
+        });
+
+        $this->app->bind(PamServerProcessInspector::class, function ($app) {
+            return new PamServerProcessInspector(
+                $app->make(PamServerStateFile::class),
+                new PosixExtension,
+            );
+        });
+
+        $this->app->bind(PamServerStateFile::class, function ($app) {
+            return new PamServerStateFile($app['config']->get(
                 'octane.state_file',
                 storage_path('logs/octane-server-state.json')
             ));
@@ -207,6 +223,7 @@ class OctaneServiceProvider extends ServiceProvider
                 Commands\StartRoadRunnerCommand::class,
                 Commands\StartSwooleCommand::class,
                 Commands\StartFrankenPhpCommand::class,
+                Commands\StartPamCommand::class,
                 Commands\ReloadCommand::class,
                 Commands\StatusCommand::class,
                 Commands\StopCommand::class,

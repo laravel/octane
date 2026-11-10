@@ -4,6 +4,8 @@ namespace Laravel\Octane\Commands;
 
 use Laravel\Octane\FrankenPhp\ServerProcessInspector as FrankenPhpProcessInspector;
 use Laravel\Octane\FrankenPhp\ServerStateFile as FrankenPhpStateFile;
+use Laravel\Octane\Pam\ServerProcessInspector as PamServerProcessInspector;
+use Laravel\Octane\Pam\ServerStateFile as PamServerStateFile;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerStateFile as RoadRunnerServerStateFile;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
@@ -40,6 +42,7 @@ class StopCommand extends Command
             'swoole' => $this->stopSwooleServer(),
             'roadrunner' => $this->stopRoadRunnerServer(),
             'frankenphp' => $this->stopFrankenPhpServer(),
+            'pam' => $this->stopPamServer(),
             default => $this->invalidServer($server),
         };
     }
@@ -122,6 +125,32 @@ class StopCommand extends Command
         $inspector->stopServer();
 
         app(FrankenPhpStateFile::class)->delete();
+
+        return 0;
+    }
+
+    /**
+     * Stop the PAM server for Octane.
+     *
+     * @return int
+     */
+    protected function stopPamServer()
+    {
+        $inspector = app(PamServerProcessInspector::class);
+
+        if (! $inspector->serverIsRunning()) {
+            app(PamServerStateFile::class)->delete();
+
+            $this->components->error('PAM server is not running.');
+
+            return 1;
+        }
+
+        $this->components->info('Stopping server...');
+
+        $inspector->stopServer();
+
+        app(PamServerStateFile::class)->delete();
 
         return 0;
     }

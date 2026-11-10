@@ -53,6 +53,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             'swoole' => $this->startSwooleServer(),
             'roadrunner' => $this->startRoadRunnerServer(),
             'frankenphp' => $this->startFrankenPhpServer(),
+            'pam' => $this->startPamServer(),
             default => $this->invalidServer($server),
         };
     }
@@ -115,6 +116,23 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
             '--log-level' => $this->option('log-level'),
+        ]);
+    }
+
+    /**
+     * Start the PAM server for Octane.
+     *
+     * @return int
+     */
+    protected function startPamServer()
+    {
+        return $this->call('octane:pam', [
+            '--host' => $this->getHost(),
+            '--port' => $this->getPort(),
+            '--workers' => $this->option('workers') ?: config('octane.workers', 'auto'),
+            '--max-requests' => $this->option('max-requests') ?: config('octane.max_requests', 500),
+            '--watch' => $this->option('watch'),
+            '--poll' => $this->option('poll'),
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace Laravel\Octane\Commands;
 
 use Laravel\Octane\FrankenPhp\ServerProcessInspector as FrankenPhpServerProcessInspector;
+use Laravel\Octane\Pam\ServerProcessInspector as PamServerProcessInspector;
 use Laravel\Octane\RoadRunner\ServerProcessInspector as RoadRunnerServerProcessInspector;
 use Laravel\Octane\Swoole\ServerProcessInspector as SwooleServerProcessInspector;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -37,6 +38,7 @@ class StatusCommand extends Command
             'swoole' => $this->isSwooleServerRunning(),
             'roadrunner' => $this->isRoadRunnerServerRunning(),
             'frankenphp' => $this->isFrankenPhpServerRunning(),
+            'pam' => $this->isPamServerRunning(),
             default => $this->invalidServer($server),
         };
 
@@ -77,6 +79,17 @@ class StatusCommand extends Command
     protected function isFrankenPhpServerRunning()
     {
         return app(FrankenPhpServerProcessInspector::class)
+            ->serverIsRunning();
+    }
+
+    /**
+     * Check if the PAM server is running.
+     *
+     * @return bool
+     */
+    protected function isPamServerRunning()
+    {
+        return app(PamServerProcessInspector::class)
             ->serverIsRunning();
     }
 

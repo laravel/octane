@@ -14,6 +14,7 @@ use function Laravel\Prompts\select;
 class InstallCommand extends Command
 {
     use Concerns\InstallsFrankenPhpDependencies,
+        Concerns\InstallsPamDependencies,
         Concerns\InstallsRoadRunnerDependencies;
 
     /**
@@ -41,7 +42,7 @@ class InstallCommand extends Command
     {
         $server = $this->option('server') ?: select(
             label: 'Which application server you would like to use?',
-            options: ['frankenphp', 'roadrunner', 'swoole'],
+            options: ['frankenphp', 'roadrunner', 'swoole', 'pam'],
             default: 'frankenphp'
         );
 
@@ -49,6 +50,7 @@ class InstallCommand extends Command
             'swoole' => $this->installSwooleServer(),
             'roadrunner' => $this->installRoadRunnerServer(),
             'frankenphp' => $this->installFrankenPhpServer(),
+            'pam' => $this->installPamServer(),
             default => $this->invalidServer($server),
         }, function ($installed) use ($server) {
             if ($installed) {
@@ -157,6 +159,24 @@ class InstallCommand extends Command
 
         try {
             $this->ensureFrankenPhpBinaryIsInstalled();
+        } catch (Throwable $e) {
+            $this->components->error($e->getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Install the PAM server.
+     *
+     * @return bool
+     */
+    public function installPamServer()
+    {
+        try {
+            $this->ensurePamBinaryMeetsRequirements($this->ensurePamBinaryIsInstalled());
         } catch (Throwable $e) {
             $this->components->error($e->getMessage());
 
