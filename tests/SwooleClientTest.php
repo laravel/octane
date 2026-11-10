@@ -120,6 +120,20 @@ class SwooleClientTest extends TestCase
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
     }
 
+    public function test_cant_serve_static_files_from_sibling_directory_sharing_public_path_prefix(): void
+    {
+        $client = new SwooleClient;
+
+        $request = Request::create('/../files_backup/secret.txt', 'GET');
+
+        $context = new RequestContext([
+            'publicPath' => realpath(__DIR__.'/public/files'),
+            'octaneConfig' => [],
+        ]);
+
+        $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
+    }
+
     public function test_cant_serve_static_files_if_file_has_forbidden_extension(): void
     {
         $client = new SwooleClient;
