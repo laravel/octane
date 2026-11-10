@@ -118,7 +118,7 @@ class StartPamCommand extends Command implements SignalableCommandInterface
     /**
      * Write the server process output to the console.
      *
-     * @param  \Symfony\Component\Process\Process  $server
+     * @param  Process  $server
      * @return void
      */
     protected function writeServerOutput($server)
