@@ -60,6 +60,55 @@ class SwooleClientTest extends TestCase
         $this->assertSame($givenContext, $context);
     }
 
+    public function test_marshal_request_method_prefers_exact_server_variable_headers_over_dashed_headers(): void
+    {
+        $proxyHeaders = ['server_port' => '80', 'remote_addr' => '198.51.100.7'];
+        $clientHeaders = ['remote-addr' => '6.6.6.6', 'server-port' => '443'];
+
+        [$request] = (new SwooleClient)->marshalRequest(new RequestContext([
+            'swooleRequest' => $this->swooleRequestFrom('127.0.0.1', [...$proxyHeaders, ...$clientHeaders]),
+        ]));
+
+        $this->assertSame('198.51.100.7', $request->ip());
+        $this->assertSame('80', $request->server->get('SERVER_PORT'));
+    }
+
+    public function test_marshal_request_method_uses_dashed_server_variable_headers_without_exact_headers(): void
+    {
+        [$request] = (new SwooleClient)->marshalRequest(new RequestContext([
+            'swooleRequest' => $this->swooleRequestFrom('127.0.0.1', [
+                'remote-addr' => '198.51.100.7',
+                'https' => 'on',
+            ]),
+        ]));
+
+        $this->assertSame('198.51.100.7', $request->ip());
+        $this->assertTrue($request->isSecure());
+    }
+
+    protected function swooleRequestFrom(string $remoteAddress, array $headers): object
+    {
+        return new class($remoteAddress, $headers)
+        {
+            public $server;
+
+            public function __construct(string $remoteAddress, public $header)
+            {
+                $this->server = [
+                    'remote_addr' => $remoteAddress,
+                    'server_port' => 8000,
+                    'request_method' => 'GET',
+                    'request_uri' => '/',
+                ];
+            }
+
+            public function rawContent()
+            {
+                return '';
+            }
+        };
+    }
+
     public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory(): void
     {
         $client = new SwooleClient;

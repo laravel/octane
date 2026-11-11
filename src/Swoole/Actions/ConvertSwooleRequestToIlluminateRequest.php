@@ -74,14 +74,17 @@ class ConvertSwooleRequestToIlluminateRequest
     {
         $results = [];
 
+        $exactHeaders = array_change_key_case($headers, CASE_UPPER);
+
         foreach ($headers as $key => $value) {
-            $key = strtoupper(str_replace('-', '_', $key));
+            $name = strtoupper(str_replace('-', '_', $key));
 
-            if (! in_array($key, ['HTTPS', 'REMOTE_ADDR', 'SERVER_PORT'])) {
-                $key = 'HTTP_'.$key;
+            if (! in_array($name, ['HTTPS', 'REMOTE_ADDR', 'SERVER_PORT'])) {
+                $results['HTTP_'.$name] = $value;
+            } elseif ($name === strtoupper($key) || ! array_key_exists($name, $exactHeaders)) {
+                // Exact "REMOTE_ADDR" headers come from the proxy, so they take precedence over "Remote-Addr"...
+                $results[$name] = $value;
             }
-
-            $results[$key] = $value;
         }
 
         return $results;
