@@ -17,7 +17,7 @@ trait InstallsPamDependencies
      *
      * @var string
      */
-    protected $requiredPamVersion = '2.2.14';
+    protected $requiredPamVersion = '2.2.15';
 
     /**
      * The URL of PAM's official install script.

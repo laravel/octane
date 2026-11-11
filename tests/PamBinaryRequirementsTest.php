@@ -50,7 +50,7 @@ class PamBinaryRequirementsTest extends TestCase
 
     public function test_binary_on_path_is_used()
     {
-        $this->fakeBinary($this->binDirectory.'/pam', '2.2.14');
+        $this->fakeBinary($this->binDirectory.'/pam', '2.2.15');
 
         [$command, $output] = $this->command();
 
@@ -76,7 +76,7 @@ class PamBinaryRequirementsTest extends TestCase
 
     public function test_outdated_binary_is_reported()
     {
-        $this->fakeBinary($this->binDirectory.'/pam', '2.2.13');
+        $this->fakeBinary($this->binDirectory.'/pam', '2.2.14');
 
         [$command, $output] = $this->command();
 
@@ -102,7 +102,7 @@ class PamBinaryRequirementsTest extends TestCase
         {
             protected function installPamBinary()
             {
-                file_put_contents(base_path('pam'), "#!/bin/sh\necho 'pam 2.2.14'\n");
+                file_put_contents(base_path('pam'), "#!/bin/sh\necho 'pam 2.2.15'\n");
                 chmod(base_path('pam'), 0755);
             }
         };
