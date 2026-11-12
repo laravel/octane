@@ -27,11 +27,11 @@ class SwooleTaskDispatcher implements DispatchesTasks
             throw new InvalidArgumentException('Tasks can only be resolved within a Swoole server context / web request.');
         }
 
-        $results = app(Server::class)->taskWaitMulti(collect($tasks)->mapWithKeys(function ($task, $key) {
-            return [$key => $task instanceof Closure
-                            ? new SerializableClosure($task)
-                            : $task, ];
-        })->all(), $waitMilliseconds / 1000);
+        $results = app(Server::class)->taskWaitMulti(collect($tasks)->map(function ($task) {
+            return $task instanceof Closure
+                ? new SerializableClosure($task)
+                : $task;
+        })->values()->all(), $waitMilliseconds / 1000);
 
         if ($results === false) {
             throw TaskTimeoutException::after($waitMilliseconds);

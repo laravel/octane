@@ -117,4 +117,24 @@ class SwooleTaskDispatcherTest extends TestCase
             'second' => fn () => 2,
         ]));
     }
+
+    public function test_tasks_are_passed_to_swoole_as_a_list()
+    {
+        $dispatcher = new SwooleTaskDispatcher();
+
+        $this->instance(Server::class, Mockery::mock(Server::class, function ($mock) {
+            $mock->shouldReceive('taskWaitMulti')
+                ->with(Mockery::on(fn ($tasks) => array_is_list($tasks) && count($tasks) === 2), Mockery::any())
+                ->once()
+                ->andReturn([new TaskResult(1), new TaskResult(2)]);
+        }));
+
+        $this->assertEquals([
+            'first' => 1,
+            'second' => 2,
+        ], $dispatcher->resolve([
+            'first' => fn () => 1,
+            'second' => fn () => 2,
+        ]));
+    }
 }
