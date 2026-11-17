@@ -150,6 +150,7 @@ class OctaneServiceProvider extends ServiceProvider
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToCacheManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToDatabaseManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToDatabaseSessionHandler::class);
+        $this->app->singleton(Listeners\GiveNewApplicationInstanceToEventDispatcher::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToFilesystemManager::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToHttpKernel::class);
         $this->app->singleton(Listeners\GiveNewApplicationInstanceToLogManager::class);

@@ -27,6 +27,7 @@ trait ProvidesDefaultConfigurationOptions
     public static function prepareApplicationForNextOperation(): array
     {
         return [
+            \Laravel\Octane\Listeners\GiveNewApplicationInstanceToEventDispatcher::class,
             \Laravel\Octane\Listeners\CreateConfigurationSandbox::class,
             \Laravel\Octane\Listeners\CreateUrlGeneratorSandbox::class,
             \Laravel\Octane\Listeners\GiveNewApplicationInstanceToAuthorizationGate::class,

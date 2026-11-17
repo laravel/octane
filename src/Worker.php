@@ -17,6 +17,7 @@ use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Exceptions\TaskExceptionResult;
+use Laravel\Octane\Listeners\GiveNewApplicationInstanceToEventDispatcher;
 use Laravel\Octane\Swoole\TaskResult;
 use RuntimeException;
 use Throwable;
@@ -123,6 +124,8 @@ class Worker implements WorkerContract
 
             (fn () => $this->currentRequest = null)->call($this->app->make('router'));
 
+            GiveNewApplicationInstanceToEventDispatcher::give($this->app);
+
             if ($this->app->resolved('auth')) {
                 $this->app->make('auth')->forgetGuards();
             }
@@ -176,6 +179,8 @@ class Worker implements WorkerContract
         } finally {
             $sandbox->flush();
 
+            GiveNewApplicationInstanceToEventDispatcher::give($this->app);
+
             // After the request handling process has completed we will unset some variables
             // plus reset the current application state back to its original state before
             // it was cloned. Then we will be ready for the next worker iteration loop.
@@ -201,6 +206,8 @@ class Worker implements WorkerContract
             $this->dispatchEvent($sandbox, new WorkerErrorOccurred($e, $sandbox));
         } finally {
             $sandbox->flush();
+
+            GiveNewApplicationInstanceToEventDispatcher::give($this->app);
 
             unset($sandbox);
 
