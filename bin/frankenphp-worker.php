@@ -45,16 +45,10 @@ try {
             $container->make(ExceptionHandler::class)
                 ->renderForConsole(new ConsoleOutput, $e);
         } else {
-            fwrite(STDERR, sprintf(
-                "[octane bootstrap] %s: %s\n  in %s:%d\n%s\n",
-                $e::class, $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString()
-            ));
+            Stream::throwable($e);
         }
     } catch (Throwable) {
-        fwrite(STDERR, sprintf(
-            "[octane bootstrap] %s: %s\n  in %s:%d\n%s\n",
-            $e::class, $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTraceAsString()
-        ));
+        Stream::throwable($e);
     }
 
     exit(1);
