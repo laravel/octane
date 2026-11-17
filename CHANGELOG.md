@@ -1,6 +1,20 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/octane/compare/v2.23.0...2.x)
+## [Unreleased](https://github.com/laravel/octane/compare/v2.25.0...2.x)
+
+## [v2.25.0](https://github.com/laravel/octane/compare/v2.23.0...v2.25.0) - 2026-11-17
+
+### What's Changed
+
+* [2.x] Prefer proxy REMOTE_ADDR and SERVER_PORT headers over client headers by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/octane/pull/1186
+* [2.x] Pass tasks to Swoole taskWaitMulti() as a list by [@AirGear02](https://github.com/AirGear02) in https://github.com/laravel/octane/pull/1189
+* Use Stream::throwable in frankenphp worker bootstrap fallback by [@Carnicero90](https://github.com/Carnicero90) in https://github.com/laravel/octane/pull/1190
+
+### New Contributors
+
+* [@AirGear02](https://github.com/AirGear02) made their first contribution in https://github.com/laravel/octane/pull/1189
+
+**Full Changelog**: https://github.com/laravel/octane/compare/v2.24.0...v2.25.0
 
 ## [v2.23.0](https://github.com/laravel/octane/compare/v2.22.0...v2.23.0) - 2026-10-30
 
