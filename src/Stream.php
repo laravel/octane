@@ -43,7 +43,7 @@ class Stream
             'line' => $fallbackTrace['line'] ?? (int) $throwable->getLine(),
             'message' => $throwable->getMessage(),
             'trace' => array_slice($throwable->getTrace(), 0, 2),
-        ]));
+        ], JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR));
     }
 
     /**
@@ -61,6 +61,6 @@ class Stream
             'line' => $throwable->getLine(),
             'message' => $throwable->getMessage(),
             'trace' => array_slice($throwable->getTrace(), 0, 2),
-        ]));
+        ], JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR));
     }
 }
