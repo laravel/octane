@@ -271,6 +271,20 @@ class SwooleClientTest extends TestCase
         $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
     }
 
+    public function test_cant_serve_static_files_with_dot_segments_through_sibling_symlink(): void
+    {
+        $client = new SwooleClient;
+
+        $request = Request::create('/../shared/foo.txt', 'GET');
+
+        $context = new RequestContext([
+            'publicPath' => __DIR__.'/public/files',
+            'octaneConfig' => [],
+        ]);
+
+        $this->assertFalse($client->canServeRequestAsStaticFile($request, $context));
+    }
+
     public function test_respond_method_sends_response_to_swoole(): void
     {
         $this->createApplication();
