@@ -89,7 +89,6 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-o', 'rpc.listen=tcp://'.$this->rpcHost().':'.$this->rpcPort(),
             '-o', 'http.pool.supervisor.exec_ttl='.$this->maxExecutionTime(),
             '-o', 'http.static.dir='.public_path(),
-            '-o', 'http.static.forbid=.php,.htaccess,.config',
             '-o', 'http.middleware='.config('octane.roadrunner.http_middleware', 'static'),
             '-o', 'logs.mode=production',
             '-o', 'logs.level='.($this->option('log-level') ?: (app()->environment('local') ? 'debug' : 'warn')),
