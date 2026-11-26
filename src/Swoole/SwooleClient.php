@@ -66,6 +66,11 @@ class SwooleClient implements Client, ServesStaticFiles
             return false;
         }
 
+        // Dot segments could walk out of the public path and through symlinks outside of it...
+        if (array_intersect(explode('/', $request->path()), ['.', '..'])) {
+            return false;
+        }
+
         $publicPath = $context->publicPath;
 
         $pathToFile = realpath($publicPath.'/'.$request->path());
