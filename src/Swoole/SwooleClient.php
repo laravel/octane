@@ -66,6 +66,10 @@ class SwooleClient implements Client, ServesStaticFiles
             return false;
         }
 
+        if (array_intersect(explode('/', $request->path()), ['.', '..'])) {
+            return false;
+        }
+
         $publicPath = $context->publicPath;
 
         $pathToFile = realpath($publicPath.'/'.$request->path());
