@@ -64,11 +64,13 @@ class OnWorkerStart
             return tap(new Worker(
                 new ApplicationFactory($this->basePath),
                 $this->workerState->client = new SwooleClient
-            ))->boot([
+            ))->boot(array_merge([
                 'octane.cacheTable' => $this->workerState->cacheTable,
                 Server::class => $server,
                 WorkerState::class => $this->workerState,
-            ]);
+            ], isset($this->serverState['taskSecret']) ? [
+                'octane.taskSecret' => $this->serverState['taskSecret'],
+            ] : []));
         } catch (Throwable $e) {
             Stream::shutdown($e);
 

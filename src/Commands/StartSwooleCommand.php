@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Laravel\Octane\Swoole\ServerProcessInspector;
 use Laravel\Octane\Swoole\ServerStateFile;
 use Laravel\Octane\Swoole\SwooleExtension;
+use Laravel\Octane\Swoole\TaskPayload;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -112,6 +113,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'storagePath' => storage_path(),
             'defaultServerOptions' => $this->defaultServerOptions($extension),
             'octaneConfig' => config('octane'),
+            'taskSecret' => TaskPayload::generateSecret(),
         ]);
     }
 

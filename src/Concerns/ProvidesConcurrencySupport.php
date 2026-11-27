@@ -43,7 +43,8 @@ trait ProvidesConcurrencySupport
             class_exists(Server::class) => (fn (array $serverState) => new SwooleHttpTaskDispatcher(
                 $serverState['state']['host'] ?? '127.0.0.1',
                 $serverState['state']['port'] ?? '8000',
-                new SequentialTaskDispatcher
+                new SequentialTaskDispatcher,
+                $serverState['state']['taskSecret'] ?? null,
             ))(app(ServerStateFile::class)->read()),
             default => new SequentialTaskDispatcher,
         };
