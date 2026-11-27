@@ -7,7 +7,6 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Octane\Cache\OctaneArrayStore;
@@ -27,6 +26,7 @@ use Laravel\Octane\Swoole\ServerStateFile as SwooleServerStateFile;
 use Laravel\Octane\Swoole\SignalDispatcher;
 use Laravel\Octane\Swoole\SwooleCoroutineDispatcher;
 use Laravel\Octane\Swoole\SwooleTaskDispatcher;
+use Laravel\Octane\Swoole\TaskPayload;
 
 class OctaneServiceProvider extends ServiceProvider
 {
@@ -225,12 +225,17 @@ class OctaneServiceProvider extends ServiceProvider
      */
     protected function registerHttpTaskHandlingRoutes()
     {
-        OctaneFacade::route('POST', '/octane/resolve-tasks', function (Request $request) {
+        if (! $this->app->bound('octane.taskSecret')) {
+            return;
+        }
+
+        $secret = $this->app->make('octane.taskSecret');
+
+        OctaneFacade::route('POST', '/octane/resolve-tasks', function (Request $request) use ($secret) {
             try {
-                return new Response(serialize((new SwooleTaskDispatcher)->resolve(
-                    unserialize(Crypt::decryptString($request->input('tasks'))),
-                    $request->input('wait')
-                )), 200);
+                ['tasks' => $tasks, 'wait' => $wait] = TaskPayload::open($secret, 'resolve-tasks', $request->input('tasks'));
+
+                return new Response(TaskPayload::seal($secret, 'resolve-tasks-result', (new SwooleTaskDispatcher)->resolve($tasks, $wait)), 200);
             } catch (DecryptException) {
                 return new Response('', 403);
             } catch (TaskException|DdException) {
@@ -240,10 +245,10 @@ class OctaneServiceProvider extends ServiceProvider
             }
         });
 
-        OctaneFacade::route('POST', '/octane/dispatch-tasks', function (Request $request) {
+        OctaneFacade::route('POST', '/octane/dispatch-tasks', function (Request $request) use ($secret) {
             try {
                 (new SwooleTaskDispatcher)->dispatch(
-                    unserialize(Crypt::decryptString($request->input('tasks'))),
+                    TaskPayload::open($secret, 'dispatch-tasks', $request->input('tasks')),
                 );
             } catch (DecryptException) {
                 return new Response('', 403);

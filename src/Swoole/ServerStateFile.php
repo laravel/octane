@@ -42,6 +42,8 @@ class ServerStateFile
             ]),
             JSON_PRETTY_PRINT
         ));
+
+        @chmod($this->path, 0600);
     }
 
     /**
@@ -57,6 +59,8 @@ class ServerStateFile
             array_merge($this->read(), ['state' => $newState]),
             JSON_PRETTY_PRINT
         ));
+
+        @chmod($this->path, 0600);
     }
 
     /**
